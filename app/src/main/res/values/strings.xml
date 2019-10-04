@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">Immicart</string>
+    <string name="please_wait_dialog">Please wait...</string>
+    <string name="fetching_details_text">Fetching Details</string>
+    <string name="enter_phone_number">Enter Phone Number</string>
+    <string name="request_mpesaexpress">Request MPESAExpress</string>
+    <string name="title_activity_payment">PaymentActivity</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
