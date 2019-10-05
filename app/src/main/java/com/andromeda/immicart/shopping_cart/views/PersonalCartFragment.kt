@@ -1,4 +1,4 @@
-package com.andromeda.immicart.shopping_cart
+package com.andromeda.immicart.shopping_cart.views
 
 
 import android.os.Bundle
