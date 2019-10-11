@@ -20,15 +20,12 @@ import kotlinx.android.synthetic.main.item_scanned_product.view.*
 import android.R.id.icon2
 import android.util.Log
 import android.widget.ImageButton
-import java.text.DecimalFormat
 
 
-class ProductsRecyclerAdapter(val addQuantityClickListener: (Cart, Int) -> Unit, val removeItemClickListener: (Cart) -> Unit): ListAdapter<Cart, ProductsRecyclerAdapter.ViewHolder>(ProductsDiffCallback())  {
+ class ProductsRecyclerAdapter(val addQuantityClickListener: (Cart, Int) -> Unit, val removeItemClickListener: (Cart) -> Unit): ListAdapter<Cart, ProductsRecyclerAdapter.ViewHolder>(ProductsDiffCallback())  {
      private val TAG = "ProductsRecyclerAdapter"
 
      lateinit var changeCartItemNumberPopUp: PopupWindow
-
-     lateinit var mRecyclerView: RecyclerView
 
 
      override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductsRecyclerAdapter.ViewHolder{
@@ -51,18 +48,9 @@ class ProductsRecyclerAdapter(val addQuantityClickListener: (Cart, Int) -> Unit,
 
     }
 
-     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
-         super.onAttachedToRecyclerView(recyclerView)
-
-         mRecyclerView = recyclerView
-     }
-
      internal fun setCartItems(cartItems: List<Cart>) {
          submitList(cartItems)
-         mRecyclerView.scrollToPosition(itemCount - 1);
-
      }
-
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
@@ -71,10 +59,8 @@ class ProductsRecyclerAdapter(val addQuantityClickListener: (Cart, Int) -> Unit,
             itemView.quantity_tv.text = cart.quantity.toString()
 
             val price = cart.quantity * cart.price
-            val formatter = DecimalFormat("#,###,###");
-            val priceFormattedString = formatter.format(price.toInt());
 
-            itemView.price_tv.text = "KES " + priceFormattedString
+            itemView.price_tv.text = "KES " + price.toString()
 
             Glide.with(itemView.context).load(cart.image_url).into(itemView.scanned_product_image)
 

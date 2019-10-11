@@ -1,7 +1,6 @@
 package com.andromeda.immicart.Scanning
 
 import android.Manifest
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Matrix
 import android.os.Build
@@ -27,15 +26,10 @@ import com.andromeda.immicart.R
 import com.andromeda.immicart.Scanning.persistence.Cart
 import com.andromeda.immicart.networking.ImmicartAPIService
 import com.andromeda.immicart.networking.Model
-import com.andromeda.immicart.shopping_cart.CartActivity
-import com.google.firebase.ml.vision.FirebaseVision
-import com.google.firebase.ml.vision.common.FirebaseVisionImage
-import com.google.firebase.ml.vision.common.FirebaseVisionImageMetadata
 import kotlinx.android.synthetic.main.activity_main.*
 import retrofit2.Callback
 import retrofit2.Call
 import retrofit2.Response
-import java.text.DecimalFormat
 
 
 private const val PERMISSIONS_REQUEST_CODE = 10
@@ -46,8 +40,6 @@ private val PERMISSIONS_REQUIRED = arrayOf(
 private var lensFacing = CameraX.LensFacing.BACK
 private lateinit var adapter: ProductsRecyclerAdapter
 private lateinit var mainActivityViewModel: MainActivityViewModel
-
-lateinit var cartItems: List<Cart>
 
 private val TAG = "MainActivity"
     val immicartAPIService by lazy {
@@ -76,36 +68,10 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
             mainActivityViewModel.allScannedItems.observe(this, Observer { items ->
                 // Update the cached copy of the words in the adapter.
                 items?.let {
-                    cartItems = it
                     badge.text = it.count().toString()
                     adapter.setCartItems(it)
-                    var total = 0;
-
-                    it.forEach {
-                        val quantity = it.quantity
-                        val unitPrice = it.price.toInt()
-                        val subtotal = quantity * unitPrice
-                        total += subtotal
-                    }
-
-                    val formatter = DecimalFormat("#,###,###");
-                    val totalFormattedString = formatter.format(total);
-
-                    total_tv.setText("KES " + totalFormattedString)
                 }
             })
-
-        }
-
-        cart_frame_layout.setOnClickListener {
-            val intent: Intent = Intent(this@MainActivity, CartActivity::class.java)
-            startActivity(intent)
-
-        }
-
-        checkoutll.setOnClickListener {
-            val intent: Intent = Intent(this@MainActivity, CartActivity::class.java)
-            startActivity(intent)
 
         }
 
@@ -142,11 +108,10 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
             updateTransform()
         }
 
-
         val analyzerConfig = ImageAnalysisConfig.Builder().apply {
             // Use a worker thread for image analysis to prevent glitches
             val analyzerThread = HandlerThread(
-                "BarcodeAnalysis").apply { start() }
+                "LuminosityAnalysis").apply { start() }
             setCallbackHandler(Handler(analyzerThread.looper))
             setTargetResolution(Size(1280, 720))
             setLensFacing(lensFacing)
@@ -168,19 +133,15 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
                 "BarcodeScannerAnalysis").apply { start() }
             setCallbackHandler(Handler(analyzerThread.looper))
             setTargetResolution(Size(1280, 720))
-            setImageReaderMode(ImageAnalysis.ImageReaderMode.ACQUIRE_LATEST_IMAGE)
 
         }.build()
         val imageAnalysis = ImageAnalysis(imageAnalysisConfig)
 
         imageAnalysis.setAnalyzer { image: ImageProxy, rotationDegrees: Int ->
             // insert your code here.
+
+
         }
-
-        val imageAnalyzer = ImageAnalysis(analyzerConfig).apply {
-            analyzer = BarcodeImageAnalyzer().apply {
-
-            } }
 
         CameraX.bindToLifecycle(this as LifecycleOwner,  preview, imageAnalysis)
     }
@@ -248,11 +209,6 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
     }
 
 
-    fun checkIfItemsaretheSame() {
-
-    }
-
-
     private fun retrieveProduct(barcode: String) {
         val retrofitResponse = immicartAPIService.getSingleProductByBarcode(barcode)
         retrofitResponse.enqueue(object : Callback<Model.ResponseData> {
@@ -287,24 +243,11 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
                     val id = singleProduct._id
 
 
-                    var existsInDatabase: Boolean = false
                     val cartItem = Cart(_id = id,barcode = barcode, name = name, price = unitPrice, quantity = 1, image_url = imageUrl)
 
-                   cartItems.forEach {
-                        if (id == cartItem._id) {
-                            existsInDatabase = true
-                            var _newQuantity = cartItem.quantity
-                            _newQuantity++
-                            mainActivityViewModel.updateQuantity(cartItem._id, _newQuantity)
-                            return@forEach
-                        }
-                    }
 
-                    if(!existsInDatabase) {
-                        mainActivityViewModel.insert(cartItem)
-                    }
+                    mainActivityViewModel.insert(cartItem)
 
-                    
 
 
                     val responseCode = response.code()
@@ -335,48 +278,5 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
         mainActivityViewModel.deleteById(id)
 
     }
-
-
-    inner class BarcodeImageAnalyzer : ImageAnalysis.Analyzer {
-        private fun degreesToFirebaseRotation(degrees: Int): Int = when(degrees) {
-            0 -> FirebaseVisionImageMetadata.ROTATION_0
-            90 -> FirebaseVisionImageMetadata.ROTATION_90
-            180 -> FirebaseVisionImageMetadata.ROTATION_180
-            270 -> FirebaseVisionImageMetadata.ROTATION_270
-            else -> throw Exception("Rotation must be 0, 90, 180, or 270.")
-        }
-
-        override fun analyze(imageProxy: ImageProxy?, degrees: Int) {
-            val mediaImage = imageProxy?.image
-            val imageRotation = degreesToFirebaseRotation(degrees)
-            if (mediaImage != null) {
-                val image = FirebaseVisionImage.fromMediaImage(mediaImage, imageRotation)
-                // Pass image to an ML Kit Vision API
-                // ...
-
-                val detector = FirebaseVision.getInstance()
-                    .visionBarcodeDetector
-                val result = detector.detectInImage(image)
-                    .addOnSuccessListener { barcodes ->
-                        // Task completed successfully
-                        // ...
-                        barcodes.forEach {
-                            var codeData = it.displayValue
-                            Log.d(TAG, "CodeData $codeData")
-                            codeData?.let {
-                                retrieveProduct(it)
-                            }
-                        }
-
-                    }
-                    .addOnFailureListener {
-                        // Task failed with an exception
-                        // ...
-                    }
-            }
-        }
-    }
-
-
 
 }
