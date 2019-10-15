@@ -34,9 +34,10 @@ class PersonalCartFragment : Fragment() {
         rv_personal_cart.adapter = adapter
         rv_personal_cart.layoutManager = LinearLayoutManager(context)
 
+        checkoutlayout.setOnClickListener{
+
+        }
+
     }
 
-    fun totalAmount(){
-
-    }
 }
