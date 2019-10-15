@@ -18,4 +18,6 @@
     <string name="ksh_350">Ksh 350</string>
     <string name="checkout_text">Checkout</string>
     <string name="sh_3000_00">Sh 3000.00</string>
+    <string name="button_pay">Pay with Mpesa</string>
+    <string name="ente_phone_number">Enter phone number</string>
 </resources>
