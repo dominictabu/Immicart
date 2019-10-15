@@ -22,10 +22,16 @@ import android.util.Log
 import android.widget.ImageButton
 
 
+
+
+
+
  class ProductsRecyclerAdapter(val addQuantityClickListener: (Cart, Int) -> Unit, val removeItemClickListener: (Cart) -> Unit): ListAdapter<Cart, ProductsRecyclerAdapter.ViewHolder>(ProductsDiffCallback())  {
      private val TAG = "ProductsRecyclerAdapter"
 
      lateinit var changeCartItemNumberPopUp: PopupWindow
+
+     lateinit var mRecyclerView: RecyclerView
 
 
      override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductsRecyclerAdapter.ViewHolder{
@@ -48,8 +54,21 @@ import android.widget.ImageButton
 
     }
 
+     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
+         super.onAttachedToRecyclerView(recyclerView)
+
+         mRecyclerView = recyclerView
+     }
+
      internal fun setCartItems(cartItems: List<Cart>) {
          submitList(cartItems)
+         mRecyclerView.scrollToPosition(itemCount - 1);
+
+     }
+
+     override fun submitList(list: List<Cart>?) {
+         super.submitList(list)
+
      }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

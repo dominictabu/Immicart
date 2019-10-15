@@ -6,102 +6,124 @@
                                                      android:layout_height="match_parent"
                                                      android:orientation="vertical"
                                                      tools:context=".Scanning.MainActivity">
-
-
-    <TextureView
-            android:id="@+id/view_finder"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    
-    <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/scanned_product_recycler_view"
-            android:layout_gravity="bottom"
-            android:orientation="horizontal"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/item_scanned_product"
-            android:layout_width="match_parent"
-           android:layout_height="wrap_content">
-        
-    </androidx.recyclerview.widget.RecyclerView>
-
-    <LinearLayout
-            android:visibility="gone"
-            android:padding="4dp"
-            android:background="@drawable/rounded_bottomsheet"
-            android:orientation="vertical"
-            android:id="@+id/walkthrough_ll_bottom_sheet"
-            app:layout_behavior="@string/bottom_sheet_behavior"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-        <androidx.appcompat.widget.AppCompatImageView
-                android:layout_gravity="end"
-                android:layout_marginEnd="10dp"
-                android:layout_marginTop="10dp"
-                android:id="@+id/close_dialog"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/grey_background"
-                android:clickable="true"
-                android:padding="4dp"
-                app:srcCompat="@drawable/ic_close_16dp" />
-        <TextView
-                android:textAlignment="center"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="8dp"
-                android:textStyle="bold"
-                android:textSize="24sp"
-                android:layout_gravity="center_horizontal"
-                android:text="Scan Products"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        <TextView
-                android:textAlignment="center"
-                android:textSize="16sp"
-                android:layout_marginBottom="24dp"
-                android:text="Center the viewer over a barcode to look up products"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-    </LinearLayout>
-
-    <Button
-            android:layout_below="@+id/llproduct"
-            android:visibility="gone"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_gravity="bottom"
-            android:id="@+id/add_to_cart"
-            android:layout_marginBottom="24dp"
-            android:textColor="@android:color/white"
-            android:background="@drawable/shape"
-            android:elevation="4dp"
-            android:textAllCaps="true"
-            android:text="Buy 20 for  KSH 4000"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-    <FrameLayout
-            android:visibility="visible"
-            android:id="@+id/cart_frame_layout"
-            android:layout_margin="10dp"
-            android:layout_gravity="top|end"
-            android:layout_width="60dp"
-            android:layout_height="60dp">
-        <ImageButton
-                style="@style/Base.Widget.AppCompat.Button.Borderless"
-                android:background="@null"
-                android:layout_gravity="start|bottom"
-                android:src="@drawable/ic_shopping_cart_black_24dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        <TextView
-                android:id="@+id/badge"
-                android:layout_gravity="top|end"
-                android:gravity="center"
-                android:text="3"
-                android:textColor="@android:color/white"
-                android:background="@drawable/badge_bg"
-                android:layout_width="30dp"
-                android:layout_height="30dp" />
-    </FrameLayout>
+	
+	
+	<TextureView
+			android:id="@+id/view_finder"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent" />
+	
+	<androidx.recyclerview.widget.RecyclerView
+			app:layout_anchor="@+id/checkoutll"
+			app:layout_anchorGravity="top"
+			android:id="@+id/scanned_product_recycler_view"
+			android:layout_gravity="top"
+			android:orientation="horizontal"
+			app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+			tools:listitem="@layout/item_scanned_product"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content">
+	
+	</androidx.recyclerview.widget.RecyclerView>
+	
+	<LinearLayout
+			android:visibility="gone"
+			android:padding="4dp"
+			android:background="@drawable/rounded_bottomsheet"
+			android:orientation="vertical"
+			android:id="@+id/walkthrough_ll_bottom_sheet"
+			app:layout_behavior="@string/bottom_sheet_behavior"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content">
+		<androidx.appcompat.widget.AppCompatImageView
+				android:layout_gravity="end"
+				android:layout_marginEnd="10dp"
+				android:layout_marginTop="10dp"
+				android:id="@+id/close_dialog"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:background="@drawable/grey_background"
+				android:clickable="true"
+				android:padding="4dp"
+				app:srcCompat="@drawable/ic_close_16dp" />
+		<TextView
+				android:textAlignment="center"
+				android:layout_marginTop="20dp"
+				android:layout_marginBottom="8dp"
+				android:textStyle="bold"
+				android:textSize="24sp"
+				android:layout_gravity="center_horizontal"
+				android:text="Scan Products"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content" />
+		<TextView
+				android:textAlignment="center"
+				android:textSize="16sp"
+				android:layout_marginBottom="24dp"
+				android:text="Center the viewer over a barcode to look up products"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content" />
+	</LinearLayout>
+	
+	
+	<LinearLayout
+			android:layout_margin="8dp"
+			android:id="@+id/checkoutll"
+			android:layout_gravity="bottom"
+			android:gravity="center"
+			android:padding="4dp"
+			android:orientation="horizontal"
+			android:background="@color/colorGreen"
+			android:layout_width="match_parent"
+	              android:layout_height="wrap_content">
+		
+		<TextView
+				android:layout_marginStart="12dp"
+				android:gravity="center"
+				android:textSize="20sp"
+				android:textStyle="bold"
+				android:textColor="@android:color/white"
+				android:layout_weight="1"
+				android:text="Go to Checkout"
+				android:layout_width="0dp"
+		          android:layout_height="wrap_content"
+		/>
+		<TextView
+				android:padding="8dp"
+				android:layout_margin="12dp"
+				android:background="@color/colorGreenBrighter"
+				android:textSize="16sp"
+				android:textStyle="bold"
+				android:textColor="@android:color/white"
+				android:text="KES 300"
+				android:layout_width="wrap_content"
+		          android:layout_height="wrap_content"/>
+	</LinearLayout>
+	
+	
+	<FrameLayout
+			android:visibility="visible"
+			android:id="@+id/cart_frame_layout"
+			android:layout_margin="10dp"
+			android:layout_gravity="top|end"
+			android:layout_width="60dp"
+			android:layout_height="60dp">
+		<ImageButton
+				style="@style/Base.Widget.AppCompat.Button.Borderless"
+				android:background="@null"
+				android:layout_gravity="start|bottom"
+				android:src="@drawable/ic_shopping_cart_black_24dp"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content" />
+		<TextView
+				android:id="@+id/badge"
+				android:layout_gravity="top|end"
+				android:gravity="center"
+				android:text="3"
+				android:textColor="@android:color/white"
+				android:background="@drawable/badge_bg"
+				android:layout_width="30dp"
+				android:layout_height="30dp" />
+	</FrameLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
