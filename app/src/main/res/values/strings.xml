@@ -1,4 +1,11 @@
 <resources>
     <string name="app_name">Immicart</string>
     <string name="title_activity_choose_store">ChooseStoreActivity</string>
+	<string name="mwea_pishori">Mwea Pishori</string>
+	<string name="_2_kg">2 kg</string>
+	<string name="instructions"/>
+	<string name="delete">Delete</string>
+	<string name="_2">2</string>
+	<string name="ksh_350">350 kg</string>
+	<string name="ksh_200">Khs 200</string>
 </resources>
