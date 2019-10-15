@@ -65,7 +65,7 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.0'
     //Glide
     implementation 'com.github.bumptech.glide:glide:4.10.0'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.10.0'
+    kapt 'com.github.bumptech.glide:compiler:4.10.0'
 
     //Retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.3.0'
@@ -94,6 +94,19 @@ dependencies {
 
     //MLKit
     implementation 'com.google.firebase:firebase-ml-vision:23.0.0'
+
+    //    Dagger components
+
+    /* Dagger2 - We are going to use dagger.android which includes
+    * support for Activity and fragment injection so we need to include
+    * the following dependencies */
+    implementation "com.google.dagger:dagger-android:$dagger_version"
+    implementation "com.google.dagger:dagger-android-support:$dagger_version"
+
+    kapt "com.google.dagger:dagger-android-processor:$dagger_version"
+
+    /* Dagger2 - default dependency */
+    kapt "com.google.dagger:dagger-compiler:$dagger_version"
 
 
     testImplementation 'junit:junit:4.12'
