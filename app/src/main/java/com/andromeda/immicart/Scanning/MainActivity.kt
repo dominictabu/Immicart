@@ -1,6 +1,7 @@
 package com.andromeda.immicart.Scanning
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Matrix
 import android.os.Build
@@ -26,6 +27,7 @@ import com.andromeda.immicart.R
 import com.andromeda.immicart.Scanning.persistence.Cart
 import com.andromeda.immicart.networking.ImmicartAPIService
 import com.andromeda.immicart.networking.Model
+import com.andromeda.immicart.shopping_cart.CartActivity
 import com.google.firebase.ml.vision.FirebaseVision
 import com.google.firebase.ml.vision.common.FirebaseVisionImage
 import com.google.firebase.ml.vision.common.FirebaseVisionImageMetadata
@@ -33,6 +35,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import retrofit2.Callback
 import retrofit2.Call
 import retrofit2.Response
+import java.text.DecimalFormat
 
 
 private const val PERMISSIONS_REQUEST_CODE = 10
@@ -73,11 +76,36 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
             mainActivityViewModel.allScannedItems.observe(this, Observer { items ->
                 // Update the cached copy of the words in the adapter.
                 items?.let {
-                    cartItems = items
+                    cartItems = it
                     badge.text = it.count().toString()
                     adapter.setCartItems(it)
+                    var total = 0;
+
+                    it.forEach {
+                        val quantity = it.quantity
+                        val unitPrice = it.price.toInt()
+                        val subtotal = quantity * unitPrice
+                        total += subtotal
+                    }
+
+                    val formatter = DecimalFormat("#,###,###");
+                    val totalFormattedString = formatter.format(total);
+
+                    total_tv.setText("KES " + totalFormattedString)
                 }
             })
+
+        }
+
+        cart_frame_layout.setOnClickListener {
+            val intent: Intent = Intent(this@MainActivity, CartActivity::class.java)
+            startActivity(intent)
+
+        }
+
+        checkoutll.setOnClickListener {
+            val intent: Intent = Intent(this@MainActivity, CartActivity::class.java)
+            startActivity(intent)
 
         }
 
@@ -147,9 +175,6 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
 
         imageAnalysis.setAnalyzer { image: ImageProxy, rotationDegrees: Int ->
             // insert your code here.
-
-
-
         }
 
         val imageAnalyzer = ImageAnalysis(analyzerConfig).apply {
@@ -262,10 +287,12 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
                     val id = singleProduct._id
 
 
+                    var existsInDatabase: Boolean = false
                     val cartItem = Cart(_id = id,barcode = barcode, name = name, price = unitPrice, quantity = 1, image_url = imageUrl)
 
                    cartItems.forEach {
                         if (id == cartItem._id) {
+                            existsInDatabase = true
                             var _newQuantity = cartItem.quantity
                             _newQuantity++
                             mainActivityViewModel.updateQuantity(cartItem._id, _newQuantity)
@@ -273,12 +300,11 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
                         }
                     }
 
+                    if(!existsInDatabase) {
+                        mainActivityViewModel.insert(cartItem)
+                    }
 
-
-
-
-                    mainActivityViewModel.insert(cartItem)
-
+                    
 
 
                     val responseCode = response.code()
@@ -311,7 +337,7 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
     }
 
 
-    private class BarcodeImageAnalyzer : ImageAnalysis.Analyzer {
+    inner class BarcodeImageAnalyzer : ImageAnalysis.Analyzer {
         private fun degreesToFirebaseRotation(degrees: Int): Int = when(degrees) {
             0 -> FirebaseVisionImageMetadata.ROTATION_0
             90 -> FirebaseVisionImageMetadata.ROTATION_90
@@ -334,6 +360,13 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
                     .addOnSuccessListener { barcodes ->
                         // Task completed successfully
                         // ...
+                        barcodes.forEach {
+                            var codeData = it.displayValue
+                            Log.d(TAG, "CodeData $codeData")
+                            codeData?.let {
+                                retrieveProduct(it)
+                            }
+                        }
 
                     }
                     .addOnFailureListener {

@@ -53,6 +53,7 @@
             />
         </LinearLayout>
         <TextView
+                android:gravity="center"
                 android:id="@+id/remove_item"
                 android:layout_marginBottom="20dp"
                 android:drawablePadding="8dp"
