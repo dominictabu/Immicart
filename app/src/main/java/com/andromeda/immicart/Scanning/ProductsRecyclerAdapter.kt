@@ -20,13 +20,10 @@ import kotlinx.android.synthetic.main.item_scanned_product.view.*
 import android.R.id.icon2
 import android.util.Log
 import android.widget.ImageButton
+import java.text.DecimalFormat
 
 
-
-
-
-
- class ProductsRecyclerAdapter(val addQuantityClickListener: (Cart, Int) -> Unit, val removeItemClickListener: (Cart) -> Unit): ListAdapter<Cart, ProductsRecyclerAdapter.ViewHolder>(ProductsDiffCallback())  {
+class ProductsRecyclerAdapter(val addQuantityClickListener: (Cart, Int) -> Unit, val removeItemClickListener: (Cart) -> Unit): ListAdapter<Cart, ProductsRecyclerAdapter.ViewHolder>(ProductsDiffCallback())  {
      private val TAG = "ProductsRecyclerAdapter"
 
      lateinit var changeCartItemNumberPopUp: PopupWindow
@@ -66,10 +63,6 @@ import android.widget.ImageButton
 
      }
 
-     override fun submitList(list: List<Cart>?) {
-         super.submitList(list)
-
-     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
@@ -78,8 +71,10 @@ import android.widget.ImageButton
             itemView.quantity_tv.text = cart.quantity.toString()
 
             val price = cart.quantity * cart.price
+            val formatter = DecimalFormat("#,###,###");
+            val priceFormattedString = formatter.format(price.toInt());
 
-            itemView.price_tv.text = "KES " + price.toString()
+            itemView.price_tv.text = "KES " + priceFormattedString
 
             Glide.with(itemView.context).load(cart.image_url).into(itemView.scanned_product_image)
 
