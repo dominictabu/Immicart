@@ -8,9 +8,9 @@
     
     <application
             android:allowBackup="true"
-            android:icon="@mipmap/ic_launcher"
+            android:icon="@mipmap/ic_launcher_logo"
             android:label="@string/app_name"
-            android:roundIcon="@mipmap/ic_launcher_round"
+            android:roundIcon="@mipmap/ic_launcher_logo_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
     
@@ -23,6 +23,13 @@
                 android:label="@string/title_activity_choose_store"
                 android:theme="@style/AppTheme.NoActionBar">
         </activity>
+    
+        <activity
+                android:name=".shopping_cart.CartActivity"
+                android:label="@string/title_cart_activity"
+                android:theme="@style/AppTheme.CartActivity">
+        </activity>
+        
         <activity android:name=".Scanning.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
