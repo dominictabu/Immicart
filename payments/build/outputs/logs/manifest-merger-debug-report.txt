@@ -1,0 +1,139 @@
+-- Merging decision tree log ---
+manifest
+ADDED from /home/nerd/AndroidStudioProjects/Immicart/payments/src/main/AndroidManifest.xml:2:1-21:12
+INJECTED from /home/nerd/AndroidStudioProjects/Immicart/payments/src/main/AndroidManifest.xml:2:1-21:12
+INJECTED from /home/nerd/AndroidStudioProjects/Immicart/payments/src/main/AndroidManifest.xml:2:1-21:12
+INJECTED from /home/nerd/AndroidStudioProjects/Immicart/payments/src/main/AndroidManifest.xml:2:1-21:12
+MERGED from [androidx.appcompat:appcompat:1.1.0] /home/nerd/.gradle/caches/transforms-2/files-2.1/26c0d1c834de40cc57198c6bdf64b038/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.core:core-ktx:1.1.0] /home/nerd/.gradle/caches/transforms-2/files-2.1/3c0beea3ff781ea641c19e34afb2ddd3/AndroidManifest.xml:2:1-9:12
+MERGED from [androidx.constraintlayout:constraintlayout:1.1.3] /home/nerd/.gradle/caches/transforms-2/files-2.1/91dcc6617519e57f4fef823180e3af66/AndroidManifest.xml:2:1-11:12
+MERGED from [androidx.fragment:fragment:1.1.0] /home/nerd/.gradle/caches/transforms-2/files-2.1/5f6ad695aa0f31d694a7ac9a6780eae2/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.appcompat:appcompat-resources:1.1.0] /home/nerd/.gradle/caches/transforms-2/files-2.1/89164d832730ebbdc5cb1945d47e414d/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.drawerlayout:drawerlayout:1.0.0] /home/nerd/.gradle/caches/transforms-2/files-2.1/013cc135811a9161478679c4df7426b9/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.viewpager:viewpager:1.0.0] /home/nerd/.gradle/caches/transforms-2/files-2.1/3031b44bffeb39b5cc828bf81b27af81/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.loader:loader:1.0.0] /home/nerd/.gradle/caches/transforms-2/files-2.1/d9a6a9a7ba90382f4b4886a0f4cdf438/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.activity:activity:1.0.0] /home/nerd/.gradle/caches/transforms-2/files-2.1/6f28b8df171fef72ce6bb774bdd753b6/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] /home/nerd/.gradle/caches/transforms-2/files-2.1/41860672cb055d167e4c5f3dac797556/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] /home/nerd/.gradle/caches/transforms-2/files-2.1/cd3aba729fad77793d5e5bf3c922eac2/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.customview:customview:1.0.0] /home/nerd/.gradle/caches/transforms-2/files-2.1/3c0df4333688d8f41fcff8ab83166e75/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.core:core:1.1.0] /home/nerd/.gradle/caches/transforms-2/files-2.1/caeeb7161833bf00e4361846387f7d06/AndroidManifest.xml:17:1-26:12
+MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] /home/nerd/.gradle/caches/transforms-2/files-2.1/280c45fc5d06a9e1539399e16caaf67f/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0] /home/nerd/.gradle/caches/transforms-2/files-2.1/784da0364ca89b484255af3790bc186b/AndroidManifest.xml:17:1-27:12
+MERGED from [androidx.lifecycle:lifecycle-runtime:2.1.0] /home/nerd/.gradle/caches/transforms-2/files-2.1/812ea03760be8e6191c6d58b4503b7d2/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.1.0] /home/nerd/.gradle/caches/transforms-2/files-2.1/ceebf91408c0770b86da144fc5f1e2fc/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.savedstate:savedstate:1.0.0] /home/nerd/.gradle/caches/transforms-2/files-2.1/49a3f505f4163bff45fedef0dfcea802/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.interpolator:interpolator:1.0.0] /home/nerd/.gradle/caches/transforms-2/files-2.1/d04aabe9424e7b1e09942c2525b89254/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.0.0] /home/nerd/.gradle/caches/transforms-2/files-2.1/4ec2bbe1c67feb84fba75d9cced0c6e9/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.0.0] /home/nerd/.gradle/caches/transforms-2/files-2.1/598eff5e939469f9025fc2c99db3bf1e/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.arch.core:core-runtime:2.0.0] /home/nerd/.gradle/caches/transforms-2/files-2.1/12242ceb8f7c7999eef11ebd73596b55/AndroidManifest.xml:17:1-22:12
+INJECTED from /home/nerd/AndroidStudioProjects/Immicart/payments/src/main/AndroidManifest.xml:2:1-21:12
+INJECTED from /home/nerd/AndroidStudioProjects/Immicart/payments/src/main/AndroidManifest.xml:2:1-21:12
+INJECTED from /home/nerd/AndroidStudioProjects/Immicart/payments/src/main/AndroidManifest.xml:2:1-21:12
+	package
+		ADDED from /home/nerd/AndroidStudioProjects/Immicart/payments/src/main/AndroidManifest.xml:3:11-43
+		INJECTED from /home/nerd/AndroidStudioProjects/Immicart/payments/src/main/AndroidManifest.xml
+		INJECTED from /home/nerd/AndroidStudioProjects/Immicart/payments/src/main/AndroidManifest.xml
+	android:versionName
+		INJECTED from /home/nerd/AndroidStudioProjects/Immicart/payments/src/main/AndroidManifest.xml
+		ADDED from /home/nerd/AndroidStudioProjects/Immicart/payments/src/main/AndroidManifest.xml:2:1-21:12
+		INJECTED from /home/nerd/AndroidStudioProjects/Immicart/payments/src/main/AndroidManifest.xml
+	android:versionCode
+		INJECTED from /home/nerd/AndroidStudioProjects/Immicart/payments/src/main/AndroidManifest.xml
+		ADDED from /home/nerd/AndroidStudioProjects/Immicart/payments/src/main/AndroidManifest.xml:2:1-21:12
+		INJECTED from /home/nerd/AndroidStudioProjects/Immicart/payments/src/main/AndroidManifest.xml
+	xmlns:android
+		ADDED from /home/nerd/AndroidStudioProjects/Immicart/payments/src/main/AndroidManifest.xml:2:11-69
+application
+ADDED from /home/nerd/AndroidStudioProjects/Immicart/payments/src/main/AndroidManifest.xml:5:5-19:19
+MERGED from [androidx.constraintlayout:constraintlayout:1.1.3] /home/nerd/.gradle/caches/transforms-2/files-2.1/91dcc6617519e57f4fef823180e3af66/AndroidManifest.xml:9:5-20
+MERGED from [androidx.constraintlayout:constraintlayout:1.1.3] /home/nerd/.gradle/caches/transforms-2/files-2.1/91dcc6617519e57f4fef823180e3af66/AndroidManifest.xml:9:5-20
+MERGED from [androidx.core:core:1.1.0] /home/nerd/.gradle/caches/transforms-2/files-2.1/caeeb7161833bf00e4361846387f7d06/AndroidManifest.xml:24:5-89
+MERGED from [androidx.core:core:1.1.0] /home/nerd/.gradle/caches/transforms-2/files-2.1/caeeb7161833bf00e4361846387f7d06/AndroidManifest.xml:24:5-89
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0] /home/nerd/.gradle/caches/transforms-2/files-2.1/784da0364ca89b484255af3790bc186b/AndroidManifest.xml:24:5-25:19
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0] /home/nerd/.gradle/caches/transforms-2/files-2.1/784da0364ca89b484255af3790bc186b/AndroidManifest.xml:24:5-25:19
+	android:appComponentFactory
+		ADDED from [androidx.core:core:1.1.0] /home/nerd/.gradle/caches/transforms-2/files-2.1/caeeb7161833bf00e4361846387f7d06/AndroidManifest.xml:24:18-86
+	android:supportsRtl
+		ADDED from /home/nerd/AndroidStudioProjects/Immicart/payments/src/main/AndroidManifest.xml:10:13-39
+	android:label
+		ADDED from /home/nerd/AndroidStudioProjects/Immicart/payments/src/main/AndroidManifest.xml:8:13-45
+	android:roundIcon
+		ADDED from /home/nerd/AndroidStudioProjects/Immicart/payments/src/main/AndroidManifest.xml:9:13-58
+	android:icon
+		ADDED from /home/nerd/AndroidStudioProjects/Immicart/payments/src/main/AndroidManifest.xml:7:13-47
+	android:allowBackup
+		ADDED from /home/nerd/AndroidStudioProjects/Immicart/payments/src/main/AndroidManifest.xml:6:13-39
+	android:theme
+		ADDED from /home/nerd/AndroidStudioProjects/Immicart/payments/src/main/AndroidManifest.xml:11:13-44
+activity#com.andromeda.payments.MainActivity
+ADDED from /home/nerd/AndroidStudioProjects/Immicart/payments/src/main/AndroidManifest.xml:12:9-18:20
+	android:name
+		ADDED from /home/nerd/AndroidStudioProjects/Immicart/payments/src/main/AndroidManifest.xml:12:19-47
+intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
+ADDED from /home/nerd/AndroidStudioProjects/Immicart/payments/src/main/AndroidManifest.xml:13:13-17:29
+action#android.intent.action.MAIN
+ADDED from /home/nerd/AndroidStudioProjects/Immicart/payments/src/main/AndroidManifest.xml:14:17-68
+	android:name
+		ADDED from /home/nerd/AndroidStudioProjects/Immicart/payments/src/main/AndroidManifest.xml:14:25-66
+category#android.intent.category.LAUNCHER
+ADDED from /home/nerd/AndroidStudioProjects/Immicart/payments/src/main/AndroidManifest.xml:16:17-76
+	android:name
+		ADDED from /home/nerd/AndroidStudioProjects/Immicart/payments/src/main/AndroidManifest.xml:16:27-74
+uses-sdk
+INJECTED from /home/nerd/AndroidStudioProjects/Immicart/payments/src/main/AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from /home/nerd/AndroidStudioProjects/Immicart/payments/src/main/AndroidManifest.xml
+INJECTED from /home/nerd/AndroidStudioProjects/Immicart/payments/src/main/AndroidManifest.xml
+MERGED from [androidx.appcompat:appcompat:1.1.0] /home/nerd/.gradle/caches/transforms-2/files-2.1/26c0d1c834de40cc57198c6bdf64b038/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.appcompat:appcompat:1.1.0] /home/nerd/.gradle/caches/transforms-2/files-2.1/26c0d1c834de40cc57198c6bdf64b038/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.core:core-ktx:1.1.0] /home/nerd/.gradle/caches/transforms-2/files-2.1/3c0beea3ff781ea641c19e34afb2ddd3/AndroidManifest.xml:5:5-7:41
+MERGED from [androidx.core:core-ktx:1.1.0] /home/nerd/.gradle/caches/transforms-2/files-2.1/3c0beea3ff781ea641c19e34afb2ddd3/AndroidManifest.xml:5:5-7:41
+MERGED from [androidx.constraintlayout:constraintlayout:1.1.3] /home/nerd/.gradle/caches/transforms-2/files-2.1/91dcc6617519e57f4fef823180e3af66/AndroidManifest.xml:5:5-7:41
+MERGED from [androidx.constraintlayout:constraintlayout:1.1.3] /home/nerd/.gradle/caches/transforms-2/files-2.1/91dcc6617519e57f4fef823180e3af66/AndroidManifest.xml:5:5-7:41
+MERGED from [androidx.fragment:fragment:1.1.0] /home/nerd/.gradle/caches/transforms-2/files-2.1/5f6ad695aa0f31d694a7ac9a6780eae2/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.fragment:fragment:1.1.0] /home/nerd/.gradle/caches/transforms-2/files-2.1/5f6ad695aa0f31d694a7ac9a6780eae2/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.appcompat:appcompat-resources:1.1.0] /home/nerd/.gradle/caches/transforms-2/files-2.1/89164d832730ebbdc5cb1945d47e414d/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.appcompat:appcompat-resources:1.1.0] /home/nerd/.gradle/caches/transforms-2/files-2.1/89164d832730ebbdc5cb1945d47e414d/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.drawerlayout:drawerlayout:1.0.0] /home/nerd/.gradle/caches/transforms-2/files-2.1/013cc135811a9161478679c4df7426b9/AndroidManifest.xml:20:5-44
+MERGED from [androidx.drawerlayout:drawerlayout:1.0.0] /home/nerd/.gradle/caches/transforms-2/files-2.1/013cc135811a9161478679c4df7426b9/AndroidManifest.xml:20:5-44
+MERGED from [androidx.viewpager:viewpager:1.0.0] /home/nerd/.gradle/caches/transforms-2/files-2.1/3031b44bffeb39b5cc828bf81b27af81/AndroidManifest.xml:20:5-44
+MERGED from [androidx.viewpager:viewpager:1.0.0] /home/nerd/.gradle/caches/transforms-2/files-2.1/3031b44bffeb39b5cc828bf81b27af81/AndroidManifest.xml:20:5-44
+MERGED from [androidx.loader:loader:1.0.0] /home/nerd/.gradle/caches/transforms-2/files-2.1/d9a6a9a7ba90382f4b4886a0f4cdf438/AndroidManifest.xml:20:5-44
+MERGED from [androidx.loader:loader:1.0.0] /home/nerd/.gradle/caches/transforms-2/files-2.1/d9a6a9a7ba90382f4b4886a0f4cdf438/AndroidManifest.xml:20:5-44
+MERGED from [androidx.activity:activity:1.0.0] /home/nerd/.gradle/caches/transforms-2/files-2.1/6f28b8df171fef72ce6bb774bdd753b6/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.activity:activity:1.0.0] /home/nerd/.gradle/caches/transforms-2/files-2.1/6f28b8df171fef72ce6bb774bdd753b6/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] /home/nerd/.gradle/caches/transforms-2/files-2.1/41860672cb055d167e4c5f3dac797556/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] /home/nerd/.gradle/caches/transforms-2/files-2.1/41860672cb055d167e4c5f3dac797556/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] /home/nerd/.gradle/caches/transforms-2/files-2.1/cd3aba729fad77793d5e5bf3c922eac2/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] /home/nerd/.gradle/caches/transforms-2/files-2.1/cd3aba729fad77793d5e5bf3c922eac2/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.customview:customview:1.0.0] /home/nerd/.gradle/caches/transforms-2/files-2.1/3c0df4333688d8f41fcff8ab83166e75/AndroidManifest.xml:20:5-44
+MERGED from [androidx.customview:customview:1.0.0] /home/nerd/.gradle/caches/transforms-2/files-2.1/3c0df4333688d8f41fcff8ab83166e75/AndroidManifest.xml:20:5-44
+MERGED from [androidx.core:core:1.1.0] /home/nerd/.gradle/caches/transforms-2/files-2.1/caeeb7161833bf00e4361846387f7d06/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.core:core:1.1.0] /home/nerd/.gradle/caches/transforms-2/files-2.1/caeeb7161833bf00e4361846387f7d06/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] /home/nerd/.gradle/caches/transforms-2/files-2.1/280c45fc5d06a9e1539399e16caaf67f/AndroidManifest.xml:20:5-44
+MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] /home/nerd/.gradle/caches/transforms-2/files-2.1/280c45fc5d06a9e1539399e16caaf67f/AndroidManifest.xml:20:5-44
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0] /home/nerd/.gradle/caches/transforms-2/files-2.1/784da0364ca89b484255af3790bc186b/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0] /home/nerd/.gradle/caches/transforms-2/files-2.1/784da0364ca89b484255af3790bc186b/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.lifecycle:lifecycle-runtime:2.1.0] /home/nerd/.gradle/caches/transforms-2/files-2.1/812ea03760be8e6191c6d58b4503b7d2/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime:2.1.0] /home/nerd/.gradle/caches/transforms-2/files-2.1/812ea03760be8e6191c6d58b4503b7d2/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.1.0] /home/nerd/.gradle/caches/transforms-2/files-2.1/ceebf91408c0770b86da144fc5f1e2fc/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.1.0] /home/nerd/.gradle/caches/transforms-2/files-2.1/ceebf91408c0770b86da144fc5f1e2fc/AndroidManifest.xml:20:5-44
+MERGED from [androidx.savedstate:savedstate:1.0.0] /home/nerd/.gradle/caches/transforms-2/files-2.1/49a3f505f4163bff45fedef0dfcea802/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.savedstate:savedstate:1.0.0] /home/nerd/.gradle/caches/transforms-2/files-2.1/49a3f505f4163bff45fedef0dfcea802/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.interpolator:interpolator:1.0.0] /home/nerd/.gradle/caches/transforms-2/files-2.1/d04aabe9424e7b1e09942c2525b89254/AndroidManifest.xml:20:5-44
+MERGED from [androidx.interpolator:interpolator:1.0.0] /home/nerd/.gradle/caches/transforms-2/files-2.1/d04aabe9424e7b1e09942c2525b89254/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.0.0] /home/nerd/.gradle/caches/transforms-2/files-2.1/4ec2bbe1c67feb84fba75d9cced0c6e9/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.0.0] /home/nerd/.gradle/caches/transforms-2/files-2.1/4ec2bbe1c67feb84fba75d9cced0c6e9/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.0.0] /home/nerd/.gradle/caches/transforms-2/files-2.1/598eff5e939469f9025fc2c99db3bf1e/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.0.0] /home/nerd/.gradle/caches/transforms-2/files-2.1/598eff5e939469f9025fc2c99db3bf1e/AndroidManifest.xml:20:5-44
+MERGED from [androidx.arch.core:core-runtime:2.0.0] /home/nerd/.gradle/caches/transforms-2/files-2.1/12242ceb8f7c7999eef11ebd73596b55/AndroidManifest.xml:20:5-44
+MERGED from [androidx.arch.core:core-runtime:2.0.0] /home/nerd/.gradle/caches/transforms-2/files-2.1/12242ceb8f7c7999eef11ebd73596b55/AndroidManifest.xml:20:5-44
+INJECTED from /home/nerd/AndroidStudioProjects/Immicart/payments/src/main/AndroidManifest.xml
+INJECTED from /home/nerd/AndroidStudioProjects/Immicart/payments/src/main/AndroidManifest.xml
+	android:targetSdkVersion
+		INJECTED from /home/nerd/AndroidStudioProjects/Immicart/payments/src/main/AndroidManifest.xml
+		ADDED from /home/nerd/AndroidStudioProjects/Immicart/payments/src/main/AndroidManifest.xml
+		INJECTED from /home/nerd/AndroidStudioProjects/Immicart/payments/src/main/AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from /home/nerd/AndroidStudioProjects/Immicart/payments/src/main/AndroidManifest.xml
+		ADDED from /home/nerd/AndroidStudioProjects/Immicart/payments/src/main/AndroidManifest.xml
+		INJECTED from /home/nerd/AndroidStudioProjects/Immicart/payments/src/main/AndroidManifest.xml
