@@ -7,6 +7,7 @@
              tools:context=".shopping_cart.temporary.PersonalCartFragment">
 
     <androidx.recyclerview.widget.RecyclerView
+            android:layout_marginBottom="80dp"
             android:id="@+id/rv_personal_cart"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -14,8 +15,10 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
 
     </androidx.recyclerview.widget.RecyclerView>
-
+    
     <LinearLayout
+            android:clickable="true"
+            android:id="@+id/checkoutlayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -27,8 +30,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:layout_gravity="center_horizontal"
-                android:gravity="center_horizontal"
+                android:layout_gravity="center"
+                android:gravity="center"
                 android:text="@string/checkout_text"
                 android:textColor="@android:color/white"
                 android:id="@+id/payText"
@@ -36,8 +39,12 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
                 app:fontFamily="@font/roboto_bold"/>
 
-        <androidx.appcompat.widget.AppCompatButton
-                android:layout_width="100dp"
+        <TextView
+                android:id="@+id/total_price_tv"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:padding="8dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
                 android:background="@drawable/pay_design"

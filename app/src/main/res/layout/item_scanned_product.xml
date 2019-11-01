@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="horizontal"
+              android:background="@android:color/white"
+              android:layout_margin="8dp"
+              android:layout_width="320dp"
+              android:paddingTop="8dp"
+              android:layout_height="wrap_content">
+    
+    <ImageView
+            android:layout_marginStart="4dp"
+            android:id="@+id/scanned_product_image"
+            android:scaleType="centerInside"
+            android:src="@drawable/breadimage"
+            android:layout_width="96dp"
+            android:layout_height="96dp"/>
+    <LinearLayout
+            android:layout_marginStart="8dp"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        
+        <TextView
+                android:id="@+id/description_product"
+                android:textStyle="bold"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                android:text="White Festive Bread"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        <LinearLayout
+                android:layout_marginTop="16dp"
+                android:layout_width="wrap_content"
+                      android:layout_height="wrap_content">
+            
+        <TextView
+                android:id="@+id/quantity_tv"
+                android:layout_marginTop="4dp"
+                android:gravity="center"
+                android:textSize="20sp"
+                android:padding="8dp"
+                android:text="1"
+                android:layout_width="64dp"
+                  android:background="@drawable/quantity_bg"
+                  android:layout_height="56dp"/>
+            <TextView
+                    android:textSize="16sp"
+                    android:layout_marginStart="16dp"
+                    android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:id="@+id/price_tv"
+                      android:text="KES 500"
+            />
+        </LinearLayout>
+        <TextView
+                android:gravity="center"
+                android:id="@+id/remove_item"
+                android:layout_marginBottom="20dp"
+                android:drawablePadding="8dp"
+                android:textSize="16sp"
+                android:layout_marginTop="16dp"
+                android:drawableStart="@drawable/ic_delete_primary_color_24dp"
+                android:text="Remove"
+                android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+    
+
+</LinearLayout>

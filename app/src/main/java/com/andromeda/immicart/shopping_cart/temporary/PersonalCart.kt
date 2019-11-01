@@ -16,7 +16,7 @@ data class PersonalCart(
     var discountedPrice: String? = null,
 
     @SerializedName("price")
-    var sellingPrice: String? = null,
+    var sellingPrice: Int? = null,
 
     @SerializedName("amount")
     var amount: String? = null,
