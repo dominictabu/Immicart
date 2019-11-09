@@ -29,4 +29,6 @@
 	<string name="mobile_number">Mobile Number</string>
 	<string name="select_payment_options">Select Payment Options</string>
 	<string name="place_order">Place Order</string>
+	<string name="delivery">Delivery</string>
+	<string name="pick_up">Pick Up</string>
 </resources>
