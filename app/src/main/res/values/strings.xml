@@ -23,4 +23,10 @@
 	<string name="ente_phone_number">MPESA Mobile number</string>
 	<string name="button_pay">Make Payment</string>
 	<string name="title_activity_products_page">ProductsPageActivity</string>
+	<string name="add_delievry_address">Add Delievery Address</string>
+	<string name="house_number">House Number</string>
+	<string name="select_delivery_date_and_time">Select Delivery Date and Time</string>
+	<string name="mobile_number">Mobile Number</string>
+	<string name="select_payment_options">Select Payment Options</string>
+	<string name="place_order">Place Order</string>
 </resources>
