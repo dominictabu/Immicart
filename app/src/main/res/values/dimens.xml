@@ -4,4 +4,5 @@
     <dimen name="bottom_sheet_top_padding">8dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
 	<dimen name="cart_margin_divider_result">24dp</dimen>
+	<dimen name="vector_dims_large">36dp</dimen>
 </resources>
