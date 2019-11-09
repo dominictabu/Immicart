@@ -1,6 +1,6 @@
 <resources>
-    <string name="app_name">Immicart</string>
-    <string name="title_activity_choose_store">ChooseStoreActivity</string>
+	<string name="app_name">Immicart</string>
+	<string name="title_activity_choose_store">ChooseStoreActivity</string>
 	<string name="please_wait_dialog">Please wait...</string>
 	<string name="fetching_details_text">Fetching Details</string>
 	<string name="enter_phone_number">Enter Phone Number</string>
@@ -20,4 +20,13 @@
 	<string name="checkout_text">Checkout</string>
 	<string name="sh_3000_00">Sh 3000.00</string>
 	<string name="title_cart_activity">Personal Cart</string>
+	<string name="ente_phone_number">MPESA Mobile number</string>
+	<string name="button_pay">Make Payment</string>
+	<string name="title_activity_products_page">ProductsPageActivity</string>
+	<string name="add_delievry_address">Add Delievery Address</string>
+	<string name="house_number">House Number</string>
+	<string name="select_delivery_date_and_time">Select Delivery Date and Time</string>
+	<string name="mobile_number">Mobile Number</string>
+	<string name="select_payment_options">Select Payment Options</string>
+	<string name="place_order">Place Order</string>
 </resources>

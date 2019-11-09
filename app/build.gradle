@@ -120,6 +120,9 @@ dependencies {
 //    Anko
     implementation "org.jetbrains.anko:anko:$anko_version"
 
+//
+    implementation 'info.hoang8f:android-segmented:1.0.6'
+
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'
