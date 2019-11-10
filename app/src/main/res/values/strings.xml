@@ -31,4 +31,6 @@
 	<string name="place_order">Place Order</string>
 	<string name="delivery">Delivery</string>
 	<string name="pick_up">Pick Up</string>
+	<string name="today">Today</string>
+	<string name="date">9/11</string>
 </resources>
