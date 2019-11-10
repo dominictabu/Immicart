@@ -7,7 +7,6 @@
 	<string name="request_mpesaexpress">Request MPESAExpress</string>
 	<string name="title_activity_payment">PaymentActivity</string>
 	
-	<!-- TODO: Remove or change this placeholder text -->
 	<string name="hello_blank_fragment">Hello blank fragment</string>
 	<string name="mwea_pishori">2 kg of Mwea Pishori Rice</string>
 	<string name="_2_kg">2 kg</string>
@@ -33,4 +32,5 @@
 	<string name="pick_up">Pick Up</string>
 	<string name="today">Today</string>
 	<string name="date">9/11</string>
+	<string name="note">Kindly note that we don\'t deliver before 7 am and past 9 pm due to security reasons </string>
 </resources>
