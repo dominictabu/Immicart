@@ -43,6 +43,7 @@
 			android:layout_height="wrap_content"
 			app:srcCompat="@drawable/ic_location_on_black_24dp"
 			android:id="@+id/imageViewLocation"
+			
 			app:layout_constraintStart_toStartOf="parent"
 			app:layout_constraintTop_toBottomOf="@+id/segmentedGroup"
 			android:layout_marginTop="16dp"
@@ -52,10 +53,9 @@
 			android:layout_height="wrap_content"
 			app:srcCompat="@drawable/ic_access_time_black_24dp"
 			android:id="@+id/imageViewTime"
-			app:layout_constraintTop_toBottomOf="@+id/imageViewLocation"
-			android:layout_marginTop="16dp"
 			app:layout_constraintStart_toStartOf="parent"
-			android:layout_marginStart="16dp"/>
+			android:layout_marginStart="16dp" segmentedgroup:layout_editor_absoluteY="125dp"
+			segmentedgroup:ignore="MissingConstraints"/>
 	<ImageView
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
@@ -63,8 +63,7 @@
 			android:id="@+id/imageViewPhone"
 			app:layout_constraintStart_toStartOf="parent"
 			android:layout_marginStart="16dp"
-			android:layout_marginTop="16dp"
-			app:layout_constraintTop_toBottomOf="@+id/imageViewTime"/>
+			segmentedgroup:layout_editor_absoluteY="177dp" segmentedgroup:ignore="MissingConstraints"/>
 	<TextView
 			android:text="@string/add_delievry_address"
 			android:layout_width="wrap_content"
@@ -74,7 +73,8 @@
 			android:layout_marginStart="16dp"
 			app:layout_constraintTop_toBottomOf="@+id/segmentedGroup"
 			android:layout_marginTop="16dp"
-			android:textSize="24sp"/>
+			android:textSize="24sp"
+			android:fontFamily="@font/roboto_thin"/>
 	<TextView
 			android:text="@string/select_delivery_date_and_time"
 			android:layout_width="wrap_content"
@@ -83,30 +83,45 @@
 			android:textSize="24sp"
 			app:layout_constraintStart_toEndOf="@+id/imageViewTime"
 			android:layout_marginStart="16dp"
-			app:layout_constraintTop_toBottomOf="@+id/textViewAddLocation"
-			android:layout_marginTop="24dp"/>
+			android:fontFamily="@font/roboto_thin"
+			android:textStyle="bold"
+			segmentedgroup:layout_editor_absoluteY="130dp"
+			segmentedgroup:ignore="MissingConstraints"/>
+	<include layout="@layout/delivery_schedule"
+	         android:id="@+id/deliveryLayout"
+	         android:visibility="gone"
+	         android:layout_height="wrap_content"
+	         android:layout_width="match_parent"
+	         android:layout_marginEnd="16dp"
+	         app:layout_constraintEnd_toEndOf="parent"
+	         app:layout_constraintStart_toStartOf="parent"
+	         app:layout_constraintBottom_toBottomOf="@+id/textViewDeliveryTime"
+	         app:layout_constraintBottom_toTopOf="@+id/textViewPhoneNumber"
+	         android:layout_marginStart="16dp" app:layout_constraintHorizontal_bias="1.0"/>
 	<TextView
 			android:text="@string/mobile_number"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:id="@+id/textViewPhoneNumber"
-			android:layout_marginTop="20dp"
-			app:layout_constraintTop_toBottomOf="@+id/textViewDeliveryTime"
+			android:fontFamily="@font/roboto_thin"
+			android:textStyle="bold"
 			app:layout_constraintStart_toEndOf="@+id/imageViewPhone"
 			android:layout_marginStart="16dp"
-			android:textSize="24sp"/>
+			android:textSize="24sp"
+			segmentedgroup:layout_editor_absoluteY="182dp"
+			segmentedgroup:ignore="MissingConstraints"/>
 	<ImageView
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			app:srcCompat="@drawable/ic_keyboard_arrow_down_black_24dp"
-			segmentedgroup:layout_editor_absoluteY="73dp"
 			android:id="@+id/imageViewArrowLocation"
 			app:layout_constraintStart_toEndOf="@+id/textViewAddLocation"
 			android:layout_marginStart="8dp"
 			app:layout_constraintEnd_toEndOf="parent"
-			android:layout_marginEnd="8dp"
+			android:layout_marginEnd="16dp"
 			app:layout_constraintHorizontal_bias="0.926"
-			segmentedgroup:ignore="MissingConstraints"/>
+			segmentedgroup:ignore="MissingConstraints" android:layout_marginTop="16dp"
+			app:layout_constraintTop_toBottomOf="@+id/segmentedGroup"/>
 	<ImageView
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
@@ -115,10 +130,9 @@
 			app:layout_constraintStart_toEndOf="@+id/textViewDeliveryTime"
 			android:layout_marginStart="8dp"
 			app:layout_constraintEnd_toEndOf="parent"
-			android:layout_marginEnd="8dp"
-			android:layout_marginTop="16dp"
-			app:layout_constraintTop_toBottomOf="@+id/imageViewArrowLocation"
-			app:layout_constraintHorizontal_bias="0.876"/>
+			android:layout_marginEnd="16dp"
+			app:layout_constraintHorizontal_bias="0.876" segmentedgroup:layout_editor_absoluteY="125dp"
+			segmentedgroup:ignore="MissingConstraints"/>
 	<ImageView
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
@@ -127,7 +141,7 @@
 			android:id="@+id/imageViewArrowPhone"
 			app:layout_constraintStart_toEndOf="@+id/textViewPhoneNumber"
 			android:layout_marginStart="8dp"
-			app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
+			app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="16dp"
 			app:layout_constraintHorizontal_bias="0.937" segmentedgroup:ignore="MissingConstraints"/>
 	<Button
 			android:text="@string/place_order"
@@ -137,10 +151,25 @@
 			android:layout_marginEnd="16dp"
 			android:textAllCaps="false"
 			android:textSize="24sp"
+			android:fontFamily="@font/roboto"
+			android:textStyle="bold"
 			android:background="@drawable/pay_button_design"
 			android:textColor="@android:color/white"
 			app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="16dp"
 			app:layout_constraintBottom_toBottomOf="parent" android:layout_marginBottom="16dp"/>
+	<EditText
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:inputType="phone"
+			android:text="Phone Number"
+			android:visibility="gone"
+			android:ems="10"
+			android:id="@+id/editTextPhoneNumber" android:layout_marginEnd="8dp"
+			app:layout_constraintEnd_toEndOf="parent"
+			android:layout_marginStart="8dp" app:layout_constraintStart_toStartOf="parent"
+			android:layout_marginTop="20dp" app:layout_constraintTop_toBottomOf="@+id/textViewPhoneNumber"
+			app:layout_constraintHorizontal_bias="0.329" android:background="@drawable/et_background"
+			android:padding="8dp"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
