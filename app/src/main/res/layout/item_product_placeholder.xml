@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="180dp"
+                android:padding="4dp"
+                android:layout_margin="4dp"
+                android:layout_height="wrap_content">
+	
+		
+		<View
+				android:background="@color/background"
+				android:layout_alignParentTop="true"
+				android:scaleType="centerInside"
+				android:id="@+id/product_picture_placeholder"
+				android:layout_width="200dp"
+				android:layout_height="200dp"/>
+		
+	
+	<LinearLayout
+			android:layout_marginTop="10dp"
+			android:id="@+id/price_ll"
+			android:gravity="start"
+			android:orientation="horizontal"
+			android:layout_below="@+id/product_picture_placeholder"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content">
+		<View
+				android:layout_height="12dp"
+				android:background="@drawable/shimmer_bg"
+				android:layout_width="80dp"
+				/>
+		<View
+				android:background="@drawable/shimmer_bg"
+				android:layout_height="12dp"
+				android:textStyle="bold"
+				android:textColor="@color/lightGrey"
+				android:textSize="18sp"
+				android:layout_marginStart="10dp"
+				android:id="@+id/normal_price_ph"
+				android:layout_width="80dp"
+				/>
+	
+	</LinearLayout>
+	<View
+			android:layout_marginTop="10dp"
+			android:background="@drawable/shimmer_bg"
+			android:id="@+id/amount_off"
+			android:layout_below="@+id/price_ll"
+			android:layout_width="120dp"
+			android:layout_height="12dp"/>
+	<View
+			android:background="@drawable/shimmer_bg"
+			android:layout_marginTop="8dp"
+			android:textSize="16sp"
+			android:id="@+id/product_name"
+			android:gravity="start"
+			android:layout_below="@+id/amount_off"
+			android:layout_width="match_parent"
+			android:layout_height="12dp"/>
+	<View
+			android:background="@drawable/shimmer_bg"
+			android:layout_marginTop="8dp"
+			android:textSize="16sp"
+			android:id="@+id/product_name_"
+			android:gravity="start"
+			android:layout_below="@+id/product_name"
+			android:layout_width="match_parent"
+			android:layout_height="12dp"/>
+	<View
+			android:background="@drawable/shimmer_bg"
+			android:layout_marginTop="8dp"
+			android:textColor="@color/lightGrey"
+			android:gravity="start"
+			android:layout_below="@+id/product_name_"
+			android:layout_width="80dp"
+			android:layout_height="12dp"/>
+</RelativeLayout>

@@ -49,7 +49,7 @@ class PersonalCartFragment : Fragment() {
         personalCartFragmentViewModel = ViewModelProviders.of(this).get(PersonalCartViewModel::class.java)
 
         initializeRecyclerView()
-        personalCartFragmentViewModel.allScannedItems.observe(this, Observer { items ->
+        personalCartFragmentViewModel.allScannedItems().observe(this, Observer { items ->
             // Update the cached copy of the words in the adapter.
             items?.let {
 //                cartItems = items

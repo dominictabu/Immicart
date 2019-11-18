@@ -24,6 +24,9 @@
 	<style name="AppTheme.Checkout" parent="AppTheme">
 		<item name="android:homeAsUpIndicator">@drawable/ic_close_white_24dp</item>
 	</style>
+	<style name="AppTheme.ProductDetail" parent="AppTheme">
+		<item name="android:homeAsUpIndicator">@drawable/ic_close_white_24dp</item>
+	</style>
 
 
 </resources>

@@ -1,5 +1,5 @@
 <resources>
-	<string name="app_name">Immicart</string>
+	<string name="app_name">Immicart Shopping</string>
 	<string name="title_activity_choose_store">ChooseStoreActivity</string>
 	<string name="please_wait_dialog">Please wait...</string>
 	<string name="fetching_details_text">Fetching Details</string>
@@ -23,4 +23,12 @@
 	<string name="ente_phone_number">MPESA Mobile number</string>
 	<string name="button_pay">Make Payment</string>
 	<string name="title_activity_products_page">ProductsPageActivity</string>
+	<string name="title_activity_product_detail">ProductDetailActivity</string>
+	<string name="title_activity_delivery_cart">DeliveryCartActivity</string>
+	<string name="title_activity_trtack_order_map">TrtackOrderMapActivity</string>
+	<!--<string name="google_directions_key">AIzaSyB-b75UFtfPlUpqdFokEk2CPTlESDDTKCA</string>-->
+	<string name="title_activity_maps">Map</string>
+	<string name="menu_shop">Shop</string>
+	<string name="menu_search">Search</string>
+	<string name="menu_wallet">Wallet</string>
 </resources>
