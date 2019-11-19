@@ -32,6 +32,7 @@ import kotlinx.android.synthetic.main.item_product.view.normal_price
 import kotlinx.android.synthetic.main.item_product.view.offer_price
 import kotlinx.android.synthetic.main.item_product.view.product_name
 import kotlinx.android.synthetic.main.item_product.view.product_picture
+import kotlinx.android.synthetic.main.item_search_suggestion.view.*
 import kotlinx.android.synthetic.main.item_subcategory.view.*
 
 
@@ -438,6 +439,29 @@ class SubCategoryRecyclerAdapter(val subCategories : ArrayList<Model.Category_>)
 
 
     inner class SubCategoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+
+    }
+}
+
+
+class SearchSuggestionsAdapter(val suggestions: ArrayList<Model.Category_>) : RecyclerView.Adapter<SearchSuggestionsAdapter.SearchSuggestionsViewHolder>(){
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchSuggestionsViewHolder {
+        return SearchSuggestionsViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_search_suggestion, parent, false))
+    }
+
+    override fun getItemCount(): Int {
+        return suggestions.size
+    }
+
+    override fun onBindViewHolder(holder: SearchSuggestionsViewHolder, position: Int) {
+        if(suggestions.size > 0) {
+            val subCategory = suggestions[position]
+            holder.itemView.search_sugg_text.text = subCategory.name
+
+        }
+    }
+
+    inner class SearchSuggestionsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     }
 }

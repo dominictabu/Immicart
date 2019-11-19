@@ -1,14 +1,10 @@
-package com.andromeda.immicart.delivery.trackingorder.choose_store
+package com.andromeda.immicart.delivery.choose_store
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.viewModelScope
-import com.andromeda.immicart.Scanning.persistence.CartRepository
 import com.andromeda.immicart.Scanning.persistence.ImmicartRoomDatabase
-import com.andromeda.immicart.delivery.trackingorder.choose_store.Store
-import com.andromeda.immicart.delivery.trackingorder.choose_store.StoreRepository
 import kotlinx.coroutines.launch
 
 

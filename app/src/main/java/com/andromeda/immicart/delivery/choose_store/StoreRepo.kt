@@ -1,7 +1,4 @@
-package com.andromeda.immicart.delivery.trackingorder.choose_store
-
-import android.app.Application
-import android.os.AsyncTask
+package com.andromeda.immicart.delivery.choose_store
 
 import androidx.lifecycle.LiveData
 

@@ -2,12 +2,20 @@ package com.andromeda.immicart.delivery
 
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 
 import com.andromeda.immicart.R
+import com.andromeda.immicart.networking.Model
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
+import kotlinx.android.synthetic.main.fragment_search.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -24,12 +32,14 @@ class SearchFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    var disposable: Disposable? = null
+    private var TAG = "SearchFragment"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+//            param1 = it.getString(ARG_PARAM1)
+//            param2 = it.getString(ARG_PARAM2)
         }
     }
 
@@ -39,6 +49,51 @@ class SearchFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_search, container, false)
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+        retrieveCategories()
+    }
+
+
+    fun retrieveCategories() {
+        val retrofitResponse = immicartAPIService.categories
+
+        Log.d(TAG, "retrieve Categories called")
+        disposable =
+            immicartAPIService.categories
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    { result ->
+
+                        Log.d(TAG, "Results: $result")
+
+                        result?.let {
+                            Log.d(TAG, "Categories: $it")
+
+                            intializeRecycler(it)
+                        }
+
+                    },
+
+                    { error ->
+                        //                        showError(error.message)
+                    }
+                )
+    }
+
+
+    fun intializeRecycler(category: List<Model.Category_>) {
+
+        val linearLayoutManager = LinearLayoutManager(activity!!, RecyclerView.VERTICAL, false)
+        recycler_items_search.setNestedScrollingEnabled(false);
+
+        recycler_items_search.setLayoutManager(linearLayoutManager)
+        val searchSuggestionsAdapter = SearchSuggestionsAdapter(category as ArrayList<Model.Category_>)
+        recycler_items_search.setAdapter(searchSuggestionsAdapter)
     }
 
 
@@ -53,12 +108,9 @@ class SearchFragment : Fragment() {
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
+        fun newInstance() =
             SearchFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+
             }
     }
 }

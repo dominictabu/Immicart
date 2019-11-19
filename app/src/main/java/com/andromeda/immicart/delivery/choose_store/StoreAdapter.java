@@ -1,4 +1,4 @@
-package com.andromeda.immicart.delivery.trackingorder.choose_store;
+package com.andromeda.immicart.delivery.choose_store;
 
 
 import android.content.Context;
@@ -15,8 +15,6 @@ import com.bumptech.glide.Glide;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.SphericalUtil;
 
-import org.w3c.dom.Text;
-
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -24,7 +22,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.AppCompatRatingBar;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;

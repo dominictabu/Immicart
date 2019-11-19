@@ -1,4 +1,4 @@
-package com.andromeda.immicart.delivery.trackingorder.choose_store;
+package com.andromeda.immicart.delivery.choose_store;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;

@@ -10,6 +10,8 @@
 		        app:enterAnim="@anim/nav_default_exit_anim" app:exitAnim="@anim/nav_default_exit_anim"/>
 		<action android:id="@+id/go_to_myAccount" app:destination="@id/myAccountFragment"
 		        app:popEnterAnim="@anim/nav_default_pop_enter_anim" app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
+		<action android:id="@+id/go_to_settings" app:destination="@id/searchFragment"/>
+		<action android:id="@+id/go_to_orders" app:destination="@id/ordersListFragment"/>
 	</fragment>
 	<fragment android:id="@+id/subcategoriesFragment"
 	          android:name="com.andromeda.immicart.delivery.SubcategoriesFragment"
@@ -20,4 +22,7 @@
 	          android:label="fragment_search" tools:layout="@layout/fragment_search"/>
 	<fragment android:id="@+id/walletFragment" android:name="com.andromeda.immicart.delivery.WalletFragment"
 	          android:label="fragment_wallet" tools:layout="@layout/fragment_wallet"/>
+	<fragment android:id="@+id/ordersListFragment"
+	          android:name="com.andromeda.immicart.delivery.trackingorder.OrdersListFragment"
+	          android:label="fragment_orders_list" tools:layout="@layout/fragment_orders_list"/>
 </navigation>

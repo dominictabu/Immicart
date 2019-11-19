@@ -32,7 +32,7 @@
 				
 				<ImageView
 						android:scaleType="fitXY"
-						android:src="@drawable/babycare600by450"
+						android:src="@drawable/groceriesbanner600pxby450px"
 						android:layout_width="match_parent"
 						android:layout_height="280dp"/>
 				
@@ -99,6 +99,8 @@
 					           android:layout_height="36dp"/>
 					
 					<TextView
+							android:clickable="true"
+							android:focusable="true"
 							android:id="@+id/store_name"
 							android:textSize="16sp"
 							android:drawableEnd="@drawable/ic_keyboard_arrow_down_white_24dp"
@@ -184,6 +186,7 @@
 						android:layout_width="wrap_content"
 				      android:layout_height="1dp"/>
 				      <TextView
+						      android:id="@+id/delivery_address"
 						      android:textSize="16sp"
 						      android:gravity="center"
 						      android:drawablePadding="4dp"

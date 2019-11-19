@@ -117,6 +117,16 @@ class ProductsFragment : Fragment() {
 
         }
 
+        delivery_address.setOnClickListener {
+            startActivity(Intent(activity!!, PickDeliveryLocationActivity::class.java))
+
+        }
+
+//        store_name.setOnClickListener {
+//            startActivity(Intent(activity!!, PickDeliveryLocationActivity::class.java))
+//
+//        }
+
 
     }
 

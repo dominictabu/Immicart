@@ -31,4 +31,6 @@
 	<string name="menu_shop">Shop</string>
 	<string name="menu_search">Search</string>
 	<string name="menu_wallet">Wallet</string>
+	<string name="title_activity_pick_delivery_location">PickDeliveryLocationActivity</string>
+	<string name="menu_orders">Orders</string>
 </resources>
