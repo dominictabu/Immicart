@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.andromeda.immicart.R
 import com.andromeda.immicart.Scanning.persistence.Cart
 import com.bumptech.glide.Glide
+import kotlinx.android.synthetic.main.content_payment.view.
 import kotlinx.android.synthetic.main.personal_cart_item.view.*
 import android.graphics.Paint
 import java.text.DecimalFormat

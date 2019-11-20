@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+		xmlns:android="http://schemas.android.com/apk/res/android"
+		app:cardElevation="4dp"
+		app:cardCornerRadius="4dp"
+		android:background="@color/cardview_light_background"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		tools:layout_editor_absoluteY="8dp"
+		android:layout_margin="4dp"
+		tools:layout_editor_absoluteX="8dp"
+		xmlns:app="http://schemas.android.com/apk/res-auto"
+		xmlns:tools="http://schemas.android.com/tools">
+		
+		
+		<androidx.appcompat.widget.LinearLayoutCompat
+				android:layout_width="100dp"
+				android:layout_height="wrap_content"
+				android:orientation="vertical">
+			<TextView
+					android:text="@string/today"
+					android:textStyle="bold"
+					android:textColor="@android:color/holo_blue_dark"
+					android:padding="8dp"
+					android:textAllCaps="true"
+					android:gravity="center_horizontal"
+					android:textSize="@dimen/default_text_size"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:id="@+id/textViewDay"
+					android:fontFamily="@font/roboto_mono"/>
+			<TextView
+					android:text="@string/date"
+					android:textStyle="bold"
+					android:padding="8dp"
+					android:gravity="center_horizontal"
+					android:textSize="@dimen/default_text_size"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:id="@+id/textViewDate"
+					android:fontFamily="@font/roboto_bold"/>
+		
+		</androidx.appcompat.widget.LinearLayoutCompat>
+	</androidx.cardview.widget.CardView>

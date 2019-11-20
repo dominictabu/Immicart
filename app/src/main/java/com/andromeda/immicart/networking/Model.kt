@@ -17,6 +17,5 @@ object Model {
 
     data class Category_(val _id: Int, val name: String, val created: String, val last_updated: String, val link: String)
     data class Links(val first: String?, val last: String?, val prev: String?, val next: String?)
-
     data class ScannedProduct(var _id: Int,var barcode: String, var name: String, var price: Float,  var quantity: Int)
 }
