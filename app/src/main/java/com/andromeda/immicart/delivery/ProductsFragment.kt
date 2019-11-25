@@ -89,11 +89,12 @@ class ProductsFragment : Fragment() {
                     store_name.setCompoundDrawablesWithIntrinsicBounds( 0, 0, R.drawable.ic_keyboard_arrow_down_green_24dp, 0);
                     Glide.with(activity!!).load(R.drawable.ic_account_circle_green_24dp).into(myAccountIcon)
                 } else if (verticalOffset == 0) {
-                    store_name.setTextColor(resources.getColor(android.R.color.white))
-                    store_name.setCompoundDrawablesWithIntrinsicBounds( 0, 0, R.drawable.ic_keyboard_arrow_down_white_24dp, 0);
-                    Glide.with(activity!!).load(R.drawable.ic_account_circle_white_24dp).into(myAccountIcon)
+                    store_name?.setTextColor(resources.getColor(android.R.color.white))
+                        store_name?.setCompoundDrawablesWithIntrinsicBounds( 0, 0, R.drawable.ic_keyboard_arrow_down_white_24dp, 0);
+                        Glide.with(activity!!).load(R.drawable.ic_account_circle_white_24dp).into(myAccountIcon)
 
-                    // Expanded
+                        // Expanded
+
                 } else {
                     // Somewhere in between
                 }

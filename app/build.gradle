@@ -164,6 +164,10 @@ dependencies {
     //Firebase Realtime Database
     implementation 'com.google.firebase:firebase-database:19.2.0'
 
+    //Segmented Control for Android
+    implementation 'info.hoang8f:android-segmented:1.0.6'
+
+
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'

@@ -11,6 +11,7 @@
 			android:layout_height="match_parent">
 		
 		<info.hoang8f.android.segmented.SegmentedGroup
+				segmentedgroup:ignore="UseCompoundDrawable"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				app:layout_constraintStart_toStartOf="parent"
@@ -54,7 +55,6 @@
 				android:layout_height="match_parent"
 
 				android:focusable="true">
-				android:focusable="true" segmentedgroup:ignore="UseCompoundDrawable
 			
 			<ImageView
 					android:layout_width="wrap_content"
@@ -62,7 +62,8 @@
 					android:layout_marginTop="16dp"
 					app:srcCompat="@drawable/ic_location_on_black_24dp"
 					android:id="@+id/imageViewLocation"
-					android:layout_marginStart="@dimen/standard_margin" segmentedgroup:ignore="ContentDescription"/>
+					android:layout_marginStart="@dimen/standard_margin"
+					segmentedgroup:ignore="ContentDescription"/>
 			<TextView
 					android:text="@string/add_delievry_address"
 					android:layout_width="0dp"
