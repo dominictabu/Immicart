@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools" android:id="@+id/nav_graph"
+            app:startDestination="@id/productsFragment">
+	
+	<fragment android:id="@+id/productsFragment" android:name="com.andromeda.immicart.delivery.ProductsFragment"
+	          android:label="products_fragment" tools:layout="@layout/products_fragment">
+		<action android:id="@+id/go_to_subcategories" app:destination="@id/subcategoriesFragment"
+		        app:enterAnim="@anim/nav_default_exit_anim" app:exitAnim="@anim/nav_default_exit_anim"/>
+		<action android:id="@+id/go_to_myAccount" app:destination="@id/myAccountFragment"
+		        app:popEnterAnim="@anim/nav_default_pop_enter_anim" app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
+		<action android:id="@+id/go_to_settings" app:destination="@id/searchFragment"/>
+		<action android:id="@+id/go_to_orders" app:destination="@id/ordersListFragment"/>
+	</fragment>
+	<fragment android:id="@+id/subcategoriesFragment"
+	          android:name="com.andromeda.immicart.delivery.SubcategoriesFragment"
+	          android:label="fragment_subcategories" tools:layout="@layout/fragment_subcategories"/>
+	<fragment android:id="@+id/myAccountFragment" android:name="com.andromeda.immicart.delivery.MyAccountFragment"
+	          android:label="fragment_my_account" tools:layout="@layout/fragment_my_account"/>
+	<fragment android:id="@+id/searchFragment" android:name="com.andromeda.immicart.delivery.SearchFragment"
+	          android:label="fragment_search" tools:layout="@layout/fragment_search"/>
+	<fragment android:id="@+id/walletFragment" android:name="com.andromeda.immicart.delivery.WalletFragment"
+	          android:label="fragment_wallet" tools:layout="@layout/fragment_wallet"/>
+	<fragment android:id="@+id/ordersListFragment"
+	          android:name="com.andromeda.immicart.delivery.trackingorder.OrdersListFragment"
+	          android:label="fragment_orders_list" tools:layout="@layout/fragment_orders_list"/>
+</navigation>

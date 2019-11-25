@@ -1,6 +1,5 @@
 <resources>
-<<<<<<< Updated upstream
-	<string name="app_name">Immicart</string>
+	<string name="app_name">Immicart Shopping</string>
 	<string name="title_activity_choose_store">ChooseStoreActivity</string>
 	<string name="please_wait_dialog">Please wait...</string>
 	<string name="fetching_details_text">Fetching Details</string>
@@ -8,6 +7,7 @@
 	<string name="request_mpesaexpress">Request MPESAExpress</string>
 	<string name="title_activity_payment">PaymentActivity</string>
 	
+	<!-- TODO: Remove or change this placeholder text -->
 	<string name="hello_blank_fragment">Hello blank fragment</string>
 	<string name="mwea_pishori">2 kg of Mwea Pishori Rice</string>
 	<string name="_2_kg">2 kg</string>
@@ -23,45 +23,14 @@
 	<string name="ente_phone_number">MPESA Mobile number</string>
 	<string name="button_pay">Make Payment</string>
 	<string name="title_activity_products_page">ProductsPageActivity</string>
-	<string name="add_delievry_address">Location</string>
-	<string name="house_number">House Number</string>
-	<string name="select_delivery_date_and_time">Tuskys Delivery Time</string>
-	<string name="mobile_number">Mobile Number</string>
-	<string name="select_payment_options">Payment Options</string>
-	<string name="place_order">Place Order</string>
-	<string name="delivery">Delivery</string>
-	<string name="pick_up">Pick Up</string>
-	<string name="today">Today</string>
-	<string name="date">9/11</string>
-	<string name="note">Kindly note that we don\'t deliver before 7 am and past 9 pm due to security reasons </string>
-	<string name="default_location">South B Shopping centre</string>
-	<string name="kiongo_hostel">Kiongo Hostel</string>
-	<string name="location_hint">Type Delivery location</string>
-	<string name="select_location">Select Location</string>
-	<string name="_phone_number">Enter phone number to be contacted</string>
-	<string name="done">Done</string>
-=======
-    <string name="app_name">Immicart</string>
-    <string name="please_wait_dialog">Please wait...</string>
-    <string name="fetching_details_text">Fetching Details</string>
-    <string name="enter_phone_number">Enter Phone Number</string>
-    <string name="request_mpesaexpress">Request MPESAExpress</string>
-    <string name="title_activity_payment">PaymentActivity</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="mwea_pishori">2 kg of Mwea Pishori Rice</string>
-    <string name="_2_kg">2 kg</string>
-    <string name="itrm_description">Description</string>
-    <string name="instructions">Instructions</string>
-    <string name="delete">Delete</string>
-    <string name="_2">2</string>
-    <string name="ksh_200">Ksh 200</string>
-    <string name="ksh_350">Ksh 350</string>
-    <string name="checkout_text">Checkout</string>
-    <string name="sh_3000_00">Sh 3000.00</string>
-    <string name="button_pay">Pay with Mpesa</string>
-    <string name="ente_phone_number">Enter phone number</string>
-    <string name="default_location">Kiongo Hostel</string>
->>>>>>> Stashed changes
+	<string name="title_activity_product_detail">ProductDetailActivity</string>
+	<string name="title_activity_delivery_cart">DeliveryCartActivity</string>
+	<string name="title_activity_trtack_order_map">TrtackOrderMapActivity</string>
+	<!--<string name="google_directions_key">AIzaSyB-b75UFtfPlUpqdFokEk2CPTlESDDTKCA</string>-->
+	<string name="title_activity_maps">Map</string>
+	<string name="menu_shop">Shop</string>
+	<string name="menu_search">Search</string>
+	<string name="menu_wallet">Wallet</string>
+	<string name="title_activity_pick_delivery_location">PickDeliveryLocationActivity</string>
+	<string name="menu_orders">Orders</string>
 </resources>

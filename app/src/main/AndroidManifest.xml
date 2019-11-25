@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.andromeda.immicart">
+	<!--
+         The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
+         Google Maps Android API v2, but you must specify either coarse or fine
+         location permissions for the 'MyLocation' functionality.
+    -->
+	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
 	<uses-permission android:name="android.permission.CAMERA"/>
 	<uses-permission android:name="android.permission.INTERNET"/>
 	
@@ -12,9 +18,70 @@
 			android:supportsRtl="true"
 			android:theme="@style/AppTheme">
 		<activity
+				android:name=".delivery.PickDeliveryLocationActivity"
+				android:label="@string/title_activity_pick_delivery_location"
+				android:theme="@style/AppTheme.NoActionBar">
+		</activity>
+		<!--
+             The API key for Google Maps-based APIs is defined as a string resource.
+             (See the file "res/values/google_maps_api.xml").
+             Note that the API key is linked to the encryption key used to sign the APK.
+             You need a different API key for each encryption key, including the release key that is used to
+             sign the APK for publishing.
+             You can define the keys for the debug and release targets in src/debug/ and src/release/.
+        -->
+		<meta-data
+				android:name="com.google.android.geo.API_KEY"
+				android:value="@string/google_maps_key"/>
+		
+		<activity
+				android:name=".delivery.trackingorder.MapsActivity"
+				android:label="@string/title_activity_maps">
+		</activity>
+		<activity
+				android:name=".delivery.trackingorder.TrackOrderMapActivity"
+				android:label="@string/title_activity_trtack_order_map"
+				android:theme="@style/AppTheme.NoActionBar">
+		</activity>
+		<activity android:name=".DeepLinkActivity">
+			
+			<!-- [START deep_link_filter] -->
+			<intent-filter>
+				<action android:name="android.intent.action.VIEW"/>
+				
+				<category android:name="android.intent.category.DEFAULT"/>
+				<category android:name="android.intent.category.BROWSABLE"/>
+				
+				<data
+						android:host="immicart.com"
+						android:pathPrefix="/products"
+						android:scheme="http"/>
+				<data
+						android:host="immicart.com"
+						android:pathPrefix="/products"
+						android:scheme="https"/>
+			</intent-filter>
+			<!-- [END deep_link_filter] -->
+		</activity>
+		<activity
+				android:name=".delivery.DeliveryCartActivity"
+				android:label="@string/title_activity_delivery_cart"
+				android:theme="@style/AppTheme.NoActionBar">
+		</activity>
+		<activity
+				android:name=".delivery.ProductDetailActivity"
+				android:label="@string/title_activity_product_detail"
+				android:theme="@style/AppTheme.ProductDetail">
+		</activity>
+		<activity
 				android:name=".delivery.ProductsPageActivity"
 				android:label="@string/title_activity_products_page"
 				android:theme="@style/AppTheme.NoActionBar">
+			<intent-filter>
+				<action android:name="android.intent.action.MAIN"/>
+				
+				<category android:name="android.intent.category.LAUNCHER"/>
+			</intent-filter>
 		</activity>
 		
 		<meta-data
@@ -37,13 +104,7 @@
 				android:theme="@style/AppTheme.CartActivity">
 		</activity>
 		<activity android:name=".Scanning.MainActivity">
-			<intent-filter>
-				<action android:name="android.intent.action.MAIN"/>
-				
-				<category android:name="android.intent.category.LAUNCHER"/>
-			</intent-filter>
 		</activity>
 	</application>
 
 </manifest>
-

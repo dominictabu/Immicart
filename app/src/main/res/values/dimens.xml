@@ -4,7 +4,9 @@
 	<dimen name="bottom_sheet_top_padding">8dp</dimen>
 	<dimen name="fab_margin">16dp</dimen>
 	<dimen name="cart_margin_divider_result">24dp</dimen>
-	<dimen name="vector_dims_large">36dp</dimen>
-	<dimen name="default_text_size">16sp</dimen>
-	<dimen name="standard_margin">16dp</dimen>
+	<dimen name="activityPadding">16dp</dimen>
+	<dimen name="placeholderImage">60dp</dimen>
+	<dimen name="placeholderTextHeight">8dp</dimen>
+	<dimen name="padding_10">10dp</dimen>
+	<dimen name="locations">8dp</dimen>
 </resources>
