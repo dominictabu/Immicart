@@ -2,17 +2,20 @@ package com.andromeda.immicart.delivery.trackingorder
 
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 
 import com.andromeda.immicart.R
+import com.google.firebase.database.*
+import kotlinx.android.synthetic.main.fragment_orders_list.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
@@ -22,14 +25,14 @@ private const val ARG_PARAM2 = "param2"
  */
 class OrdersListFragment : Fragment() {
     // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private lateinit var database: DatabaseReference
+    private  val TAG = "OrdersListFragment"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+//            param1 = it.getString(ARG_PARAM1)
+//            param2 = it.getString(ARG_PARAM2)
         }
     }
 
@@ -42,6 +45,57 @@ class OrdersListFragment : Fragment() {
     }
 
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+        database = FirebaseDatabase.getInstance().reference
+        retrieveOrders()
+
+    }
+
+
+    fun retrieveOrders() {
+        val ordersArray = arrayListOf<Order>()
+
+        // My top posts by number of stars
+        val myOrdersQuery = database.child("orders")
+        myOrdersQuery.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (postSnapshot in dataSnapshot.children) {
+                    // TODO: handle the post
+                    val order = postSnapshot.getValue(Order::class.java)
+                    order?.let {
+
+                        ordersArray.add(it)
+                    }
+
+                }
+
+                initializeRecyclerView(ordersArray)
+            }
+
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Getting Post failed, log a message
+                Log.w(TAG, "loadPost:onCancelled", databaseError.toException())
+                // ...
+            }
+        })
+
+    }
+
+
+    fun initializeRecyclerView(orders: ArrayList<Order>) {
+        recycler_items_orders
+
+        val linearLayoutManager = LinearLayoutManager(activity!!, RecyclerView.VERTICAL, false)
+        recycler_items_orders.setNestedScrollingEnabled(false);
+
+        recycler_items_orders.setLayoutManager(linearLayoutManager)
+        val orderListRecyclerAdapter = OrderListRecyclerAdapter(orders)
+        recycler_items_orders.setAdapter(orderListRecyclerAdapter)
+
+    }
 
 
     companion object {
@@ -58,8 +112,8 @@ class OrdersListFragment : Fragment() {
         fun newInstance(param1: String, param2: String) =
             OrdersListFragment().apply {
                 arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+//                    putString(ARG_PARAM1, param1)
+//                    putString(ARG_PARAM2, param2)
                 }
             }
     }

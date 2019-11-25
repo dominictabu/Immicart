@@ -12,6 +12,7 @@ import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 import com.andromeda.immicart.delivery.trackingorder.model.Result;
 import com.andromeda.immicart.delivery.trackingorder.model.Route;
@@ -24,6 +25,7 @@ import com.andromeda.immicart.delivery.trackingorder.utils.JourneyEventBus;
 import com.andromeda.immicart.networking.ImmicartAPIService;
 import com.google.android.gms.maps.*;
 import com.google.android.gms.maps.model.*;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -89,6 +91,7 @@ public class TrackOrderMapActivity extends FragmentActivity implements OnMapRead
 
         mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
+
         if (mapFragment != null) {
             mapFragment.getMapAsync(this);
         }
@@ -97,23 +100,22 @@ public class TrackOrderMapActivity extends FragmentActivity implements OnMapRead
 //        linearLayout = findViewById(R.id.linearLayout);
         polyLineList = new ArrayList<>();
 //        mDriverModeOpenFB = findViewById(R.id.switchToDriverMode);
-        button = findViewById(R.id.destination_button);
-        destinationEditText = findViewById(R.id.edittext_place);
+//        button = findViewById(R.id.destination_button);
+//        destinationEditText = findViewById(R.id.edittext_place);
         Retrofit retrofit = new Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .baseUrl("https://maps.googleapis.com/")
                 .build();
         apiInterface = retrofit.create(ImmicartAPIService.class);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                destination = destinationEditText.getText().toString();
-                destination = destination.replace(" ", "+");
-                Log.d(TAG, destination);
-                mapFragment.getMapAsync(TrackOrderMapActivity.this);
-            }
-        });
+//        button.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                destination = destinationEditText.getText().toString();
+//                destination = destination.replace(" ", "+");
+//                Log.d(TAG, destination);
+//            }
+//        });
 
 //        mDriverModeOpenFB.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -123,6 +125,42 @@ public class TrackOrderMapActivity extends FragmentActivity implements OnMapRead
 //                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_in_right);
 //            }
 //        });
+        mapFragment.getMapAsync(TrackOrderMapActivity.this);
+
+        TrackOrderBottomSheet trackOrderBottomSheet = TrackOrderBottomSheet.newInstance();
+        trackOrderBottomSheet.show(getSupportFragmentManager(), "track_order");
+
+//        LinearLayout bottomSheet = findViewById(R.id.track_order_bottom_sheet);
+//        BottomSheetBehavior sheetBehavior = BottomSheetBehavior.from(bottomSheet);
+//        // callback for do something
+//        sheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+//            @Override
+//            public void onStateChanged(@NonNull View view, int newState) {
+//                switch (newState) {
+//                    case BottomSheetBehavior.STATE_HIDDEN:
+//                        break;
+//                    case BottomSheetBehavior.STATE_EXPANDED: {
+////                        btn_bottom_sheet.setText("Close Sheet");
+//                    }
+//                    break;
+//                    case BottomSheetBehavior.STATE_COLLAPSED: {
+////                        btn_bottom_sheet.setText("Expand Sheet");
+//                    }
+//                    break;
+//                    case BottomSheetBehavior.STATE_DRAGGING:
+//                        break;
+//                    case BottomSheetBehavior.STATE_SETTLING:
+//                        break;
+//                }
+//            }
+//
+//            @Override
+//            public void onSlide(@NonNull View view, float v) {
+//
+//            }
+//        });
+
+
     }
 
 
@@ -139,11 +177,11 @@ public class TrackOrderMapActivity extends FragmentActivity implements OnMapRead
                     @Override
                     public void accept(Object o) throws Exception {
                         if (o instanceof BeginJourneyEvent) {
-                            Snackbar.make(button, "Journey has started",
-                                    Snackbar.LENGTH_SHORT).show();
+//                            Snackbar.make(button, "Journey has started",
+//                                    Snackbar.LENGTH_SHORT).show();
                         } else if (o instanceof EndJourneyEvent) {
-                            Snackbar.make(button, "Journey has ended",
-                                    Snackbar.LENGTH_SHORT).show();
+//                            Snackbar.make(button, "Journey has ended",
+//                                    Snackbar.LENGTH_SHORT).show();
                         } else if (o instanceof CurrentJourneyEvent) {
                             /*
                              * This can be used to receive the current location update of the car
@@ -161,8 +199,6 @@ public class TrackOrderMapActivity extends FragmentActivity implements OnMapRead
             disposable.dispose();
         }
     }
-
-
 
     private void drawPolyLineAndAnimateCar() {
         //Adjusting bounds
@@ -212,7 +248,7 @@ public class TrackOrderMapActivity extends FragmentActivity implements OnMapRead
         polylineAnimator.start();
         marker = mMap.addMarker(new MarkerOptions().position(sydney)
                 .flat(true)
-                .icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("ic_car",100,100))));
+                .icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("immicart_delivary_bike_icon_rotated",100,100))));
         handler = new Handler();
         index = -1;
         next = 1;
