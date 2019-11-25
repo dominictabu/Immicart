@@ -77,6 +77,12 @@ class PersonalCartFragment : Fragment() {
             val intent: Intent = Intent(activity, CheckoutActivity::class.java)
             startActivity(intent)        }
 
+
+
+
+
+            }
+        })
     }
 
     private fun cartItemClicked(cartItem : Cart, newQuantity: Int) {

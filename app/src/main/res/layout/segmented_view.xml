@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<info.hoang8f.android.segmented.SegmentedGroup
+		xmlns:android="http://schemas.android.com/apk/res/android"
+		xmlns:segmentedgroup="http://schemas.android.com/apk/res-auto"
+		
+		android:id="@+id/segmented"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_margin="16dp"
+		android:orientation="horizontal"
+		android:layout_gravity="center_horizontal"
+		segmentedgroup:sc_border_width="4dp"
+		segmentedgroup:sc_corner_radius="8dp">
+		
+		<RadioButton
+				android:id="@+id/segmented_delivery"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/delivery"
+				style="@style/RadioButton" />
+		
+		<RadioButton
+				android:id="@+id/segmented_pick_up"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/pick_up"
+				style="@style/RadioButton" />
+</info.hoang8f.android.segmented.SegmentedGroup>
