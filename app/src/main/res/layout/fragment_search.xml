@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" xmlns:app="http://schemas.android.com/apk/res-auto"
+                tools:context=".delivery.SearchFragment">
+	
+	<androidx.appcompat.widget.Toolbar
+			android:id="@+id/toolbar"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			app:layout_collapseMode="pin"
+			app:popupTheme="@style/AppTheme.PopupOverlay" >
+		<LinearLayout
+				android:id="@+id/top_search_view_ll"
+				android:gravity="center_vertical"
+				android:orientation="horizontal"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content">
+			<androidx.appcompat.widget.SearchView
+					android:padding="8dp"
+					android:queryBackground="@null"
+					app:closeIcon="@drawable/ic_close_black__24dp"
+					app:searchIcon="@drawable/ic_search_black__24dp"
+					app:searchHintIcon="@drawable/ic_search_black__24dp"
+					android:id="@+id/search_view_browse"
+					android:layout_margin="10dp"
+					app:defaultQueryHint="Search malls, stores"
+					android:background="@drawable/search_store_bg"
+					app:queryHint="Search Tuskys"
+					app:iconifiedByDefault="false"
+					android:layout_width="0dp"
+					android:layout_weight="1"
+					android:layout_height="wrap_content"/>
+			
+			<FrameLayout
+					android:layout_alignParentEnd="true"
+					android:clickable="true"
+					android:focusable="true"
+					android:visibility="visible"
+					android:id="@+id/cart_frame_layout"
+					android:layout_margin="10dp"
+					android:layout_gravity="top|end"
+					android:layout_width="48dp"
+					android:layout_height="48dp">
+				
+				<ImageButton
+						android:clickable="false"
+						android:id="@+id/cartImageButton"
+						style="@style/Base.Widget.AppCompat.Button.Borderless"
+						android:background="@null"
+						android:layout_gravity="bottom"
+						android:src="@drawable/ic_shopping_cart_black_24dp"
+						android:layout_width="30dp"
+						android:layout_height="30dp" />
+				
+				<TextView
+						android:clickable="false"
+						android:id="@+id/badge"
+						android:layout_gravity="top|end"
+						android:gravity="center"
+						android:text="3"
+						android:textColor="@android:color/white"
+						android:background="@drawable/badge_bg"
+						android:layout_width="30dp"
+						android:layout_height="30dp"/>
+			</FrameLayout>
+			
+			
+		</LinearLayout>
+		
+	</androidx.appcompat.widget.Toolbar>
+	
+	<androidx.cardview.widget.CardView
+			app:cardElevation="0dp"
+			android:layout_marginTop="10dp"
+			android:layout_below="@+id/toolbar"
+			android:layout_width="match_parent"
+           android:layout_height="wrap_content">
+		
+		<LinearLayout
+				android:orientation="vertical"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content">
+			<TextView
+					android:layout_margin="8dp"
+					android:textStyle="bold"
+					android:textSize="16sp"
+					android:text="Popular searches"
+					android:layout_width="wrap_content"
+			          android:layout_height="wrap_content"/>
+		
+	<androidx.recyclerview.widget.RecyclerView
+			tools:listitem="@layout/item_search_suggestion"
+			android:layout_marginTop="10dp"
+			android:layout_below="@+id/bottom_view"
+			android:id="@+id/recycler_items_search"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"/>
+		</LinearLayout>
+	
+	</androidx.cardview.widget.CardView>
+
+</RelativeLayout>

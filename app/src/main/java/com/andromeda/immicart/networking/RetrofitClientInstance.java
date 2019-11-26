@@ -12,7 +12,7 @@ public class RetrofitClientInstance {
     static HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY);
     static OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
     private static Retrofit retrofit;
-    private static final String BASE_URL = "http://134.209.194.195/api/v1/";
+    private static final String BASE_URL = "http://157.245.68.46/api/v1/";
 
     public static Retrofit getRetrofitInstance() {
         if (retrofit == null) {
@@ -20,7 +20,7 @@ public class RetrofitClientInstance {
                     .baseUrl(BASE_URL)
                     .client(client)
 
-//                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
         }

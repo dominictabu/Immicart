@@ -5,15 +5,19 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.andromeda.immicart.delivery.DeliveryCart
+import com.andromeda.immicart.delivery.choose_store.Store
+import com.andromeda.immicart.delivery.choose_store.storeDao
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 
 // Annotates class to be a Room Database with a table (entity) of the Word class
-@Database(entities = arrayOf(Cart::class), version = 1)
+@Database(entities = arrayOf(Cart::class, DeliveryCart::class, Store::class), version = 4)
 public abstract class ImmicartRoomDatabase : RoomDatabase() {
 
     abstract fun cartDao(): CartDao
+    abstract fun storeDao(): storeDao
 
     companion object {
         // Singleton prevents multiple instances of database opening at the
@@ -31,7 +35,7 @@ public abstract class ImmicartRoomDatabase : RoomDatabase() {
                     context.applicationContext,
                     ImmicartRoomDatabase::class.java,
                     "word_database"
-                ).build()
+                ).fallbackToDestructiveMigration().build()
                 INSTANCE = instance
                 return instance
             }

@@ -27,6 +27,9 @@ class PersonalCartViewModel(application: Application) : AndroidViewModel(applica
         allScannedItems = repository.allScannedItems
     }
 
+    fun allScannedItems() : LiveData<List<Cart>> {
+        return allScannedItems
+    }
     // The implementation of insert() is completely hidden from the UI.
     // We don't want insert to block the main thread, so we're launching a new
     // coroutine. ViewModels have a coroutine scope based on their lifecycle called

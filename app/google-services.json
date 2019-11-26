@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "124965552718",
+    "firebase_url": "https://immicart-2ca69.firebaseio.com",
+    "project_id": "immicart-2ca69",
+    "storage_bucket": "immicart-2ca69.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:124965552718:android:8b409de883cdfea9e9791f",
+        "android_client_info": {
+          "package_name": "com.andromeda.immicart"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "124965552718-g3e0v1afdbhb2dj6qtp10mcb8ip25cj3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.andromeda.immicart",
+            "certificate_hash": "612bc4ba145b9c1b2c9ed0163e1b815564b9408d"
+          }
+        },
+        {
+          "client_id": "124965552718-aj7ofkb6tsciq6qe1ef32d7nqm79qsb7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAOasamp0YgiWh8Jn64bu5zqbkkse383-o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "124965552718-aj7ofkb6tsciq6qe1ef32d7nqm79qsb7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
