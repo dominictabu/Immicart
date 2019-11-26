@@ -52,7 +52,9 @@
 				android:orientation="horizontal"
 				android:layout_width="match_parent"
 				android:layout_height="match_parent"
+
 				android:focusable="true">
+				android:focusable="true" segmentedgroup:ignore="UseCompoundDrawable
 			
 			<ImageView
 					android:layout_width="wrap_content"
