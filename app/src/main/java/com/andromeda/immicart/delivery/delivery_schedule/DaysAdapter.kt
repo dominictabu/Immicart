@@ -10,6 +10,7 @@ import com.andromeda.immicart.R
 import java.util.*
 
 class DaysAdapter(var context: Context) : Adapter<DaysAdapter.DaysViewHolder>() {
+//    TODO finish setting up date but not a priority
 
     var deliveryDays = listOf<DeliveryDay>()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DaysViewHolder {
