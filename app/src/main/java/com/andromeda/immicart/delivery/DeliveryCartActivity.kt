@@ -3,6 +3,7 @@ package com.andromeda.immicart.delivery
 import android.os.Bundle
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment
 import com.andromeda.immicart.R
 
 import kotlinx.android.synthetic.main.activity_delivery_cart.*
@@ -24,6 +25,14 @@ class DeliveryCartActivity : AppCompatActivity() {
         val transaction = manager.beginTransaction()
         transaction.replace(R.id.content_cart_fragment, DeliveryCartFragment()).commit()
 
+    }
+
+
+
+    fun performFragmnetTransaction(fragment: Fragment) {
+        val manager = supportFragmentManager
+        val transaction = manager.beginTransaction()
+        transaction.replace(R.id.content_cart_fragment, fragment).commit()
     }
 
 }

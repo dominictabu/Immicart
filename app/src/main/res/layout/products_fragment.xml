@@ -185,17 +185,50 @@
 						android:background="@color/lightGrey"
 						android:layout_width="wrap_content"
 				      android:layout_height="1dp"/>
-				      <TextView
-						      android:id="@+id/delivery_address"
-						      android:textSize="16sp"
-						      android:gravity="center"
-						      android:drawablePadding="4dp"
-						      android:drawableEnd="@drawable/ic_edit_green_24dp"
-						      android:layout_margin="8dp"
-						      android:layout_below="@+id/view_delivery_to"
-						      android:text="Hall 11 State House Road"
-						      android:layout_width="wrap_content"
-				                android:layout_height="wrap_content"/>
+				<LinearLayout
+						android:orientation="horizontal"
+						android:gravity="center_vertical"
+						android:layout_below="@+id/view_delivery_to"
+						android:id="@+id/address_ll"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content">
+					
+					<RadioButton
+							android:buttonTint="@color/colorGreen"
+							android:clickable="false"
+							android:checked="true"
+							android:layout_marginStart="12dp"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"/>
+					<LinearLayout
+							android:layout_weight="1"
+							android:orientation="vertical"
+							android:layout_width="0dp"
+							android:layout_height="wrap_content">
+						
+						<TextView
+								android:layout_marginTop="16dp"
+								android:layout_marginStart="12dp"
+								android:id="@+id/address_one"
+								android:textStyle="bold"
+								android:text="Munret Mens Hostel"
+								android:layout_width="wrap_content"
+								android:layout_height="wrap_content"/>
+						<TextView
+								android:layout_marginBottom="16dp"
+								android:layout_marginStart="12dp"
+								android:textColor="@color/lightGrey_"
+								android:id="@+id/address_two"
+								android:text="Sumba Road, Nairobi City, Kenya"
+								android:layout_width="wrap_content"
+								android:layout_height="wrap_content"/>
+					</LinearLayout>
+					<ImageView
+							android:layout_marginEnd="20dp"
+							android:src="@drawable/ic_edit_green_24dp"
+							android:layout_width="wrap_content"
+					           android:layout_height="wrap_content"/>
+				</LinearLayout>
 				
 				
 				

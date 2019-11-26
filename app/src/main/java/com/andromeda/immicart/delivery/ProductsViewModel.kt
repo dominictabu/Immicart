@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.*
 import com.andromeda.immicart.Scanning.persistence.CartRepository
 import com.andromeda.immicart.Scanning.persistence.ImmicartRoomDatabase
+import com.andromeda.immicart.delivery.persistence.DeliveryRepository
 import kotlinx.coroutines.launch
 
 
@@ -14,6 +15,10 @@ class ProductsViewModel(application: Application) : AndroidViewModel(application
     private val repository: CartRepository
     // LiveData gives us updated words when they change.
     val allDeliveryItems: LiveData<List<DeliveryCart>>
+    private val deliveryRepository: DeliveryRepository
+
+    val allDeliveryLocations: LiveData<List<Place>>
+
 
     val categoryId = MutableLiveData<Int>()
 
@@ -22,8 +27,15 @@ class ProductsViewModel(application: Application) : AndroidViewModel(application
         // Gets reference to WordDao from WordRoomDatabase to construct
         // the correct WordRepository.
         val cartDao = ImmicartRoomDatabase.getDatabase(application, viewModelScope).cartDao()
+        val deliveryDao = ImmicartRoomDatabase.getDatabase(application, viewModelScope).deliveryDao()
         repository = CartRepository(cartDao)
+        deliveryRepository = DeliveryRepository(deliveryDao)
         allDeliveryItems = repository.allDeliveryItems
+        allDeliveryLocations = deliveryRepository.allDeliveryLocations
+    }
+
+    fun allDeliveryLocations() : LiveData<List<Place>> {
+        return allDeliveryLocations
     }
 
 

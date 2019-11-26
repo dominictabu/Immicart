@@ -79,14 +79,16 @@ class ProductsFragment : Fragment() {
         })
 
 
+
+
         app_bar.addOnOffsetChangedListener(object : AppBarLayout.OnOffsetChangedListener {
             override fun onOffsetChanged(appBarLayout: AppBarLayout?, verticalOffset: Int) {
 
                 if (Math.abs(verticalOffset) == appBarLayout?.getTotalScrollRange()) {
                     // Collapsed
 
-                    store_name.setTextColor(resources.getColor(R.color.colorGreen_))
-                    store_name.setCompoundDrawablesWithIntrinsicBounds( 0, 0, R.drawable.ic_keyboard_arrow_down_green_24dp, 0);
+                    store_name?.setTextColor(resources.getColor(R.color.colorGreen_))
+                    store_name?.setCompoundDrawablesWithIntrinsicBounds( 0, 0, R.drawable.ic_keyboard_arrow_down_green_24dp, 0);
                     Glide.with(activity!!).load(R.drawable.ic_account_circle_green_24dp).into(myAccountIcon)
                 } else if (verticalOffset == 0) {
                     store_name?.setTextColor(resources.getColor(android.R.color.white))
@@ -101,6 +103,23 @@ class ProductsFragment : Fragment() {
             }
 
         })
+
+
+        viewModel.allDeliveryLocations().observe(this, androidx.lifecycle.Observer {
+
+            it?.let {
+                if(it.size > 0) {
+                    val place = it[0]
+
+                    address_one.text = place.name
+                    address_two.text = place.address
+                }
+
+            }
+
+        })
+
+
 
 
 
@@ -118,7 +137,7 @@ class ProductsFragment : Fragment() {
 
         }
 
-        delivery_address.setOnClickListener {
+        address_ll.setOnClickListener {
             startActivity(Intent(activity!!, PickDeliveryLocationActivity::class.java))
 
         }

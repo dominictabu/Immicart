@@ -9,6 +9,7 @@ import android.content.Intent
 import android.graphics.drawable.InsetDrawable
 import android.os.Handler
 import android.util.Log
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.libraries.places.api.Places
@@ -28,12 +29,22 @@ import kotlin.collections.ArrayList
 
 
 class PickDeliveryLocationActivity : AppCompatActivity(), PlacesAutoCompleteAdapter.OnItemClickListener {
-    override fun OnItemClick(recommended: String?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun OnItemClick(place: com.andromeda.immicart.delivery.Place?) {
+
+        place?.let {
+            latestPlace = it
+
+        }
+        address_one.text = place?.name
+        address_two.text = place?.address
     }
+
 
     var AUTOCOMPLETE_REQUEST_CODE = 1
     val TAG = "EnterLocationAct"
+
+    private lateinit var pickDeliveryLocationViewModel: PickDeliveryLocationViewModel
+    private lateinit var latestPlace: com.andromeda.immicart.delivery.Place
 
 
     override fun attachBaseContext(newBase: Context) {
@@ -45,20 +56,42 @@ class PickDeliveryLocationActivity : AppCompatActivity(), PlacesAutoCompleteAdap
         super.onCreate(savedInstanceState)
         setContentView(R.layout.content_pick_delivery_location)
 
+        setSupportActionBar(toolbar)
+
         if (supportActionBar != null) {
-            supportActionBar!!.title = "Enter Location"
+            toolbar_title.text = "Change Location"
+            supportActionBar!!.setDisplayShowTitleEnabled(false);
+
             supportActionBar!!.setHomeButtonEnabled(true)
             supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
         }
 
+        pickDeliveryLocationViewModel = ViewModelProviders.of(this).get(PickDeliveryLocationViewModel::class.java)
+
+        pickDeliveryLocationViewModel.allDeliveryLocations().observe(this, androidx.lifecycle.Observer {
+
+            it?.let {
+
+                if(it.size > 0) {
+
+                    val place = it[0]
+
+                    address_one.text = place.name
+                    address_two.text = place.address
+                    latestPlace = place
+                }
+
+            }
+
+        })
         enter_location_searchview.setIconifiedByDefault(false)
         Handler().postDelayed({
             //doSomethingHere
             enter_location_searchview.clearFocus()
 
         }, 1000)
-        enter_location_searchview.queryHint = "Enter city, town, county"
+        enter_location_searchview.queryHint = "Type new location"
 
         // Initialize place API
         if (!Places.isInitialized()) {
@@ -89,7 +122,13 @@ class PickDeliveryLocationActivity : AppCompatActivity(), PlacesAutoCompleteAdap
 
                     val placesArrayList: ArrayList<com.andromeda.immicart.delivery.Place> = ArrayList()
                     for (prediction in response.autocompletePredictions) {
+
+                        Log.i(TAG, "Place ID: ${prediction.placeId}")
+
+                        val placeID : String = prediction.placeId
+
                         Log.i(TAG, "Prdiction: " + prediction)
+
                         Log.i(TAG, "FullText: " + prediction.getFullText(null).toString())
 
                         val fullText = prediction.getFullText(null).toString()
@@ -104,7 +143,7 @@ class PickDeliveryLocationActivity : AppCompatActivity(), PlacesAutoCompleteAdap
                             val address = removedString.joinToString(", ")
                             Log.d(TAG, "address: $address")
 
-                            val placeItem = Place(place, address)
+                            val placeItem = Place(placeID, place, address)
                             placesArrayList.add(placeItem)
 
                         }
@@ -142,6 +181,12 @@ class PickDeliveryLocationActivity : AppCompatActivity(), PlacesAutoCompleteAdap
 //        }
 
 
+        save_location_button.setOnClickListener {
+
+            pickDeliveryLocationViewModel.insertDeliveryLocation(latestPlace)
+        }
+
+
     }
 
 
@@ -152,16 +197,16 @@ class PickDeliveryLocationActivity : AppCompatActivity(), PlacesAutoCompleteAdap
 
         val ATTRS = intArrayOf(android.R.attr.listDivider)
 
-        val a = this.obtainStyledAttributes(ATTRS)
-        val divider = a.getDrawable(0)
-        val inset = resources.getDimensionPixelSize(R.dimen.locations)
-        val insetDivider = InsetDrawable(divider, inset, 0, 0, 0)
-        a.recycle()
-        val dividerItemDecoration = DividerItemDecoration(recycler_items.getContext(),
-                linearLayoutManager.orientation)
-        dividerItemDecoration.setDrawable(insetDivider)
+//        val a = this.obtainStyledAttributes(ATTRS)
+//        val divider = a.getDrawable(0)
+//        val inset = resources.getDimensionPixelSize(R.dimen.locations)
+//        val insetDivider = InsetDrawable(divider, inset, 0, 0, 0)
+//        a.recycle()
+//        val dividerItemDecoration = DividerItemDecoration(recycler_items.getContext(),
+//                linearLayoutManager.orientation)
+//        dividerItemDecoration.setDrawable(insetDivider)
 
-        recycler_items.addItemDecoration(dividerItemDecoration)
+//        recycler_items.addItemDecoration(dividerItemDecoration)
 
         val placesAutoCompleteAdapter = PlacesAutoCompleteAdapter(places, this@PickDeliveryLocationActivity, this@PickDeliveryLocationActivity)
 

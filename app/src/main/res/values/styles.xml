@@ -7,6 +7,8 @@
 		<item name="colorPrimaryDark">@color/colorPrimaryDark</item>
 		<item name="colorAccent">@color/colorAccent</item>
 		<item name="android:textColor">@android:color/black</item>
+		<item name="bottomSheetDialogTheme">@style/AppBottomSheetDialogTheme</item>
+	
 	</style>
 	
 	<style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
@@ -27,6 +29,23 @@
 	<style name="AppTheme.ProductDetail" parent="AppTheme">
 		<item name="android:homeAsUpIndicator">@drawable/ic_close_white_24dp</item>
 	</style>
-  
-
+	
+	<style name="AppTheme.ChangeLocation" parent="AppTheme">
+		<item name="android:homeAsUpIndicator">@drawable/ic_close_white_24dp</item>
+	</style>
+	
+	
+	
+	<style name="AppBottomSheetDialogTheme"
+	       parent="Theme.Design.Light.BottomSheetDialog">
+		<item name="bottomSheetStyle">@style/AppModalStyle</item>
+	</style>
+	
+	<style name="AppModalStyle"
+	       parent="Widget.Design.BottomSheet.Modal">
+		<item name="behavior_peekHeight">@dimen/custom_peek_height</item>
+	</style>
+	
+	
+	<dimen name="custom_peek_height">200dp</dimen>
 </resources>
