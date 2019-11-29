@@ -1,14 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             tools:context=".wallet.WalletFragment">
-	
-	<!-- TODO: Update blank fragment layout -->
+<androidx.constraintlayout.widget.ConstraintLayout
+		xmlns:android="http://schemas.android.com/apk/res/android"
+		xmlns:app="http://schemas.android.com/apk/res-auto"
+		xmlns:tools="http://schemas.android.com/tools"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		tools:context=".wallet.WalletFragment"
+		android:id="@+id/frameLayout"
+		android:backgroundTint="@color/cardview_light_background">
 	<TextView
-			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			android:text="@string/hello_blank_fragment"/>
-
-</FrameLayout>
+			android:text="Wallet"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:id="@+id/wallet"
+			app:layout_constraintEnd_toEndOf="parent"
+			android:layout_marginEnd="8dp"
+			app:layout_constraintStart_toStartOf="parent"
+			android:layout_marginStart="16dp"
+			android:layout_marginTop="40dp"
+			app:layout_constraintTop_toTopOf="parent"
+			app:layout_constraintHorizontal_bias="0.0"
+			android:ellipsize="start"
+			android:textSize="36sp"
+			android:fontFamily="@font/roboto_bold"/>
+	<TextView
+			android:text="Your Credit"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:id="@+id/yourCredit"
+			app:layout_constraintEnd_toEndOf="parent"
+			android:layout_marginEnd="8dp"
+			app:layout_constraintStart_toStartOf="parent"
+			android:layout_marginStart="8dp"
+			app:layout_constraintTop_toBottomOf="@+id/wallet"
+			android:fontFamily="@font/roboto_medium"
+			android:textSize="24sp"
+			android:layout_marginTop="116dp"
+			app:layout_constraintHorizontal_bias="0.029"/>
+	<TextView
+			android:text="@string/ksh_350"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:id="@+id/walletAmount"
+			app:layout_constraintEnd_toEndOf="parent"
+			android:layout_marginEnd="8dp"
+			app:layout_constraintTop_toBottomOf="@+id/yourCredit"
+			app:layout_constraintStart_toStartOf="parent"
+			android:layout_marginStart="16dp"
+			android:textSize="40sp"
+			android:fontFamily="@font/roboto_bold"
+			android:layout_marginTop="32dp"
+			app:layout_constraintHorizontal_bias="0.0"/>
+	<Button
+			android:text="Add Credit"
+			android:textSize="24sp"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:id="@+id/button_add_credit"
+			app:layout_constraintStart_toStartOf="parent"
+			android:layout_marginStart="16dp"
+			app:layout_constraintEnd_toEndOf="parent"
+			android:layout_marginEnd="16dp"
+			android:layout_marginTop="8dp"
+			app:layout_constraintTop_toBottomOf="@+id/walletAmount"
+			android:layout_marginBottom="8dp"
+			app:layout_constraintBottom_toBottomOf="parent"
+			app:layout_constraintHorizontal_bias="0.498"
+			app:layout_constraintVertical_bias="0.264"
+			android:background="@drawable/pay_design"
+			android:textAllCaps="false"
+			android:textColor="@android:color/white"
+	/>
+</androidx.constraintlayout.widget.ConstraintLayout>
