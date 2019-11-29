@@ -13,11 +13,21 @@ public class Place {
     private String placeID;
     private String name;
     private String address;
+    private String placeFullText;
 
-    public Place(String placeID, String name, String address) {
+    public Place(String placeID, String name, String address, String placeFullText) {
         this.placeID = placeID;
         this.name = name;
         this.address = address;
+        this.placeFullText = placeFullText;
+    }
+
+    public String getPlaceFullText() {
+        return placeFullText;
+    }
+
+    public void setPlaceFullText(String placeFullText) {
+        this.placeFullText = placeFullText;
     }
 
     public String getPlaceID() {

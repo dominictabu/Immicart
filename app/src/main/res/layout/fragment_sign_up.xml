@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/white"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                tools:context=".delivery.authentication.SignUpFragment">
+	
+	<ImageButton
+			android:id="@+id/go_back_button"
+			android:layout_margin="8dp"
+			android:background="@android:color/white"
+			android:src="@drawable/ic_keyboard_arrow_left_green_24dp"
+			android:layout_width="40dp"
+			android:layout_height="40dp"/>
+	
+	<TextView
+			android:id="@+id/tagline"
+			android:textStyle="bold"
+			android:textSize="24sp"
+			android:layout_marginBottom="8dp"
+			android:layout_marginTop="20dp"
+			android:layout_marginStart="20dp"
+			android:layout_marginEnd="20dp"
+			android:layout_below="@+id/go_back_button"
+			android:text="Join immicart today"
+			android:gravity="center"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"/>
+	
+	<TextView
+			android:id="@+id/instructions"
+			android:layout_below="@+id/tagline"
+			android:textSize="16sp"
+			android:gravity="center"
+			android:text="You will receive order updates in your email"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"/>
+	<LinearLayout
+			android:layout_marginTop="20dp"
+			android:layout_below="@+id/instructions"
+			android:id="@+id/names_ll"
+			android:layout_width="match_parent"
+	              android:layout_height="wrap_content">
+		<EditText
+				android:id="@+id/first_name_edittxt"
+				android:layout_weight="1"
+				android:hint="First Name"
+				android:layout_marginStart="20dp"
+				android:padding="12dp"
+				android:layout_below="@+id/instructions"
+				android:background="@drawable/search_location"
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"/>
+		<EditText
+				android:layout_weight="1"
+				android:id="@+id/last_name_edittxt"
+				android:hint="Last Name"
+				android:layout_marginStart="20dp"
+				android:layout_marginEnd="20dp"
+				android:padding="12dp"
+				android:layout_below="@+id/instructions"
+				android:background="@drawable/search_location"
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"/>
+		
+	</LinearLayout>
+	
+	<EditText
+			android:id="@+id/email_edittxt"
+			android:hint="Email Address"
+			android:layout_margin="20dp"
+			android:padding="12dp"
+			android:layout_below="@+id/names_ll"
+			android:background="@drawable/search_location"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"/>
+	<EditText
+			android:id="@+id/password_edittxt"
+			android:hint="Password (min 6 characters)"
+			android:layout_marginBottom="8dp"
+			android:layout_marginTop="8dp"
+			android:layout_marginStart="20dp"
+			android:layout_marginEnd="20dp"
+			android:padding="12dp"
+			android:layout_below="@+id/email_edittxt"
+			android:background="@drawable/search_location"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"/>
+	<Button
+			app:fontFamily="@font/roboto_medium"
+			android:layout_below="@+id/password_edittxt"
+			android:layout_marginStart="20dp"
+			android:layout_marginTop="10dp"
+			android:layout_marginEnd="20dp"
+			android:textStyle="normal"
+			android:textAllCaps="false"
+			android:id="@+id/log_in_btn"
+			android:textColor="@android:color/white"
+			android:background="@drawable/time_bg"
+			android:textSize="20sp"
+			android:text=" Create Account "
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content" />
+
+</RelativeLayout>

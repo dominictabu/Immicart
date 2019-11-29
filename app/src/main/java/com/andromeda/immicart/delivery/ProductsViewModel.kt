@@ -22,7 +22,6 @@ class ProductsViewModel(application: Application) : AndroidViewModel(application
 
     val categoryId = MutableLiveData<Int>()
 
-
     init {
         // Gets reference to WordDao from WordRoomDatabase to construct
         // the correct WordRepository.

@@ -143,7 +143,7 @@ class PickDeliveryLocationActivity : AppCompatActivity(), PlacesAutoCompleteAdap
                             val address = removedString.joinToString(", ")
                             Log.d(TAG, "address: $address")
 
-                            val placeItem = Place(placeID, place, address)
+                            val placeItem = Place(placeID, place, address, fullText)
                             placesArrayList.add(placeItem)
 
                         }

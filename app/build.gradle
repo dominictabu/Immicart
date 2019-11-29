@@ -163,10 +163,16 @@ dependencies {
 
     //Firebase Realtime Database
     implementation 'com.google.firebase:firebase-database:19.2.0'
+    implementation 'com.google.firebase:firebase-auth:19.2.0'
+
 
     //Segmented Control for Android
     implementation 'info.hoang8f:android-segmented:1.0.6'
     implementation 'com.google.android.material:material:1.0.0'
+
+    //Calligraphy
+    implementation 'uk.co.chrisjenx:calligraphy:2.3.0'
+
 
 
     testImplementation 'junit:junit:4.12'

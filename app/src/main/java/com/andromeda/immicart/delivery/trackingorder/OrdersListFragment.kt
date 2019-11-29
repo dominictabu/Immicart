@@ -11,7 +11,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 import com.andromeda.immicart.R
+import com.andromeda.immicart.delivery.PlaceOrder
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.fragment_orders_list.*
 
 // TODO: Rename parameter arguments, choose names that match
@@ -50,6 +53,7 @@ class OrdersListFragment : Fragment() {
 
         database = FirebaseDatabase.getInstance().reference
         retrieveOrders()
+        getOrders()
 
     }
 
@@ -95,6 +99,33 @@ class OrdersListFragment : Fragment() {
         val orderListRecyclerAdapter = OrderListRecyclerAdapter(orders)
         recycler_items_orders.setAdapter(orderListRecyclerAdapter)
 
+    }
+
+
+    fun getOrders() {
+
+        val customerId = FirebaseAuth.getInstance().currentUser?.uid
+        val collectionPath =  "orders"
+        val db = FirebaseFirestore.getInstance();
+
+
+        db.collection(collectionPath)
+            .whereEqualTo("customerUID", customerId)
+            .get()
+            .addOnSuccessListener { documents ->
+                for (document in documents) {
+                    Log.d(TAG, "${document.id} => ${document.data}")
+                    val order = document.toObject(PlaceOrder::class.java)
+
+                    Log.d(TAG, "Orders: $order")
+
+//                    val serviceFee = document.data.
+
+                }
+            }
+            .addOnFailureListener { exception ->
+                Log.w(TAG, "Error getting documents: ", exception)
+            }
     }
 
 

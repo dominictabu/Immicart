@@ -87,10 +87,10 @@ class DeliveryCartFragment : Fragment() {
         })
 
         checkoutlayout.setOnClickListener {
-            val fragment = DeliveryDetailsFragment()
-            (activity!! as DeliveryCartActivity).performFragmnetTransaction(fragment)
-//            val intent: Intent = Intent(activity, CheckoutActivity::class.java)
-//            startActivity(intent)
+//            val fragment = DeliveryDetailsFragment()
+//            (activity!! as DeliveryCartActivity).performFragmnetTransaction(fragment)
+            val intent: Intent = Intent(activity, PlcaeOrderActivity::class.java)
+            startActivity(intent)
         }
 
     }

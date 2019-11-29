@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools" android:id="@+id/authentication_nav_graph"
+            app:startDestination="@id/storeLocationFragment">
+	
+	<fragment android:id="@+id/storeLocationFragment"
+	          android:name="com.andromeda.immicart.delivery.authentication.StoreLocationFragment"
+	          android:label="fragment_store_location" tools:layout="@layout/fragment_store_location">
+		<action android:id="@+id/select_store_action" app:destination="@id/selectStoreFragment"/>
+		<action android:id="@+id/go_to_log_in" app:destination="@id/logInFragment"/>
+		<action android:id="@+id/action_storeLocationFragment_to_createAccountFragment2"
+		        app:destination="@id/createAccountFragment"/>
+	</fragment>
+	<fragment android:id="@+id/selectStoreFragment"
+	          android:name="com.andromeda.immicart.delivery.authentication.SelectStoreFragment"
+	          android:label="fragment_select_store" tools:layout="@layout/fragment_select_store">
+		<action android:id="@+id/create_account_action" app:destination="@id/createAccountFragment"/>
+	</fragment>
+	<fragment android:id="@+id/createAccountFragment"
+	          android:name="com.andromeda.immicart.delivery.authentication.CreateAccountFragment"
+	          android:label="fragment_create_account" tools:layout="@layout/fragment_create_account">
+		<action android:id="@+id/action_createAccountFragment_to_signUpFragment" app:destination="@id/signUpFragment"/>
+	</fragment>
+	<fragment android:id="@+id/logInFragment"
+	          android:name="com.andromeda.immicart.delivery.authentication.LogInFragment"
+	          android:label="fragment_log_in" tools:layout="@layout/fragment_log_in"/>
+	<fragment android:id="@+id/signUpFragment"
+	          android:name="com.andromeda.immicart.delivery.authentication.SignUpFragment"
+	          android:label="fragment_sign_up" tools:layout="@layout/fragment_sign_up"/>
+</navigation>

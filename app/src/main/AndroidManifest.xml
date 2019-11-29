@@ -11,12 +11,20 @@
 	<uses-permission android:name="android.permission.INTERNET"/>
 	
 	<application
+			android:name=".model.App"
 			android:allowBackup="true"
 			android:icon="@mipmap/ic_launcher_logo"
 			android:label="@string/app_name"
 			android:roundIcon="@mipmap/ic_launcher_logo_round"
 			android:supportsRtl="true"
 			android:theme="@style/AppTheme">
+		<activity android:name=".delivery.authentication.AuthenticationActivity">
+			<intent-filter>
+				<action android:name="android.intent.action.MAIN"/>
+				
+				<category android:name="android.intent.category.LAUNCHER"/>
+			</intent-filter>
+		</activity>
 		<activity android:name=".delivery.PlcaeOrderActivity">
 		</activity>
 		<activity
@@ -79,11 +87,7 @@
 				android:name=".delivery.ProductsPageActivity"
 				android:label="@string/title_activity_products_page"
 				android:theme="@style/AppTheme.NoActionBar">
-			<intent-filter>
-				<action android:name="android.intent.action.MAIN"/>
-				
-				<category android:name="android.intent.category.LAUNCHER"/>
-			</intent-filter>
+			
 		</activity>
 		
 		<meta-data

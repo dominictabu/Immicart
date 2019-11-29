@@ -10,6 +10,8 @@
     <color name="lightGrey">#A5A2A2</color>
     <color name="lightGrey_">#5F5F5F</color>
     <color name="orange">#f57f17</color>
+    <color name="blue">#2877EE</color>
+    <color name="fb_blue">#3b5998</color>
     <color name="background">#dddddd</color>
 
 </resources>
