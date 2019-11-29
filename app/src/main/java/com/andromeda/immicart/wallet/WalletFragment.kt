@@ -1,4 +1,4 @@
-package com.andromeda.immicart.delivery
+package com.andromeda.immicart.wallet
 
 
 import android.os.Bundle
