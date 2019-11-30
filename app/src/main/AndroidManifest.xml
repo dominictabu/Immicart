@@ -18,7 +18,11 @@
 			android:roundIcon="@mipmap/ic_launcher_logo_round"
 			android:supportsRtl="true"
 			android:theme="@style/AppTheme">
-		<activity android:name=".delivery.authentication.AuthenticationActivity">
+		<activity android:name=".delivery.authentication.MyAccountActivity">
+		</activity>
+		<activity
+				android:name=".delivery.authentication.AuthenticationActivity"
+				android:windowSoftInputMode="adjustResize">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN"/>
 				
@@ -87,7 +91,6 @@
 				android:name=".delivery.ProductsPageActivity"
 				android:label="@string/title_activity_products_page"
 				android:theme="@style/AppTheme.NoActionBar">
-			
 		</activity>
 		
 		<meta-data

@@ -18,27 +18,36 @@
 			android:src="@drawable/ic_keyboard_arrow_left_green_24dp"
 			android:layout_width="40dp"
 	             android:layout_height="40dp"/>
+	<ImageView
+			android:layout_marginTop="40dp"
+			android:id="@+id/immicart_logo"
+			android:layout_centerHorizontal="true"
+			android:layout_below="@+id/go_back_button"
+			android:layout_alignParentTop="true"
+			android:src="@drawable/immicart_logo_01"
+			android:layout_width="140dp"
+			android:layout_height="40dp"/>
 	
 	<TextView
 			android:id="@+id/tagline"
 			android:textStyle="bold"
-			android:textSize="24sp"
+			android:textSize="20sp"
 			android:layout_marginBottom="8dp"
 			android:layout_marginStart="20dp"
 			android:layout_marginEnd="20dp"
-			android:layout_below="@+id/go_back_button"
+			android:layout_below="@+id/immicart_logo"
 			android:text="Create an account to start"
 			android:gravity="center"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"/>
 	<ImageView
 			android:id="@+id/immicart_image"
-			android:layout_margin="10dp"
+			android:layout_margin="8dp"
 			android:src="@drawable/immicart_resizedpng"
 			android:layout_centerHorizontal="true"
 			android:layout_below="@+id/tagline"
 			android:layout_width="360dp"
-	           android:layout_height="240dp"/>
+	           android:layout_height="220dp"/>
 	<TextView
 			android:id="@+id/terms_title"
 			android:textSize="16sp"
@@ -99,7 +108,7 @@
 	<LinearLayout
 			android:id="@+id/or_ll"
 			android:layout_below="@+id/email_btn"
-			android:layout_marginTop="8dp"
+			android:layout_marginTop="4dp"
 			android:layout_marginStart="20dp"
 			android:layout_marginEnd="20dp"
 			android:gravity="center_vertical"
@@ -124,7 +133,7 @@
 	</LinearLayout>
 	
 	<LinearLayout
-			android:layout_marginTop="10dp"
+			android:layout_marginTop="8dp"
 			android:layout_marginStart="20dp"
 			android:layout_marginEnd="20dp"
 			android:layout_below="@+id/fblayout"
@@ -135,14 +144,17 @@
 			android:orientation="horizontal"
 			android:layout_gravity="bottom"
 			android:background="@drawable/blue_bg"
-			android:padding="8dp">
+			android:padding="8dp"
+			android:focusable="true">
 		
 		<ImageView
+				android:clickable="false"
 				android:layout_marginStart="16dp"
 				android:src="@drawable/google_icon"
 				android:layout_width="wrap_content"
 		           android:layout_height="wrap_content"/>
 		<androidx.appcompat.widget.AppCompatTextView
+				android:clickable="false"
 				android:layout_width="0dp"
 				android:layout_height="wrap_content"
 				android:layout_weight="1"
@@ -157,6 +169,30 @@
 	
 	
 	</LinearLayout>
+	<LinearLayout
+			android:visibility="gone"
+			android:gravity="center"
+			android:layout_marginTop="8dp"
+			android:layout_marginStart="20dp"
+			android:layout_marginEnd="20dp"
+			android:layout_below="@+id/googlelayout"
+			android:clickable="true"
+			android:id="@+id/google_signInloadinglayout"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="horizontal"
+			android:layout_gravity="bottom"
+			android:background="@drawable/blue_bg"
+			android:padding="8dp">
+		
+		<com.wang.avi.AVLoadingIndicatorView
+				app:indicatorColor="@android:color/white"
+				android:layout_width="36dp"
+				android:layout_height="36dp"
+				app:indicatorName="LineSpinFadeLoaderIndicator"/>
+	
+	
+	</LinearLayout>
 	
 	<LinearLayout
 			android:layout_below="@+id/or_ll"
@@ -168,7 +204,7 @@
 			android:layout_gravity="bottom"
 			android:background="@drawable/fb_blue_bg"
 			android:padding="8dp"
-			android:layout_marginTop="8dp"
+			android:layout_marginTop="4dp"
 			android:layout_marginStart="20dp"
 			android:layout_marginEnd="20dp">
 		
@@ -199,7 +235,7 @@
 			android:layout_marginTop="8dp"
 			android:layout_marginBottom="40dp"
 			android:gravity="center"
-			android:layout_below="@+id/googlelayout"
+			android:layout_below="@+id/google_signInloadinglayout"
 			android:orientation="horizontal"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content">

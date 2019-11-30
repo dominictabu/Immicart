@@ -36,7 +36,44 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "124965552718-aj7ofkb6tsciq6qe1ef32d7nqm79qsb7.apps.googleusercontent.com",
+              "client_id": "124965552718-pur95pvca4rm0gvbo35rqo7lgca65i7a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:124965552718:android:e6c8d4b76ca4ac4ce9791f",
+        "android_client_info": {
+          "package_name": "com.andromeda.immicartshopper"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "124965552718-gunedb3qgdimbu24iejd45ug8mh0941v.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.andromeda.immicartshopper",
+            "certificate_hash": "612bc4ba145b9c1b2c9ed0163e1b815564b9408d"
+          }
+        },
+        {
+          "client_id": "124965552718-aj7ofkb6tsciq6qe1ef32d7nqm79qsb7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAOasamp0YgiWh8Jn64bu5zqbkkse383-o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "124965552718-pur95pvca4rm0gvbo35rqo7lgca65i7a.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

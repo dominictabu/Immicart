@@ -33,12 +33,22 @@
 			android:layout_marginTop="80dp"
 			android:layout_width="match_parent"
 	                android:layout_height="wrap_content">
+		<ImageView
+				android:layout_marginTop="10dp"
+				android:id="@+id/immicart_logo"
+				android:layout_centerHorizontal="true"
+				android:layout_below="@+id/go_back_button"
+				android:layout_alignParentTop="true"
+				android:src="@drawable/immicart_logo_01"
+				android:layout_width="160dp"
+				android:layout_height="60dp"/>
 		
 	<TextView
+			android:layout_below="@+id/immicart_logo"
 			android:id="@+id/tagline"
 			android:textStyle="bold"
 			android:textSize="24sp"
-			android:layout_margin="20dp"
+			android:layout_margin="10dp"
 			android:text="Offers delivered in as little as 1 hour"
 			android:gravity="center"
 			android:layout_width="match_parent"

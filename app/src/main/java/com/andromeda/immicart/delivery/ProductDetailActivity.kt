@@ -43,6 +43,7 @@ class ProductDetailActivity : AppCompatActivity() {
         private val PRODUCT_ID_LINK = "PRODUCT_ID_LINK"
         private val TAG = "ProductDetailActivity"
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_product_detail)

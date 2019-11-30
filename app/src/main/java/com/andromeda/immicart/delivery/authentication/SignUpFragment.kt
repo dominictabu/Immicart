@@ -1,6 +1,7 @@
 package com.andromeda.immicart.delivery.authentication
 
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -8,6 +9,12 @@ import android.view.View
 import android.view.ViewGroup
 
 import com.andromeda.immicart.R
+import com.andromeda.immicart.delivery.ProductsPageActivity
+import com.google.firebase.auth.FirebaseAuth
+import android.util.Patterns
+import android.text.TextUtils
+import kotlinx.android.synthetic.main.fragment_sign_up.*
+import kotlin.math.sign
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -26,6 +33,9 @@ class SignUpFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
+    private lateinit var auth: FirebaseAuth
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -42,6 +52,81 @@ class SignUpFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_sign_up, container, false)
     }
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+        loadinglayout.visibility = View.GONE
+        create_account_btn.visibility = View.VISIBLE
+
+        auth = FirebaseAuth.getInstance()
+
+        create_account_btn.setOnClickListener {
+            val email = email_edittxt.text.toString()
+            val password = password.text.toString()
+            val name = first_name_edittxt.text.toString()
+
+            if (TextUtils.isEmpty(name) && !isEmailValid(email = email) && !isPasswordValid(password)) {
+                error_name_edittext.visibility = View.VISIBLE
+                error_email_edittext.visibility = View.VISIBLE
+                error_password_edittext.visibility = View.VISIBLE
+
+            } else if (TextUtils.isEmpty(name) && !isEmailValid(email = email)) {
+                error_name_edittext.visibility = View.VISIBLE
+                error_email_edittext.visibility = View.VISIBLE
+            } else if (TextUtils.isEmpty(name) && !isPasswordValid(password)) {
+                error_name_edittext.visibility = View.VISIBLE
+                error_password_edittext.visibility = View.VISIBLE
+            } else if (TextUtils.isEmpty(name)) {
+                error_name_edittext.visibility = View.VISIBLE
+
+            } else if(!isEmailValid(email = email)) {
+                error_email_edittext.visibility = View.VISIBLE
+
+
+            } else if (!isPasswordValid(password)) {
+                error_password_edittext.visibility = View.VISIBLE
+
+
+            } else {
+                error_name_edittext.visibility = View.GONE
+                error_email_edittext.visibility = View.GONE
+                error_password_edittext.visibility = View.GONE
+
+                signIn(email, password)
+            }
+
+        }
+
+    }
+
+
+    fun signIn(email: String, password: String) {
+        loadinglayout.visibility = View.VISIBLE
+        create_account_btn.visibility = View.GONE
+        auth.createUserWithEmailAndPassword(email, password)
+            .addOnCompleteListener {
+                if(it.isSuccessful) {
+                    val intent : Intent = Intent(activity!!, ProductsPageActivity::class.java)
+                    startActivity(intent)
+
+                } else {
+
+                }
+            }
+
+    }
+
+    private fun isEmailValid(email: String): Boolean {
+        return Patterns.EMAIL_ADDRESS.matcher(email).matches()
+    }
+
+    fun isPasswordValid(password: String): Boolean {
+        return if (TextUtils.isEmpty(password)) {
+            false
+        } else
+            password.length >= 6
+
+    }
 
     companion object {
         /**

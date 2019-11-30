@@ -29,11 +29,11 @@ import kotlin.collections.ArrayList
 
 
 class PickDeliveryLocationActivity : AppCompatActivity(), PlacesAutoCompleteAdapter.OnItemClickListener {
+
     override fun OnItemClick(place: com.andromeda.immicart.delivery.Place?) {
 
         place?.let {
             latestPlace = it
-
         }
         address_one.text = place?.name
         address_two.text = place?.address
@@ -148,8 +148,6 @@ class PickDeliveryLocationActivity : AppCompatActivity(), PlacesAutoCompleteAdap
 
                         }
 
-
-
                     }
 
                     initializePlacesAutoCompleteRecycler(placesArrayList)
@@ -162,9 +160,6 @@ class PickDeliveryLocationActivity : AppCompatActivity(), PlacesAutoCompleteAdap
             }
 
         })
-
-
-
 
 //        // Set the fields to specify which types of place data to
 //        // return after the user has made a selection.

@@ -51,40 +51,67 @@ class OrdersListFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        database = FirebaseDatabase.getInstance().reference
         retrieveOrders()
-        getOrders()
+//        getOrders()
 
     }
 
 
     fun retrieveOrders() {
         val ordersArray = arrayListOf<Order>()
+        val db = FirebaseFirestore.getInstance()
 
-        // My top posts by number of stars
-        val myOrdersQuery = database.child("orders")
-        myOrdersQuery.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                for (postSnapshot in dataSnapshot.children) {
+
+        val docRef = db.collection("orders")
+        docRef.addSnapshotListener { snapshot, e ->
+            if (e != null) {
+                Log.w(TAG, "Listen failed.", e)
+                return@addSnapshotListener
+            }
+
+            if (snapshot != null) {
+                Log.d(TAG, "Current data: ${snapshot.documents}")
+                for (postSnapshot in snapshot.documents) {
                     // TODO: handle the post
-                    val order = postSnapshot.getValue(Order::class.java)
+                    val order = postSnapshot.toObject(Order::class.java)
+
                     order?.let {
 
                         ordersArray.add(it)
                     }
-
                 }
-
                 initializeRecyclerView(ordersArray)
+
+            } else {
+                Log.d(TAG, "Current data: null")
             }
+        }
 
 
-            override fun onCancelled(databaseError: DatabaseError) {
-                // Getting Post failed, log a message
-                Log.w(TAG, "loadPost:onCancelled", databaseError.toException())
-                // ...
-            }
-        })
+//        // My top posts by number of stars
+//        val myOrdersQuery = database.child("orders")
+//        myOrdersQuery.addValueEventListener(object : ValueEventListener {
+//            override fun onDataChange(dataSnapshot: DataSnapshot) {
+//                for (postSnapshot in dataSnapshot.children) {
+//                    // TODO: handle the post
+//                    val order = postSnapshot.getValue(Order::class.java)
+//                    order?.let {
+//
+//                        ordersArray.add(it)
+//                    }
+//
+//                }
+//
+//                initializeRecyclerView(ordersArray)
+//            }
+//
+//
+//            override fun onCancelled(databaseError: DatabaseError) {
+//                // Getting Post failed, log a message
+//                Log.w(TAG, "loadPost:onCancelled", databaseError.toException())
+//                // ...
+//            }
+//        })
 
     }
 
@@ -110,7 +137,7 @@ class OrdersListFragment : Fragment() {
 
 
         db.collection(collectionPath)
-            .whereEqualTo("customerUID", customerId)
+//            .whereEqualTo("customerUID", customerId)
             .get()
             .addOnSuccessListener { documents ->
                 for (document in documents) {
