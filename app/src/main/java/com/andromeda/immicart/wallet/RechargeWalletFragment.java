@@ -19,8 +19,7 @@ import com.androidstudy.daraja.util.TransactionType;
 import com.andromeda.immicart.R;
 import com.andromeda.immicart.checkout.CheckoutActivity;
 
-import static com.andromeda.immicart.checkout.Constants.IMMICART_CONSUMER_KEY;
-import static com.andromeda.immicart.checkout.Constants.IMMICART_CONSUMER_SECRET;
+import static com.andromeda.immicart.checkout.Constants.*;
 
 
 public class RechargeWalletFragment extends Fragment {
@@ -28,7 +27,7 @@ public class RechargeWalletFragment extends Fragment {
     Daraja daraja;
     String phoneNumber; //Get this from the user input
     String paybillNumber = "174379";
-    static final String passKey = "bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919";
+    static final String passKey = IMMICART_PASS_KEY;
     String amount = ""; //Fetch this information from the amount
     String partyA = "";
     String partyB = "";
@@ -83,7 +82,6 @@ public class RechargeWalletFragment extends Fragment {
 
 
 
-        //TODO :: REPLACE WITH YOUR OWN CREDENTIALS  :: THIS IS SANDBOX DEMO
         LNMExpress lnmExpress = new LNMExpress(
                 paybillNumber, //Supermarket paybill number to be fetched at runtime
                 passKey,  //Api pass key to be stored in the config file. This one is for testing
