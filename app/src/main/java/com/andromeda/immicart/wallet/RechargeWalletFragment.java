@@ -24,18 +24,16 @@ import static com.andromeda.immicart.checkout.Constants.*;
 
 public class RechargeWalletFragment extends Fragment {
     private static final String TAG = "CheckoutActivity";
-    Daraja daraja;
+    private Daraja daraja;
     String phoneNumber; //Get this from the user input
-    String paybillNumber = "174379";
+    private String paybillNumber = "174379";
     static final String passKey = IMMICART_PASS_KEY;
-    String amount = ""; //Fetch this information from the amount
-    String partyA = "";
-    String partyB = "";
-    static final String callbackUrl = ""; //Use our callback url
-    String accountReference = "";
-    String transactionDescription = "";
-
-
+    private String amount = ""; //Fetch this information from the amount
+    private String partyA = "";
+    private String partyB = "";
+    private static final String callbackUrl = ""; //Use our callback url
+    private String accountReference = "";
+    private String transactionDescription = "";
 
 
 
