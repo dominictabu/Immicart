@@ -12,8 +12,6 @@ import com.andromeda.immicart.R
 import com.andromeda.immicart.networking.ImmicartAPIService
 import com.andromeda.immicart.networking.Model
 import com.facebook.shimmer.ShimmerFrameLayout
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.item_category.view.*
 import kotlinx.android.synthetic.main.item_product_in_cart.view.*
 import java.text.DecimalFormat
@@ -44,12 +42,15 @@ class ProductsAdapter (val context: Context, val addQuantityClickListener: (Deli
 
     var categoriesPr: ArrayList<__Product__> = ArrayList()
     lateinit var changeCartItemNumberPopUp: PopupWindow
+    lateinit var storeId_: String
 
     private var TAG = "ProductsAdapter"
 
 
-    fun updateList( items : ArrayList<__Product__>) {
+
+    fun updateList( items : ArrayList<__Product__>, storeId: String) {
         categoriesPr = items
+        storeId_ = storeId
         notifyDataSetChanged()
 
     }
@@ -191,6 +192,7 @@ class ProductsAdapter (val context: Context, val addQuantityClickListener: (Deli
         }
 
     private val PRODUCT_ID = "PRODUCT_ID"
+    private val STORE_ID = "STORE_ID"
 
     inner class CartItemsAdapterViewHolder (view: View) : RecyclerView.ViewHolder(view) {
         // Holds the TextView that will add each animal to
@@ -214,6 +216,7 @@ class ProductsAdapter (val context: Context, val addQuantityClickListener: (Deli
             itemView.setOnClickListener {
                 val intent = Intent(itemView.context, ProductDetailActivity::class.java)
                 intent.putExtra(PRODUCT_ID, cartItem.key)
+                intent.putExtra(STORE_ID, storeId_)
                 itemView.context.startActivity(intent)
             }
             offer_price.text = "KES $priceFormattedString"
@@ -272,6 +275,8 @@ class ProductsAdapter (val context: Context, val addQuantityClickListener: (Deli
             itemView.setOnClickListener {
                 val intent = Intent(itemView.context, ProductDetailActivity::class.java)
                 intent.putExtra(PRODUCT_ID, cartItem.key)
+                intent.putExtra(STORE_ID, storeId_)
+
                 itemView.context.startActivity(intent)
             }
             offer_price.text = "KES $priceFormattedString"
@@ -313,15 +318,26 @@ class ProductsAdapter (val context: Context, val addQuantityClickListener: (Deli
 }
 
 
-class CategoryRecyclerAdapter(val storeId: String, val categories: List<__Category__>,  val context: Context, val addQuantityClickListener: (DeliveryCart, Int) -> Unit, val clickListener: (__Category__) -> Unit ): RecyclerView.Adapter<CategoryRecyclerAdapter.CategoryViewHolder>() {
+ class CategoryRecyclerAdapter(val storeId: String, val categories: List<__Category__>,  val context: Context, val addQuantityClickListener: (DeliveryCart, Int) -> Unit, val clickListener: (__Category__) -> Unit ): RecyclerView.Adapter<CategoryRecyclerAdapter.CategoryViewHolder>() {
 
     private val TAG = "CategoryRecyclerAdapter"
-    var  deliveryCartItems: ArrayList<DeliveryCart> = ArrayList()
+    var deliveryCartItems: ArrayList<DeliveryCart> = ArrayList()
+    var isLoading = false
+    var isMoreDataAvailable_ = false
+
+    fun setIsLoading(is_Loading: Boolean) {
+        isLoading = is_Loading
+    }
+
+    public fun setMoreDataAvailable(moreDataAvailable: Boolean) {
+        isMoreDataAvailable_ = moreDataAvailable;
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryViewHolder {
         return CategoryViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_category, parent, false))
     }
 
-    fun updateItems( items : ArrayList<DeliveryCart>) {
+    fun updateItems(items: ArrayList<DeliveryCart>) {
         deliveryCartItems = items
         notifyDataSetChanged()
 
@@ -383,19 +399,19 @@ class CategoryRecyclerAdapter(val storeId: String, val categories: List<__Catego
 //
 //    }
 
-    fun getCategoryProducts(category : String,  shimmerFrameLayout: ShimmerFrameLayout, adapter: ProductsAdapter) {
+    fun getCategoryProducts(category: String, shimmerFrameLayout: ShimmerFrameLayout, adapter: ProductsAdapter) {
         val collectionPath = "stores/" + storeId + "/offers"
         val products = FirebaseFirestore.getInstance().collection(collectionPath)
 //            .whereEqualTo("categoryOne", category)
             .limit(10)
 
         var productsArray: ArrayList<__Product__> = ArrayList()
-        products.get().addOnSuccessListener { documentSnapshots  ->
+        products.get().addOnSuccessListener { documentSnapshots ->
             for (document in documentSnapshots) {
                 val offer = document.data as HashMap<String, Any>
                 val productName = offer["name"] as String
                 val deadline = offer["deadline"] as String
-                val normalPrice : String = offer["normal_price"] as String
+                val normalPrice: String = offer["normal_price"] as String
                 val offerPrice = offer["offer_price"] as String
                 val category = offer["categoryOne"]
                 var barcode = offer["barcode"] as String?
@@ -408,8 +424,10 @@ class CategoryRecyclerAdapter(val storeId: String, val categories: List<__Catego
                     barcode = "Not Set"
                 }
 
-                val deliveryCart = DeliveryCart(document.id, barcode, productName, intOfferPrice, intNormalPrice, 1, fileURL)
-                val product = __Product__(document.id, barcode, productName, intOfferPrice, intNormalPrice, 1, fileURL, false)
+                val deliveryCart =
+                    DeliveryCart(document.id, barcode, productName, intOfferPrice, intNormalPrice, 1, fileURL)
+                val product =
+                    __Product__(document.id, barcode, productName, intOfferPrice, intNormalPrice, 1, fileURL, false)
                 productsArray.add(product)
 //                deliveryCartItems.forEach {
 //                    if(it.key == deliveryCart.key) {
@@ -422,8 +440,8 @@ class CategoryRecyclerAdapter(val storeId: String, val categories: List<__Catego
 //                    }
 //                }
 
-                }
-            adapter.updateList(productsArray)
+            }
+            adapter.updateList(productsArray, storeId)
 
             shimmerFrameLayout.stopShimmerAnimation()
             shimmerFrameLayout.visibility = View.GONE
@@ -432,12 +450,12 @@ class CategoryRecyclerAdapter(val storeId: String, val categories: List<__Catego
     }
 
 
-    fun addProductItems(deliveryItems : List<DeliveryCart>, products: List<Model.Product_>) {
+    fun addProductItems(deliveryItems: List<DeliveryCart>, products: List<Model.Product_>) {
 
 
     }
 
-    inner class CategoryViewHolder(view : View) : RecyclerView.ViewHolder(view) {
+    inner class CategoryViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         fun bindItems(category: __Category__) {
             itemView.category_tv.text = category.name
@@ -454,7 +472,7 @@ class CategoryRecyclerAdapter(val storeId: String, val categories: List<__Catego
             recyclerView.setLayoutManager(linearLayoutManager)
             val productsAdapter = ProductsAdapter(context, addQuantityClickListener)
             recyclerView.adapter = productsAdapter
-            getCategoryProducts(category.name!!,itemView.parentShimmerLayout, productsAdapter )
+            getCategoryProducts(category.name!!, itemView.parentShimmerLayout, productsAdapter)
 //            retrieveCategoryProducts(categoryId, itemView.parentShimmerLayout, productsAdapter)
 
             itemView.view_all_tv.setOnClickListener {
@@ -473,56 +491,81 @@ class CategoryRecyclerAdapter(val storeId: String, val categories: List<__Catego
 
     override fun onBindViewHolder(holder: CategoryViewHolder, position: Int) {
         holder.bindItems(categories.get(position))
+        //check for last item
+//        if ((position >= itemCount - 1 && isLoading && isMoreDataAvailable_))
+//            isLoading = false;
+//            load();
+//        }
     }
-
 }
 
 
-class SubCategoryRecyclerAdapter(val subCategories : ArrayList<Model.Category_>) : RecyclerView.Adapter<SubCategoryRecyclerAdapter.SubCategoryViewHolder>() {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SubCategoryViewHolder {
-        return SubCategoryViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_subcategory, parent, false))
-    }
+    class SubCategoryRecyclerAdapter(val subCategories: ArrayList<__Category__>, val clickListener: (__Category__) -> Unit) :
+        RecyclerView.Adapter<SubCategoryRecyclerAdapter.SubCategoryViewHolder>() {
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SubCategoryViewHolder {
+            return SubCategoryViewHolder(
+                LayoutInflater.from(parent.context).inflate(
+                    R.layout.item_subcategory,
+                    parent,
+                    false
+                )
+            )
+        }
 
-    override fun getItemCount(): Int {
-        return subCategories.size
-    }
+        override fun getItemCount(): Int {
+            return subCategories.size
+        }
 
-    override fun onBindViewHolder(holder: SubCategoryViewHolder, position: Int) {
+        override fun onBindViewHolder(holder: SubCategoryViewHolder, position: Int) {
 
-        if(subCategories.size > 0) {
-            val subCategory = subCategories[position]
-            holder.itemView.subcategory_tv.text = subCategory.name
+            if (subCategories.size > 0) {
+                val subCategory = subCategories[position]
+                holder.itemView.subcategory_tv.text = subCategory.name
+                holder.itemView.setOnClickListener {
+                    clickListener(subCategory)
+                }
+
+            }
+        }
+
+
+        inner class SubCategoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         }
     }
 
 
-    inner class SubCategoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class SearchSuggestionsAdapter(val suggestions: ArrayList<__Category__>, val clickListener: (__Category__) -> Unit) :
+        RecyclerView.Adapter<SearchSuggestionsAdapter.SearchSuggestionsViewHolder>() {
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchSuggestionsViewHolder {
+            return SearchSuggestionsViewHolder(
+                LayoutInflater.from(parent.context).inflate(
+                    R.layout.item_search_suggestion,
+                    parent,
+                    false
+                )
+            )
+        }
 
-    }
-}
+        override fun getItemCount(): Int {
+            return suggestions.size
+        }
 
+        override fun onBindViewHolder(holder: SearchSuggestionsViewHolder, position: Int) {
+            if (suggestions.size > 0) {
+                val subCategory = suggestions[position]
+                holder.itemView.search_sugg_text.text = subCategory.name
+                holder.itemView.setOnClickListener {
+                    clickListener(subCategory)
+                }
 
-class SearchSuggestionsAdapter(val suggestions: ArrayList<Model.Category_>) : RecyclerView.Adapter<SearchSuggestionsAdapter.SearchSuggestionsViewHolder>(){
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchSuggestionsViewHolder {
-        return SearchSuggestionsViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_search_suggestion, parent, false))
-    }
+            }
+        }
 
-    override fun getItemCount(): Int {
-        return suggestions.size
-    }
-
-    override fun onBindViewHolder(holder: SearchSuggestionsViewHolder, position: Int) {
-        if(suggestions.size > 0) {
-            val subCategory = suggestions[position]
-            holder.itemView.search_sugg_text.text = subCategory.name
+        inner class SearchSuggestionsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         }
     }
 
-    inner class SearchSuggestionsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
-    }
-}
 
 

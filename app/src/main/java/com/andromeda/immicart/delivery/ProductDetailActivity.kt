@@ -42,6 +42,7 @@ class ProductDetailActivity : AppCompatActivity() {
     companion object {
 
         public val PRODUCT_ID = "PRODUCT_ID"
+        public val STORE_ID = "STORE_ID"
         public val QUERY_PARAM_PRODUCT_ID = "QUERY_PARAM_PRODUCT_ID"
         private val PRODUCT_ID_LINK = "PRODUCT_ID_LINK"
         private val TAG = "ProductDetailActivity"
@@ -60,22 +61,23 @@ class ProductDetailActivity : AppCompatActivity() {
         supportActionBar!!.setHomeButtonEnabled(true);
         supportActionBar!!.setDisplayHomeAsUpEnabled(true);
 
-        viewModel.currentStores().observe(this, Observer { stores ->
-            if(stores.size > 0) {
-                val currentStore = stores.get(0)
-                val storeId = currentStore.key
-                if(intent.hasExtra(PRODUCT_ID)) {
+                if (intent.hasExtra(PRODUCT_ID) && intent.hasExtra(STORE_ID)) {
+
 //            productIDLink = intent.getStringExtra(PRODUCT_ID_LINK)
                     val id = intent.getStringExtra(PRODUCT_ID)
+                    val storeId = intent.getStringExtra(STORE_ID)
                     productID = id.toString()
                     getProductFromFirestore(storeId)
+                }
+
+
 //            getProduct(id)
                     viewModel.allDeliveryItems().observe(this, Observer { items ->
 
                         Log.d(TAG, "CartItems: $items")
                         items?.let {
                             it.forEach {
-                                if (id == it.key) {
+                                if (productID == it.key) {
                                     existsInCart = true
                                 }
                             }
@@ -101,7 +103,7 @@ class ProductDetailActivity : AppCompatActivity() {
                         var currentQuantityInt = currentQuantityString.toInt()
 
                         if(existsInCart) {
-                            viewModel.updateQuantity(id, currentQuantityInt)
+                            viewModel.updateQuantity(productID!!, currentQuantityInt)
                         } else {
                             deliveryCart?.let {
                                 viewModel.insert(it)
@@ -112,12 +114,9 @@ class ProductDetailActivity : AppCompatActivity() {
 
                     }
 
-                }
 
 
-            }
 
-        })
 
 
         share_ll.setOnClickListener {
@@ -192,6 +191,7 @@ class ProductDetailActivity : AppCompatActivity() {
             val documentPath = "stores/" + storeId + "/offers/" + productID
             db.document(documentPath).get().addOnSuccessListener { documentSnapshot ->
                 val offer = documentSnapshot.data as HashMap<String, Any>
+                val key = documentSnapshot.id
                 val productName = offer["name"] as String
                 val deadline = offer["deadline"] as String
                 val normalPrice : String = offer["normal_price"] as String
@@ -200,10 +200,15 @@ class ProductDetailActivity : AppCompatActivity() {
                 var barcode = offer["barcode"] as String?
                 val fileURL = offer["imageUrl"] as String
 
+                if(barcode == null) {
+                    barcode = "Not Set"
+                }
+
                 val intOfferPrice = offerPrice.toInt()
                 val intNormalPrice = normalPrice.toInt()
 
                 val savings = intNormalPrice - intOfferPrice
+                savings_tv.text = savings.toString()
 
                 product_description.text = productName
 
@@ -214,6 +219,9 @@ class ProductDetailActivity : AppCompatActivity() {
                 deals_off.text = _normalPrice
                 deals_off.paintFlags = deals_off.getPaintFlags() or Paint.STRIKE_THRU_TEXT_FLAG
                 Glide.with(this@ProductDetailActivity).load(fileURL).into(product_image)
+                //                    deliveryCart = DeliveryCart(singleProduct._id, singleProduct.barcode, singleProduct.name, singleProduct.price.toInt(), 1, singleProduct.image_url )
+
+                deliveryCart = DeliveryCart(key, barcode, productName, intOfferPrice, intNormalPrice, 1, fileURL)
 
             }
 

@@ -13,6 +13,7 @@ import com.andromeda.immicart.delivery.ProductsPageActivity
 import com.google.firebase.auth.FirebaseAuth
 import android.util.Patterns
 import android.text.TextUtils
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.fragment_sign_up.*
 import kotlin.math.sign
 
@@ -126,6 +127,21 @@ class SignUpFragment : Fragment() {
         } else
             password.length >= 6
 
+    }
+
+    fun createProfile(name: String, email: String, photoURL: String) {
+        val db = FirebaseFirestore.getInstance();
+        val userUID = FirebaseAuth.getInstance().uid
+        val documentPath = "users/$userUID"
+
+        val user = HashMap<String, Any>()
+        user.put("name", name)
+        user.put("email", email)
+        user.put("imageUrl", photoURL)
+
+        db.document(documentPath).set(user).addOnSuccessListener {
+
+        }
     }
 
     companion object {

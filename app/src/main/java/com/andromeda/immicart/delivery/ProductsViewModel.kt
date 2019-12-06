@@ -27,6 +27,10 @@ class ProductsViewModel(application: Application) : AndroidViewModel(application
 
 
     val categoryId = MutableLiveData<String>()
+    val searchWord = MutableLiveData<String>()
+    val categoryParent = MutableLiveData<__Category__>()
+    val categoryChildOne = MutableLiveData<__Category__>()
+    val categoryLastChild = MutableLiveData<__Category__>()
 
     init {
         // Gets reference to WordDao from WordRoomDatabase to construct
@@ -52,8 +56,25 @@ class ProductsViewModel(application: Application) : AndroidViewModel(application
     }
 
 
+
+
     fun setCategoryId(id: String) {
         categoryId.value = id
+    }
+    fun setSearchWord(word: String) {
+        searchWord.value = word
+    }
+
+    fun setCategoryParent(category: __Category__) {
+        categoryParent.value = category
+    }
+
+    fun setCategoryChildOne(category: __Category__) {
+        categoryChildOne.value = category
+    }
+
+    fun setCategoryLastChild(category: __Category__) {
+        categoryLastChild.value = category
     }
 
     fun allDeliveryItems() : LiveData<List<DeliveryCart>> {

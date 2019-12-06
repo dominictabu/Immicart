@@ -24,6 +24,7 @@ import com.andromeda.immicart.delivery.ProductsPageActivity
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.firestore.FirebaseFirestore
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -44,6 +45,7 @@ class CreateAccountFragment : Fragment() {
     private lateinit var mGoogleSignInClient: GoogleSignInClient
     private lateinit var auth: FirebaseAuth
 
+    val db = FirebaseFirestore.getInstance();
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -115,6 +117,9 @@ class CreateAccountFragment : Fragment() {
     private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
         try {
             val account = completedTask.getResult(ApiException::class.java)
+            val email = account?.email
+            val photoURL = account?.photoUrl
+            val displayName = account?.displayName
             account?.let {
                 firebaseAuthWithGoogle(account)
 
@@ -151,6 +156,21 @@ class CreateAccountFragment : Fragment() {
 
                 // ...
             }
+    }
+
+    fun createProfile(name: String, email: String, photoURL: String) {
+        val db = FirebaseFirestore.getInstance();
+        val userUID = FirebaseAuth.getInstance().uid
+        val documentPath = "users/$userUID"
+
+        val user = HashMap<String, Any>()
+        user.put("name", name)
+        user.put("email", email)
+        user.put("imageUrl", photoURL)
+
+        db.document(documentPath).set(user).addOnSuccessListener {
+
+        }
     }
 
 

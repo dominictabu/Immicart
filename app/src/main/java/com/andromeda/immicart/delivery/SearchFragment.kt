@@ -1,17 +1,22 @@
 package com.andromeda.immicart.delivery
 
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 import com.andromeda.immicart.R
 import com.andromeda.immicart.networking.Model
+import com.google.firebase.firestore.FirebaseFirestore
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
@@ -34,6 +39,9 @@ class SearchFragment : Fragment() {
     private var param2: String? = null
     var disposable: Disposable? = null
     private var TAG = "SearchFragment"
+    val db = FirebaseFirestore.getInstance();
+    private lateinit var viewModel: ProductsViewModel
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,8 +61,53 @@ class SearchFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        viewModel = ViewModelProviders.of(activity!!).get(ProductsViewModel::class.java)
 
-        retrieveCategories()
+        viewModel.currentStores().observe(activity!!, Observer {
+            it?.let {
+                if(it.size > 0) {
+                    Log.d(TAG, "Stores size more than 0")
+                    val store = it[0]
+                    val storeId = store.key
+                    val storeName = store.name
+                    search_view_search_fragment.queryHint = "Search $storeName"
+                    getCategories(storeId)
+
+
+
+                } else {
+                    Log.d(TAG, "Stores size 0")
+
+                }
+
+
+            }
+        })
+
+        viewModel.allDeliveryItems().observe(activity!!, Observer { items ->
+
+            Log.d(TAG, "CartItems: $items")
+            items?.let {
+                cartItems = it
+                val cartIteemsNumber = it.size
+                badge.text = cartIteemsNumber.toString()
+                Log.d(TAG, "CartItems Length: ${items.count()}")
+
+//                categoryRecyclerAdapter?.updateItems(it as ArrayList<DeliveryCart>)
+
+            }
+        })
+
+        cart_frame_layout.setOnClickListener {
+
+            startActivity(Intent(activity!!,DeliveryCartActivity::class.java))
+        }
+
+
+
+
+
+//        retrieveCategories()
     }
 
 
@@ -74,7 +127,7 @@ class SearchFragment : Fragment() {
                         result?.let {
                             Log.d(TAG, "Categories: $it")
 
-                            intializeRecycler(it)
+//                            intializeRecycler(it)
                         }
 
                     },
@@ -85,14 +138,60 @@ class SearchFragment : Fragment() {
                 )
     }
 
+    fun getCategories(storeId: String) {
+        val collectionPath = "stores/" + storeId + "/categories"
+        val first = db.collection(collectionPath)
+            .limit(10)
 
-    fun intializeRecycler(category: List<Model.Category_>) {
+        val categories = ArrayList<__Category__>()
+
+        first.get()
+            .addOnSuccessListener { documentSnapshots ->
+                // ...
+
+                // Get the last visible document
+
+                for (document in documentSnapshots) {
+                    Log.d(TAG, "${document.id} => ${document.data}")
+                    val category__ = document.data as HashMap<String, Any>
+                    val categoryName = category__["name"] as String
+                    val hasChildren = category__["hasChildren"] as Boolean
+                    val category = __Category__(document.id, categoryName, hasChildren)
+//                    val category = document.toObject(__Category__::class.java)
+                    categories.add(category)
+
+                    Log.d(TAG, "Category: $category")
+
+//                    val serviceFee = document.data.
+
+                }
+
+                intializeRecycler(categories)
+
+
+            }
+
+
+    }
+
+
+    fun searchTerm(category: __Category__) {
+
+        viewModel.setSearchWord(category.name!!)
+        findNavController().navigate(R.id.action_searchFragment_to_searchResultsFragment)
+
+    }
+
+
+
+    fun intializeRecycler(category: List<__Category__>) {
+
 
         val linearLayoutManager = LinearLayoutManager(activity!!, RecyclerView.VERTICAL, false)
         recycler_items_search.setNestedScrollingEnabled(false);
 
         recycler_items_search.setLayoutManager(linearLayoutManager)
-        val searchSuggestionsAdapter = SearchSuggestionsAdapter(category as ArrayList<Model.Category_>)
+        val searchSuggestionsAdapter = SearchSuggestionsAdapter(category as ArrayList<__Category__>, {category: __Category__ -> searchTerm(category)})
         recycler_items_search.setAdapter(searchSuggestionsAdapter)
     }
 

@@ -4,11 +4,8 @@ package com.andromeda.immicart.delivery
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.Display
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
@@ -18,6 +15,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.andromeda.immicart.R
 import com.andromeda.immicart.networking.ImmicartAPIService
 import com.andromeda.immicart.networking.Model
+import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.FirebaseFirestore
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
@@ -43,21 +42,26 @@ val immicartAPIService_ by lazy {
 
 class SubcategoriesFragment : Fragment() {
     // TODO: Rename and change types of parameters
-    private var categoryId: Int? = null
+    private var categoryId: String? = null
     private var param2: String? = null
 
-    private  var viewModel: ProductsViewModel? = null
+    private  lateinit var viewModel: ProductsViewModel
     lateinit var cartItems: List<DeliveryCart>
     private var TAG = "SubcategoriesFragment"
+    private var loading  = true
 
     var disposable: Disposable? = null
+    private lateinit var storeId: String
+    val db = FirebaseFirestore.getInstance();
+    private lateinit var lastVisibleSnapShot: DocumentSnapshot
+    val categories: ArrayList<__Category__> = ArrayList()
 
     var categoryRecyclerAdapter: CategoryRecyclerAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            categoryId = it.getInt(ARG_CATEGORY_ID)
+            categoryId = it.getString(ARG_CATEGORY_ID)
 //            param2 = it.getString(ARG_PARAM2)
         }
     }
@@ -75,9 +79,30 @@ class SubcategoriesFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
 
 
-        viewModel = activity?.let {
-            ViewModelProviders.of(it).get(ProductsViewModel::class.java)
-        }
+        viewModel = ViewModelProviders.of(activity!!).get(ProductsViewModel::class.java)
+
+
+        viewModel.currentStores().observe(activity!!, Observer {
+            it?.let {
+                if(it.size > 0) {
+                    Log.d(TAG, "Stores size more than 0")
+                    val store = it[0]
+                    storeId = store.key
+                    getCategories()
+
+
+
+
+
+                } else {
+                    Log.d(TAG, "Stores size 0")
+
+                }
+
+
+            }
+        })
+
 
 
 
@@ -96,10 +121,39 @@ class SubcategoriesFragment : Fragment() {
         })
 
 
-        viewModel?.categoryId?.observe(this, Observer { id ->
+        viewModel?.categoryParent?.observe(this, Observer { category ->
+            categoryId = category.key
+            category_name.text = category.name
+
+
 //            retrieveCategories(id)
+            categoryId?.let {
+                getSubCategories(categoryId!!)
+            }
 
         })
+
+//        nested_scrolling_view.getViewTreeObserver().addOnScrollChangedListener(object : ViewTreeObserver.OnScrollChangedListener {
+//            override fun onScrollChanged() {
+//                nested_scrolling_view?.let {
+//
+//                    val view = nested_scrolling_view.getChildAt(nested_scrolling_view.getChildCount() - 1)
+//
+//                    val diff = (view.getBottom() - (nested_scrolling_view.getHeight() + nested_scrolling_view
+//                        .getScrollY()));
+//
+//                    if (diff == 0) {
+//                        // your pagination code
+//                        lastVisibleSnapShot?.let {
+//                            paginateToNext(lastVisibleSnapShot)
+//
+//                        }
+//
+//                    }
+//                }
+//            }
+//
+//        })
 
 
 //        categoryId?.let { retrieveCategories(it) }
@@ -117,12 +171,129 @@ class SubcategoriesFragment : Fragment() {
 
     }
 
-    fun intializeRecycler(categories: List<Model.Category_>) {
+
+    fun getSubCategories(categoryKey: String) {
+        val collectionPath = "stores/$storeId/categories/$categoryKey/subcategories"
+        val first = db.collection(collectionPath)
+
+        val subCategories = ArrayList<__Category__>()
+        first.get()
+            .addOnSuccessListener { documentSnapshots ->
+                // ...
+
+                // Get the last visible document
+
+                for (document in documentSnapshots) {
+                    Log.d(TAG, "${document.id} => ${document.data}")
+                    val category__ = document.data as HashMap<String, Any>
+                    val categoryName = category__["name"] as String
+                    val hasChildren = category__["hasChildren"] as Boolean
+                    val category = __Category__(document.id, categoryName, hasChildren)
+//                    val category = document.toObject(__Category__::class.java)
+                    subCategories.add(category)
+
+                    Log.d(TAG, "Category: $category")
+
+//                    val serviceFee = document.data.
+
+                }
+
+                initializeSubCategoryRecyclerView(subCategories)
+
+
+            }
+
+    }
+
+    fun getCategories() {
+        val collectionPath = "stores/" + storeId + "/categories"
+        val first = db.collection(collectionPath)
+            .limit(3)
+        categories.clear()
+
+        first.get()
+            .addOnSuccessListener { documentSnapshots ->
+                // ...
+
+                // Get the last visible document
+                lastVisibleSnapShot = documentSnapshots.documents[documentSnapshots.size() - 1]
+
+                for (document in documentSnapshots) {
+                    Log.d(TAG, "${document.id} => ${document.data}")
+                    val category__ = document.data as HashMap<String, Any>
+                    val categoryName = category__["name"] as String
+                    val hasChildren = category__["hasChildren"] as Boolean
+                    val category = __Category__(document.id, categoryName, hasChildren)
+//                    val category = document.toObject(__Category__::class.java)
+                    categories.add(category)
+
+                    Log.d(TAG, "Category: $category")
+
+//                    val serviceFee = document.data.
+
+                }
+
+                intializeRecycler(categories)
+
+
+            }
+
+
+    }
+
+    fun intializeRecycler(categories: List<__Category__>) {
 
         val linearLayoutManager = LinearLayoutManager(activity!!, RecyclerView.VERTICAL, false)
         products_items_recycler.setNestedScrollingEnabled(false);
 
         products_items_recycler.setLayoutManager(linearLayoutManager)
+        categoryRecyclerAdapter = CategoryRecyclerAdapter(storeId, categories, activity!!, { cartItem : DeliveryCart, newQuantity: Int -> cartItemClicked(cartItem, newQuantity)}, {category: __Category__ -> viewAll(category)})
+
+
+        products_items_recycler.setAdapter(categoryRecyclerAdapter)
+
+        var pastVisiblesItems : Int
+        var visibleItemCount: Int
+        var totalItemCount : Int;
+
+        products_items_recycler.addOnScrollListener(object: RecyclerView.OnScrollListener() {
+
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                Log.d(TAG, "Recycler view OnScrollListener onScrolled called")
+                if (dy > 0) //check for scroll down
+                {
+                    Log.d(TAG, "RecyclerView Scrolling down")
+                    visibleItemCount = linearLayoutManager.getChildCount();
+                    Log.d(TAG, "RecyclerView Scrolling down")
+
+                    totalItemCount = linearLayoutManager.getItemCount();
+                    Log.d(TAG, "RecyclerView Scrolling down")
+
+                    pastVisiblesItems = linearLayoutManager.findFirstVisibleItemPosition();
+                    Log.d(TAG, "RecyclerView Scrolling down")
+
+
+                    if (loading) {
+                        if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
+                            loading = false;
+                            Log.v("...", "Last Item Wow !");
+                            //Do pagination.. i.e. fetch new data
+                            paginateToNext(lastVisibleSnapShot)
+                        }
+                    }
+                }
+            }
+
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                Log.d(TAG, "Recycler view OnScrollListener onScrollStateChanged called")
+
+            }
+        })
+
+
+//
+//        })
 //        categoryRecyclerAdapter = CategoryRecyclerAdapter(storeId, categories, activity!!, { cartItem : DeliveryCart, newQuantity: Int -> cartItemClicked(cartItem, newQuantity)}, {category: Model.Category_ -> viewAll(category)})
 //        products_items_recycler.setAdapter(categoryRecyclerAdapter)
 
@@ -130,6 +301,55 @@ class SubcategoriesFragment : Fragment() {
 //
 //            You can use ViewCompat.setNestedScrollingEnabled(recyclerView, false); to disable nested scrolling for
 //            before and after API-21(Lollipop). Link to documentation.
+
+    }
+
+    fun paginateToNext(documentSnapshot: DocumentSnapshot) {
+        val collectionPath = "stores/" + storeId + "/categories"
+
+        val next = db.collection(collectionPath)
+            .startAfter(documentSnapshot)
+            .limit(3)
+
+        val categoriesArray = ArrayList<__Category__>()
+
+        next.get()
+            .addOnSuccessListener { documentSnapshots ->
+                // Get the last visible document
+                if(documentSnapshots.size() > 0) {
+                    lastVisibleSnapShot = documentSnapshots.documents[documentSnapshots.size() - 1]
+
+                    for (document in documentSnapshots) {
+                        Log.d(TAG, "${document.id} => ${document.data}")
+                        val category__ = document.data as HashMap<String, Any>
+                        val categoryName = category__["name"] as String
+                        val hasChildren = category__["hasChildren"] as Boolean
+                        val category = __Category__(document.id, categoryName, hasChildren)
+//                    val category = document.toObject(__Category__::class.java)
+                        categoriesArray.add(category)
+
+                        Log.d(TAG, "Category: $category")
+
+//                    val serviceFee = document.data.
+
+                    }
+
+                    val insertIndex = categories.size
+                    categories.addAll(insertIndex, categoriesArray);
+                    categoryRecyclerAdapter?.notifyItemRangeInserted(insertIndex, categoriesArray.size);
+
+
+
+                }
+
+
+
+
+
+            }
+
+
+
 
     }
 
@@ -177,8 +397,8 @@ class SubcategoriesFragment : Fragment() {
                                     val category = Model.Category_(it._id, it.name, null, null, it.link)
                                     categoriesData.add(category)
                                 }
-                                initializeSubCategoryRecyclerView(categoriesData)
-                                intializeRecycler(categoriesData)
+//                                initializeSubCategoryRecyclerView(categoriesData)
+//                                intializeRecycler(categoriesData)
 
                             } else {
 
@@ -189,26 +409,26 @@ class SubcategoriesFragment : Fragment() {
                     },
 
                     { error ->
-                        //                        showError(error.message)
+                        //showError(error.message)
                     }
                 )
     }
 
-    fun viewAll(category: Model.Category_) {
+    fun viewAll(category: __Category__) {
 
-        val subcategoriesFragment = SubcategoriesFragment.newInstance(category._id)
-
-        (activity!! as ProductsPageActivity).performFragmnetTransaction(subcategoriesFragment)
+        viewModel.setCategoryChildOne(category)
+        findNavController().navigate(R.id.action_subcategoriesFragment_to_subCategoryTwoFragment)
 
     }
 
 
-    fun initializeSubCategoryRecyclerView(subCategories: ArrayList<Model.Category_>) {
+    fun initializeSubCategoryRecyclerView(subCategories: ArrayList<__Category__>) {
+
         val linearLayoutManager = LinearLayoutManager(activity!!, RecyclerView.HORIZONTAL, false)
         subcategory_items_recycler.setNestedScrollingEnabled(false);
 
         subcategory_items_recycler.setLayoutManager(linearLayoutManager)
-        val categoryRecyclerAdapter = SubCategoryRecyclerAdapter(subCategories = subCategories)
+        val categoryRecyclerAdapter = SubCategoryRecyclerAdapter(subCategories, {category : __Category__ -> viewAll(category)})
         subcategory_items_recycler.setAdapter(categoryRecyclerAdapter)
     }
 
@@ -225,10 +445,10 @@ class SubcategoriesFragment : Fragment() {
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(categoryId: Int) =
+        fun newInstance(categoryId: String) =
             SubcategoriesFragment().apply {
                 arguments = Bundle().apply {
-                    putInt(ARG_CATEGORY_ID, categoryId)
+                    putString(ARG_CATEGORY_ID, categoryId)
 //                    putString(ARG_PARAM2, param2)
                 }
             }
