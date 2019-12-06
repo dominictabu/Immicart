@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 
 import com.andromeda.immicart.R
 import com.andromeda.immicart.checkout.CartImagesAdapter
+import com.andromeda.immicart.delivery.authentication.MyAccountActivity
 import com.andromeda.immicart.delivery.trackingorder.MapsActivity
 import com.andromeda.immicart.delivery.trackingorder.TrackOrderMapActivity
 import com.andromeda.immicart.networking.ImmicartAPIService
@@ -23,6 +24,8 @@ import com.andromeda.immicart.networking.Model
 import com.bumptech.glide.Glide
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.material.appbar.AppBarLayout
+import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.FirebaseFirestore
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
@@ -43,6 +46,9 @@ class ProductsFragment : Fragment() {
 
     var disposable: Disposable? = null
 
+    private lateinit var lastVisibleSnapShot: DocumentSnapshot
+    private var loading = true;
+
 
     private val mShimmerViewContainer: ShimmerFrameLayout? = null
 
@@ -51,7 +57,12 @@ class ProductsFragment : Fragment() {
         fun newInstance() = ProductsFragment()
     }
 
+
+    val db = FirebaseFirestore.getInstance();
+
+
     private lateinit var viewModel: ProductsViewModel
+    private lateinit var storeId: String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -64,7 +75,7 @@ class ProductsFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
 
         viewModel = ViewModelProviders.of(activity!!).get(ProductsViewModel::class.java)
-        viewModel.allDeliveryItems().observe(this, Observer { items ->
+        viewModel.allDeliveryItems().observe(activity!!, Observer { items ->
 
             Log.d(TAG, "CartItems: $items")
             items?.let {
@@ -77,6 +88,7 @@ class ProductsFragment : Fragment() {
 
             }
         })
+
 
 
 
@@ -104,8 +116,29 @@ class ProductsFragment : Fragment() {
 
         })
 
+        viewModel.currentStores().observe(activity!!, Observer {
+            it?.let {
+                if(it.size > 0) {
+                    Log.d(TAG, "Stores size more than 0")
+                    val store = it[0]
+                    storeId = store.key
+                    store_name.text = store.name
+                    Glide.with(activity!!).load(store.logoUrl).into(profile_image)
+                    getCategories()
 
-        viewModel.allDeliveryLocations().observe(this, androidx.lifecycle.Observer {
+
+
+                } else {
+                    Log.d(TAG, "Stores size 0")
+
+                }
+
+
+            }
+        })
+
+
+        viewModel.allDeliveryLocations().observe(activity!!, androidx.lifecycle.Observer {
 
             it?.let {
                 if(it.size > 0) {
@@ -123,7 +156,9 @@ class ProductsFragment : Fragment() {
 
 
 
-        retrieveCategories()
+
+
+//        retrieveCategories()
         // TODO: Use the ViewModel
 
 
@@ -133,7 +168,7 @@ class ProductsFragment : Fragment() {
         }
 
         myAccountIcon.setOnClickListener {
-            startActivity(Intent(activity!!, TrackOrderMapActivity::class.java))
+            startActivity(Intent(activity!!, MyAccountActivity::class.java))
 
         }
 
@@ -142,27 +177,72 @@ class ProductsFragment : Fragment() {
 
         }
 
+
 //        store_name.setOnClickListener {
 //            startActivity(Intent(activity!!, PickDeliveryLocationActivity::class.java))
 //
 //        }
 
 
+
     }
 
-    fun navigateToSubCategories(categoryId: Int) {
+    fun navigateToSubCategories(categoryId: String) {
         viewModel.setCategoryId(categoryId)
     }
 
 
-    fun intializeRecycler(categories: List<Model.Category_>) {
+    fun intializeRecycler(categories: List<__Category__>) {
 
-        val linearLayoutManager = LinearLayoutManager(activity!!, RecyclerView.VERTICAL, false)
+        val linearLayoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
         category_items_recycler.setNestedScrollingEnabled(false);
 
         category_items_recycler.setLayoutManager(linearLayoutManager)
-        categoryRecyclerAdapter = CategoryRecyclerAdapter(categories, activity!!, { cartItem : DeliveryCart, newQuantity: Int -> cartItemClicked(cartItem, newQuantity)}, {category: Model.Category_ -> viewAll(category)})
+        categoryRecyclerAdapter = CategoryRecyclerAdapter(storeId, categories, activity!!, { cartItem : DeliveryCart, newQuantity: Int -> cartItemClicked(cartItem, newQuantity)}, {category: __Category__ -> viewAll(category)})
         category_items_recycler.setAdapter(categoryRecyclerAdapter)
+
+
+        var pastVisiblesItems : Int
+        var visibleItemCount: Int
+        var totalItemCount : Int;
+
+        category_items_recycler.addOnScrollListener(object: RecyclerView.OnScrollListener() {
+
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                Log.d(TAG, "Recycler view OnScrollListener onScrolled called")
+                if(dy > 0) //check for scroll down
+                {
+                    Log.d(TAG, "RecyclerView Scrolling down")
+                    visibleItemCount = linearLayoutManager.getChildCount();
+                    Log.d(TAG, "RecyclerView Scrolling down")
+
+                    totalItemCount = linearLayoutManager.getItemCount();
+                    Log.d(TAG, "RecyclerView Scrolling down")
+
+                    pastVisiblesItems = linearLayoutManager.findFirstVisibleItemPosition();
+                    Log.d(TAG, "RecyclerView Scrolling down")
+
+
+                    if (loading)
+                    {
+                        if ( (visibleItemCount + pastVisiblesItems) >= totalItemCount)
+                        {
+                            loading = false;
+                            Log.v("...", "Last Item Wow !");
+                            //Do pagination.. i.e. fetch new data
+                            paginateToNext(lastVisibleSnapShot)
+                        }
+                    }
+                }
+            }
+
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                Log.d(TAG, "Recycler view OnScrollListener onScrollStateChanged called")
+
+            }
+
+        })
 
 //        By default setNestedScrollingEnabled works only after API-21.
 //
@@ -171,13 +251,13 @@ class ProductsFragment : Fragment() {
     }
 
 
-    fun viewAll(category: Model.Category_) {
+    fun viewAll(category: __Category__) {
 
 //        val subcategoriesFragment = SubcategoriesFragment.newInstance(category._id)
 //
 //        (activity!! as ProductsPageActivity).performFragmnetTransaction(subcategoriesFragment)
 
-        viewModel.setCategoryId(category._id)
+        viewModel.setCategoryId(category.key!!)
 
 //        val options = navOptions {
 //            anim {
@@ -194,33 +274,167 @@ class ProductsFragment : Fragment() {
     }
 
 
-    fun retrieveCategories() {
-        val retrofitResponse = immicartAPIService.categories
+//    fun getOffers() {
+//
+//        val db = FirebaseFirestore.getInstance()
+//        val collectionPath = "stores/"  + id +  "/offers"
+//
+//        val offers : ArrayList<Offer> = ArrayList()
+//        db.collection(collectionPath)
+//            .get()
+//            .addOnSuccessListener { documents ->
+//
+//                Log.d(TAG, "Offers: " + documents.documents)
+//
+//                for (document in documents) {
+//
+//                    val offer = document.data as HashMap<String, Any>
+//                    val productName = offer["name"] as String?
+//                    val deadline = offer["deadline"] as String
+//                    val normalPrice : String = offer["normal_price"] as String
+//                    val offerPrice = offer["offer_price"] as String
+//                    val category = offer["category"]
+//                    val barcode = offer["barcode"]
+//                    val fileURL = offer["imageUrl"] as String?
+//
+//
+//
+//
+//
+//                    val _offer = Offer(fileURL, productName, normalPrice, offerPrice)
+//
+//
+//                    offers.add(_offer)
+//
+//
+//                    Log.d(TAG, "${document.id} => ${document.data}")
+//                }
+//                loading_view.visibility = View.GONE
+//
+//                val offersRecyclerAdapter = OffersRecyclerAdapter(offers, activity)
+//                val linearLayoutManager : LinearLayoutManager = LinearLayoutManager(activity)
+//                offers_recycler_view.layoutManager = linearLayoutManager
+//                offers_recycler_view.adapter = offersRecyclerAdapter
+//                Log.w(TAG, "Starting Recycler view: ")
+//
+//
+//            }
+//            .addOnFailureListener { exception ->
+//                Log.w(TAG, "Error getting documents: ", exception)
+//            }
+//    }
 
-        Log.d(TAG, "retrieve Categories called")
-        disposable =
-            immicartAPIService.categories
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                    { result ->
 
-                        Log.d(TAG, "Results: $result")
+//    fun retrieveCategories() {
+//        val retrofitResponse = immicartAPIService.categories
+//
+//        Log.d(TAG, "retrieve Categories called")
+//        disposable =
+//            immicartAPIService.categories
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(
+//                    { result ->
+//
+//                        Log.d(TAG, "Results: $result")
+//
+//                        result?.let {
+//                            Log.d(TAG, "Categories: $it")
+//
+//                            intializeRecycler(it)
+//                            categoryRecyclerAdapter?.updateItems(cartItems as ArrayList<DeliveryCart>)
+//                        }
+//
+//                    },
+//
+//                    { error ->
+////                        showError(error.message)
+//                    }
+//                )
+//    }
 
-                        result?.let {
-                            Log.d(TAG, "Categories: $it")
 
-                            intializeRecycler(it)
-                            categoryRecyclerAdapter?.updateItems(cartItems as ArrayList<DeliveryCart>)
-                        }
+    fun getCategories() {
+        val collectionPath = "stores/" + storeId + "/categories"
+        val first = db.collection(collectionPath)
+            .limit(10)
 
-                    },
+        first.get()
+            .addOnSuccessListener { documentSnapshots ->
+                // ...
 
-                    { error ->
-//                        showError(error.message)
-                    }
-                )
+                // Get the last visible document
+                lastVisibleSnapShot = documentSnapshots.documents[documentSnapshots.size() - 1]
+
+                val categories: ArrayList<__Category__> = ArrayList()
+                for (document in documentSnapshots) {
+                    Log.d(TAG, "${document.id} => ${document.data}")
+                    val category__ = document.data as HashMap<String, Any>
+                    val categoryName = category__["name"] as String
+                    val hasChildren = category__["hasChildren"] as Boolean
+                    val category = __Category__(document.id, categoryName, hasChildren)
+//                    val category = document.toObject(__Category__::class.java)
+                    categories.add(category)
+
+                    Log.d(TAG, "Category: $category")
+
+//                    val serviceFee = document.data.
+
+                }
+
+                intializeRecycler(categories)
+
+
+            }
+
+
     }
+
+
+    fun paginateToNext(documentSnapshot: DocumentSnapshot) {
+        val collectionPath = "stores/" + storeId + "/categories"
+
+        val next = db.collection(collectionPath)
+            .orderBy("population")
+            .startAfter(documentSnapshot)
+            .limit(3)
+
+
+
+
+    }
+
+    fun getCategoryProducts(category : String) {
+        val collectionPath = "stores/" + storeId + "/offers"
+        val products = db.collection(collectionPath)
+            .whereEqualTo("categoryOne", category)
+            .limit(10)
+
+        products.get().addOnSuccessListener { documentSnapshots  ->
+            for (document in documentSnapshots) {
+                val offer = document.data as HashMap<String, Any>
+                val productName = offer["name"] as String
+                val deadline = offer["deadline"] as String
+                val normalPrice : String = offer["normal_price"] as String
+                val offerPrice = offer["offer_price"] as String
+                val category = offer["categoryOne"]
+                val barcode = offer["barcode"] as String
+                val fileURL = offer["imageUrl"] as String
+
+                val intOfferPrice = offerPrice.toInt()
+                val intNormalPrice = normalPrice.toInt()
+
+                val deliveryCart = DeliveryCart(document.id, barcode, productName, intOfferPrice, intNormalPrice, 1, fileURL)
+            }
+
+        }
+    }
+
+
+
+
+
+
 
     override fun onPause() {
         super.onPause()
@@ -236,7 +450,7 @@ class ProductsFragment : Fragment() {
 
         if (cartItems.contains(cartItem)) {
             Log.d(TAG, "CartItems contain the item")
-            viewModel.updateQuantity(cartItem._id, newQuantity)
+//            viewModel.updateQuantity(cartItem._id, newQuantity)
 
         } else {
             Log.d(TAG, "CartItems DO NOT  contain the item")

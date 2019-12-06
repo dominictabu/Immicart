@@ -58,7 +58,7 @@ class OrdersListFragment : Fragment() {
 
 
     fun retrieveOrders() {
-        val ordersArray = arrayListOf<Order>()
+        val ordersArray = arrayListOf<PlaceOrder>()
         val db = FirebaseFirestore.getInstance()
 
 
@@ -73,7 +73,7 @@ class OrdersListFragment : Fragment() {
                 Log.d(TAG, "Current data: ${snapshot.documents}")
                 for (postSnapshot in snapshot.documents) {
                     // TODO: handle the post
-                    val order = postSnapshot.toObject(Order::class.java)
+                    val order = postSnapshot.toObject(PlaceOrder::class.java)
 
                     order?.let {
 
@@ -116,7 +116,7 @@ class OrdersListFragment : Fragment() {
     }
 
 
-    fun initializeRecyclerView(orders: ArrayList<Order>) {
+    fun initializeRecyclerView(orders: ArrayList<PlaceOrder>) {
         recycler_items_orders
 
         val linearLayoutManager = LinearLayoutManager(activity!!, RecyclerView.VERTICAL, false)

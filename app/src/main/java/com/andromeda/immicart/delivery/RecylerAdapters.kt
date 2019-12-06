@@ -27,6 +27,7 @@ import android.widget.LinearLayout
 import android.widget.PopupWindow
 import android.widget.TextView
 import com.bumptech.glide.Glide
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.item_product.view.*
 import kotlinx.android.synthetic.main.item_product.view.normal_price
 import kotlinx.android.synthetic.main.item_product.view.offer_price
@@ -41,13 +42,13 @@ val _immicartAPIService by lazy {
 }
 class ProductsAdapter (val context: Context, val addQuantityClickListener: (DeliveryCart, Int) -> Unit) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    var categoriesPr: ArrayList<Model.Product_> = ArrayList()
+    var categoriesPr: ArrayList<__Product__> = ArrayList()
     lateinit var changeCartItemNumberPopUp: PopupWindow
 
     private var TAG = "ProductsAdapter"
 
 
-    fun updateList( items : ArrayList<Model.Product_>) {
+    fun updateList( items : ArrayList<__Product__>) {
         categoriesPr = items
         notifyDataSetChanged()
 
@@ -198,12 +199,12 @@ class ProductsAdapter (val context: Context, val addQuantityClickListener: (Deli
         val normal_price = view.normal_price
 //        val amount_off = view.save_amt
         val product_name = view.product_name
-        fun bindItem(cartItem: Model.Product_) {
+        fun bindItem(cartItem: __Product__) {
 
-            val deliveryCart = DeliveryCart(cartItem._id, cartItem.barcode, cartItem.name, cartItem.price, cartItem.quantity, cartItem.image_url)
+            val deliveryCart = DeliveryCart(cartItem.key, cartItem.barcode, cartItem.name, cartItem.offerPrice,cartItem.normalPrice, cartItem.quantity, cartItem.image_url)
             normal_price.setPaintFlags(normal_price.getPaintFlags() or Paint.STRIKE_THRU_TEXT_FLAG)
 
-            val price_ =  cartItem.price
+            val price_ =  cartItem.offerPrice
 
             val formatter = DecimalFormat("#,###,###");
             val priceFormattedString = formatter.format(price_.toInt());
@@ -212,7 +213,7 @@ class ProductsAdapter (val context: Context, val addQuantityClickListener: (Deli
 
             itemView.setOnClickListener {
                 val intent = Intent(itemView.context, ProductDetailActivity::class.java)
-                intent.putExtra(PRODUCT_ID, cartItem._id)
+                intent.putExtra(PRODUCT_ID, cartItem.key)
                 itemView.context.startActivity(intent)
             }
             offer_price.text = "KES $priceFormattedString"
@@ -256,12 +257,12 @@ class ProductsAdapter (val context: Context, val addQuantityClickListener: (Deli
         val normal_price = view.normal_price
 //        val amount_off = view.save_amt
         val product_name = view.product_name
-        fun bindItem(cartItem: Model.Product_) {
+        fun bindItem(cartItem: __Product__) {
 
-            val deliveryCart = DeliveryCart(cartItem._id, cartItem.barcode, cartItem.name, cartItem.price, cartItem.quantity, cartItem.image_url)
+            val deliveryCart = DeliveryCart(cartItem.key, cartItem.barcode, cartItem.name, cartItem.offerPrice, cartItem.normalPrice, cartItem.quantity, cartItem.image_url)
             normal_price.setPaintFlags(normal_price.getPaintFlags() or Paint.STRIKE_THRU_TEXT_FLAG)
 
-            val price_ =  cartItem.price
+            val price_ =  cartItem.offerPrice
 
             val formatter = DecimalFormat("#,###,###");
             val priceFormattedString = formatter.format(price_.toInt());
@@ -270,7 +271,7 @@ class ProductsAdapter (val context: Context, val addQuantityClickListener: (Deli
 
             itemView.setOnClickListener {
                 val intent = Intent(itemView.context, ProductDetailActivity::class.java)
-                intent.putExtra(PRODUCT_ID, cartItem._id)
+                intent.putExtra(PRODUCT_ID, cartItem.key)
                 itemView.context.startActivity(intent)
             }
             offer_price.text = "KES $priceFormattedString"
@@ -312,7 +313,7 @@ class ProductsAdapter (val context: Context, val addQuantityClickListener: (Deli
 }
 
 
-class CategoryRecyclerAdapter(val categories: List<Model.Category_>,  val context: Context, val addQuantityClickListener: (DeliveryCart, Int) -> Unit, val clickListener: (Model.Category_) -> Unit ): RecyclerView.Adapter<CategoryRecyclerAdapter.CategoryViewHolder>() {
+class CategoryRecyclerAdapter(val storeId: String, val categories: List<__Category__>,  val context: Context, val addQuantityClickListener: (DeliveryCart, Int) -> Unit, val clickListener: (__Category__) -> Unit ): RecyclerView.Adapter<CategoryRecyclerAdapter.CategoryViewHolder>() {
 
     private val TAG = "CategoryRecyclerAdapter"
     var  deliveryCartItems: ArrayList<DeliveryCart> = ArrayList()
@@ -325,54 +326,111 @@ class CategoryRecyclerAdapter(val categories: List<Model.Category_>,  val contex
         notifyDataSetChanged()
 
     }
-     fun retrieveCategoryProducts(id: Int, shimmerFrameLayout: ShimmerFrameLayout, adapter: ProductsAdapter) {
+//     fun retrieveCategoryProducts(id: Int, shimmerFrameLayout: ShimmerFrameLayout, adapter: ProductsAdapter) {
+//
+//         shimmerFrameLayout.stopShimmerAnimation()
+//         shimmerFrameLayout.visibility = View.GONE
+//         deliveryCartItems.forEach {
+//
+//         }
+//
+//
+//
+//         val retrofitResponse = _immicartAPIService.getCategoryProducts(id)
+//        immicartAPIService.getCategoryProducts(id)
+//            .subscribeOn(Schedulers.io())
+//            .observeOn(AndroidSchedulers.mainThread())
+//            .subscribe(
+//                { result ->
+//
+//                    Log.d(TAG, "Retrofit Products Results $result")
+//
+//
+//                    result.products?.let {
+//
+//                        Log.d(TAG, "Product Results $it")
+//                        shimmerFrameLayout.stopShimmerAnimation()
+//                        shimmerFrameLayout.visibility = View.GONE
+//
+//                        var listOfProducts = it as ArrayList<Model.Product_>
+//
+//                        it.forEach {
+//                            val product = it
+//                            val index = listOfProducts.indexOf(product)
+//
+//                            deliveryCartItems.forEach {
+//                                if(product._id == it._id) {
+//                                    product.isInCart = true
+//                                    val product__ = Model.Product_(product._id, product.barcode, product.name, product.price, product.quantity, product.image_url, product.id_link, product.code_link, true)
+//                                    listOfProducts.set(index, product__)
+//
+//
+//                                }
+//                            }
+//                        }
+//                        adapter.updateList(listOfProducts)
+//
+//                    }
+//
+//                },
+//
+//                { error ->
+//                    Log.d(TAG, "Retrofit Error: ${error.message}")
+//
+//                    //                        showError(error.message)
+//                }
+//            )
+//
+//    }
 
-         val retrofitResponse = _immicartAPIService.getCategoryProducts(id)
-        immicartAPIService.getCategoryProducts(id)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                { result ->
+    fun getCategoryProducts(category : String,  shimmerFrameLayout: ShimmerFrameLayout, adapter: ProductsAdapter) {
+        val collectionPath = "stores/" + storeId + "/offers"
+        val products = FirebaseFirestore.getInstance().collection(collectionPath)
+//            .whereEqualTo("categoryOne", category)
+            .limit(10)
 
-                    Log.d(TAG, "Retrofit Products Results $result")
+        var productsArray: ArrayList<__Product__> = ArrayList()
+        products.get().addOnSuccessListener { documentSnapshots  ->
+            for (document in documentSnapshots) {
+                val offer = document.data as HashMap<String, Any>
+                val productName = offer["name"] as String
+                val deadline = offer["deadline"] as String
+                val normalPrice : String = offer["normal_price"] as String
+                val offerPrice = offer["offer_price"] as String
+                val category = offer["categoryOne"]
+                var barcode = offer["barcode"] as String?
+                val fileURL = offer["imageUrl"] as String
 
+                val intOfferPrice = offerPrice.toInt()
+                val intNormalPrice = normalPrice.toInt()
 
-                    result.products?.let {
-
-                        Log.d(TAG, "Product Results $it")
-                        shimmerFrameLayout.stopShimmerAnimation()
-                        shimmerFrameLayout.visibility = View.GONE
-
-                        var listOfProducts = it as ArrayList<Model.Product_>
-
-                        it.forEach {
-                            val product = it
-                            val index = listOfProducts.indexOf(product)
-
-                            deliveryCartItems.forEach {
-                                if(product._id == it._id) {
-                                    product.isInCart = true
-                                    val product__ = Model.Product_(product._id, product.barcode, product.name, product.price, product.quantity, product.image_url, product.id_link, product.code_link, true)
-                                    listOfProducts.set(index, product__)
-
-
-                                }
-                            }
-                        }
-                        adapter.updateList(listOfProducts)
-
-                    }
-
-                },
-
-                { error ->
-                    Log.d(TAG, "Retrofit Error: ${error.message}")
-
-                    //                        showError(error.message)
+                if (barcode == null) {
+                    barcode = "Not Set"
                 }
-            )
 
+                val deliveryCart = DeliveryCart(document.id, barcode, productName, intOfferPrice, intNormalPrice, 1, fileURL)
+                val product = __Product__(document.id, barcode, productName, intOfferPrice, intNormalPrice, 1, fileURL, false)
+                productsArray.add(product)
+//                deliveryCartItems.forEach {
+//                    if(it.key == deliveryCart.key) {
+//                        val product = __Product__(document.id, barcode, productName, intOfferPrice, intNormalPrice, 1, fileURL, true)
+//                        productsArray.add(product)
+//
+//                    } else {
+//                        val product = __Product__(document.id, barcode, productName, intOfferPrice, intNormalPrice, 1, fileURL, false)
+//                        productsArray.add(product)
+//                    }
+//                }
+
+                }
+            adapter.updateList(productsArray)
+
+            shimmerFrameLayout.stopShimmerAnimation()
+            shimmerFrameLayout.visibility = View.GONE
+
+        }
     }
+
 
     fun addProductItems(deliveryItems : List<DeliveryCart>, products: List<Model.Product_>) {
 
@@ -381,12 +439,12 @@ class CategoryRecyclerAdapter(val categories: List<Model.Category_>,  val contex
 
     inner class CategoryViewHolder(view : View) : RecyclerView.ViewHolder(view) {
 
-        fun bindItems(category: Model.Category_) {
+        fun bindItems(category: __Category__) {
             itemView.category_tv.text = category.name
 
             val parentShimmerLayout = itemView.parentShimmerLayout
             parentShimmerLayout.startShimmerAnimation()
-            val categoryId = category._id
+            val categoryId = category.key
             val linearLayoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
 
             val recyclerView = itemView.productsRecyclerView
@@ -396,7 +454,8 @@ class CategoryRecyclerAdapter(val categories: List<Model.Category_>,  val contex
             recyclerView.setLayoutManager(linearLayoutManager)
             val productsAdapter = ProductsAdapter(context, addQuantityClickListener)
             recyclerView.adapter = productsAdapter
-            retrieveCategoryProducts(categoryId, itemView.parentShimmerLayout, productsAdapter)
+            getCategoryProducts(category.name!!,itemView.parentShimmerLayout, productsAdapter )
+//            retrieveCategoryProducts(categoryId, itemView.parentShimmerLayout, productsAdapter)
 
             itemView.view_all_tv.setOnClickListener {
                 clickListener(category)

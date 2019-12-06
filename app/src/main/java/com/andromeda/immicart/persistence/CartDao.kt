@@ -14,7 +14,7 @@ interface CartDao {
     @Query("SELECT * from cart ORDER BY primaryKeyId ASC")
     fun getAllCartItems(): LiveData<List<Cart>>
 
-    @Query("SELECT * from delivery_cart ORDER BY _id ASC")
+    @Query("SELECT * from delivery_cart ORDER BY itemId ASC")
     fun getAllDeliveryCartItems(): LiveData<List<DeliveryCart>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -27,8 +27,8 @@ interface CartDao {
     @Query("UPDATE cart SET quantity = :quantity  WHERE primaryKeyId = :id")
     suspend fun updateQuantity(id: Int, quantity: Int)
 
-    @Query("UPDATE delivery_cart SET quantity = :quantity  WHERE _id = :id")
-    suspend fun updateDeliveryItemQuantity(id: Int, quantity: Int)
+    @Query("UPDATE delivery_cart SET quantity = :quantity  WHERE itemKey = :id")
+    suspend fun updateDeliveryItemQuantity(id: String, quantity: Int)
 
     @Query("DELETE FROM cart")
     suspend fun deleteAll()
@@ -39,7 +39,7 @@ interface CartDao {
     @Query("DELETE FROM cart WHERE primaryKeyId = :id")
     suspend fun deleteById(id: Int)
 
-    @Query("DELETE FROM delivery_cart WHERE _id = :id")
+    @Query("DELETE FROM delivery_cart WHERE itemId = :id")
     suspend fun deleteByDeliveryItemId(id: Int)
 
 

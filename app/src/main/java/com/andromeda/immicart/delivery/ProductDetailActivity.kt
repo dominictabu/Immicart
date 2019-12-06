@@ -24,6 +24,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 import android.content.Intent
 import com.google.firebase.dynamiclinks.ShortDynamicLink
+import com.google.firebase.firestore.FirebaseFirestore
 
 
 class ProductDetailActivity : AppCompatActivity() {
@@ -35,6 +36,8 @@ class ProductDetailActivity : AppCompatActivity() {
     var deliveryCart : DeliveryCart? = null
     var productIDLink : String? = null
     var productID : String? = null
+    val db = FirebaseFirestore.getInstance()
+
 
     companion object {
 
@@ -57,54 +60,65 @@ class ProductDetailActivity : AppCompatActivity() {
         supportActionBar!!.setHomeButtonEnabled(true);
         supportActionBar!!.setDisplayHomeAsUpEnabled(true);
 
-        if(intent.hasExtra(PRODUCT_ID)) {
+        viewModel.currentStores().observe(this, Observer { stores ->
+            if(stores.size > 0) {
+                val currentStore = stores.get(0)
+                val storeId = currentStore.key
+                if(intent.hasExtra(PRODUCT_ID)) {
 //            productIDLink = intent.getStringExtra(PRODUCT_ID_LINK)
-            val id = intent.getIntExtra(PRODUCT_ID, -1)
-            productID = id.toString()
-            getProduct(id)
-            viewModel.allDeliveryItems().observe(this, Observer { items ->
+                    val id = intent.getStringExtra(PRODUCT_ID)
+                    productID = id.toString()
+                    getProductFromFirestore(storeId)
+//            getProduct(id)
+                    viewModel.allDeliveryItems().observe(this, Observer { items ->
 
-                Log.d(TAG, "CartItems: $items")
-                items?.let {
-                    it.forEach {
-                        if (id == it._id) {
-                            existsInCart = true
+                        Log.d(TAG, "CartItems: $items")
+                        items?.let {
+                            it.forEach {
+                                if (id == it.key) {
+                                    existsInCart = true
+                                }
+                            }
+
                         }
+
+                        if (existsInCart) {
+                            addToCartButton.text = "Update Quantity"
+                        } else {
+                            addToCartButton.text = "Add to cart"
+
+                        }
+                    })
+
+
+
+
+                    updateQty()
+
+
+                    addToCartButton.setOnClickListener {
+                        var currentQuantityString = quantityTv.text.toString()
+                        var currentQuantityInt = currentQuantityString.toInt()
+
+                        if(existsInCart) {
+                            viewModel.updateQuantity(id, currentQuantityInt)
+                        } else {
+                            deliveryCart?.let {
+                                viewModel.insert(it)
+
+                            }
+                        }
+
+
                     }
 
-                }
-
-                if (existsInCart) {
-                    addToCartButton.text = "Update Quantity"
-                } else {
-                    addToCartButton.text = "Add to cart"
-
-                }
-            })
-
-
-
-
-            updateQty()
-
-
-            addToCartButton.setOnClickListener {
-                var currentQuantityString = quantityTv.text.toString()
-                var currentQuantityInt = currentQuantityString.toInt()
-
-                if(existsInCart) {
-                    viewModel.updateQuantity(id, currentQuantityInt)
-                } else {
-                    deliveryCart?.let {
-                        viewModel.insert(it)
-
-                    }
                 }
 
 
             }
 
-        }
+        })
+
 
         share_ll.setOnClickListener {
             productID?.let{
@@ -120,6 +134,8 @@ class ProductDetailActivity : AppCompatActivity() {
 
     }
 
+
+    //FROM REST Endpoint using Retrofit
     fun getProduct(id: Int) {
         val retrofitResponse = immicartAPIService.getSingleProductById(id)
 
@@ -159,13 +175,49 @@ class ProductDetailActivity : AppCompatActivity() {
                     Log.d(TAG, "unitPrice $unitPrice")
                     val id = singleProduct._id
 
-                    deliveryCart = DeliveryCart(singleProduct._id, singleProduct.barcode, singleProduct.name, singleProduct.price.toInt(), 1, singleProduct.image_url )
+//                    deliveryCart = DeliveryCart(singleProduct._id, singleProduct.barcode, singleProduct.name, singleProduct.price.toInt(), 1, singleProduct.image_url )
 
                 }
             }
         })
 
 
+    }
+
+    //FROM Firebase Firestore
+    fun getProductFromFirestore(storeId: String) {
+
+
+        productID?.let {
+            val documentPath = "stores/" + storeId + "/offers/" + productID
+            db.document(documentPath).get().addOnSuccessListener { documentSnapshot ->
+                val offer = documentSnapshot.data as HashMap<String, Any>
+                val productName = offer["name"] as String
+                val deadline = offer["deadline"] as String
+                val normalPrice : String = offer["normal_price"] as String
+                val offerPrice = offer["offer_price"] as String
+                val category = offer["categoryOne"]
+                var barcode = offer["barcode"] as String?
+                val fileURL = offer["imageUrl"] as String
+
+                val intOfferPrice = offerPrice.toInt()
+                val intNormalPrice = normalPrice.toInt()
+
+                val savings = intNormalPrice - intOfferPrice
+
+                product_description.text = productName
+
+                val unitPrice = intOfferPrice
+                val price = "KES $unitPrice"
+                product_price.text = price
+                val _normalPrice = "KES $intNormalPrice"
+                deals_off.text = _normalPrice
+                deals_off.paintFlags = deals_off.getPaintFlags() or Paint.STRIKE_THRU_TEXT_FLAG
+                Glide.with(this@ProductDetailActivity).load(fileURL).into(product_image)
+
+            }
+
+        }
     }
 
     fun updateQty() {

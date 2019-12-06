@@ -39,7 +39,7 @@ class CartRepository(private val cartDao: CartDao) {
     suspend fun updateQuantity(id: Int, newQuantity: Int) {
         cartDao.updateQuantity(id = id, quantity=newQuantity)
     }
-    suspend fun updateDeliveryItemQuantity(id: Int, newQuantity: Int) {
+    suspend fun updateDeliveryItemQuantity(id: String, newQuantity: Int) {
         cartDao.updateDeliveryItemQuantity(id = id, quantity=newQuantity)
     }
 }

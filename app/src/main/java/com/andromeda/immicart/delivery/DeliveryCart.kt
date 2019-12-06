@@ -74,7 +74,7 @@ class DeliveryCartFragment : Fragment() {
                 var total = 0
                 it.forEach {
                     val quantity = it.quantity
-                    val unitPrice = it.price.toInt()
+                    val unitPrice = it.offerPrice.toInt()
                     val subtotal = quantity * unitPrice
                     total += subtotal
                 }
@@ -100,7 +100,7 @@ class DeliveryCartFragment : Fragment() {
         //TODO Change Quantity
         Log.d(TAG, "newQuantity : $newQuantity , $cartItem ")
 
-        deliveryCartViewModel.updateQuantity(cartItem._id, newQuantity)
+        deliveryCartViewModel.updateQuantity(cartItem.key, newQuantity)
     }
 
     fun initializeRecyclerView() {
@@ -129,7 +129,7 @@ class DeliveryCartFragment : Fragment() {
         //Change Quantity via Room
 //        Toast.makeText(this, "Removed: ${cartItem.name}", Toast.LENGTH_LONG).show()
 
-        val id = cartItem._id
+        val id = cartItem.itemId
         deliveryCartViewModel.deleteById(id)
 
     }
@@ -255,13 +255,13 @@ class PersonalShoppingCartAdapter(var context: Context, val changeQuantityClickL
             val productImage = cartItem.image_url
 //            TODO update the names?
 
-            val Oldprice = cartItem.quantity * cartItem.price
+            val Oldprice = cartItem.quantity * cartItem.normalPrice
             val _formatter = DecimalFormat("#,###,###");
             val OldpriceFormattedString = _formatter.format(Oldprice.toInt());
             itemView.itemOldPrice.text =  "KES " + OldpriceFormattedString
             itemView.itemOldPrice.paintFlags = itemView.itemOldPrice.getPaintFlags() or Paint.STRIKE_THRU_TEXT_FLAG
 
-            val price_ = cartItem.quantity * cartItem.price
+            val price_ = cartItem.quantity * cartItem.offerPrice
             val formatter = DecimalFormat("#,###,###");
             val priceFormattedString = formatter.format(price_.toInt());
 
@@ -307,7 +307,7 @@ class PersonalShoppingCartAdapter(var context: Context, val changeQuantityClickL
 
 class ProductsDiffCallback : DiffUtil.ItemCallback<DeliveryCart>() {
     override fun areItemsTheSame(oldItem: DeliveryCart, newItem: DeliveryCart): Boolean {
-        return oldItem?._id == newItem?._id
+        return oldItem?.itemId == newItem?.itemId
     }
 
     override fun areContentsTheSame(oldItem: DeliveryCart, newItem: DeliveryCart): Boolean {

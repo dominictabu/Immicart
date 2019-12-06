@@ -4,6 +4,8 @@ import android.app.Application
 import androidx.lifecycle.*
 import com.andromeda.immicart.Scanning.persistence.CartRepository
 import com.andromeda.immicart.Scanning.persistence.ImmicartRoomDatabase
+import com.andromeda.immicart.delivery.choose_store.Store
+import com.andromeda.immicart.delivery.choose_store.StoreRepository
 import com.andromeda.immicart.delivery.persistence.DeliveryRepository
 import kotlinx.coroutines.launch
 
@@ -19,8 +21,12 @@ class ProductsViewModel(application: Application) : AndroidViewModel(application
 
     val allDeliveryLocations: LiveData<List<Place>>
 
+    private val repository_: StoreRepository
+    // LiveData gives us updated words when they change.
+    val allStores: LiveData<List<Store>>
 
-    val categoryId = MutableLiveData<Int>()
+
+    val categoryId = MutableLiveData<String>()
 
     init {
         // Gets reference to WordDao from WordRoomDatabase to construct
@@ -31,6 +37,14 @@ class ProductsViewModel(application: Application) : AndroidViewModel(application
         deliveryRepository = DeliveryRepository(deliveryDao)
         allDeliveryItems = repository.allDeliveryItems
         allDeliveryLocations = deliveryRepository.allDeliveryLocations
+        val storeDao = ImmicartRoomDatabase.getDatabase(application, viewModelScope).storeDao()
+        repository_ = StoreRepository(storeDao)
+        allStores = repository_.allStores
+    }
+
+    fun currentStores() : LiveData<List<Store>> {
+
+        return allStores
     }
 
     fun allDeliveryLocations() : LiveData<List<Place>> {
@@ -38,7 +52,7 @@ class ProductsViewModel(application: Application) : AndroidViewModel(application
     }
 
 
-    fun setCategoryId(id: Int) {
+    fun setCategoryId(id: String) {
         categoryId.value = id
     }
 
@@ -54,11 +68,11 @@ class ProductsViewModel(application: Application) : AndroidViewModel(application
         repository.insertDeliveryItem(cart)
     }
 
-    fun deleteById(id: Int) = viewModelScope.launch {
-        repository.deleteDeliveryItemById(id)
+    fun deleteById(key: Int) = viewModelScope.launch {
+        repository.deleteDeliveryItemById(key)
     }
 
-    fun updateQuantity(id: Int, newQuantity : Int) = viewModelScope.launch {
+    fun updateQuantity(id: String, newQuantity : Int) = viewModelScope.launch {
         repository.updateDeliveryItemQuantity(id, newQuantity)
     }
 }

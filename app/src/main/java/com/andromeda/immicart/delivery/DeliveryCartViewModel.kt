@@ -42,7 +42,7 @@ class DeliveryCartViewModel(application: Application) : AndroidViewModel(applica
         repository.deleteDeliveryItemById(id)
     }
 
-    fun updateQuantity(id: Int, newQuantity : Int) = viewModelScope.launch {
+    fun updateQuantity(id: String, newQuantity : Int) = viewModelScope.launch {
         repository.updateDeliveryItemQuantity(id, newQuantity)
     }
 }

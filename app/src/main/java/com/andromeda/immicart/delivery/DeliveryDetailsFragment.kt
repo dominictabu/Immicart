@@ -74,7 +74,7 @@ class DeliveryDetailsFragment : Fragment() {
                 var total = 0
                 it.forEach {
                     val quantity = it.quantity
-                    val unitPrice = it.price.toInt()
+                    val unitPrice = it.offerPrice.toInt()
                     val subtotal = quantity * unitPrice
                     total += subtotal
                 }

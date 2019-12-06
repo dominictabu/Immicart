@@ -6,6 +6,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import com.andromeda.immicart.Scanning.persistence.CartRepository
 import com.andromeda.immicart.Scanning.persistence.ImmicartRoomDatabase
+import com.andromeda.immicart.delivery.choose_store.Store
+import com.andromeda.immicart.delivery.choose_store.StoreRepository
 import kotlinx.coroutines.launch
 
 
@@ -16,13 +18,26 @@ class ProductDetailViewModel(application: Application) : AndroidViewModel(applic
     // LiveData gives us updated words when they change.
     val allDeliveryItems: LiveData<List<DeliveryCart>>
 
+    private val repository_: StoreRepository
+    // LiveData gives us updated words when they change.
+    val allStores: LiveData<List<Store>>
+
     init {
         // Gets reference to WordDao from WordRoomDatabase to construct
         // the correct WordRepository.
         val cartDao = ImmicartRoomDatabase.getDatabase(application, viewModelScope).cartDao()
         repository = CartRepository(cartDao)
         allDeliveryItems = repository.allDeliveryItems
+        val storeDao = ImmicartRoomDatabase.getDatabase(application, viewModelScope).storeDao()
+        repository_ = StoreRepository(storeDao)
+        allStores = repository_.allStores
     }
+
+    fun currentStores() : LiveData<List<Store>> {
+
+        return allStores
+    }
+
 
     fun allDeliveryItems() : LiveData<List<DeliveryCart>> {
         return allDeliveryItems
@@ -40,7 +55,7 @@ class ProductDetailViewModel(application: Application) : AndroidViewModel(applic
         repository.deleteDeliveryItemById(id)
     }
 
-    fun updateQuantity(id: Int, newQuantity : Int) = viewModelScope.launch {
+    fun updateQuantity(id: String, newQuantity : Int) = viewModelScope.launch {
         repository.updateDeliveryItemQuantity(id, newQuantity)
     }
 }

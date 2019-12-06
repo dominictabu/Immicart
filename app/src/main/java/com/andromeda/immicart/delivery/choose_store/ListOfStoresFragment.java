@@ -26,12 +26,13 @@ import com.andromeda.immicart.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.*;
 import com.wang.avi.AVLoadingIndicatorView;
+import org.imperiumlabs.geofirestore.GeoFirestore;
+import org.imperiumlabs.geofirestore.GeoQuery;
+import org.imperiumlabs.geofirestore.listeners.GeoQueryDataEventListener;
+import org.imperiumlabs.geofirestore.listeners.GeoQueryEventListener;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -98,7 +99,7 @@ public class ListOfStoresFragment extends Fragment implements StoreAdapter.OnIte
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_list_of_stores, container, false);
+        View view = inflater.inflate(R.layout.fragment_list_of_stores2, container, false);
         ButterKnife.bind(this, view);
         return view;
     }
@@ -106,10 +107,12 @@ public class ListOfStoresFragment extends Fragment implements StoreAdapter.OnIte
     private final LocationListener mLocationListener = new LocationListener() {
         @Override
         public void onLocationChanged(final Location location) {
+            Log.d(TAG, "Location: " + location);
             //your code here
 
-            //getAllDocs(location);
-            getStores(location);
+            getAllDocs(location);
+//            getStores(location);
+//            getNearbyStores(location);
 
         }
 
@@ -134,6 +137,7 @@ public class ListOfStoresFragment extends Fragment implements StoreAdapter.OnIte
         super.onActivityCreated(savedInstanceState);
 //        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(Objects.requireNonNull(getActivity()));
         db = FirebaseFirestore.getInstance();
+//        getNearbyStores();
 //        FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
 //                .setPersistenceEnabled(false)
 //                .build();
@@ -154,6 +158,53 @@ public class ListOfStoresFragment extends Fragment implements StoreAdapter.OnIte
         mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000,
                 1000f, mLocationListener);
 
+
+
+
+    }
+
+
+    void getNearbyStores() {
+        String collectionPath = "stores";
+        GeoFirestore geoFirestore = new GeoFirestore(db.collection(collectionPath));
+
+        GeoQuery geoQuery = geoFirestore.queryAtLocation(new GeoPoint(1.3197, 36.8229), 5);
+
+
+        geoQuery.addGeoQueryDataEventListener(new GeoQueryDataEventListener() {
+            @Override
+            public void onDocumentEntered(@NotNull DocumentSnapshot documentSnapshot, @NotNull GeoPoint geoPoint) {
+                Log.d(TAG, " onDocumentEntered Document Snapshot: " + documentSnapshot.getData());
+                Log.d(TAG, "onDocumentEntered GeoPoint geoPoint: " + geoPoint.toString());
+            }
+
+            @Override
+            public void onDocumentExited(@NotNull DocumentSnapshot documentSnapshot) {
+                Log.d(TAG, "onDocumentExited Document Snapshot: " + documentSnapshot.getData());
+            }
+
+            @Override
+            public void onDocumentMoved(@NotNull DocumentSnapshot documentSnapshot, @NotNull GeoPoint geoPoint) {
+                Log.d(TAG, "onDocumentMoved Document Snapshot: " + documentSnapshot.getData());
+                Log.d(TAG, "onDocumentMoved GeoPoint geoPoint: " + geoPoint.toString());
+            }
+
+            @Override
+            public void onDocumentChanged(@NotNull DocumentSnapshot documentSnapshot, @NotNull GeoPoint geoPoint) {
+                Log.d(TAG, "onDocumentChanged Document Snapshot: " + documentSnapshot.getData());
+                Log.d(TAG, "onDocumentChanged GeoPoint geoPoint: " + geoPoint.toString());
+            }
+
+            @Override
+            public void onGeoQueryReady() {
+                Log.d(TAG, "onGeoQueryReady  ");
+            }
+
+            @Override
+            public void onGeoQueryError(@NotNull Exception e) {
+                Log.d(TAG, "onGeoQueryError: " + e.getLocalizedMessage());
+            }
+        });
 
     }
 
@@ -197,7 +248,7 @@ public class ListOfStoresFragment extends Fragment implements StoreAdapter.OnIte
                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false);
                 list_store_recycler.setLayoutManager(linearLayoutManager);
 
-                StoreAdapter storeAdapter = new StoreAdapter(stores, getActivity(), latLng,ListOfStoresFragment.this);
+                StoreAdapter storeAdapter = new StoreAdapter(stores, getActivity(),ListOfStoresFragment.this);
 
                 list_store_recycler.setAdapter(storeAdapter);
             }
@@ -290,7 +341,7 @@ public class ListOfStoresFragment extends Fragment implements StoreAdapter.OnIte
                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false);
                 list_store_recycler.setLayoutManager(linearLayoutManager);
 
-                StoreAdapter storeAdapter = new StoreAdapter(stores, getActivity(), latLng,ListOfStoresFragment.this);
+                StoreAdapter storeAdapter = new StoreAdapter(stores, getActivity(),ListOfStoresFragment.this);
 
                 list_store_recycler.setAdapter(storeAdapter);
             }

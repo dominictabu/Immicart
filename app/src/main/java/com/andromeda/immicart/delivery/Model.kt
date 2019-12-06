@@ -4,9 +4,23 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "delivery_cart")
-data class DeliveryCart(@PrimaryKey @ColumnInfo(name = "_id") val _id: Int, val barcode: String, val name: String, val price: Int,
+data class DeliveryCart_(@PrimaryKey @ColumnInfo(name = "_id") val _id: Int, val barcode: String, val name: String, val price: Int,
                         var quantity: Int, val image_url: String)
+@Entity(tableName = "delivery_cart")
+data class DeliveryCart(@ColumnInfo(name = "itemKey") val key: String, val barcode: String, val name: String, val offerPrice: Int, val normalPrice: Int,
+                        var quantity: Int, val image_url: String) {
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "itemId")
+    var itemId: Int = 0
+}
+data class __Product__(val key: String, val barcode: String, val name: String, val offerPrice: Int, val normalPrice: Int,
+                        var quantity: Int, val image_url: String, var isInCart: Boolean)
+
+
+data class __Category__(val key: String? = null, val name: String? = null, val hasChildren: Boolean? = false)
+
+//data class DeliveryCart(@PrimaryKey @ColumnInfo(name = "_id") val _id: Int, val barcode: String, val name: String, val price: Int,
+//                        var quantity: Int, val image_url: String)
 
 data class Images(val id: String, val url : Int)
 

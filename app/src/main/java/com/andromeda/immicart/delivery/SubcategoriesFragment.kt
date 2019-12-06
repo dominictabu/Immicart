@@ -97,7 +97,7 @@ class SubcategoriesFragment : Fragment() {
 
 
         viewModel?.categoryId?.observe(this, Observer { id ->
-            retrieveCategories(id)
+//            retrieveCategories(id)
 
         })
 
@@ -123,8 +123,8 @@ class SubcategoriesFragment : Fragment() {
         products_items_recycler.setNestedScrollingEnabled(false);
 
         products_items_recycler.setLayoutManager(linearLayoutManager)
-        categoryRecyclerAdapter = CategoryRecyclerAdapter(categories, activity!!, { cartItem : DeliveryCart, newQuantity: Int -> cartItemClicked(cartItem, newQuantity)}, {category: Model.Category_ -> viewAll(category)})
-        products_items_recycler.setAdapter(categoryRecyclerAdapter)
+//        categoryRecyclerAdapter = CategoryRecyclerAdapter(storeId, categories, activity!!, { cartItem : DeliveryCart, newQuantity: Int -> cartItemClicked(cartItem, newQuantity)}, {category: Model.Category_ -> viewAll(category)})
+//        products_items_recycler.setAdapter(categoryRecyclerAdapter)
 
 //        By default setNestedScrollingEnabled works only after API-21.
 //
@@ -141,7 +141,7 @@ class SubcategoriesFragment : Fragment() {
 
         if (com.andromeda.immicart.delivery.cartItems.contains(cartItem)) {
             Log.d(TAG, "CartItems contain the item")
-            viewModel?.updateQuantity(cartItem._id, newQuantity)
+            viewModel?.updateQuantity(cartItem.key, newQuantity)
 
         } else {
             Log.d(TAG, "CartItems DO NOT  contain the item")

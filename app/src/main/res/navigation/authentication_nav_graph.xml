@@ -11,6 +11,8 @@
 		<action android:id="@+id/go_to_log_in" app:destination="@id/logInFragment"/>
 		<action android:id="@+id/action_storeLocationFragment_to_createAccountFragment2"
 		        app:destination="@id/createAccountFragment"/>
+		<action android:id="@+id/action_storeLocationFragment_to_listOfStoresFragment"
+		        app:destination="@id/listOfStoresFragment"/>
 	</fragment>
 	<fragment android:id="@+id/selectStoreFragment"
 	          android:name="com.andromeda.immicart.delivery.authentication.SelectStoreFragment"
@@ -28,4 +30,7 @@
 	<fragment android:id="@+id/signUpFragment"
 	          android:name="com.andromeda.immicart.delivery.authentication.SignUpFragment"
 	          android:label="fragment_sign_up" tools:layout="@layout/fragment_sign_up"/>
+	<fragment android:id="@+id/listOfStoresFragment"
+	          android:name="com.andromeda.immicart.delivery.choose_store.ListOfStoresFragment"
+	          android:label="fragment_list_of_stores2" tools:layout="@layout/fragment_list_of_stores2"/>
 </navigation>

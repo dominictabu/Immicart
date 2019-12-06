@@ -32,6 +32,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 import com.andromeda.immicart.R;
+import com.google.firebase.database.*;
+import com.jakewharton.rxrelay2.PublishRelay;
 import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -45,6 +47,7 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import static com.google.android.gms.maps.model.JointType.ROUND;
@@ -71,6 +74,11 @@ public class TrackOrderMapActivity extends FragmentActivity implements OnMapRead
     private Polyline blackPolyline, greyPolyLine;
     private ImmicartAPIService apiInterface;
     private Disposable disposable;
+
+    private PublishRelay<LatLng> latLngPublishRelay = PublishRelay.create();
+    private Disposable latLngDisposable;
+
+    private int emission = 0;
 
     private IGoogleApi mService;
 
@@ -102,12 +110,12 @@ public class TrackOrderMapActivity extends FragmentActivity implements OnMapRead
 //        mDriverModeOpenFB = findViewById(R.id.switchToDriverMode);
 //        button = findViewById(R.id.destination_button);
 //        destinationEditText = findViewById(R.id.edittext_place);
-        Retrofit retrofit = new Retrofit.Builder()
-                .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .baseUrl("https://maps.googleapis.com/")
-                .build();
-        apiInterface = retrofit.create(ImmicartAPIService.class);
+//        Retrofit retrofit = new Retrofit.Builder()
+//                .addConverterFactory(GsonConverterFactory.create())
+//                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+//                .baseUrl("https://maps.googleapis.com/")
+//                .build();
+//        apiInterface = retrofit.create(ImmicartAPIService.class);
 //        button.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {
@@ -172,32 +180,57 @@ public class TrackOrderMapActivity extends FragmentActivity implements OnMapRead
         //in code.
         //Do remember to dispose when not in use. For eg. its necessary to dispose it in
         //onStop as activity is not visible.
-        disposable = JourneyEventBus.getInstance().getOnJourneyEvent()
+//        disposable = JourneyEventBus.getInstance().getOnJourneyEvent()
+//                .subscribeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new Consumer<Object>() {
+//                    @Override
+//                    public void accept(Object o) throws Exception {
+//                        if (o instanceof BeginJourneyEvent) {
+////                            Snackbar.make(button, "Journey has started",
+////                                    Snackbar.LENGTH_SHORT).show();
+//                        } else if (o instanceof EndJourneyEvent) {
+////                            Snackbar.make(button, "Journey has ended",
+////                                    Snackbar.LENGTH_SHORT).show();
+//                        } else if (o instanceof CurrentJourneyEvent) {
+//                            /*
+//                             * This can be used to receive the current location update of the car
+//                             */
+//                            //Log.d(TAG,"Current "+((CurrentJourneyEvent) o).getCurrentLatLng());
+//                        }
+//                    }
+//                });
+
+
+        latLngDisposable = latLngPublishRelay
+                .buffer(2)
                 .subscribeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<Object>() {
+                .subscribe(new Consumer<List<LatLng>>() {
+
                     @Override
-                    public void accept(Object o) throws Exception {
-                        if (o instanceof BeginJourneyEvent) {
-//                            Snackbar.make(button, "Journey has started",
-//                                    Snackbar.LENGTH_SHORT).show();
-                        } else if (o instanceof EndJourneyEvent) {
-//                            Snackbar.make(button, "Journey has ended",
-//                                    Snackbar.LENGTH_SHORT).show();
-                        } else if (o instanceof CurrentJourneyEvent) {
-                            /*
-                             * This can be used to receive the current location update of the car
-                             */
-                            //Log.d(TAG,"Current "+((CurrentJourneyEvent) o).getCurrentLatLng());
-                        }
+                    public void accept(List<LatLng> latLngs) throws Exception {
+                        emission++;
+                        animateCarOnMap(latLngs);
                     }
                 });
+
+
     }
+
+
+
+//    @Override
+//    protected void onStop() {
+//        super.onStop();
+//        if (!disposable.isDisposed()) {
+//            disposable.dispose();
+//        }
+//    }
 
     @Override
     protected void onStop() {
         super.onStop();
-        if (!disposable.isDisposed()) {
-            disposable.dispose();
+        if (!latLngDisposable.isDisposed()) {
+            latLngDisposable.dispose();
         }
     }
 
@@ -306,6 +339,102 @@ public class TrackOrderMapActivity extends FragmentActivity implements OnMapRead
         }, 3000);
     }
 
+    /**
+     * Take the emissions from the Rx Relay as a pair of LatLng and starts the animation of
+     * car on map by taking the 2 pair of LatLng's.
+     *
+     * @param latLngs List of LatLng emitted by Rx Relay with size two.
+     */
+    private void animateCarOnMap(final List<LatLng> latLngs) {
+        LatLngBounds.Builder builder = new LatLngBounds.Builder();
+        for (LatLng latLng : latLngs) {
+            builder.include(latLng);
+        }
+        LatLngBounds bounds = builder.build();
+        CameraUpdate mCameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, 2);
+        mMap.animateCamera(mCameraUpdate);
+        if (emission == 1) {
+            marker = mMap.addMarker(new MarkerOptions().position(latLngs.get(0))
+                    .flat(true)
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_car)));
+        }
+        marker.setPosition(latLngs.get(0));
+        ValueAnimator valueAnimator = ValueAnimator.ofFloat(0, 1);
+        valueAnimator.setDuration(1000);
+        valueAnimator.setInterpolator(new LinearInterpolator());
+        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                v = valueAnimator.getAnimatedFraction();
+                double lng = v * latLngs.get(1).longitude + (1 - v)
+                        * latLngs.get(0).longitude;
+                double lat = v * latLngs.get(1).latitude + (1 - v)
+                        * latLngs.get(0).latitude;
+                LatLng newPos = new LatLng(lat, lng);
+                marker.setPosition(newPos);
+                marker.setAnchor(0.5f, 0.5f);
+                marker.setRotation(getBearing(latLngs.get(0), newPos));
+                mMap.animateCamera(CameraUpdateFactory.newCameraPosition
+                        (new CameraPosition.Builder().target(newPos)
+                                .zoom(15.5f).build()));
+            }
+        });
+        valueAnimator.start();
+    }
+
+    private void subscribeToUpdates() {
+        String locationRef = "locations";
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference(locationRef);
+        ref.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
+                setMarker(dataSnapshot);
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String previousChildName) {
+                setMarker(dataSnapshot);
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String previousChildName) {
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                Log.d(TAG, "Failed to read value.", error.toException());
+            }
+        });
+    }
+
+    private void setMarker(DataSnapshot dataSnapshot) {
+        // When a location update is received, put or update
+        // its value in mMarkers, which contains all the markers
+        // for locations received, so that we can build the
+        // boundaries required to show them all on the map at once
+        String key = dataSnapshot.getKey();
+        HashMap<String, Object> value = (HashMap<String, Object>) dataSnapshot.getValue();
+        double lat = Double.parseDouble(value.get("latitude").toString());
+        double lng = Double.parseDouble(value.get("longitude").toString());
+        LatLng currentLatLng = new LatLng(lat, lng);
+        latLngPublishRelay.accept(currentLatLng);
+
+//        if (!mMarkers.containsKey(key)) {
+//            mMarkers.put(key, mMap.addMarker(new MarkerOptions().title(key).position(location)));
+//        } else {
+//            mMarkers.get(key).setPosition(location);
+//        }
+//        LatLngBounds.Builder builder = new LatLngBounds.Builder();
+//        for (Marker marker : mMarkers.values()) {
+//            builder.include(marker.getPosition());
+//        }
+//        mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 300));
+    }
+
 
     public Bitmap resizeMapIcons(String iconName, int width, int height){
         Bitmap imageBitmap = BitmapFactory.decodeResource(getResources(),getResources().getIdentifier(iconName, "drawable", getPackageName()));
@@ -379,45 +508,46 @@ public class TrackOrderMapActivity extends FragmentActivity implements OnMapRead
         mMap.getUiSettings().setZoomControlsEnabled(true);
         mMap.getUiSettings().setAllGesturesEnabled(true);
         mMap.getUiSettings().setZoomGesturesEnabled(true);
+        subscribeToUpdates();
         // Add a marker in Home and move the camera
 //        sydney = new LatLng(28.671246, 77.317654);
-        sydney = new LatLng(1.28333, 36.81667);
+//        sydney = new LatLng(1.28333, 36.81667);
+//
+//        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Home"));
+//        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+//        mMap.moveCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition.Builder()
+//                .target(googleMap.getCameraPosition().target)
+//                .zoom(17)
+//                .bearing(30)
+//                .tilt(45)
+//                .build()));
+//        String url = "https://maps.googleapis.com/maps/api/directions/json?"
+//                + "mode=DRIVING&" + "transit_routing_preference=less_driving"
+//                + "&origin=" + latitude + "," + longitude
+//                + "&destination=" + endLatitude + "," + endLongitude
+//                + "&key=" + getResources().getString(R.string.google_directions_key);
+//        Log.d(TAG, "URL for Routing: " + url);
 
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Home"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-        mMap.moveCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition.Builder()
-                .target(googleMap.getCameraPosition().target)
-                .zoom(17)
-                .bearing(30)
-                .tilt(45)
-                .build()));
-        String url = "https://maps.googleapis.com/maps/api/directions/json?"
-                + "mode=DRIVING&" + "transit_routing_preference=less_driving"
-                + "&origin=" + latitude + "," + longitude
-                + "&destination=" + endLatitude + "," + endLongitude
-                + "&key=" + getResources().getString(R.string.google_directions_key);
-        Log.d(TAG, "URL for Routing: " + url);
-
-        mService.getDataFromGoogle(url).enqueue(new Callback<Result>() {
-            @Override
-            public void onResponse(Call<Result> call, Response<Result> response) {
-                Log.d(TAG, "Mresponse: " + response);
-                List<Route> routeList = response.body().getRoutes();
-                Log.d(TAG, "Routes: " + routeList.size());
-
-                for (Route route : routeList) {
-                   String polyLine = route.getOverviewPolyline().getPoints();
-                    polyLineList = decodePoly(polyLine);
-                   drawPolyLineAndAnimateCar();
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<Result> call, Throwable t) {
-
-            }
-        });
+//        mService.getDataFromGoogle(url).enqueue(new Callback<Result>() {
+//            @Override
+//            public void onResponse(Call<Result> call, Response<Result> response) {
+//                Log.d(TAG, "Mresponse: " + response);
+//                List<Route> routeList = response.body().getRoutes();
+//                Log.d(TAG, "Routes: " + routeList.size());
+//
+//                for (Route route : routeList) {
+//                   String polyLine = route.getOverviewPolyline().getPoints();
+//                    polyLineList = decodePoly(polyLine);
+//                   drawPolyLineAndAnimateCar();
+//                }
+//
+//            }
+//
+//            @Override
+//            public void onFailure(Call<Result> call, Throwable t) {
+//
+//            }
+//        });
 //        apiInterface.getDirections("driving", "less_driving",
 //
 //                latitude + "," + longitude, destination,

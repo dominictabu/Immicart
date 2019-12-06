@@ -47,7 +47,6 @@
 							android:id="@+id/profile_image"
 							android:layout_width="96dp"
 							android:layout_height="96dp"
-							android:src="@drawable/immicartlogo"
 							app:civ_border_width="2dp"
 							app:civ_border_color="#FFF"/>
 					

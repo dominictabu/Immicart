@@ -47,7 +47,7 @@ class StoreLocationFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         continue_btn.setOnClickListener {
-            findNavController().navigate(R.id.action_storeLocationFragment_to_createAccountFragment2)
+            findNavController().navigate(R.id.select_store_action)
 
         }
 

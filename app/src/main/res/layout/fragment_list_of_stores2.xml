@@ -1,14 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             tools:context=".delivery.choose_store.ListOfStoresFragment">
+<RelativeLayout
+		xmlns:android="http://schemas.android.com/apk/res/android"
+		xmlns:tools="http://schemas.android.com/tools"
+		xmlns:app="http://schemas.android.com/apk/res-auto"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		app:layout_behavior="@string/appbar_scrolling_view_behavior"
+		tools:showIn="@layout/activity_choose_store"
+		tools:context=".delivery.choose_store.ListOfStoresFragment">
 	
-	<!-- TODO: Update blank fragment layout -->
-	<TextView
+	<androidx.recyclerview.widget.RecyclerView
+			android:nestedScrollingEnabled="false"
+			tools:listitem="@layout/item_store_item"
+			app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+			android:id="@+id/recycler_store"
 			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			android:text="@string/hello_blank_fragment"/>
-
-</FrameLayout>
+			android:layout_height="wrap_content"/>
+	
+	<com.wang.avi.AVLoadingIndicatorView
+			android:visibility="visible"
+			android:id="@+id/loading_view"
+			android:layout_marginBottom="20dp"
+			android:layout_marginTop="16dp"
+			android:layout_gravity="center"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			app:indicatorName="BallSpinFadeLoaderIndicator"
+			app:indicatorColor="@color/colorAccent"
+	/>
+</RelativeLayout>
