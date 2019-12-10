@@ -1,14 +1,19 @@
 package com.andromeda.immicart.delivery
 
+import android.Manifest
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.andromeda.immicart.R
 
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.drawable.InsetDrawable
+import android.location.Location
 import android.os.Handler
 import android.util.Log
+import android.widget.Toast
+import androidx.core.app.ActivityCompat
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,14 +26,19 @@ import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.google.android.libraries.places.api.model.AutocompleteSessionToken
 import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest
 import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import kotlinx.android.synthetic.main.content_pick_delivery_location.*
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper
 import java.lang.reflect.Array
 import kotlin.collections.ArrayList
-
+import android.os.ResultReceiver
+import android.location.Address;
+import android.location.Geocoder
 
 
 class PickDeliveryLocationActivity : AppCompatActivity(), PlacesAutoCompleteAdapter.OnItemClickListener {
+
 
     override fun OnItemClick(place: com.andromeda.immicart.delivery.Place?) {
 
@@ -42,9 +52,13 @@ class PickDeliveryLocationActivity : AppCompatActivity(), PlacesAutoCompleteAdap
 
     var AUTOCOMPLETE_REQUEST_CODE = 1
     val TAG = "EnterLocationAct"
+    private lateinit var resultReceiver: AddressResultReceiver
 
     private lateinit var pickDeliveryLocationViewModel: PickDeliveryLocationViewModel
     private lateinit var latestPlace: com.andromeda.immicart.delivery.Place
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private var mLocationPermissionGranted : Boolean = false;
+    private var locationRequestCode : Int = 1000;
 
 
     override fun attachBaseContext(newBase: Context) {
@@ -66,6 +80,7 @@ class PickDeliveryLocationActivity : AppCompatActivity(), PlacesAutoCompleteAdap
             supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
         }
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
         pickDeliveryLocationViewModel = ViewModelProviders.of(this).get(PickDeliveryLocationViewModel::class.java)
 
@@ -85,6 +100,22 @@ class PickDeliveryLocationActivity : AppCompatActivity(), PlacesAutoCompleteAdap
             }
 
         })
+
+        // check permission
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+            && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // reuqest for permission
+            mLocationPermissionGranted = false;
+
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION),
+                locationRequestCode);
+
+        } else {
+            Log.d(TAG, "onMApInitialized Called: Location Permisiin");
+            mLocationPermissionGranted = true;
+        }
+
+
         enter_location_searchview.setIconifiedByDefault(false)
         Handler().postDelayed({
             //doSomethingHere
@@ -123,11 +154,13 @@ class PickDeliveryLocationActivity : AppCompatActivity(), PlacesAutoCompleteAdap
                     val placesArrayList: ArrayList<com.andromeda.immicart.delivery.Place> = ArrayList()
                     for (prediction in response.autocompletePredictions) {
 
+                        Log.d(TAG, "AutoComplete Predictions: $prediction." )
+
                         Log.i(TAG, "Place ID: ${prediction.placeId}")
 
                         val placeID : String = prediction.placeId
 
-                        Log.i(TAG, "Prdiction: " + prediction)
+                        Log.i(TAG, "Prediction: " + prediction)
 
                         Log.i(TAG, "FullText: " + prediction.getFullText(null).toString())
 
@@ -177,11 +210,77 @@ class PickDeliveryLocationActivity : AppCompatActivity(), PlacesAutoCompleteAdap
 
 
         save_location_button.setOnClickListener {
-
+            pickDeliveryLocationViewModel.deleteAllDeliveryLocations()
             pickDeliveryLocationViewModel.insertDeliveryLocation(latestPlace)
         }
 
 
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: kotlin.Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+
+        when(requestCode) {
+            1000 -> {
+                if (grantResults.size > 0
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED
+                ) {
+                    mLocationPermissionGranted = true;
+
+                    getCurrentLocation();
+                } else {
+                    Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+        }
+    }
+    fun getCurrentLocation() {
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+            && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // reuqest for permission
+            mLocationPermissionGranted = false;
+
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION),
+                locationRequestCode);
+
+        } else {
+            Log.d(TAG, "onMApInitialized Called: Location Permisiin");
+            mLocationPermissionGranted = true;
+            fusedLocationClient.lastLocation
+                .addOnSuccessListener { location: Location? ->
+                    // Got last known location. In some rare situations this can be null.
+
+                    if (!Geocoder.isPresent()) {
+                        Toast.makeText(this@PickDeliveryLocationActivity,
+                            R.string.no_geocoder_available,
+                            Toast.LENGTH_LONG).show()
+                        return@addOnSuccessListener
+                    }
+
+                    location?.let {
+
+                        startIntentService(it)
+                    }
+                }
+        }
+
+    }
+
+
+    private fun startIntentService(location: Location) {
+
+        val intent = Intent(this, FetchAddressIntentService::class.java).apply {
+            putExtra(FetchAddressIntentService.Constants.RECEIVER, resultReceiver)
+            putExtra(FetchAddressIntentService.Constants.LOCATION_DATA_EXTRA, location)
+        }
+        startService(intent)
     }
 
 
@@ -213,6 +312,23 @@ class PickDeliveryLocationActivity : AppCompatActivity(), PlacesAutoCompleteAdap
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
+    }
+
+    internal inner class AddressResultReceiver(handler: Handler) : ResultReceiver(handler) {
+
+        override fun onReceiveResult(resultCode: Int, resultData: Bundle?) {
+
+            // Display the address string
+            // or an error message sent from the intent service.
+             val addressOutput = resultData?.getString(FetchAddressIntentService.Constants.RESULT_DATA_KEY) ?: ""
+//            TODO displayAddressOutput()
+
+            // Show a toast message if an address was found.
+            if (resultCode == FetchAddressIntentService.Constants.SUCCESS_RESULT) {
+//                showToast(getString(R.string.address_found))
+            }
+
+        }
     }
 
 }
