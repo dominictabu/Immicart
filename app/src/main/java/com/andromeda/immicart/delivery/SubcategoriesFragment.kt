@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 import com.andromeda.immicart.R
+import com.andromeda.immicart.delivery.checkout.DeliveryCartActivity
 import com.andromeda.immicart.networking.ImmicartAPIService
 import com.andromeda.immicart.networking.Model
 import com.google.firebase.firestore.DocumentSnapshot
@@ -160,7 +161,7 @@ class SubcategoriesFragment : Fragment() {
 
         cart_frame_layout.setOnClickListener {
 
-            startActivity(Intent(activity!!,DeliveryCartActivity::class.java))
+            startActivity(Intent(activity!!, DeliveryCartActivity::class.java))
         }
 
         myBackIcon.setOnClickListener {

@@ -17,7 +17,7 @@
 		<action android:id="@+id/action_subcategoriesFragment_to_subCategoryTwoFragment"
 		        app:destination="@id/subCategoryTwoFragment"/>
 	</fragment>
-	<fragment android:id="@+id/searchFragment" android:name="com.andromeda.immicart.delivery.SearchFragment"
+	<fragment android:id="@+id/searchFragment" android:name="com.andromeda.immicart.delivery.search.SearchFragment"
 	          android:label="fragment_search" tools:layout="@layout/fragment_search">
 		<action android:id="@+id/action_searchFragment_to_searchResultsFragment"
 		        app:destination="@id/searchResultsFragment"/>
@@ -39,6 +39,15 @@
 	<fragment android:id="@+id/lastCategoryFragment" android:name="com.andromeda.immicart.delivery.LastCategoryFragment"
 	          android:label="fragment_last_category" tools:layout="@layout/fragment_last_category"/>
 	<fragment android:id="@+id/searchResultsFragment"
-	          android:name="com.andromeda.immicart.delivery.SearchResultsFragment"
+	          android:name="com.andromeda.immicart.delivery.search.SearchResultsFragment"
 	          android:label="fragment_search_results" tools:layout="@layout/fragment_search_results"/>
+	<fragment android:id="@+id/confirmAddressFragment"
+	          android:name="com.andromeda.immicart.delivery.delivery_location.ConfirmAddressFragment"
+	          android:label="fragment_confirm_address" tools:layout="@layout/fragment_confirm_address">
+		<action android:id="@+id/action_confirmAddressFragment_to_searchAddressFragment"
+		        app:destination="@id/searchAddressFragment"/>
+	</fragment>
+	<fragment android:id="@+id/searchAddressFragment"
+	          android:name="com.andromeda.immicart.delivery.delivery_location.SearchAddressFragment"
+	          android:label="fragment_search_address" tools:layout="@layout/fragment_search_address"/>
 </navigation>

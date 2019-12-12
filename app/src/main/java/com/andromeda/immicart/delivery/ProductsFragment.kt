@@ -11,25 +11,20 @@ import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.navOptions
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 import com.andromeda.immicart.R
-import com.andromeda.immicart.checkout.CartImagesAdapter
 import com.andromeda.immicart.delivery.authentication.MyAccountActivity
-import com.andromeda.immicart.delivery.trackingorder.MapsActivity
-import com.andromeda.immicart.delivery.trackingorder.TrackOrderMapActivity
+import com.andromeda.immicart.delivery.checkout.DeliveryCartActivity
+import com.andromeda.immicart.delivery.delivery_location.PickDeliveryAddressActivity
 import com.andromeda.immicart.networking.ImmicartAPIService
-import com.andromeda.immicart.networking.Model
 import com.bumptech.glide.Glide
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.material.appbar.AppBarLayout
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
-import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.products_fragment.*
 
 
@@ -148,6 +143,7 @@ class ProductsFragment : Fragment() {
 
                     address_one.text = place.name
                     address_two.text = place.address
+
                 }
 
             }
@@ -183,7 +179,7 @@ class ProductsFragment : Fragment() {
 
         cart_frame_layout.setOnClickListener {
 
-            startActivity(Intent(activity!!,DeliveryCartActivity::class.java))
+            startActivity(Intent(activity!!, DeliveryCartActivity::class.java))
         }
 
         myAccountIcon.setOnClickListener {
@@ -192,7 +188,7 @@ class ProductsFragment : Fragment() {
         }
 
         address_ll.setOnClickListener {
-            startActivity(Intent(activity!!, PickDeliveryLocationActivity::class.java))
+            startActivity(Intent(activity!!, PickDeliveryAddressActivity::class.java))
 
         }
 

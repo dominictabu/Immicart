@@ -1,4 +1,4 @@
-package com.andromeda.immicart.delivery;
+package com.andromeda.immicart.delivery.delivery_location;
 
 
 import android.content.Context;

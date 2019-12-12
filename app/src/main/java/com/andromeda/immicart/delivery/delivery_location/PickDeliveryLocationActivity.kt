@@ -1,4 +1,4 @@
-package com.andromeda.immicart.delivery
+package com.andromeda.immicart.delivery.delivery_location
 
 import android.Manifest
 import androidx.appcompat.app.AppCompatActivity
@@ -8,21 +8,16 @@ import com.andromeda.immicart.R
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.drawable.InsetDrawable
 import android.location.Location
 import android.os.Handler
 import android.util.Log
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
-import com.google.android.libraries.places.api.model.TypeFilter
 import java.util.*
-import com.google.android.libraries.places.widget.Autocomplete
-import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.google.android.libraries.places.api.model.AutocompleteSessionToken
 import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest
 import com.google.android.gms.common.api.ApiException
@@ -30,17 +25,22 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import kotlinx.android.synthetic.main.content_pick_delivery_location.*
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper
-import java.lang.reflect.Array
 import kotlin.collections.ArrayList
 import android.os.ResultReceiver
-import android.location.Address;
 import android.location.Geocoder
+import com.google.android.libraries.places.api.net.FetchPlaceRequest
+import com.google.android.libraries.places.api.net.PlacesClient
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+
+//import androidx.car.cluster.navigation.LatLng
 
 
-class PickDeliveryLocationActivity : AppCompatActivity(), PlacesAutoCompleteAdapter.OnItemClickListener {
+class PickDeliveryLocationActivity : AppCompatActivity(),
+    PlacesAutoCompleteAdapter.OnItemClickListener {
 
 
-    override fun OnItemClick(place: com.andromeda.immicart.delivery.Place?) {
+    override fun OnItemClick(place: com.andromeda.immicart.delivery.delivery_location.Place?) {
 
         place?.let {
             latestPlace = it
@@ -54,13 +54,15 @@ class PickDeliveryLocationActivity : AppCompatActivity(), PlacesAutoCompleteAdap
     val TAG = "EnterLocationAct"
     private lateinit var resultReceiver: AddressResultReceiver
 
+    private var lastKnownLocation: Location? = null
     private lateinit var pickDeliveryLocationViewModel: PickDeliveryLocationViewModel
-    private lateinit var latestPlace: com.andromeda.immicart.delivery.Place
+    private lateinit var latestPlace: com.andromeda.immicart.delivery.delivery_location.Place
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private var mLocationPermissionGranted : Boolean = false;
     private var locationRequestCode : Int = 1000;
 
 
+    private lateinit var placesClient: PlacesClient
     override fun attachBaseContext(newBase: Context) {
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase))
     }
@@ -94,7 +96,7 @@ class PickDeliveryLocationActivity : AppCompatActivity(), PlacesAutoCompleteAdap
 
                     address_one.text = place.name
                     address_two.text = place.address
-                    latestPlace = place
+//                    latestPlace = place
                 }
 
             }
@@ -130,7 +132,7 @@ class PickDeliveryLocationActivity : AppCompatActivity(), PlacesAutoCompleteAdap
         }
 
         // Create a new Places client instance.
-        val placesClient = Places.createClient(this)
+        placesClient = Places.createClient(this)
 
         // Create a new token for the autocomplete session. Pass this to FindAutocompletePredictionsRequest,
         // and once again when the user makes a selection (for example when calling fetchPlace()).
@@ -151,8 +153,10 @@ class PickDeliveryLocationActivity : AppCompatActivity(), PlacesAutoCompleteAdap
 
                 placesClient.findAutocompletePredictions(request).addOnSuccessListener { response ->
 
-                    val placesArrayList: ArrayList<com.andromeda.immicart.delivery.Place> = ArrayList()
+                    val placesArrayList: ArrayList<com.andromeda.immicart.delivery.delivery_location.Place> = ArrayList()
                     for (prediction in response.autocompletePredictions) {
+
+                        prediction.placeId
 
                         Log.d(TAG, "AutoComplete Predictions: $prediction." )
 
@@ -176,7 +180,12 @@ class PickDeliveryLocationActivity : AppCompatActivity(), PlacesAutoCompleteAdap
                             val address = removedString.joinToString(", ")
                             Log.d(TAG, "address: $address")
 
-                            val placeItem = Place(placeID, place, address, fullText)
+                            val placeItem = Place(
+                                placeID,
+                                place,
+                                address,
+                                fullText
+                            )
                             placesArrayList.add(placeItem)
 
                         }
@@ -211,10 +220,20 @@ class PickDeliveryLocationActivity : AppCompatActivity(), PlacesAutoCompleteAdap
 
         save_location_button.setOnClickListener {
             pickDeliveryLocationViewModel.deleteAllDeliveryLocations()
-            pickDeliveryLocationViewModel.insertDeliveryLocation(latestPlace)
+//            pickDeliveryLocationViewModel.insertDeliveryLocation(latestPlace)
+            retrievePlace(latestPlace.placeID)
         }
 
 
+    }
+
+    fun retrievePlace(placeId: String) {
+        val placeFields : List<Place.Field>  = arrayListOf(Place.Field.LAT_LNG, Place.Field.ADDRESS_COMPONENTS)
+        placesClient.fetchPlace(FetchPlaceRequest.newInstance(placeId,placeFields )).addOnSuccessListener {
+
+            val place = it.place
+            Log.d(TAG, "Retrieved Place: $place")
+        }
     }
 
     override fun onRequestPermissionsResult(
@@ -266,6 +285,7 @@ class PickDeliveryLocationActivity : AppCompatActivity(), PlacesAutoCompleteAdap
 
                     location?.let {
 
+                        lastKnownLocation = it
                         startIntentService(it)
                     }
                 }
@@ -285,7 +305,7 @@ class PickDeliveryLocationActivity : AppCompatActivity(), PlacesAutoCompleteAdap
 
 
 
-    fun initializePlacesAutoCompleteRecycler(places : ArrayList<com.andromeda.immicart.delivery.Place>) {
+    fun initializePlacesAutoCompleteRecycler(places : ArrayList<com.andromeda.immicart.delivery.delivery_location.Place>) {
         val linearLayoutManager = LinearLayoutManager(this)
         recycler_items.layoutManager = linearLayoutManager
 
@@ -302,7 +322,11 @@ class PickDeliveryLocationActivity : AppCompatActivity(), PlacesAutoCompleteAdap
 
 //        recycler_items.addItemDecoration(dividerItemDecoration)
 
-        val placesAutoCompleteAdapter = PlacesAutoCompleteAdapter(places, this@PickDeliveryLocationActivity, this@PickDeliveryLocationActivity)
+        val placesAutoCompleteAdapter = PlacesAutoCompleteAdapter(
+            places,
+            this@PickDeliveryLocationActivity,
+            this@PickDeliveryLocationActivity
+        )
 
         recycler_items.adapter = placesAutoCompleteAdapter
 
@@ -326,6 +350,31 @@ class PickDeliveryLocationActivity : AppCompatActivity(), PlacesAutoCompleteAdap
             // Show a toast message if an address was found.
             if (resultCode == FetchAddressIntentService.Constants.SUCCESS_RESULT) {
 //                showToast(getString(R.string.address_found))
+
+                lastKnownLocation?.let {
+
+                }
+
+
+
+            }
+
+        }
+    }
+
+
+    fun postDeliveryAddress(address: String, latitude: String, longitude: String ) {
+        val uid = FirebaseAuth.getInstance().uid
+        uid?.let {
+            val collectionPath = "customers/$uid/delivery_addresses"
+            val db = FirebaseFirestore.getInstance();
+
+            val addressObject = HashMap<String, Any>()
+            addressObject.put("address", address)
+//            addressObject.put("latLng", latLng)
+
+            db.collection(collectionPath).add(addressObject).addOnSuccessListener {
+
             }
 
         }

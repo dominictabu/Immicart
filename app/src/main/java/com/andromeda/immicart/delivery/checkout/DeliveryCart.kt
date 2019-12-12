@@ -1,6 +1,5 @@
-package com.andromeda.immicart.delivery
+package com.andromeda.immicart.delivery.checkout
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -12,14 +11,9 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.andromeda.immicart.R
-import com.andromeda.immicart.Scanning.persistence.Cart
-import com.andromeda.immicart.shopping_cart.view_model.PersonalCartViewModel
 import kotlinx.android.synthetic.main.fragment_personal_cart.*
 import androidx.recyclerview.widget.DividerItemDecoration
 import android.graphics.drawable.InsetDrawable
-import android.graphics.drawable.Drawable
-import android.content.res.TypedArray
-import com.andromeda.immicart.checkout.CheckoutActivity
 import java.text.DecimalFormat
 
 import android.content.Context
@@ -33,6 +27,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.personal_cart_item.view.*
 import android.graphics.Paint
+import androidx.navigation.fragment.findNavController
+import com.andromeda.immicart.delivery.DeliveryCart
 
 class DeliveryCartFragment : Fragment() {
     private lateinit var adapter: PersonalShoppingCartAdapter
@@ -59,10 +55,10 @@ class DeliveryCartFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        deliveryCartViewModel = ViewModelProviders.of(this).get(DeliveryCartViewModel::class.java)
+        deliveryCartViewModel = ViewModelProviders.of(activity!!).get(DeliveryCartViewModel::class.java)
 
         initializeRecyclerView()
-        deliveryCartViewModel.allDeliveryItems().observe(this, Observer { items ->
+        deliveryCartViewModel.allDeliveryItems().observe(activity!!, Observer { items ->
             // Update the cached copy of the words in the adapter.
             items?.let {
                 //                cartItems = items
@@ -89,8 +85,10 @@ class DeliveryCartFragment : Fragment() {
         checkoutlayout.setOnClickListener {
 //            val fragment = DeliveryDetailsFragment()
 //            (activity!! as DeliveryCartActivity).performFragmnetTransaction(fragment)
-            val intent: Intent = Intent(activity, PlcaeOrderActivity::class.java)
-            startActivity(intent)
+//            val intent: Intent = Intent(activity, PlcaeOrderActivity::class.java)
+//            startActivity(intent)
+
+            findNavController().navigate(R.id.action_deliveryCartFragment_to_deliveryDetailsFragment)
         }
 
     }
@@ -120,7 +118,15 @@ class DeliveryCartFragment : Fragment() {
         dividerItemDecoration.setDrawable(insetDivider)
         rv_personal_cart.addItemDecoration(dividerItemDecoration)
 
-        adapter = PersonalShoppingCartAdapter(activity!!, {cartItem : DeliveryCart, newQuantity: Int -> cartItemClicked(cartItem, newQuantity)}, {cartItem : DeliveryCart -> removeItemClicked(cartItem)})
+        adapter = PersonalShoppingCartAdapter(
+            activity!!,
+            { cartItem: DeliveryCart, newQuantity: Int ->
+                cartItemClicked(
+                    cartItem,
+                    newQuantity
+                )
+            },
+            { cartItem: DeliveryCart -> removeItemClicked(cartItem) })
         rv_personal_cart.adapter = adapter
         rv_personal_cart.layoutManager = linearLayoutManager
     }
@@ -140,8 +146,10 @@ class DeliveryCartFragment : Fragment() {
 
 
 
-class PersonalShoppingCartAdapter(var context: Context, val changeQuantityClickListener: (DeliveryCart, Int) -> Unit,  val removeItemClickListener: (DeliveryCart) -> Unit) :
-    ListAdapter<DeliveryCart, PersonalShoppingCartAdapter.ViewHolder>(ProductsDiffCallback()) {
+class PersonalShoppingCartAdapter(var context: Context, val changeQuantityClickListener: (DeliveryCart, Int) -> Unit, val removeItemClickListener: (DeliveryCart) -> Unit) :
+    ListAdapter<DeliveryCart, PersonalShoppingCartAdapter.ViewHolder>(
+        ProductsDiffCallback()
+    ) {
 
     lateinit var changeCartItemNumberPopUp: PopupWindow
 

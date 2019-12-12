@@ -1,4 +1,4 @@
-package com.andromeda.immicart.delivery
+package com.andromeda.immicart.delivery.checkout
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
@@ -6,11 +6,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import com.andromeda.immicart.Scanning.persistence.CartRepository
 import com.andromeda.immicart.Scanning.persistence.ImmicartRoomDatabase
+import com.andromeda.immicart.delivery.DeliveryCart
+import com.andromeda.immicart.delivery.persistence.CurrentLocation
 import com.andromeda.immicart.delivery.persistence.DeliveryRepository
 
 class DeliveryDetailViewModel(application: Application) : AndroidViewModel(application) {
     private val deliveryRepository: DeliveryRepository
-    val allDeliveryLocations: LiveData<List<Place>>
+    val allDeliveryLocations: LiveData<List<CurrentLocation>>
 
     private val repository: CartRepository
     val allDeliveryItems: LiveData<List<DeliveryCart>>
@@ -30,7 +32,7 @@ class DeliveryDetailViewModel(application: Application) : AndroidViewModel(appli
     }
 
 
-    fun allDeliveryLocations() : LiveData<List<Place>> {
+    fun allDeliveryLocations() : LiveData<List<CurrentLocation>> {
         return allDeliveryLocations
     }
 

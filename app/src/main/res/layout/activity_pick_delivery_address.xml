@@ -5,15 +5,14 @@
 		xmlns:app="http://schemas.android.com/apk/res-auto"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
-		tools:context=".shopping_cart.CartActivity">
+		tools:context=".delivery.delivery_location.PickDeliveryAddressActivity">
 	
 	<fragment
-			android:layout_below="@+id/toolbar"
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
-			android:id="@+id/delivery_cart_nav_host_fragment"
+			android:id="@+id/my_nav_host_fragment"
 			android:name="androidx.navigation.fragment.NavHostFragment"
-			app:navGraph="@navigation/checkout_nav_graph"
+			app:navGraph="@navigation/delivery_address_nav_graph"
 			app:defaultNavHost="true"
 	/>
 

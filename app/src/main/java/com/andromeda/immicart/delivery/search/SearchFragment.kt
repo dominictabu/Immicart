@@ -1,4 +1,4 @@
-package com.andromeda.immicart.delivery
+package com.andromeda.immicart.delivery.search
 
 
 import android.content.Intent
@@ -15,7 +15,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 import com.andromeda.immicart.R
-import com.andromeda.immicart.networking.Model
+import com.andromeda.immicart.delivery.*
+import com.andromeda.immicart.delivery.checkout.DeliveryCartActivity
 import com.google.firebase.firestore.FirebaseFirestore
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -90,7 +91,7 @@ class SearchFragment : Fragment() {
             items?.let {
                 cartItems = it
                 val cartIteemsNumber = it.size
-                badge.text = cartIteemsNumber.toString()
+                badge?.text = cartIteemsNumber.toString()
                 Log.d(TAG, "CartItems Length: ${items.count()}")
 
 //                categoryRecyclerAdapter?.updateItems(it as ArrayList<DeliveryCart>)
@@ -100,7 +101,7 @@ class SearchFragment : Fragment() {
 
         cart_frame_layout.setOnClickListener {
 
-            startActivity(Intent(activity!!,DeliveryCartActivity::class.java))
+            startActivity(Intent(activity!!, DeliveryCartActivity::class.java))
         }
 
 
@@ -191,7 +192,9 @@ class SearchFragment : Fragment() {
         recycler_items_search.setNestedScrollingEnabled(false);
 
         recycler_items_search.setLayoutManager(linearLayoutManager)
-        val searchSuggestionsAdapter = SearchSuggestionsAdapter(category as ArrayList<__Category__>, {category: __Category__ -> searchTerm(category)})
+        val searchSuggestionsAdapter = SearchSuggestionsAdapter(
+            category as ArrayList<__Category__>,
+            { category: __Category__ -> searchTerm(category) })
         recycler_items_search.setAdapter(searchSuggestionsAdapter)
     }
 

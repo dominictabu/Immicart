@@ -6,6 +6,7 @@ import com.andromeda.immicart.Scanning.persistence.CartRepository
 import com.andromeda.immicart.Scanning.persistence.ImmicartRoomDatabase
 import com.andromeda.immicart.delivery.choose_store.Store
 import com.andromeda.immicart.delivery.choose_store.StoreRepository
+import com.andromeda.immicart.delivery.persistence.CurrentLocation
 import com.andromeda.immicart.delivery.persistence.DeliveryRepository
 import kotlinx.coroutines.launch
 
@@ -19,7 +20,7 @@ class ProductsViewModel(application: Application) : AndroidViewModel(application
     val allDeliveryItems: LiveData<List<DeliveryCart>>
     private val deliveryRepository: DeliveryRepository
 
-    val allDeliveryLocations: LiveData<List<Place>>
+    val allDeliveryLocations: LiveData<List<CurrentLocation>>
 
     private val repository_: StoreRepository
     // LiveData gives us updated words when they change.
@@ -51,7 +52,7 @@ class ProductsViewModel(application: Application) : AndroidViewModel(application
         return allStores
     }
 
-    fun allDeliveryLocations() : LiveData<List<Place>> {
+    fun allDeliveryLocations() : LiveData<List<CurrentLocation>> {
         return allDeliveryLocations
     }
 

@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 import com.andromeda.immicart.R
+import com.andromeda.immicart.delivery.checkout.DeliveryCartActivity
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import io.reactivex.disposables.Disposable
@@ -143,7 +144,7 @@ class SubCategoryTwoFragment : Fragment() {
 
         cart_frame_layout.setOnClickListener {
 
-            startActivity(Intent(activity!!,DeliveryCartActivity::class.java))
+            startActivity(Intent(activity!!, DeliveryCartActivity::class.java))
         }
 
         myBackIcon.setOnClickListener {

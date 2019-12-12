@@ -1,4 +1,4 @@
-package com.andromeda.immicart.delivery
+package com.andromeda.immicart.delivery.delivery_location
 
 import android.app.IntentService
 import android.content.Intent
@@ -12,7 +12,7 @@ import com.andromeda.immicart.R
 import java.io.IOException
 import java.util.*
 
-class FetchAddressIntentService(name: String) : IntentService(name) {
+class FetchAddressIntentService : IntentService("FetchAddressIntentService") {
 
     private var receiver: ResultReceiver? = null
 
@@ -24,6 +24,7 @@ class FetchAddressIntentService(name: String) : IntentService(name) {
 
         // Get the location passed to this service through an extra.
         val location : Location = intent!!.getParcelableExtra(Constants.LOCATION_DATA_EXTRA)
+         receiver  = intent!!.getParcelableExtra(Constants.RECEIVER)
 
         // ...
 
@@ -57,11 +58,13 @@ class FetchAddressIntentService(name: String) : IntentService(name) {
             val address = addresses[0]
             // Fetch the address lines using getAddressLine,
             // join them, and send them to the thread.
+            val addressLine = address.getAddressLine(0)
             val addressFragments = with(address) {
                 (0..maxAddressLineIndex).map { getAddressLine(it) }
             }
-            Log.i(TAG, getString(R.string.address_found))
-            deliverResultToReceiver(Constants.SUCCESS_RESULT,
+            Log.i(TAG, getString(R.string.address_found) + address)
+            deliverResultToReceiver(
+                Constants.SUCCESS_RESULT,
                 addressFragments.joinToString(separator = "\n"))
         }
 
@@ -80,8 +83,8 @@ class FetchAddressIntentService(name: String) : IntentService(name) {
         const val FAILURE_RESULT = 1
         const val PACKAGE_NAME = "com.google.android.gms.location.sample.locationaddress"
         const val RECEIVER = "$PACKAGE_NAME.RECEIVER"
-        const val RESULT_DATA_KEY = "${PACKAGE_NAME}.RESULT_DATA_KEY"
-        const val LOCATION_DATA_EXTRA = "${PACKAGE_NAME}.LOCATION_DATA_EXTRA"
+        const val RESULT_DATA_KEY = "$PACKAGE_NAME.RESULT_DATA_KEY"
+        const val LOCATION_DATA_EXTRA = "$PACKAGE_NAME.LOCATION_DATA_EXTRA"
     }
 
 }

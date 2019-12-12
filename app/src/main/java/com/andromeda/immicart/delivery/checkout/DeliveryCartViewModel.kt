@@ -1,12 +1,16 @@
-package com.andromeda.immicart.delivery
+package com.andromeda.immicart.delivery.checkout
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
-import com.andromeda.immicart.Scanning.persistence.Cart
 import com.andromeda.immicart.Scanning.persistence.CartRepository
 import com.andromeda.immicart.Scanning.persistence.ImmicartRoomDatabase
+import com.andromeda.immicart.delivery.DeliveryCart
+import com.andromeda.immicart.delivery.choose_store.Store
+import com.andromeda.immicart.delivery.choose_store.StoreRepository
+import com.andromeda.immicart.delivery.persistence.CurrentLocation
+import com.andromeda.immicart.delivery.persistence.DeliveryRepository
 import kotlinx.coroutines.launch
 
 
@@ -15,6 +19,13 @@ class DeliveryCartViewModel(application: Application) : AndroidViewModel(applica
 
     // The ViewModel maintains a reference to the repository to get data.
     private val repository: CartRepository
+    private val deliveryRepository: DeliveryRepository
+
+    val allDeliveryLocations: LiveData<List<CurrentLocation>>
+    private val repository_: StoreRepository
+    val allStores: LiveData<List<Store>>
+
+
     // LiveData gives us updated words when they change.
     val allDeliveryItems: LiveData<List<DeliveryCart>>
 
@@ -24,8 +35,24 @@ class DeliveryCartViewModel(application: Application) : AndroidViewModel(applica
         val cartDao = ImmicartRoomDatabase.getDatabase(application, viewModelScope).cartDao()
         repository = CartRepository(cartDao)
         allDeliveryItems = repository.allDeliveryItems
+        val deliveryDao = ImmicartRoomDatabase.getDatabase(application, viewModelScope).deliveryDao()
+
+        deliveryRepository = DeliveryRepository(deliveryDao)
+
+        allDeliveryLocations = deliveryRepository.allDeliveryLocations
+        val storeDao = ImmicartRoomDatabase.getDatabase(application, viewModelScope).storeDao()
+        repository_ = StoreRepository(storeDao)
+        allStores = repository_.allStores
     }
 
+    fun currentStores() : LiveData<List<Store>> {
+
+        return allStores
+    }
+
+    fun allDeliveryLocations() : LiveData<List<CurrentLocation>> {
+        return allDeliveryLocations
+    }
     fun allDeliveryItems() : LiveData<List<DeliveryCart>> {
         return allDeliveryItems
     }

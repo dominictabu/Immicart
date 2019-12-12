@@ -1,4 +1,4 @@
-package com.andromeda.immicart.delivery
+package com.andromeda.immicart.delivery.search
 
 
 import android.os.Bundle
@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 
 import com.andromeda.immicart.R
+import com.andromeda.immicart.delivery.*
 import com.bumptech.glide.Glide
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
@@ -64,7 +65,14 @@ class SearchResultsFragment : Fragment() {
         val gridLayoutManager = GridLayoutManager(activity!!,2 )
 
         products_items_recycler.setLayoutManager(gridLayoutManager)
-        productsAdapter = ProductsAdapter(activity!!, { cartItem : DeliveryCart, newQuantity: Int -> cartItemClicked(cartItem, newQuantity)})
+        productsAdapter = ProductsAdapter(
+            activity!!,
+            { cartItem: DeliveryCart, newQuantity: Int ->
+                cartItemClicked(
+                    cartItem,
+                    newQuantity
+                )
+            })
 
         products_items_recycler.setAdapter(productsAdapter)
 
@@ -86,6 +94,19 @@ class SearchResultsFragment : Fragment() {
         viewModel.searchWord.observe(activity!!, Observer {
             search_view_search_fragment.setQuery(it, false)
 
+        })
+        viewModel.allDeliveryItems().observe(activity!!, Observer { items ->
+
+            Log.d(TAG, "CartItems: $items")
+            items?.let {
+                cartItems = it
+                val cartIteemsNumber = it.size
+                badge?.text = cartIteemsNumber.toString()
+                Log.d(TAG, "CartItems Length: ${items.count()}")
+
+//                categoryRecyclerAdapter?.updateItems(it as ArrayList<DeliveryCart>)
+
+            }
         })
 
     }
@@ -116,9 +137,26 @@ class SearchResultsFragment : Fragment() {
                 }
 
                 val deliveryCart =
-                    DeliveryCart(document.id, barcode, productName, intOfferPrice, intNormalPrice, 1, fileURL)
+                    DeliveryCart(
+                        document.id,
+                        barcode,
+                        productName,
+                        intOfferPrice,
+                        intNormalPrice,
+                        1,
+                        fileURL
+                    )
                 val product =
-                    __Product__(document.id, barcode, productName, intOfferPrice, intNormalPrice, 1, fileURL, false)
+                    __Product__(
+                        document.id,
+                        barcode,
+                        productName,
+                        intOfferPrice,
+                        intNormalPrice,
+                        1,
+                        fileURL,
+                        false
+                    )
                 productsArray.add(product)
 //                deliveryCartItems.forEach {
 //                    if(it.key == deliveryCart.key) {
@@ -142,7 +180,7 @@ class SearchResultsFragment : Fragment() {
         Log.d(TAG, "newQuantity : $newQuantity , $cartItem ")
 
 
-        if (com.andromeda.immicart.delivery.cartItems.contains(cartItem)) {
+        if (cartItems.contains(cartItem)) {
             Log.d(TAG, "CartItems contain the item")
             viewModel?.updateQuantity(cartItem.key, newQuantity)
 

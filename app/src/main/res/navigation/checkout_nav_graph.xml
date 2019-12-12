@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools" android:id="@+id/checkout_nav_graph"
+            app:startDestination="@id/deliveryCartFragment">
+	<fragment android:id="@+id/deliveryCartFragment" android:name="com.andromeda.immicart.delivery.checkout.DeliveryCartFragment"
+	          android:label="fragment_personal_cart" tools:layout="@layout/fragment_personal_cart">
+		<action android:id="@+id/action_deliveryCartFragment_to_deliveryDetailsFragment"
+		        app:destination="@id/deliveryDetailsFragment"/>
+	</fragment>
+	<fragment android:id="@+id/deliveryDetailsFragment"
+	          android:name="com.andromeda.immicart.delivery.checkout.DeliveryDetailsFragment"
+	          android:label="fragment_delivery_details" tools:layout="@layout/fragment_delivery_details"/>
+</navigation>

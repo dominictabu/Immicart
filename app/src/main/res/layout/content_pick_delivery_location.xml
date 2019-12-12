@@ -19,7 +19,7 @@
 				
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:text="Change Location"
+				android:text="Change Delivery Location"
 				android:textSize="20sp"
 				android:textStyle="bold"
 				android:layout_gravity="center"
@@ -41,6 +41,45 @@
 			android:orientation="horizontal"
 			android:gravity="center_vertical"
 			android:layout_below="@+id/deliver_to"
+			android:id="@+id/current_location_ll"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content">
+		
+		<RadioButton
+				android:buttonTint="@color/colorGreen"
+				android:clickable="false"
+				android:checked="true"
+				android:layout_marginStart="12dp"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"/>
+		<LinearLayout
+				android:orientation="vertical"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content">
+			
+			<TextView
+					android:layout_marginTop="16dp"
+					android:layout_marginStart="12dp"
+					android:id="@+id/current_location_address"
+					android:textStyle="bold"
+					android:text="Munret Mens Hostel"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"/>
+			<TextView
+					android:layout_marginBottom="10dp"
+					android:layout_marginStart="12dp"
+					android:textColor="@color/lightGrey_"
+					android:id="@+id/current_location_address_two"
+					android:text="Sumba Road, Nairobi City, Kenya"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"/>
+		</LinearLayout>
+	</LinearLayout>
+	
+	<LinearLayout
+			android:orientation="horizontal"
+			android:gravity="center_vertical"
+			android:layout_below="@+id/current_location_ll"
 			android:id="@+id/address_ll"
 			android:layout_width="wrap_content"
 	              android:layout_height="wrap_content">
@@ -48,7 +87,7 @@
 	<RadioButton
 			android:buttonTint="@color/colorGreen"
 			android:clickable="false"
-			android:checked="true"
+			android:checked="false"
 			android:layout_marginStart="12dp"
 			android:layout_width="wrap_content"
 	             android:layout_height="wrap_content"/>
