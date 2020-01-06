@@ -1,6 +1,7 @@
 package com.andromeda.immicart.delivery.search
 
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -41,6 +42,7 @@ class SearchResultsFragment : Fragment() {
     private lateinit var storeId: String
     private lateinit var productsAdapter: ProductsAdapter
     private var TAG = "SearchResultsFragment"
+    private var cartItems: List<DeliveryCart> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,7 +66,7 @@ class SearchResultsFragment : Fragment() {
         viewModel = ViewModelProviders.of(activity!!).get(ProductsViewModel::class.java)
         val gridLayoutManager = GridLayoutManager(activity!!,2 )
 
-        products_items_recycler.setLayoutManager(gridLayoutManager)
+        products_items_recycler?.setLayoutManager(gridLayoutManager)
         productsAdapter = ProductsAdapter(
             activity!!,
             { cartItem: DeliveryCart, newQuantity: Int ->
@@ -82,6 +84,7 @@ class SearchResultsFragment : Fragment() {
                     Log.d(TAG, "Stores size more than 0")
                     val store = it[0]
                     storeId = store.key
+                    search_view_search_fragment?.queryHint = "Search ${store.name}"
                     Glide.with(activity!!).load(store.logoUrl).into(store_image)
                     getProducts()
                 } else {
@@ -92,7 +95,8 @@ class SearchResultsFragment : Fragment() {
         })
 
         viewModel.searchWord.observe(activity!!, Observer {
-            search_view_search_fragment.setQuery(it, false)
+            search_view_search_fragment?.setQuery(it, false)
+
 
         })
         viewModel.allDeliveryItems().observe(activity!!, Observer { items ->
@@ -109,6 +113,11 @@ class SearchResultsFragment : Fragment() {
             }
         })
 
+
+        sort_txtview?.setOnClickListener {
+            startActivity(Intent(activity!!, SortActivity::class.java))
+        }
+
     }
 
     fun getProducts() {
@@ -117,7 +126,7 @@ class SearchResultsFragment : Fragment() {
 //            .whereEqualTo("categoryOne", category)
             .limit(10)
 
-        var productsArray: ArrayList<__Product__> = ArrayList()
+        var productsArray: ArrayList<DeliveryCart> = ArrayList()
         products.get().addOnSuccessListener { documentSnapshots ->
             for (document in documentSnapshots) {
                 val offer = document.data as HashMap<String, Any>
@@ -125,7 +134,7 @@ class SearchResultsFragment : Fragment() {
                 val deadline = offer["deadline"] as String
                 val normalPrice: String = offer["normal_price"] as String
                 val offerPrice = offer["offer_price"] as String
-                val category = offer["categoryOne"]
+                val category = offer["categoryOne"] as String
                 var barcode = offer["barcode"] as String?
                 val fileURL = offer["imageUrl"] as String
 
@@ -141,6 +150,7 @@ class SearchResultsFragment : Fragment() {
                         document.id,
                         barcode,
                         productName,
+                        category,
                         intOfferPrice,
                         intNormalPrice,
                         1,
@@ -151,13 +161,14 @@ class SearchResultsFragment : Fragment() {
                         document.id,
                         barcode,
                         productName,
+                        category,
                         intOfferPrice,
                         intNormalPrice,
                         1,
                         fileURL,
                         false
                     )
-                productsArray.add(product)
+                productsArray.add(deliveryCart)
 //                deliveryCartItems.forEach {
 //                    if(it.key == deliveryCart.key) {
 //                        val product = __Product__(document.id, barcode, productName, intOfferPrice, intNormalPrice, 1, fileURL, true)

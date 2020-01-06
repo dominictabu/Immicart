@@ -17,6 +17,7 @@ public class SplashActivity extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         startActivity(new Intent(this, AuthenticationActivity.class));
+        finish();
 
     }
 }

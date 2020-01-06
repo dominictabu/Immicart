@@ -5,9 +5,11 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:padding="4dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:showIn="@layout/activity_choose_store"
-        tools:context=".ChooseStoreActivity">
+        tools:showIn="@layout/activity_choose_store">
+	
+	
 	
 	<androidx.recyclerview.widget.RecyclerView
 			android:nestedScrollingEnabled="false"
@@ -16,4 +18,15 @@
 			android:id="@+id/recycler_store"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"/>
+	<com.wang.avi.AVLoadingIndicatorView
+			android:layout_centerInParent="true"
+			android:layout_centerHorizontal="true"
+			android:visibility="visible"
+			android:id="@+id/loading_view"
+			android:layout_gravity="center"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			app:indicatorName="BallSpinFadeLoaderIndicator"
+			app:indicatorColor="@color/colorAccent"
+	/>
 </RelativeLayout>

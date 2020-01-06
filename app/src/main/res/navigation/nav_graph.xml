@@ -22,8 +22,10 @@
 		<action android:id="@+id/action_searchFragment_to_searchResultsFragment"
 		        app:destination="@id/searchResultsFragment"/>
 	</fragment>
-	<fragment android:id="@+id/walletFragment" android:name="com.andromeda.immicart.delivery.WalletFragment"
-	          android:label="fragment_wallet" tools:layout="@layout/fragment_wallet"/>
+	<fragment android:id="@+id/walletFragment" android:name="com.andromeda.immicart.delivery.wallet.WalletFragment"
+	          android:label="fragment_wallet" tools:layout="@layout/fragment_wallet">
+		<action android:id="@+id/action_walletFragment_to_MPESAFragment" app:destination="@id/MPESAFragment"/>
+	</fragment>
 	<fragment android:id="@+id/ordersListFragment"
 	          android:name="com.andromeda.immicart.delivery.trackingorder.OrdersListFragment"
 	          android:label="fragment_orders_list" tools:layout="@layout/fragment_orders_list"/>
@@ -50,4 +52,6 @@
 	<fragment android:id="@+id/searchAddressFragment"
 	          android:name="com.andromeda.immicart.delivery.delivery_location.SearchAddressFragment"
 	          android:label="fragment_search_address" tools:layout="@layout/fragment_search_address"/>
+	<fragment android:id="@+id/MPESAFragment" android:name="com.andromeda.immicart.delivery.wallet.MPESAFragment"
+	          android:label="fragment_mpesa" tools:layout="@layout/fragment_mpesa"/>
 </navigation>

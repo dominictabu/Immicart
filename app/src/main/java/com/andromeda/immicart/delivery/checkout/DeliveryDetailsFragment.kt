@@ -11,12 +11,14 @@ import android.view.ViewGroup
 import android.widget.RadioButton
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 import com.andromeda.immicart.R
 import com.andromeda.immicart.checkout.CartImagesAdapter
 import com.andromeda.immicart.checkout.DeliveryCartItemsAdapter
+import com.andromeda.immicart.checkout.DeliveryCartItemsAdapter_
 import com.andromeda.immicart.delivery.*
 import com.andromeda.immicart.delivery.delivery_location.Place
 import com.andromeda.immicart.delivery.persistence.CurrentLocation
@@ -29,10 +31,21 @@ import kotlinx.android.synthetic.main.fragment_delivery_details.*
 import java.text.DecimalFormat
 import com.andromeda.immicart.delivery.choose_store.Store
 import com.andromeda.immicart.delivery.delivery_location.PickDeliveryAddressActivity
+import com.andromeda.immicart.delivery.wallet.MPESAActivity
+import com.firebase.geofire.GeoFire
+import com.firebase.geofire.GeoLocation
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.EventListener
+import com.google.type.LatLng
 
 
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.regex.Matcher
+import java.util.regex.Pattern
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
@@ -93,7 +106,6 @@ class DeliveryDetailsFragment : Fragment() {
                 cartItems = items
                 nuberOfItemsTitle.text = "${cartItems.size} Items"
 
-
 //                adapter.submitList(it)
 
                 val images : ArrayList<String> = ArrayList()
@@ -132,7 +144,6 @@ class DeliveryDetailsFragment : Fragment() {
             }
         })
 
-
         recycler_ll.visibility = View.VISIBLE
         cart_items_ll.visibility = View.GONE
 
@@ -144,9 +155,9 @@ class DeliveryDetailsFragment : Fragment() {
 
         place_order_button.setOnClickListener {
 //            signInAnonymously()
-            checkOut()
+//            checkOut()
+            findNavController().navigate(R.id.action_deliveryDetailsFragment_to_loadingPlaceOrderFragment)
         }
-
 
         expand_button.setOnClickListener {
             recycler_ll.visibility = View.GONE
@@ -161,9 +172,12 @@ class DeliveryDetailsFragment : Fragment() {
 //            loadItems()
         }
 
+        top_up_button?.setOnClickListener {
+            startActivity(Intent(activity!!, MPESAActivity::class.java))
+
+        }
 
     }
-
 
 //    fun signInAnonymously() {
 //
@@ -199,73 +213,73 @@ class DeliveryDetailsFragment : Fragment() {
         val linearLayoutManager = LinearLayoutManager(activity!!, RecyclerView.VERTICAL, false)
 
         cart_items_recycler.layoutManager = linearLayoutManager
-        val deliveryCartItemsAdapter  = DeliveryCartItemsAdapter(cartItems,activity!!)
+        val deliveryCartItemsAdapter  = DeliveryCartItemsAdapter_(cartItems,activity!!)
         cart_items_recycler.adapter = deliveryCartItemsAdapter
     }
 
-    fun getDeliveryTime() : DeliveryTime? {
-
-
-        if(segmented2.checkedRadioButtonId == -1) {
-            //TODO The User has not selected the day of deliver
-            return null
-
-            //No Buttons Selected
-        } else {
-
-
-            if(delivery_time_radio_group.checkedRadioButtonId != -1) {
-
-                val selectedTime = delivery_time_radio_group.checkedRadioButtonId
-                val timeRadioButton: RadioButton = activity!!.findViewById(selectedTime)
-
-                val time= timeRadioButton.text
-                val dateFormat = SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.ENGLISH)
-
-
-
-                val selectedButton = segmented2.checkedRadioButtonId
-                val radioButton: RadioButton = activity!!.findViewById(selectedButton)
-
-                if (selectedButton == R.id.todayBtn) {
-                    val cal = Calendar.getInstance()
-                    cal.getTime()
-                    val year = cal.get(Calendar.YEAR)
-                    val month = cal.get(Calendar.MONTH)
-                    val day = cal.get(Calendar.DAY_OF_MONTH)
-                    val datePosted = dateFormat.format(cal.getTime())
-
-
-
-
-                    val deliveryTime = DeliveryTime(time.toString(), getDayFromInt(day)!!, datePosted,getMonthFromInt(month)!!, year = year.toString())
-                    return deliveryTime
-
-
-                } else if (selectedButton == R.id.tomorrowBtn) {
-                    val cal = Calendar.getInstance()
-                    cal.getTime()
-                    cal.add(Calendar.DATE, 1);  // number of days to add
-                    val year = cal.get(Calendar.YEAR)
-                    val month = cal.get(Calendar.MONTH)
-                    val day = cal.get(Calendar.DAY_OF_MONTH)
-                    val datePosted = dateFormat.format(cal.getTime())
-
-                    val deliveryTime = DeliveryTime(time.toString(), getDayFromInt(day)!!, datePosted,getMonthFromInt(month)!!, year = year.toString())
-                    return deliveryTime
-
-                }
-            } else {
-                return null
-
-
-                //TODO The User has not selected the delivery time
-
-            }
-        }
-        return null
-
-    }
+//    fun getDeliveryTime() : DeliveryTime? {
+//
+//
+//        if(segmented2.checkedRadioButtonId == -1) {
+//            //TODO The User has not selected the day of deliver
+//            return null
+//
+//            //No Buttons Selected
+//        } else {
+//
+//
+//            if(delivery_time_radio_group.checkedRadioButtonId != -1) {
+//
+//                val selectedTime = delivery_time_radio_group.checkedRadioButtonId
+//                val timeRadioButton: RadioButton = activity!!.findViewById(selectedTime)
+//
+//                val time= timeRadioButton.text
+//                val dateFormat = SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.ENGLISH)
+//
+//
+//
+//                val selectedButton = segmented2.checkedRadioButtonId
+//                val radioButton: RadioButton = activity!!.findViewById(selectedButton)
+//
+//                if (selectedButton == R.id.todayBtn) {
+//                    val cal = Calendar.getInstance()
+//                    cal.getTime()
+//                    val year = cal.get(Calendar.YEAR)
+//                    val month = cal.get(Calendar.MONTH)
+//                    val day = cal.get(Calendar.DAY_OF_MONTH)
+//                    val datePosted = dateFormat.format(cal.getTime())
+//
+//
+//
+//
+//                    val deliveryTime = DeliveryTime(time.toString(), getDayFromInt(day)!!, datePosted,getMonthFromInt(month)!!, year = year.toString())
+//                    return deliveryTime
+//
+//
+//                } else if (selectedButton == R.id.tomorrowBtn) {
+//                    val cal = Calendar.getInstance()
+//                    cal.getTime()
+//                    cal.add(Calendar.DATE, 1);  // number of days to add
+//                    val year = cal.get(Calendar.YEAR)
+//                    val month = cal.get(Calendar.MONTH)
+//                    val day = cal.get(Calendar.DAY_OF_MONTH)
+//                    val datePosted = dateFormat.format(cal.getTime())
+//
+//                    val deliveryTime = DeliveryTime(time.toString(), getDayFromInt(day)!!, datePosted,getMonthFromInt(month)!!, year = year.toString())
+//                    return deliveryTime
+//
+//                }
+//            } else {
+//                return null
+//
+//
+//                //TODO The User has not selected the delivery time
+//
+//            }
+//        }
+//        return null
+//
+//    }
 
     fun getDayFromInt(day: Int) : String? {
 
@@ -324,6 +338,7 @@ class DeliveryDetailsFragment : Fragment() {
         var deliveryFee: Float = 100f
         var items: List<DeliveryCart> = cartItems
 
+        val timeInMillis = System.currentTimeMillis();
 
 //        val rating = ratingBar.getRating()
         val date: Date // your date
@@ -345,21 +360,19 @@ class DeliveryDetailsFragment : Fragment() {
         nestedDateData.put("month", month)
         nestedDateData.put("day", day)
 
-
         val orderMap = HashMap<String, Any>()
         val nestedDeliveryAddressData = HashMap<String, Any>()
         val nestedChargesData = HashMap<String, Any>()
         val nestedStoreData = HashMap<String, Any>()
         val nestedDeliveryTimeData = HashMap<String, Any>()
 
-        val deliveryTime = getDeliveryTime()
-        deliveryTime?.let {
-            nestedDeliveryTimeData.put("date", it.date)
-            nestedDeliveryTimeData.put("day", it.day)
-            nestedDeliveryTimeData.put("month", it.month)
-            nestedDeliveryTimeData.put("year", it.year)
-        }
-
+//        val deliveryTime = getDeliveryTime()
+//        deliveryTime?.let {
+//            nestedDeliveryTimeData.put("date", it.date)
+//            nestedDeliveryTimeData.put("day", it.day)
+//            nestedDeliveryTimeData.put("month", it.month)
+//            nestedDeliveryTimeData.put("year", it.year)
+//        }
 
         deliveryLocation?.let {
 
@@ -368,9 +381,6 @@ class DeliveryDetailsFragment : Fragment() {
         nestedDeliveryAddressData.put("PlaceFullText", deliveryLocation.placeFullText!!)
         nestedDeliveryAddressData.put("LatLng", deliveryLocation.latLng!!)
       }
-
-
-
 
         nestedChargesData.put("storeSubtotal", storeFee)
         nestedChargesData.put("serviceFee", serviceFee)
@@ -382,19 +392,15 @@ class DeliveryDetailsFragment : Fragment() {
         nestedStoreData.put("name", currentStore.name)
         nestedStoreData.put("address", currentStore.address)
 
-
-
-
         orderMap.put("customerUID", customerUID)
         orderMap.put("mobileNumber", "0796026997")
         orderMap.put("items", items)
         orderMap.put("datePosted", datePosted)
+        orderMap.put("timeInMillisCreated", timeInMillis)
         orderMap.put("deliveryTime", nestedDeliveryTimeData)
         orderMap.put("payments", nestedChargesData)
         orderMap.put("deliveryAddress", nestedDeliveryAddressData)
         orderMap.put("store", nestedStoreData)
-
-
 
         val db = FirebaseFirestore.getInstance();
 //
@@ -403,11 +409,93 @@ class DeliveryDetailsFragment : Fragment() {
                 Toast.LENGTH_LONG).show()
             Log.d(TAG, "Success DocumentReference: ${it.toString()}")
 
+            val key = it.id
+
+            currentStore?.let {
+                val ref = FirebaseDatabase.getInstance().getReference("current_store_order_locations")
+                val geoFire =  GeoFire(ref);
+                val latLng = convertLatLng(it.latlng)
+                val lat = latLng.latitude
+                val lon = latLng.longitude
+
+                geoFire.setLocation(key,  GeoLocation(lat, lon), object : GeoFire.CompletionListener {
+                    override fun onComplete(key: String?, error: DatabaseError?) {
+
+                    }
+
+                })
+            }
+
+            deliveryLocation?.let {
+                val ref = FirebaseDatabase.getInstance().getReference("customer_order_locations")
+                val geoFire =  GeoFire(ref);
+
+                val latLng = convertLatLng(it.latLng)
+                val lat = latLng.latitude
+                val lon = latLng.longitude
+
+                geoFire.setLocation(key,  GeoLocation(lat, lon), object : GeoFire.CompletionListener {
+                    override fun onComplete(key: String?, error: DatabaseError?) {
+
+                    }
+
+                })
+            }
+
         }).addOnFailureListener {
             Log.d(TAG, "Exception: ${it.toString()}")
         }
 
+    }
 
+    fun convertLatLng(latlng : String) : LatLng {
+        var from_lat_lng : String? = null
+          val m : Matcher  = Pattern.compile("\\(([^)]+)\\)").matcher(latlng);
+            while(m.find()) {
+                from_lat_lng = m.group(1) ;
+            }
+            val gpsVal = (from_lat_lng?.split(","));
+            val lat : Double = (gpsVal?.get(0))!!.toDouble();
+            val lon : Double = (gpsVal?.get(1))!!.toDouble();
+
+        val latLng = LatLng.newBuilder().setLatitude(lat).setLongitude(lon).build()
+
+        return  latLng
+
+    }
+
+    internal fun snapshotListeners() {
+        var uid = auth.currentUser?.uid;
+        val db = FirebaseFirestore.getInstance()
+        uid?.let {
+
+            val docPath = "customers/$uid/wallet/data"
+            val docRef = db.document(docPath)
+            docRef.addSnapshotListener(EventListener<DocumentSnapshot> { snapshot, e ->
+                if (e != null) {
+                    Log.d(TAG, "Listen failed.", e)
+                    return@EventListener
+                }
+                val source = if (snapshot != null && snapshot.metadata.hasPendingWrites())
+                    "Local"
+                else
+                    "Server"
+                if (snapshot != null && snapshot.exists()) {
+                    Log.d(TAG, source + " data: " + snapshot.data)
+
+                    val stringObjectMap = snapshot.data
+                    if (stringObjectMap != null) {
+                        if (stringObjectMap.containsKey("credit")) {
+                            val credit = stringObjectMap["credit"] as Long
+                            wallet_credit?.text = "KES ${credit.toInt()}"
+                        }
+                    }
+                    //TODO Show Error or success dialog
+                } else {
+                    Log.d(TAG, "$source data: null")
+                }
+            })
+        }
     }
 
 }

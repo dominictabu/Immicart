@@ -1,6 +1,7 @@
 package com.andromeda.immicart.delivery.trackingorder
 
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -58,7 +59,7 @@ class OrdersListFragment : Fragment() {
 
 
     fun retrieveOrders() {
-        val ordersArray = arrayListOf<PlaceOrder>()
+        val ordersArray = arrayListOf<OrderObject>()
         val db = FirebaseFirestore.getInstance()
 
 
@@ -73,7 +74,7 @@ class OrdersListFragment : Fragment() {
                 Log.d(TAG, "Current data: ${snapshot.documents}")
                 for (postSnapshot in snapshot.documents) {
                     // TODO: handle the post
-                    val order = postSnapshot.toObject(PlaceOrder::class.java)
+                    val order = postSnapshot.toObject(OrderObject::class.java)
 
                     order?.let {
 
@@ -116,15 +117,28 @@ class OrdersListFragment : Fragment() {
     }
 
 
-    fun initializeRecyclerView(orders: ArrayList<PlaceOrder>) {
+    fun initializeRecyclerView(orders: ArrayList<OrderObject>) {
         recycler_items_orders
 
         val linearLayoutManager = LinearLayoutManager(activity!!, RecyclerView.VERTICAL, false)
-        recycler_items_orders.setNestedScrollingEnabled(false);
+        recycler_items_orders?.setNestedScrollingEnabled(false);
 
-        recycler_items_orders.setLayoutManager(linearLayoutManager)
-        val orderListRecyclerAdapter = OrderListRecyclerAdapter(orders)
-        recycler_items_orders.setAdapter(orderListRecyclerAdapter)
+        recycler_items_orders?.setLayoutManager(linearLayoutManager)
+        val orderListRecyclerAdapter = OrderListRecyclerAdapter(orders, {order -> orderClick(order)})
+        recycler_items_orders?.setAdapter(orderListRecyclerAdapter)
+
+    }
+
+
+    private  var SELECTED_ORDER: String = "SELECTED_ORDER"
+
+    fun orderClick(order: OrderObject) {
+
+        val intent = Intent(activity!!, OrderActivity::class.java)
+        intent.putExtra(SELECTED_ORDER, order.orderID!!)
+        startActivity(intent)
+
+
 
     }
 

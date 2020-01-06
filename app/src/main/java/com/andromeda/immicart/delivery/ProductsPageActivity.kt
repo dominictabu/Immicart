@@ -43,4 +43,11 @@ class ProductsPageActivity : AppCompatActivity() {
         bottomNav?.setupWithNavController(navController)
     }
 
+
+     fun navigateToSearch() {
+        val bottomNav = findViewById<BottomNavigationView>(R.id.navigation)
+        bottomNav.selectedItemId = R.id.searchFragment;
+
+    }
+
 }

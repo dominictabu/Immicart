@@ -20,11 +20,16 @@ import com.google.android.gms.tasks.Task
 import com.google.android.gms.common.api.ApiException
 
 import android.util.Log
+import android.view.Display
+import android.widget.Toast
 import com.andromeda.immicart.delivery.ProductsPageActivity
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.iid.FirebaseInstanceId
+
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -91,6 +96,11 @@ class CreateAccountFragment : Fragment() {
             signIn()
         }
 
+        login_txtview?.setOnClickListener {
+            findNavController().navigate(R.id.action_createAccountFragment_to_logInFragment)
+
+        }
+
 
     }
 
@@ -121,7 +131,7 @@ class CreateAccountFragment : Fragment() {
             val photoURL = account?.photoUrl
             val displayName = account?.displayName
             account?.let {
-                firebaseAuthWithGoogle(account)
+                firebaseAuthWithGoogle(account, email!!, photoURL.toString()!!, displayName!!)
 
             }
 
@@ -136,7 +146,7 @@ class CreateAccountFragment : Fragment() {
 
     }
 
-    private fun firebaseAuthWithGoogle(acct: GoogleSignInAccount) {
+    private fun firebaseAuthWithGoogle(acct: GoogleSignInAccount, email: String, photoURL: String, displayName : String) {
         Log.d(TAG, "firebaseAuthWithGoogle:" + acct.id!!)
 
         val credential = GoogleAuthProvider.getCredential(acct.idToken, null)
@@ -146,7 +156,7 @@ class CreateAccountFragment : Fragment() {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "signInWithCredential:success")
                     val user = auth.currentUser
-                    startActivity(Intent(activity, ProductsPageActivity::class.java))
+                    createProfile(displayName, email, photoURL)
 
                 } else {
                     // If sign in fails, display a message to the user.
@@ -161,7 +171,7 @@ class CreateAccountFragment : Fragment() {
     fun createProfile(name: String, email: String, photoURL: String) {
         val db = FirebaseFirestore.getInstance();
         val userUID = FirebaseAuth.getInstance().uid
-        val documentPath = "users/$userUID"
+        val documentPath = "customers/$userUID"
 
         val user = HashMap<String, Any>()
         user.put("name", name)
@@ -169,8 +179,34 @@ class CreateAccountFragment : Fragment() {
         user.put("imageUrl", photoURL)
 
         db.document(documentPath).set(user).addOnSuccessListener {
+            activity?.let{
+                it.finish()
+                startActivity(Intent(activity, ProductsPageActivity::class.java))
+
+            }
+
 
         }
+    }
+
+    fun getToken() {
+        // Get token
+        FirebaseInstanceId.getInstance().instanceId
+            .addOnCompleteListener(OnCompleteListener { task ->
+                if (!task.isSuccessful) {
+                    Log.w(TAG, "getInstanceId failed", task.exception)
+                    return@OnCompleteListener
+                }
+
+                // Get new Instance ID token
+                val token = task.result?.token
+                Log.d(TAG, "Device Token: $token")
+
+                // Log and toast
+//                val msg = getString(R.string.msg_token_fmt, token)
+//                Log.d(TAG, msg)
+                Toast.makeText(activity!!, "Token Retrieved", Toast.LENGTH_SHORT).show()
+            })
     }
 
 

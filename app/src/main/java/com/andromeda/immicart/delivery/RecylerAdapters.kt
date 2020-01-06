@@ -40,24 +40,35 @@ val _immicartAPIService by lazy {
 }
 class ProductsAdapter (val context: Context, val addQuantityClickListener: (DeliveryCart, Int) -> Unit) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    var categoriesPr: ArrayList<__Product__> = ArrayList()
+    var categoriesPr: ArrayList<DeliveryCart> = ArrayList()
     lateinit var changeCartItemNumberPopUp: PopupWindow
     lateinit var storeId_: String
 
     private var TAG = "ProductsAdapter"
 
 
+//    //CArt Items
+//    fun setFoundItems(items : List<DeliveryCart>) {
+////        foundItems = items as ArrayList<DeliveryCart>
+//
+//        //Haha setting found to true
+//        categoriesPr!!.filter { items.contains(it)}.forEach {
+//            it.isInCart = true
+//        }
+//
+//        notifyDataSetChanged()
+//    }
 
-    fun updateList( items : ArrayList<__Product__>, storeId: String) {
+    fun updateList( items : ArrayList<DeliveryCart>, storeId: String) {
         categoriesPr = items
         storeId_ = storeId
         notifyDataSetChanged()
 
     }
+
     // Gets the number of animals in the list
     override fun getItemCount(): Int {
             return categoriesPr!!.size
-
     }
 
     // Inflates the item views
@@ -199,17 +210,24 @@ class ProductsAdapter (val context: Context, val addQuantityClickListener: (Deli
         val product_image = view.product_picture
         val offer_price = view.offer_price
         val normal_price = view.normal_price
-//        val amount_off = view.save_amt
+        val amount_off = view.cart_save_amt
         val product_name = view.product_name
-        fun bindItem(cartItem: __Product__) {
+        fun bindItem(cartItem: DeliveryCart) {
 
-            val deliveryCart = DeliveryCart(cartItem.key, cartItem.barcode, cartItem.name, cartItem.offerPrice,cartItem.normalPrice, cartItem.quantity, cartItem.image_url)
+            val deliveryCart = DeliveryCart(cartItem.key, cartItem.barcode, cartItem.name,cartItem.category, cartItem.offerPrice,cartItem.normalPrice, cartItem.quantity, cartItem.image_url)
             normal_price.setPaintFlags(normal_price.getPaintFlags() or Paint.STRIKE_THRU_TEXT_FLAG)
 
-            val price_ =  cartItem.offerPrice
+            val offerPrice_ =  cartItem.offerPrice
+            val normalPrice_ = cartItem.normalPrice
+
+            val save = normalPrice_ - offerPrice_
 
             val formatter = DecimalFormat("#,###,###");
-            val priceFormattedString = formatter.format(price_.toInt());
+            val saveFormattedString = formatter.format(save.toInt());
+            val priceFormattedString = formatter.format(offerPrice_.toInt());
+            val normalPriceFormattedString = formatter.format(normalPrice_.toInt());
+
+
 
             Glide.with(itemView.context).load(cartItem.image_url).into(product_image)
 
@@ -219,9 +237,12 @@ class ProductsAdapter (val context: Context, val addQuantityClickListener: (Deli
                 intent.putExtra(STORE_ID, storeId_)
                 itemView.context.startActivity(intent)
             }
+            amount_off.text = "Save KES $saveFormattedString"
             offer_price.text = "KES $priceFormattedString"
+            normal_price.text = "KES $normalPriceFormattedString"
+
             product_name.text = cartItem.name
-//        itemView.quantity_tv.text = cartItem.quantity.toString()
+            itemView.badge_qty.text = cartItem.quantity.toString()
 
             itemView.badge_qty.setOnClickListener {
                 val currentQuantity = itemView.badge_qty.text
@@ -258,17 +279,22 @@ class ProductsAdapter (val context: Context, val addQuantityClickListener: (Deli
         val product_image = view.product_picture
         val offer_price = view.offer_price
         val normal_price = view.normal_price
-//        val amount_off = view.save_amt
+        val amount_off = view.save_amt
         val product_name = view.product_name
-        fun bindItem(cartItem: __Product__) {
+        fun bindItem(cartItem: DeliveryCart) {
 
-            val deliveryCart = DeliveryCart(cartItem.key, cartItem.barcode, cartItem.name, cartItem.offerPrice, cartItem.normalPrice, cartItem.quantity, cartItem.image_url)
+            val deliveryCart = DeliveryCart(cartItem.key, cartItem.barcode, cartItem.name, cartItem.category,cartItem.offerPrice, cartItem.normalPrice, cartItem.quantity, cartItem.image_url)
             normal_price.setPaintFlags(normal_price.getPaintFlags() or Paint.STRIKE_THRU_TEXT_FLAG)
 
-            val price_ =  cartItem.offerPrice
+            val offerPrice_ =  cartItem.offerPrice
+            val normalPrice_ = cartItem.normalPrice
+
+            val save = normalPrice_ - offerPrice_
 
             val formatter = DecimalFormat("#,###,###");
-            val priceFormattedString = formatter.format(price_.toInt());
+            val saveFormattedString = formatter.format(save.toInt());
+            val priceFormattedString = formatter.format(offerPrice_.toInt());
+            val normalPriceFormattedString = formatter.format(normalPrice_.toInt());
 
             Glide.with(itemView.context).load(cartItem.image_url).into(product_image)
 
@@ -279,7 +305,10 @@ class ProductsAdapter (val context: Context, val addQuantityClickListener: (Deli
 
                 itemView.context.startActivity(intent)
             }
+
+            amount_off.text = "Save KES $saveFormattedString"
             offer_price.text = "KES $priceFormattedString"
+            normal_price.text = "KES $normalPriceFormattedString"
             product_name.text = cartItem.name
 //        itemView.quantity_tv.text = cartItem.quantity.toString()
 
@@ -308,17 +337,12 @@ class ProductsAdapter (val context: Context, val addQuantityClickListener: (Deli
 
         }
 
-
-
-
     }
-
-
 
 }
 
 
- class CategoryRecyclerAdapter(val storeId: String, val categories: List<__Category__>,  val context: Context, val addQuantityClickListener: (DeliveryCart, Int) -> Unit, val clickListener: (__Category__) -> Unit ): RecyclerView.Adapter<CategoryRecyclerAdapter.CategoryViewHolder>() {
+ class CategoryRecyclerAdapter(val storeId: String, val categories: ArrayList<__Category__>,  val context: Context, val addQuantityClickListener: (DeliveryCart, Int) -> Unit, val clickListener: (__Category__) -> Unit ): RecyclerView.Adapter<CategoryRecyclerAdapter.CategoryViewHolder>() {
 
     private val TAG = "CategoryRecyclerAdapter"
     var deliveryCartItems: ArrayList<DeliveryCart> = ArrayList()
@@ -399,13 +423,13 @@ class ProductsAdapter (val context: Context, val addQuantityClickListener: (Deli
 //
 //    }
 
-    fun getCategoryProducts(category: String, shimmerFrameLayout: ShimmerFrameLayout, adapter: ProductsAdapter) {
+    fun getCategoryProducts(category: __Category__, shimmerFrameLayout: ShimmerFrameLayout, adapter: ProductsAdapter, cartItems: List<DeliveryCart>) {
         val collectionPath = "stores/" + storeId + "/offers"
         val products = FirebaseFirestore.getInstance().collection(collectionPath)
-//            .whereEqualTo("categoryOne", category)
+            .whereEqualTo("categoryOne", category.name!!)
             .limit(10)
 
-        var productsArray: ArrayList<__Product__> = ArrayList()
+        var productsArray: ArrayList<DeliveryCart> = ArrayList()
         products.get().addOnSuccessListener { documentSnapshots ->
             for (document in documentSnapshots) {
                 val offer = document.data as HashMap<String, Any>
@@ -413,7 +437,7 @@ class ProductsAdapter (val context: Context, val addQuantityClickListener: (Deli
                 val deadline = offer["deadline"] as String
                 val normalPrice: String = offer["normal_price"] as String
                 val offerPrice = offer["offer_price"] as String
-                val category = offer["categoryOne"]
+                val category = offer["categoryOne"] as String
                 var barcode = offer["barcode"] as String?
                 val fileURL = offer["imageUrl"] as String
 
@@ -425,23 +449,41 @@ class ProductsAdapter (val context: Context, val addQuantityClickListener: (Deli
                 }
 
                 val deliveryCart =
-                    DeliveryCart(document.id, barcode, productName, intOfferPrice, intNormalPrice, 1, fileURL)
+                    DeliveryCart(document.id, barcode, productName,category, intOfferPrice, intNormalPrice, 1, fileURL)
                 val product =
-                    __Product__(document.id, barcode, productName, intOfferPrice, intNormalPrice, 1, fileURL, false)
-                productsArray.add(product)
-//                deliveryCartItems.forEach {
-//                    if(it.key == deliveryCart.key) {
-//                        val product = __Product__(document.id, barcode, productName, intOfferPrice, intNormalPrice, 1, fileURL, true)
-//                        productsArray.add(product)
-//
-//                    } else {
-//                        val product = __Product__(document.id, barcode, productName, intOfferPrice, intNormalPrice, 1, fileURL, false)
-//                        productsArray.add(product)
-//                    }
-//                }
+                    __Product__(document.id, barcode, productName,category, intOfferPrice, intNormalPrice, 1, fileURL, false)
+                productsArray.add(deliveryCart)
 
             }
-            adapter.updateList(productsArray, storeId)
+
+            if(productsArray.size == 0) {
+                val index = categories.indexOf(category)
+                categories.remove(category)
+//                categories.drop(index)
+                notifyItemRemoved(index)
+//                notifyItemRangeRemoved(index, 1)
+            } else {
+
+                productsArray.forEach {
+                    val product = it
+                    val index = productsArray.indexOf(product)
+                    cartItems.forEach {
+                        if(product.key == it.key) {
+                            product.isInCart = true
+                            val deliveryCart =
+                                DeliveryCart(it.key, it.barcode, it.name,it.category, it.offerPrice, it.normalPrice, it.quantity, it.image_url, true)
+                            productsArray.set(index, deliveryCart)
+                        }
+                    }
+
+                }
+                adapter.updateList(productsArray, storeId)
+
+
+            }
+
+
+//            adapter.setFoundItems(cartItems)
 
             shimmerFrameLayout.stopShimmerAnimation()
             shimmerFrameLayout.visibility = View.GONE
@@ -472,7 +514,7 @@ class ProductsAdapter (val context: Context, val addQuantityClickListener: (Deli
             recyclerView.setLayoutManager(linearLayoutManager)
             val productsAdapter = ProductsAdapter(context, addQuantityClickListener)
             recyclerView.adapter = productsAdapter
-            getCategoryProducts(category.name!!, itemView.parentShimmerLayout, productsAdapter)
+            getCategoryProducts(category, itemView.parentShimmerLayout, productsAdapter, deliveryCartItems)
 //            retrieveCategoryProducts(categoryId, itemView.parentShimmerLayout, productsAdapter)
 
             itemView.view_all_tv.setOnClickListener {
@@ -566,6 +608,5 @@ class ProductsAdapter (val context: Context, val addQuantityClickListener: (Deli
 
         }
     }
-
 
 

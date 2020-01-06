@@ -37,4 +37,7 @@ object Model {
     data class ResponseCategoryData(val data: SingleCategoryData)
     data class ScannedProduct(var _id: Int,var barcode: String, var name: String, var price: Float,  var quantity: Int)
 
+
+    //PAYMENTS
+    data class MPESAResponse(val error: String)
 }

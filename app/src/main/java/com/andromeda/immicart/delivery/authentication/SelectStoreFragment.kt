@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
@@ -165,7 +166,8 @@ class SelectStoreFragment : Fragment() {
         Log.d(TAG, "Selected Store: "  + store)
         authenticationActivityViewModel.deleteAll()
         authenticationActivityViewModel.insert(store)
-        startActivity(Intent(context, ProductsPageActivity::class.java))
+//        findNavController().navigate(R.id.create_account_action)
+//        startActivity(Intent(context, ProductsPageActivity::class.java))
 
     }
 

@@ -57,6 +57,11 @@
 	<string name="no_address_found">No address was found</string>
 	<string name="address_found">Address Found!</string>
 	<string name="no_geocoder_available">No Geocoder available</string>
+	
+	
+	<string name="default_notification_channel_id" translatable="false">immicart_fcm_default_channel</string>
+	<string name="channel_description">Immicart order status notifications</string>
+	<string name="channel_name">Immicart notifications channel</string>
 
 
 </resources>

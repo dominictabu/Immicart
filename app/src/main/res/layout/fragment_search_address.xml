@@ -43,12 +43,25 @@
 				android:layout_weight="1"
 				android:background="@drawable/search_location"
 				android:id="@+id/enter_location_searchview"
-				android:queryHint="Search products, categories, brands"
+				android:queryHint="type new delivery address"
 				android:layout_width="0dp"
 				android:layout_height="wrap_content"
 		/>
 	
 	</LinearLayout>
+	
+	
+	<!-- TODO: Update blank fragment layout -->
+	<com.wang.avi.AVLoadingIndicatorView
+			android:layout_below="@+id/top_ll"
+			android:id="@+id/av_view"
+			android:layout_centerHorizontal="true"
+			android:layout_marginTop="40dp"
+			android:layout_marginBottom="20dp"
+			app:indicatorColor="@color/colorGreen"
+			android:layout_width="48dp"
+			android:layout_height="48dp"
+			app:indicatorName="LineSpinFadeLoaderIndicator"/>
 	
 	
 	

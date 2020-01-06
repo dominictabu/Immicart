@@ -1,6 +1,10 @@
 package com.andromeda.immicart.delivery
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
 import android.content.Intent
+import android.os.Build
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.util.Log
@@ -9,21 +13,25 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 import com.andromeda.immicart.R
-import com.andromeda.immicart.delivery.authentication.MyAccountActivity
+import com.andromeda.immicart.delivery.account.MyAccountActivity
 import com.andromeda.immicart.delivery.checkout.DeliveryCartActivity
+import com.andromeda.immicart.delivery.choose_store.ChooseStoreActivity
 import com.andromeda.immicart.delivery.delivery_location.PickDeliveryAddressActivity
 import com.andromeda.immicart.networking.ImmicartAPIService
 import com.bumptech.glide.Glide
 import com.facebook.shimmer.ShimmerFrameLayout
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.appbar.AppBarLayout
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.iid.FirebaseInstanceId
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.products_fragment.*
 
@@ -33,9 +41,9 @@ val immicartAPIService by lazy {
     ImmicartAPIService.create()
 }
 
-lateinit var cartItems: List<DeliveryCart>
 
 class ProductsFragment : Fragment() {
+    private var cartItems: List<DeliveryCart> = ArrayList()
 
 
     private var TAG = "ProductsFragment"
@@ -72,21 +80,20 @@ class ProductsFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
 
         viewModel = ViewModelProviders.of(activity!!).get(ProductsViewModel::class.java)
-        viewModel.allDeliveryItems().observe(activity!!, Observer { items ->
-
-            Log.d(TAG, "CartItems: $items")
-            items?.let {
-                cartItems = it
-                val cartIteemsNumber = it.size
-                badge?.text = cartIteemsNumber.toString()
-                Log.d(TAG, "CartItems Length: ${items.count()}")
-
-                categoryRecyclerAdapter?.updateItems(it as ArrayList<DeliveryCart>)
-
-            }
-        })
-
-
+//        viewModel.allDeliveryItems().observe(activity!!, Observer { items ->
+//
+//            Log.d(TAG, "CartItems: $items")
+//            items?.let {
+//                cartItems = it
+//                val cartIteemsNumber = it.size
+//                badge?.text = cartIteemsNumber.toString()
+//                Log.d(TAG, "CartItems Length: ${items.count()}")
+//                categoryRecyclerAdapter?.updateItems(cartItems as ArrayList<DeliveryCart>)
+//
+//
+//
+//            }
+//        })
 
 
 
@@ -119,7 +126,8 @@ class ProductsFragment : Fragment() {
                     Log.d(TAG, "Stores size more than 0")
                     val store = it[0]
                     storeId = store.key
-                    store_name.text = store.name
+                    store_name?.text = store.name
+                    search_hint?.text = "Search ${store.name}"
                     Glide.with(activity!!).load(store.logoUrl).into(profile_image)
                     getCategories()
 
@@ -141,8 +149,8 @@ class ProductsFragment : Fragment() {
                 if(it.size > 0) {
                     val place = it[0]
 
-                    address_one.text = place.name
-                    address_two.text = place.address
+                    address_one?.text = place.name
+                    address_two?.text = place.address
 
                 }
 
@@ -177,26 +185,36 @@ class ProductsFragment : Fragment() {
         // TODO: Use the ViewModel
 
 
-        cart_frame_layout.setOnClickListener {
+        cart_frame_layout?.setOnClickListener {
 
             startActivity(Intent(activity!!, DeliveryCartActivity::class.java))
         }
 
-        myAccountIcon.setOnClickListener {
+        myAccountIcon?.setOnClickListener {
             startActivity(Intent(activity!!, MyAccountActivity::class.java))
 
         }
 
-        address_ll.setOnClickListener {
+        address_ll?.setOnClickListener {
             startActivity(Intent(activity!!, PickDeliveryAddressActivity::class.java))
 
         }
 
+        navigatetosearch?.visibility = View.VISIBLE
+        navigatetosearch?.setOnClickListener {
+            activity?.let {
+                (activity!! as ProductsPageActivity).navigateToSearch()
+            }
+        }
 
-//        store_name.setOnClickListener {
-//            startActivity(Intent(activity!!, PickDeliveryLocationActivity::class.java))
-//
-//        }
+        getToken()
+        createNotificationChannel()
+
+
+        store_name.setOnClickListener {
+            startActivity(Intent(activity!!, ChooseStoreActivity::class.java))
+
+        }
 
 
 
@@ -210,16 +228,14 @@ class ProductsFragment : Fragment() {
     fun intializeRecycler(categories: List<__Category__>) {
 
         val linearLayoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
-        category_items_recycler.setNestedScrollingEnabled(false);
+        category_items_recycler?.setNestedScrollingEnabled(false);
 
-        category_items_recycler.setLayoutManager(linearLayoutManager)
-        categoryRecyclerAdapter = CategoryRecyclerAdapter(storeId, categories, activity!!, { cartItem : DeliveryCart, newQuantity: Int -> cartItemClicked(cartItem, newQuantity)}, {category: __Category__ -> viewAll(category)})
-
-
-        category_items_recycler.setAdapter(categoryRecyclerAdapter)
+        category_items_recycler?.setLayoutManager(linearLayoutManager)
+        categoryRecyclerAdapter = CategoryRecyclerAdapter(storeId,
+            categories as ArrayList<__Category__>, activity!!, { cartItem : DeliveryCart, newQuantity: Int -> cartItemClicked(cartItem, newQuantity)}, { category: __Category__ -> viewAll(category)})
 
 
-
+        category_items_recycler?.setAdapter(categoryRecyclerAdapter)
 //
 //        var pastVisiblesItems : Int
 //        var visibleItemCount: Int
@@ -289,8 +305,6 @@ class ProductsFragment : Fragment() {
 //        }
 
         findNavController().navigate(R.id.go_to_subcategories)
-
-
     }
 
 
@@ -403,10 +417,21 @@ class ProductsFragment : Fragment() {
                 }
 
                 intializeRecycler(categories)
+                viewModel.allDeliveryItems().observe(activity!!, Observer { items ->
+                    Log.d(TAG, "CartItems: $items")
+                    items?.let {
+                        cartItems = it
+                        val cartIteemsNumber = it.size
+                        badge?.text = cartIteemsNumber.toString()
+                        Log.d(TAG, "CartItems Length: ${items.count()}")
+                        categoryRecyclerAdapter?.updateItems(cartItems as ArrayList<DeliveryCart>)
+                    }
 
+                })
+                loading_view?.visibility = View.GONE
+                coordinator_layout?.visibility = View.VISIBLE
 
             }
-
 
     }
 
@@ -473,17 +498,37 @@ class ProductsFragment : Fragment() {
                 val deadline = offer["deadline"] as String
                 val normalPrice : String = offer["normal_price"] as String
                 val offerPrice = offer["offer_price"] as String
-                val category = offer["categoryOne"]
+                val category = offer["categoryOne"] as String
                 val barcode = offer["barcode"] as String
                 val fileURL = offer["imageUrl"] as String
 
                 val intOfferPrice = offerPrice.toInt()
                 val intNormalPrice = normalPrice.toInt()
 
-                val deliveryCart = DeliveryCart(document.id, barcode, productName, intOfferPrice, intNormalPrice, 1, fileURL)
+                val deliveryCart = DeliveryCart(document.id, barcode, productName,category,  intOfferPrice, intNormalPrice, 1, fileURL)
             }
 
         }
+    }
+
+    fun getToken() {
+        // Get token
+        FirebaseInstanceId.getInstance().instanceId
+            .addOnCompleteListener(OnCompleteListener { task ->
+                if (!task.isSuccessful) {
+                    Log.w(TAG, "getInstanceId failed", task.exception)
+                    return@OnCompleteListener
+                }
+
+                // Get new Instance ID token
+                val token = task.result?.token
+                Log.d(TAG, "Device Token: $token")
+
+                // Log and toast
+//                val msg = getString(R.string.msg_token_fmt, token)
+//                Log.d(TAG, msg)
+                Toast.makeText(activity!!, "Token Retrieved", Toast.LENGTH_SHORT).show()
+            })
     }
 
 
@@ -503,17 +548,35 @@ class ProductsFragment : Fragment() {
         //TODO Change Quantity
         Log.d(TAG, "newQuantity : $newQuantity , $cartItem ")
 
-
-        if (cartItems.contains(cartItem)) {
-            Log.d(TAG, "CartItems contain the item")
-//            viewModel.updateQuantity(cartItem._id, newQuantity)
-
-        } else {
-            Log.d(TAG, "CartItems DO NOT  contain the item")
-
-            viewModel.insert(cartItem)
+        cartItems.forEach {
+            if(it.key == cartItem.key) {
+                Log.d(TAG, "CartItems contain the item")
+                viewModel.updateQuantity(cartItem.key, newQuantity)
+                return
+            }
         }
 
+            Log.d(TAG, "CartItems DO NOT  contain the item")
+            viewModel.insert(cartItem)
+
+    }
+
+
+    private fun createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val name = getString(R.string.channel_name)
+            val descriptionText = getString(R.string.channel_description)
+            val importance = NotificationManager.IMPORTANCE_DEFAULT
+            val channel = NotificationChannel(getString(R.string.default_notification_channel_id), name, importance).apply {
+                description = descriptionText
+            }
+            // Register the channel with the system
+            val notificationManager: NotificationManager =
+                activity!!.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(channel)
+        }
     }
 
 }

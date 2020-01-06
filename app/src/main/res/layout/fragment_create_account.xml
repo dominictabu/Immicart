@@ -11,43 +11,48 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 	
-	<ImageButton
-			android:id="@+id/go_back_button"
-			android:layout_margin="8dp"
-			android:background="@android:color/white"
-			android:src="@drawable/ic_keyboard_arrow_left_green_24dp"
-			android:layout_width="40dp"
-	             android:layout_height="40dp"/>
-	<ImageView
-			android:layout_marginTop="40dp"
-			android:id="@+id/immicart_logo"
-			android:layout_centerHorizontal="true"
-			android:layout_below="@+id/go_back_button"
-			android:layout_alignParentTop="true"
-			android:src="@drawable/immicart_logo_01"
-			android:layout_width="140dp"
-			android:layout_height="40dp"/>
+	
 	
 	<TextView
-			android:id="@+id/tagline"
+			android:id="@+id/save_time"
 			android:textStyle="bold"
-			android:textSize="20sp"
-			android:layout_marginBottom="8dp"
+			android:textSize="26sp"
 			android:layout_marginStart="20dp"
+			android:layout_marginTop="20dp"
 			android:layout_marginEnd="20dp"
 			android:layout_below="@+id/immicart_logo"
-			android:text="Create an account to start"
+			android:text="Save time,"
 			android:gravity="center"
-			android:layout_width="match_parent"
+			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"/>
+	<TextView
+			android:id="@+id/starting_now"
+			android:textStyle="bold"
+			android:textSize="26sp"
+			android:layout_marginStart="20dp"
+			android:layout_marginEnd="20dp"
+			android:layout_below="@+id/save_time"
+			android:text="starting now"
+			android:gravity="center"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"/>
+	<TextView
+			android:layout_marginStart="20dp"
+			android:layout_marginEnd="20dp"
+			android:textSize="18sp"
+			android:id="@+id/subtagline"
+			android:layout_below="@+id/starting_now"
+			android:text="Get the things you love from the stores you trust"
+			android:layout_width="wrap_content"
+	          android:layout_height="wrap_content"/>
 	<ImageView
 			android:id="@+id/immicart_image"
 			android:layout_margin="8dp"
 			android:src="@drawable/immicart_resizedpng"
 			android:layout_centerHorizontal="true"
-			android:layout_below="@+id/tagline"
-			android:layout_width="360dp"
-	           android:layout_height="220dp"/>
+			android:layout_below="@+id/subtagline"
+			android:layout_width="match_parent"
+	           android:layout_height="200dp"/>
 	<TextView
 			android:id="@+id/terms_title"
 			android:textSize="16sp"
@@ -102,7 +107,7 @@
 			android:padding="4dp"
 			android:background="@drawable/time_bg"
 			android:textSize="20sp"
-			android:text=" Continue with Email"
+			android:text=" Create account with Email"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content" />
 	<LinearLayout
@@ -184,7 +189,13 @@
 			android:layout_gravity="bottom"
 			android:background="@drawable/blue_bg"
 			android:padding="8dp">
-		
+		<TextView
+				android:textStyle="bold"
+				android:textSize="16sp"
+				android:text="Signing  "
+				android:textColor="@android:color/white"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"/>
 		<com.wang.avi.AVLoadingIndicatorView
 				app:indicatorColor="@android:color/white"
 				android:layout_width="36dp"
@@ -230,43 +241,31 @@
 	
 	</LinearLayout>
 	
+	
 	<LinearLayout
-			android:id="@+id/login_guest_link"
-			android:layout_marginTop="8dp"
-			android:layout_marginBottom="40dp"
+			android:layout_marginTop="10dp"
+			android:layout_marginBottom="20dp"
+			android:id="@+id/login_link_ll"
 			android:gravity="center"
 			android:layout_below="@+id/google_signInloadinglayout"
-			android:orientation="horizontal"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content">
 		<TextView
-				android:textStyle="bold"
-				android:textColor="@color/colorGreen"
-				android:id="@+id/login_link"
-				android:textSize="16sp"
-				android:gravity="center"
-				android:text="Log in"
+				android:textSize="18sp"
+				android:text="Already have an account? "
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"/>
 		<TextView
-				android:textStyle="bold"
+				android:id="@+id/login_txtview"
+				android:clickable="true"
 				android:layout_marginStart="8dp"
-				android:layout_marginEnd="8dp"
-				android:text="or"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"/>
-		<TextView
 				android:textStyle="bold"
 				android:textColor="@color/colorGreen"
-				android:id="@+id/guest_link"
-				android:textSize="16sp"
-				android:gravity="center"
-				android:text="Continue as guest"
+				android:textSize="18sp"
+				android:text="Log in "
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"/>
 	</LinearLayout>
 	
-	
-
 </RelativeLayout>
 </androidx.core.widget.NestedScrollView>

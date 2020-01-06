@@ -5,6 +5,7 @@ import io.reactivex.Observable;
 import io.reactivex.Single;
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -24,6 +25,8 @@ public interface ImmicartAPIService {
     Observable<Model.SingleCategoryData> getCategoryProducts(@Path(value = "category_id", encoded = true) int categoryId);
 
 
+    @POST("mpesaCallbackURL")
+    Call<Model.MPESAResponse> getMPESAResponse();
 
 
     //Google Maps

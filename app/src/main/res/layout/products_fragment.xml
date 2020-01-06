@@ -1,9 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.coordinatorlayout.widget.CoordinatorLayout
+<FrameLayout
 		xmlns:app="http://schemas.android.com/apk/res-auto"
 		xmlns:android="http://schemas.android.com/apk/res/android"
 		xmlns:tools="http://schemas.android.com/tools"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		tools:context=".delivery.ProductsFragment">
+	
+	<FrameLayout
+			android:layout_gravity="center"
+			android:id="@+id/loading_view"
+			android:layout_marginTop="28dp"
+			android:layout_marginBottom="20dp"
+			android:layout_width="128dp"
+			android:layout_height="128dp">
+		
+		<ProgressBar
+				android:background="@drawable/circle_shape"
+				android:layout_gravity="center"
+				android:layout_marginTop="8dp"
+				android:id="@+id/progress"
+				android:layout_width="116dp"
+				android:layout_height="116dp"
+				android:indeterminate="true"
+				android:visibility="visible"
+				android:indeterminateTintMode="src_atop"
+				android:indeterminateTint="@color/colorGreen"
+				style="?android:attr/progressBarStyleLargeInverse"
+		/>
+		
+		<ImageView
+				android:layout_gravity="center"
+				android:src="@drawable/immicart_shopper_logo"
+				android:layout_width="96dp"
+				android:layout_height="96dp"/>
+	
+	</FrameLayout>
+	
+	
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+		android:id="@+id/coordinator_layout"
+		android:visibility="gone"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		tools:context=".delivery.ProductsFragment">
@@ -58,12 +96,35 @@
 							android:text="Buy more, pay less"
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"/>
+					<LinearLayout
+							android:gravity="center_vertical"
+							android:orientation="horizontal"
+							android:id="@+id/navigatetosearch"
+							android:clickable="true"
+							android:layout_margin="10dp"
+							android:background="@drawable/search_bg"
+							android:layout_width="match_parent"
+					              android:layout_height="wrap_content">
+						<ImageView
+								android:clickable="false"
+								android:layout_margin="12dp"
+								android:src="@drawable/ic_search_black__24dp"
+								android:layout_width="wrap_content"
+						           android:layout_height="wrap_content"/>
+						<TextView
+								android:id="@+id/search_hint"
+								android:textSize="18sp"
+								android:textColor="@color/lightGrey_"
+								android:text="Search products"
+								android:layout_width="wrap_content"
+						          android:layout_height="wrap_content"/>
+					</LinearLayout>
 					<androidx.appcompat.widget.SearchView
+							android:visibility="gone"
+							android:focusable="false"
 							android:padding="4dp"
 							android:queryBackground="@null"
-							app:closeIcon="@drawable/ic_close_black__24dp"
 							app:searchIcon="@drawable/ic_search_black__24dp"
-							app:searchHintIcon="@drawable/ic_search_black__24dp"
 							android:id="@+id/search_view_browse"
 							android:layout_margin="10dp"
 							app:defaultQueryHint="Search malls, stores"
@@ -137,7 +198,7 @@
 								android:id="@+id/badge"
 								android:layout_gravity="top|end"
 								android:gravity="center"
-								android:text="3"
+								android:text="0"
 								android:textColor="@android:color/white"
 								android:background="@drawable/badge_bg"
 								android:layout_width="30dp"
@@ -175,7 +236,7 @@
 						android:id="@+id/delivery_to_tv"
 						android:textStyle="bold"
 						android:layout_margin="8dp"
-						android:text="Delivery to"
+						android:text="Deliver to"
 						android:layout_width="wrap_content"
 				          android:layout_height="wrap_content"/>
 				<View
@@ -230,8 +291,6 @@
 					           android:layout_height="wrap_content"/>
 				</LinearLayout>
 				
-				
-				
 			</RelativeLayout>
 			
 		</androidx.cardview.widget.CardView>
@@ -245,12 +304,8 @@
 				android:layout_height="wrap_content"/>
 		
 	</RelativeLayout>
-	
-	
-	
-	
-	
-	
 
 </androidx.core.widget.NestedScrollView>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</FrameLayout>
+

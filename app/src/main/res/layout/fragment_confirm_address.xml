@@ -79,14 +79,30 @@
 	</LinearLayout>
 	
 	<androidx.recyclerview.widget.RecyclerView
+			app:fastScrollEnabled="true"
+			app:fastScrollHorizontalThumbDrawable="@drawable/thumb_drawable"
+			app:fastScrollHorizontalTrackDrawable="@drawable/line_drawable"
+			app:fastScrollVerticalThumbDrawable="@drawable/thumb_drawable"
+			app:fastScrollVerticalTrackDrawable="@drawable/line_drawable"
+			android:layout_marginBottom="140dp"
 			android:layout_below="@+id/current_location_ll"
 			android:id="@+id/delivery_locations_addresses"
 			tools:listitem="@layout/item_delivery_location"
 			android:layout_width="match_parent"
            android:layout_height="wrap_content"/>
+	
+	<LinearLayout
+			android:background="@android:color/white"
+			android:layout_alignParentBottom="true"
+			android:orientation="vertical"
+			android:layout_width="match_parent"
+	              android:layout_height="wrap_content">
+		
 	<Button
 			android:textSize="16sp"
-			android:layout_margin="10dp"
+			android:layout_marginStart="10dp"
+			android:layout_marginEnd="10dp"
+			android:layout_marginTop="10dp"
 			android:layout_below="@+id/delivery_locations_addresses"
 			android:textAllCaps="false"
 			android:id="@+id/save_location_button"
@@ -106,12 +122,15 @@
 			android:id="@+id/add_location_button"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:background="@android:color/white"
+			android:background="@drawable/blue_bg"
 			android:text="Add address"
-			android:textColor="@color/colorGreen"
+			android:textColor="@android:color/white"
 			android:textStyle="bold" />
 	
-	
-	
-	
+	</LinearLayout>
+
+
+
+
+
 </RelativeLayout>

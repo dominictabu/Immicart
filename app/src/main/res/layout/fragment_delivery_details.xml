@@ -16,6 +16,14 @@
 			app:popupTheme="@style/AppTheme.PopupOverlay"
 			android:layout_width="match_parent"
 			android:layout_height="?attr/actionBarSize">
+		<ImageButton
+				android:id="@+id/go_back_button"
+				android:layout_margin="8dp"
+				android:background="@android:color/white"
+				android:src="@drawable/ic_keyboard_arrow_left_green_24dp"
+				android:layout_width="48dp"
+				android:layout_height="48dp"/>
+		
 		<TextView
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
@@ -26,9 +34,33 @@
 				android:id="@+id/toolbar_title" />
 	
 	</androidx.appcompat.widget.Toolbar>
-
+	
+	
+	<TextView
+			android:visibility="gone"
+			android:textColor="@color/red"
+			android:layout_below="@+id/toolbar"
+			android:gravity="center"
+			android:text="Oops. Incomplete information"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:id="@+id/error_title"
+			android:layout_marginTop="16dp"
+			android:textSize="20sp"
+			android:fontFamily="@font/roboto_medium"
+			/>
+	<TextView
+			android:visibility="gone"
+			android:textSize="16sp"
+			android:textColor="@color/red"
+			android:layout_margin="16dp"
+			android:id="@+id/error_textview"
+			android:layout_below="@+id/error_title"
+			android:text="Oops. Enter the delivery location, your contact mobile number and top up your credit to continue"
+			android:layout_width="wrap_content"
+	          android:layout_height="wrap_content"/>
 <androidx.core.widget.NestedScrollView
-		android:layout_below="@+id/toolbar"
+		android:layout_below="@+id/error_textview"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent">
 	
@@ -185,7 +217,7 @@
 				android:layout_below="@+id/wallet_cardview"
 				android:textSize="20sp"
 				android:textStyle="bold"
-				android:text="KES 500"
+				android:text="KES 0"
 				android:id="@+id/wallet_credit"
 				android:layout_width="wrap_content"
 		          android:layout_height="wrap_content"/>
@@ -260,125 +292,169 @@
 				android:gravity="center_vertical"
 				android:id="@+id/phone_ll"
 				android:layout_below="@+id/phone_cardview"
-				android:orientation="horizontal"
+				android:orientation="vertical"
 				android:layout_width="match_parent"
 		              android:layout_height="wrap_content">
 			<TextView
-					android:layout_weight="1"
-					android:layout_margin="16dp"
-					android:textSize="20sp"
 					android:layout_marginStart="16dp"
-					android:text="0796026997"
-					android:layout_width="0dp"
-			          android:layout_height="wrap_content"/>
-			<ImageView
-					android:layout_marginEnd="20dp"
-					android:src="@drawable/ic_edit_green_24dp"
+					android:text="We use your number to text or call you about your order"
 					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"/>
+			          android:layout_height="wrap_content"/>
+			
+			<com.google.android.material.textfield.TextInputLayout
+					app:hintAnimationEnabled="true"
+					android:padding="4dp"
+					app:hintEnabled="true"
+					android:background="@drawable/log_out_bg"
+					android:id="@+id/textInputLayoutPhone"
+					android:layout_marginBottom="8dp"
+					android:layout_marginTop="10dp"
+					android:layout_marginStart="20dp"
+					android:layout_marginEnd="20dp"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content">
+				<EditText
+						android:padding="4dp"
+						android:layout_margin="4dp"
+						android:textSize="16sp"
+						android:text="0796026997"
+						android:background="@null"
+						android:id="@+id/phone_number_edittext"
+						android:backgroundTint="@android:color/white"
+						android:hint="Mobile number(10 digits)"
+						android:layout_width="match_parent"
+						android:inputType="phone"
+						android:layout_height="wrap_content" />
+			</com.google.android.material.textfield.TextInputLayout>
+			<Button
+					android:visibility="gone"
+					android:textSize="16sp"
+					android:layout_margin="16dp"
+					android:layout_below="@+id/wallet_credit"
+					android:textAllCaps="false"
+					android:id="@+id/confirm_number_button"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:background="@drawable/small_corners_blue"
+					android:text="Continue"
+					android:textColor="@android:color/white"
+					android:textStyle="bold" />
+			<Button
+					android:fontFamily="@font/roboto_medium"
+					android:visibility="gone"
+					android:textSize="16sp"
+					android:layout_margin="16dp"
+					android:textAllCaps="false"
+					android:id="@+id/confirm_phone_disabled"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:background="@drawable/disabled_btn"
+					android:text="Continue"
+					android:textColor="@android:color/white"
+					android:textStyle="bold" />
 		</LinearLayout>
 		
-		<androidx.cardview.widget.CardView
-				app:cardElevation="0dp"
-				android:layout_marginTop="10dp"
-				android:layout_below="@+id/phone_ll"
-				android:id="@+id/delivery_time_cardview"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content">
-			
-			<LinearLayout
-					android:visibility="visible"
-					android:layout_marginTop="10dp"
-					android:layout_marginBottom="10dp"
-					android:gravity="center"
-					android:layout_below="@+id/address_ll"
-					android:clickable="true"
-					android:id="@+id/layoutTimeline"
-					android:orientation="horizontal"
-					android:layout_width="match_parent"
-					android:layout_height="match_parent"
-					android:focusable="true">
-				
-				<ImageView
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:id="@+id/imageViewTime"
-						app:srcCompat="@drawable/ic_access_time_black_24dp"
-						android:layout_marginStart="@dimen/standard_margin"
-						segmentedgroup:ignore="ContentDescription"/>
-				<TextView
-						android:text="@string/select_delivery_date_and_time"
-						android:layout_width="0dp"
-						android:layout_height="wrap_content"
-						android:id="@+id/textViewDeliveryTime"
-						android:layout_marginStart="16dp"
-						android:textSize="20sp"
-						android:fontFamily="@font/roboto_medium"
-						android:layout_weight="1"/>
-				<ImageView
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						app:srcCompat="@drawable/ic_keyboard_arrow_down_black_24dp"
-						android:id="@+id/imageViewArrowTime"
-						android:layout_marginEnd="@dimen/standard_margin"
-				/>
-			</LinearLayout>
-		</androidx.cardview.widget.CardView>
-		
-		<info.hoang8f.android.segmented.SegmentedGroup
-				app:sc_tint_color="@color/colorGreen"
-				android:layout_below="@+id/delivery_time_cardview"
-				xmlns:segmentedgroup="http://schemas.android.com/apk/res-auto"
-				android:id="@+id/segmented2"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:layout_margin="16dp"
-				android:orientation="horizontal"
-				segmentedgroup:sc_border_width="2dp"
-				segmentedgroup:sc_corner_radius="10dp">
-			
-			<RadioButton
-					android:checked="true"
-					android:padding="8dp"
-					android:id="@+id/todayBtn"
-					android:layout_weight="1"
-					android:layout_width="0dp"
-					android:layout_height="40dp"
-					android:text="Today"
-					style="@style/RadioButton" />
-			
-			<RadioButton
-					android:padding="8dp"
-					android:id="@+id/tomorrowBtn"
-					android:layout_weight="1"
-					android:layout_width="0dp"
-					android:layout_height="40dp"
-					android:text="Tomorrow"
-					style="@style/RadioButton" />
-		</info.hoang8f.android.segmented.SegmentedGroup>
-		
-		<RadioGroup
-				android:id="@+id/delivery_time_radio_group"
-				android:layout_margin="16dp"
-				android:orientation="vertical"
-				android:layout_below="@+id/segmented2"
-				android:layout_width="match_parent"
-		            android:layout_height="wrap_content">
-			<RadioButton
-					android:textSize="16sp"
-					android:textStyle="bold"
-					android:text="12:00pm - 2:00pm"
-					android:layout_width="wrap_content"
-			             android:layout_height="wrap_content"/>
-			<RadioButton
-					android:textSize="16sp"
-					android:layout_marginTop="20dp"
-					android:textStyle="bold"
-					android:text="4:00pm - 7:00pm"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"/>
-		</RadioGroup>
-		
+		<!--<androidx.cardview.widget.CardView-->
+				<!--app:cardElevation="0dp"-->
+				<!--android:layout_marginTop="10dp"-->
+				<!--android:layout_below="@+id/phone_ll"-->
+				<!--android:id="@+id/delivery_time_cardview"-->
+				<!--android:layout_width="match_parent"-->
+				<!--android:layout_height="wrap_content">-->
+			<!---->
+			<!--<LinearLayout-->
+					<!--android:visibility="visible"-->
+					<!--android:layout_marginTop="10dp"-->
+					<!--android:layout_marginBottom="10dp"-->
+					<!--android:gravity="center"-->
+					<!--android:layout_below="@+id/address_ll"-->
+					<!--android:clickable="true"-->
+					<!--android:id="@+id/layoutTimeline"-->
+					<!--android:orientation="horizontal"-->
+					<!--android:layout_width="match_parent"-->
+					<!--android:layout_height="match_parent"-->
+					<!--android:focusable="true">-->
+				<!---->
+				<!--<ImageView-->
+						<!--android:layout_width="wrap_content"-->
+						<!--android:layout_height="wrap_content"-->
+						<!--android:id="@+id/imageViewTime"-->
+						<!--app:srcCompat="@drawable/ic_access_time_black_24dp"-->
+						<!--android:layout_marginStart="@dimen/standard_margin"-->
+						<!--segmentedgroup:ignore="ContentDescription"/>-->
+				<!--<TextView-->
+						<!--android:text="@string/select_delivery_date_and_time"-->
+						<!--android:layout_width="0dp"-->
+						<!--android:layout_height="wrap_content"-->
+						<!--android:id="@+id/textViewDeliveryTime"-->
+						<!--android:layout_marginStart="16dp"-->
+						<!--android:textSize="20sp"-->
+						<!--android:fontFamily="@font/roboto_medium"-->
+						<!--android:layout_weight="1"/>-->
+				<!--<ImageView-->
+						<!--android:layout_width="wrap_content"-->
+						<!--android:layout_height="wrap_content"-->
+						<!--app:srcCompat="@drawable/ic_keyboard_arrow_down_black_24dp"-->
+						<!--android:id="@+id/imageViewArrowTime"-->
+						<!--android:layout_marginEnd="@dimen/standard_margin"-->
+				<!--/>-->
+			<!--</LinearLayout>-->
+		<!--</androidx.cardview.widget.CardView>-->
+		<!---->
+		<!--<info.hoang8f.android.segmented.SegmentedGroup-->
+				<!--app:sc_tint_color="@color/colorGreen"-->
+				<!--android:layout_below="@+id/delivery_time_cardview"-->
+				<!--xmlns:segmentedgroup="http://schemas.android.com/apk/res-auto"-->
+				<!--android:id="@+id/segmented2"-->
+				<!--android:layout_width="match_parent"-->
+				<!--android:layout_height="wrap_content"-->
+				<!--android:layout_margin="16dp"-->
+				<!--android:orientation="horizontal"-->
+				<!--segmentedgroup:sc_border_width="2dp"-->
+				<!--segmentedgroup:sc_corner_radius="10dp">-->
+			<!---->
+			<!--<RadioButton-->
+					<!--android:checked="true"-->
+					<!--android:padding="8dp"-->
+					<!--android:id="@+id/todayBtn"-->
+					<!--android:layout_weight="1"-->
+					<!--android:layout_width="0dp"-->
+					<!--android:layout_height="40dp"-->
+					<!--android:text="Today"-->
+					<!--style="@style/RadioButton" />-->
+			<!---->
+			<!--<RadioButton-->
+					<!--android:padding="8dp"-->
+					<!--android:id="@+id/tomorrowBtn"-->
+					<!--android:layout_weight="1"-->
+					<!--android:layout_width="0dp"-->
+					<!--android:layout_height="40dp"-->
+					<!--android:text="Tomorrow"-->
+					<!--style="@style/RadioButton" />-->
+		<!--</info.hoang8f.android.segmented.SegmentedGroup>-->
+		<!---->
+		<!--<RadioGroup-->
+				<!--android:id="@+id/delivery_time_radio_group"-->
+				<!--android:layout_margin="16dp"-->
+				<!--android:orientation="vertical"-->
+				<!--android:layout_below="@+id/segmented2"-->
+				<!--android:layout_width="match_parent"-->
+		            <!--android:layout_height="wrap_content">-->
+			<!--<RadioButton-->
+					<!--android:textSize="16sp"-->
+					<!--android:textStyle="bold"-->
+					<!--android:text="12:00pm - 2:00pm"-->
+					<!--android:layout_width="wrap_content"-->
+			             <!--android:layout_height="wrap_content"/>-->
+			<!--<RadioButton-->
+					<!--android:textSize="16sp"-->
+					<!--android:layout_marginTop="20dp"-->
+					<!--android:textStyle="bold"-->
+					<!--android:text="4:00pm - 7:00pm"-->
+					<!--android:layout_width="wrap_content"-->
+					<!--android:layout_height="wrap_content"/>-->
+		<!--</RadioGroup>-->
+		<!---->
 		
 		<!--<include layout="@layout/add_phone_number"-->
 		         <!--android:visibility="gone"-->
@@ -389,7 +465,7 @@
 				<!--android:layout_margin="@dimen/standard_margin"/>-->
 		
 		<RelativeLayout
-				android:layout_below="@+id/delivery_time_radio_group"
+				android:layout_below="@+id/phone_ll"
 				android:visibility="gone"
 				android:layout_marginTop="16dp"
 				android:gravity="center"
@@ -453,7 +529,7 @@
 		</RelativeLayout>
 		
 		<LinearLayout
-				android:visibility="visible"
+				android:visibility="gone"
 				android:layout_marginTop="40dp"
 				android:id="@+id/cart_items_ll"
 				android:layout_below="@+id/recycler_ll"
@@ -610,11 +686,13 @@
 	
 </androidx.core.widget.NestedScrollView>
 	<LinearLayout
+			android:orientation="vertical"
 			android:background="@android:color/white"
 			android:layout_alignParentBottom="true"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content">
 		<Button
+				android:visibility="visible"
 				android:id="@+id/place_order_button"
 				android:layout_marginBottom="@dimen/standard_margin"
 				android:textSize="20sp"
@@ -626,5 +704,18 @@
 				android:layout_margin="@dimen/standard_margin"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"/>
+		<Button
+				android:fontFamily="@font/roboto_medium"
+				android:visibility="gone"
+				android:textSize="20sp"
+				android:layout_margin="@dimen/standard_margin"
+				android:textAllCaps="false"
+				android:id="@+id/place_order_button_disabled"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:background="@drawable/disabled_btn"
+				android:text="@string/place_order"
+				android:textColor="@android:color/white"
+				android:textStyle="bold" />
 	</LinearLayout>
 </RelativeLayout>

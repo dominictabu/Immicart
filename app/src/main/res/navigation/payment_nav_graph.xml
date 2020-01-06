@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools" android:id="@+id/payment_nav_graph"
+            app:startDestination="@id/MPESAFragment2">
+	
+	<fragment android:id="@+id/MPESAFragment2" android:name="com.andromeda.immicart.delivery.wallet.MPESAFragment"
+	          android:label="fragment_mpesa" tools:layout="@layout/fragment_mpesa">
+		<action android:id="@+id/action_MPESAFragment2_to_amountFragment" app:destination="@id/amountFragment"/>
+	</fragment>
+	<fragment android:id="@+id/amountFragment" android:name="com.andromeda.immicart.delivery.wallet.AmountFragment"
+	          android:label="fragment_amount" tools:layout="@layout/fragment_amount"/>
+</navigation>

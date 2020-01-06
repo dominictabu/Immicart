@@ -43,6 +43,7 @@ class SearchFragment : Fragment() {
     val db = FirebaseFirestore.getInstance();
     private lateinit var viewModel: ProductsViewModel
 
+    private var cartItems: List<DeliveryCart> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,6 +64,17 @@ class SearchFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(activity!!).get(ProductsViewModel::class.java)
+
+//        search_view_search_fragment.requestFocusFromTouch();
+        search_view_search_fragment?.requestFocus()
+
+//        search_view_search_fragment.onFocusChangeListener(object : View.OnFocusChangeListener {
+//            override fun onFocusChange(v: View?, hasFocus: Boolean) {
+//                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+//            }
+//
+//        })
+
 
         viewModel.currentStores().observe(activity!!, Observer {
             it?.let {

@@ -71,6 +71,8 @@ class SearchAddressFragment : Fragment(), PlacesAutoCompleteAdapter.OnItemClickL
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        av_view.hide()
+
 
         pickDeliveryLocationViewModel = ViewModelProviders.of(activity!!).get(PickDeliveryLocationViewModel::class.java)
 
@@ -100,6 +102,7 @@ class SearchAddressFragment : Fragment(), PlacesAutoCompleteAdapter.OnItemClickL
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
+                av_view.show()
                 // Use the builder to create a FindAutocompletePredictionsRequest.
                 val request = FindAutocompletePredictionsRequest.builder()
                     //.setLocationRestriction(bounds)
@@ -171,7 +174,9 @@ class SearchAddressFragment : Fragment(), PlacesAutoCompleteAdapter.OnItemClickL
     override fun OnItemClick(place: Place?) {
         place?.let {
 
+            enter_location_searchview?.clearFocus()
             retrievePlace(it)
+
 
         }
     }
@@ -187,7 +192,7 @@ class SearchAddressFragment : Fragment(), PlacesAutoCompleteAdapter.OnItemClickL
             pickDeliveryLocationViewModel.deleteAllDeliveryLocations()
             pickDeliveryLocationViewModel.insertCurrentDeliveryLocation(currentDeliveryLocation)
             pickDeliveryLocationViewModel.insertDeliveryLocation(deliveryLocation)
-            findNavController().popBackStack()
+            findNavController()?.popBackStack()
             Log.d(TAG, "Retrieved Place: $place")
         }
     }
@@ -215,6 +220,9 @@ class SearchAddressFragment : Fragment(), PlacesAutoCompleteAdapter.OnItemClickL
             activity!!,
             this@SearchAddressFragment
         )
+
+        av_view.hide()
+
 
         recycler_items.adapter = placesAutoCompleteAdapter
 

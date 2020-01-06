@@ -61,16 +61,16 @@
 					android:id="@+id/price_tv"
 					android:text="KES 500"
 			/>
-			<TextView
-					android:layout_marginStart="16dp"
-					android:gravity="center"
-					android:id="@+id/_remove_item"
-					android:drawablePadding="8dp"
-					android:textSize="16sp"
-					android:drawableStart="@drawable/ic_delete_primary_color_24dp"
-					android:text="Remove"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"/>
+			<!--<TextView-->
+					<!--android:layout_marginStart="16dp"-->
+					<!--android:gravity="center"-->
+					<!--android:id="@+id/_remove_item"-->
+					<!--android:drawablePadding="8dp"-->
+					<!--android:textSize="16sp"-->
+					<!--android:drawableStart="@drawable/ic_delete_primary_color_24dp"-->
+					<!--android:text="Remove"-->
+					<!--android:layout_width="wrap_content"-->
+					<!--android:layout_height="wrap_content"/>-->
 		</LinearLayout>
 	
 	</LinearLayout>

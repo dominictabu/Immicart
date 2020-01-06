@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+		android:fillViewport="true"
+		xmlns:android="http://schemas.android.com/apk/res/android"
+		xmlns:tools="http://schemas.android.com/tools"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		xmlns:app="http://schemas.android.com/apk/res-auto"
+		tools:context=".delivery.wallet.MPESAFragment">
+	
+	
+<RelativeLayout
+		android:fillViewport="true"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:context=".delivery.wallet.MPESAFragment">
+	
+	<androidx.appcompat.widget.Toolbar
+			android:layout_alignParentTop="true"
+			android:id="@+id/toolbar"
+			android:background="@android:color/white"
+			app:popupTheme="@style/AppTheme.PopupOverlay"
+			android:layout_width="match_parent"
+			android:layout_height="?attr/actionBarSize">
+		<ImageButton
+				android:id="@+id/go_back_button"
+				android:layout_margin="8dp"
+				android:background="@android:color/white"
+				android:src="@drawable/ic_keyboard_arrow_left_green_24dp"
+				android:layout_width="48dp"
+				android:layout_height="48dp"/>
+		<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="M-PESA"
+				android:textSize="18sp"
+				android:textStyle="bold"
+				android:layout_gravity="center"
+				android:id="@+id/toolbar_title" />
+	
+	</androidx.appcompat.widget.Toolbar>
+	
+	<TextView
+			android:textAllCaps="true"
+			android:textColor="@color/lightGrey_"
+			android:textSize="16sp"
+			android:layout_marginStart="20dp"
+			android:layout_marginTop="40dp"
+			android:id="@+id/mobile_title"
+			android:layout_below="@+id/toolbar"
+			android:text="Enter M-PESA mobile number"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"/>
+	<!--<EditText-->
+			<!--android:focusable="true"-->
+			<!--android:focusableInTouchMode="true"-->
+			<!--android:layout_marginTop="20dp"-->
+			<!--android:id="@+id/phone_number_edittxt"-->
+			<!--android:layout_weight="1"-->
+			<!--android:hint="Name"-->
+			<!--android:layout_marginBottom="8dp"-->
+			<!--android:layout_marginStart="20dp"-->
+			<!--android:layout_marginEnd="20dp"-->
+			<!--android:padding="12dp"-->
+			<!--android:layout_below="@+id/mobile_title"-->
+			<!--android:background="@drawable/search_location"-->
+			<!--android:layout_width="match_parent"-->
+			<!--android:layout_height="wrap_content"/>-->
+	<EditText
+			android:layout_marginTop="10dp"
+			android:maxLength="10"
+			android:inputType="phone"
+			android:background="@null"
+			android:id="@+id/number_edittext"
+			android:textSize="20sp"
+			android:layout_marginStart="20dp"
+			android:hint="079-602-6997"
+			android:layout_below="@+id/mobile_title"
+			android:layout_width="wrap_content"
+	          android:layout_height="wrap_content"/>
+	<TextView
+			android:visibility="gone"
+			android:id="@+id/error_txt"
+			android:textColor="@color/colorAccent"
+			android:layout_marginStart="20dp"
+			android:layout_marginTop="20dp"
+			android:layout_below="@+id/number_edittext"
+			android:text="Number is not correct"
+			android:layout_width="wrap_content"
+	          android:layout_height="wrap_content"/>
+	
+	<TextView
+			android:textAllCaps="true"
+			android:id="@+id/enter_amount_title"
+			android:textColor="@color/lightGrey_"
+			android:textSize="16sp"
+			android:layout_marginStart="20dp"
+			android:layout_marginTop="20dp"
+			android:layout_below="@+id/error_txt"
+			android:text="Enter Amount"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"/>
+	<LinearLayout
+			android:id="@+id/amount_ll"
+			android:orientation="horizontal"
+			android:gravity="bottom"
+			android:layout_marginStart="20dp"
+			android:layout_marginEnd="20dp"
+			android:layout_marginTop="10dp"
+			android:layout_below="@+id/enter_amount_title"
+			android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+		<TextView
+				android:textSize="20sp"
+				android:text="KES"
+				android:layout_width="wrap_content"
+		          android:layout_height="wrap_content"/>
+		
+		<EditText
+				android:maxLength="10"
+				android:inputType="number"
+				android:id="@+id/amount_edittext"
+				android:textSize="20sp"
+				android:layout_marginStart="20dp"
+				android:hint="E.g 1,000"
+				android:layout_below="@+id/mobile_title"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"/>
+		
+		
+	</LinearLayout>
+	
+	<TextView
+			android:textSize="16sp"
+			android:visibility="visible"
+			android:id="@+id/instructions_amount"
+			android:textColor="@color/lightGrey"
+			android:layout_marginStart="84dp"
+			android:layout_marginTop="4dp"
+			android:layout_below="@+id/amount_ll"
+			android:text="min 100 and max 50,000"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"/>
+	<TextView
+			android:textSize="16sp"
+			android:visibility="gone"
+			android:id="@+id/error_txt_amount"
+			android:textColor="@color/colorAccent"
+			android:layout_marginStart="84dp"
+			android:layout_marginTop="4dp"
+			android:layout_below="@+id/instructions_amount"
+			android:text="Enter an amount more than 100"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"/>
+	
+	
+	<!--<EditText-->
+			<!--android:textColor="@android:color/black"-->
+			<!--android:hint="079-602-6997"-->
+			<!--android:textSize="28sp"-->
+			<!--android:layout_marginStart="20dp"-->
+			<!--android:layout_marginTop="10dp"-->
+			<!--android:layout_below="@+id/mobile_title"-->
+			<!--android:background="@null"-->
+			<!--android:id="@+id/mobile_number"-->
+			<!--android:backgroundTint="@android:color/white"-->
+			<!--android:layout_width="wrap_content"-->
+			<!--android:inputType="phone"-->
+			<!--android:layout_height="wrap_content" />-->
+	
+	<Button
+			android:visibility="gone"
+			android:layout_alignParentBottom="true"
+			android:elevation="8dp"
+			android:textSize="16sp"
+			android:layout_marginTop="40dp"
+			android:layout_marginStart="20dp"
+			android:layout_marginEnd="20dp"
+			android:layout_marginBottom="40dp"
+			android:textAllCaps="true"
+			android:id="@+id/continue_button"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:background="@drawable/small_corners_blue"
+			android:text="Confirm Top Up"
+			android:textColor="@android:color/white"
+			android:textStyle="bold" />
+	<Button
+			android:visibility="visible"
+			android:layout_alignParentBottom="true"
+			android:elevation="8dp"
+			android:textSize="16sp"
+			android:layout_marginTop="40dp"
+			android:layout_marginStart="20dp"
+			android:layout_marginEnd="20dp"
+			android:layout_marginBottom="40dp"
+			android:textAllCaps="true"
+			android:id="@+id/continue_button_disabled"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:background="@drawable/disabled_btn"
+			android:text="Confirm Top Up"
+			android:textColor="@android:color/white"
+			android:textStyle="bold" />
+	<LinearLayout
+			android:visibility="gone"
+			android:gravity="center"
+			android:layout_marginTop="40dp"
+			android:layout_marginStart="20dp"
+			android:layout_marginEnd="20dp"
+			android:layout_marginBottom="40dp"
+			android:layout_alignParentBottom="true"
+			android:clickable="true"
+			android:id="@+id/loadinglayout"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="horizontal"
+			android:layout_gravity="bottom"
+			android:background="@drawable/time_bg"
+			android:padding="8dp">
+		<TextView
+				android:textStyle="bold"
+				android:textSize="16sp"
+				android:text="Please wait "
+				android:textColor="@android:color/white"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"/>
+		
+		<com.wang.avi.AVLoadingIndicatorView
+				app:indicatorColor="@android:color/white"
+				android:layout_width="36dp"
+				android:layout_height="36dp"
+				app:indicatorName="LineSpinFadeLoaderIndicator"/>
+	
+	
+	</LinearLayout>
+	
+
+</RelativeLayout>
+</ScrollView>

@@ -91,20 +91,20 @@ class SubCategoryTwoFragment : Fragment() {
 
 
 
-
-        viewModel?.allDeliveryItems()?.observe(this, Observer { items ->
-
-            Log.d(TAG, "CartItems: $items")
-            items?.let {
-                cartItems = it
-                val cartIteemsNumber = it.size
-                badge.text = cartIteemsNumber.toString()
-                Log.d(TAG, "CartItems Length: ${items.count()}")
-
-                categoryRecyclerAdapter?.updateItems(it as ArrayList<DeliveryCart>)
-
-            }
-        })
+//
+//        viewModel?.allDeliveryItems()?.observe(this, Observer { items ->
+//
+//            Log.d(TAG, "CartItems: $items")
+//            items?.let {
+//                cartItems = it
+//                val cartIteemsNumber = it.size
+//                badge.text = cartIteemsNumber.toString()
+//                Log.d(TAG, "CartItems Length: ${items.count()}")
+//
+//                categoryRecyclerAdapter?.updateItems(it as ArrayList<DeliveryCart>)
+//
+//            }
+//        })
 
 
 
@@ -217,6 +217,19 @@ class SubCategoryTwoFragment : Fragment() {
                 }
 
                 initializeSubCategoryRecyclerView(subCategories)
+                viewModel.allDeliveryItems().observe(activity!!, Observer { items ->
+                    Log.d(TAG, "CartItems: $items")
+                    items?.let {
+                        cartItems = it
+                        val cartIteemsNumber = it.size
+                        badge?.text = cartIteemsNumber.toString()
+                        Log.d(TAG, "CartItems Length: ${items.count()}")
+                        categoryRecyclerAdapter?.updateItems(cartItems as ArrayList<DeliveryCart>)
+                    }
+
+
+                })
+
 
 
             }
@@ -231,7 +244,8 @@ class SubCategoryTwoFragment : Fragment() {
         products_items_recycler.setNestedScrollingEnabled(false);
 
         products_items_recycler.setLayoutManager(linearLayoutManager)
-        categoryRecyclerAdapter = CategoryRecyclerAdapter(storeId, categories, activity!!, { cartItem : DeliveryCart, newQuantity: Int -> cartItemClicked(cartItem, newQuantity)}, {category: __Category__ -> viewAll(category)})
+        categoryRecyclerAdapter = CategoryRecyclerAdapter(storeId,
+            categories as ArrayList<__Category__>, activity!!, { cartItem : DeliveryCart, newQuantity: Int -> cartItemClicked(cartItem, newQuantity)}, { category: __Category__ -> viewAll(category)})
 
 
         products_items_recycler.setAdapter(categoryRecyclerAdapter)
@@ -243,7 +257,7 @@ class SubCategoryTwoFragment : Fragment() {
         //TODO Change Quantity
         Log.d(TAG, "newQuantity : $newQuantity , $cartItem ")
 
-        if (com.andromeda.immicart.delivery.cartItems.contains(cartItem)) {
+        if (cartItems.contains(cartItem)) {
             Log.d(TAG, "CartItems contain the item")
             viewModel?.updateQuantity(cartItem.key, newQuantity)
 

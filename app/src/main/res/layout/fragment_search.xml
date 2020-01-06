@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_height="match_parent"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
                 tools:context=".delivery.search.SearchFragment">
 	
 	<androidx.appcompat.widget.Toolbar
@@ -59,7 +60,7 @@
 						android:id="@+id/badge"
 						android:layout_gravity="top|end"
 						android:gravity="center"
-						android:text="3"
+						android:text="0"
 						android:textColor="@android:color/white"
 						android:background="@drawable/badge_bg"
 						android:layout_width="30dp"

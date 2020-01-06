@@ -23,6 +23,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 import android.content.Intent
+import android.view.MenuItem
 import com.google.firebase.dynamiclinks.ShortDynamicLink
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -37,6 +38,8 @@ class ProductDetailActivity : AppCompatActivity() {
     var productIDLink : String? = null
     var productID : String? = null
     val db = FirebaseFirestore.getInstance()
+
+    var shareLink : String? = null
 
 
     companion object {
@@ -68,6 +71,8 @@ class ProductDetailActivity : AppCompatActivity() {
                     val storeId = intent.getStringExtra(STORE_ID)
                     productID = id.toString()
                     getProductFromFirestore(storeId)
+                    val shareLink_ = createShareUri(productId = productID!!)
+                    shareContent(shareLink_.toString())
                 }
 
 
@@ -121,10 +126,15 @@ class ProductDetailActivity : AppCompatActivity() {
 
         share_ll.setOnClickListener {
             productID?.let{
-                val shareLink = createShareUri(productId = productID!!)
-                shareContent(shareLink.toString())
+//                val shareLink = createShareUri(productId = productID!!)
+//                shareContent(shareLink.toString())
+                shareLink?.let {
+                    shareDeepLink(it)
+                }
             }
         }
+
+
 
 
 //        val animation = AnimationUtils.loadAnimation(this, R.anim.rotate_circle)
@@ -196,7 +206,7 @@ class ProductDetailActivity : AppCompatActivity() {
                 val deadline = offer["deadline"] as String
                 val normalPrice : String = offer["normal_price"] as String
                 val offerPrice = offer["offer_price"] as String
-                val category = offer["categoryOne"]
+                val category = offer["categoryOne"] as String
                 var barcode = offer["barcode"] as String?
                 val fileURL = offer["imageUrl"] as String
 
@@ -221,7 +231,7 @@ class ProductDetailActivity : AppCompatActivity() {
                 Glide.with(this@ProductDetailActivity).load(fileURL).into(product_image)
                 //                    deliveryCart = DeliveryCart(singleProduct._id, singleProduct.barcode, singleProduct.name, singleProduct.price.toInt(), 1, singleProduct.image_url )
 
-                deliveryCart = DeliveryCart(key, barcode, productName, intOfferPrice, intNormalPrice, 1, fileURL)
+                deliveryCart = DeliveryCart(key, barcode, productName, category, intOfferPrice, intNormalPrice, 1, fileURL)
 
             }
 
@@ -283,8 +293,8 @@ class ProductDetailActivity : AppCompatActivity() {
                 // Short link created
                 val shortLink = result.shortLink
                 Log.d(TAG, "shortLink : $shortLink")
-
-                shareDeepLink(shortLink.toString())
+                shareLink = shortLink.toString()
+//                shareDeepLink(shortLink.toString())
                 val flowchartLink = result.previewLink
             }.addOnFailureListener {
                 // Error
@@ -301,6 +311,16 @@ class ProductDetailActivity : AppCompatActivity() {
         intent.putExtra(Intent.EXTRA_SUBJECT, "Immicart")
         intent.putExtra(Intent.EXTRA_TEXT, deepLink)
         startActivity(Intent.createChooser(intent, "Share this product with: "))
+    }
+
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        item?.let {
+            if(it.itemId == android.R.id.home) {
+                finish()
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
 }

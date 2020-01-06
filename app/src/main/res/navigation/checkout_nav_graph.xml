@@ -10,5 +10,17 @@
 	</fragment>
 	<fragment android:id="@+id/deliveryDetailsFragment"
 	          android:name="com.andromeda.immicart.delivery.checkout.DeliveryDetailsFragment"
-	          android:label="fragment_delivery_details" tools:layout="@layout/fragment_delivery_details"/>
+	          android:label="fragment_delivery_details" tools:layout="@layout/fragment_delivery_details">
+		<action android:id="@+id/action_deliveryDetailsFragment_to_loadingPlaceOrderFragment"
+		        app:destination="@id/loadingPlaceOrderFragment"/>
+	</fragment>
+	<fragment android:id="@+id/loadingPlaceOrderFragment"
+	          android:name="com.andromeda.immicart.delivery.checkout.LoadingPlaceOrderFragment"
+	          android:label="fragment_loading_place_order" tools:layout="@layout/fragment_loading_place_order">
+		<action android:id="@+id/action_loadingPlaceOrderFragment_to_successOrderPlacementFragment"
+		        app:destination="@id/successOrderPlacementFragment"/>
+	</fragment>
+	<fragment android:id="@+id/successOrderPlacementFragment"
+	          android:name="com.andromeda.immicart.delivery.checkout.SuccessOrderPlacementFragment"
+	          android:label="fragment_success_order_placement" tools:layout="@layout/fragment_success_order_placement"/>
 </navigation>

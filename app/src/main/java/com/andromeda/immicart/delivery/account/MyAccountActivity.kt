@@ -1,18 +1,12 @@
-package com.andromeda.immicart.delivery.authentication
+package com.andromeda.immicart.delivery.account
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.andromeda.immicart.R
 import kotlinx.android.synthetic.main.activity_my_account.*
 import android.content.Intent
-import com.google.android.gms.tasks.Task
-import com.google.android.gms.tasks.OnCompleteListener
-import androidx.core.app.ComponentActivity.ExtraData
-import androidx.core.content.ContextCompat.getSystemService
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+import com.andromeda.immicart.delivery.authentication.AuthenticationActivity
 import com.firebase.ui.auth.AuthUI
-
-import com.google.firebase.auth.FirebaseAuth
 
 
 class MyAccountActivity : AppCompatActivity() {
@@ -24,6 +18,10 @@ class MyAccountActivity : AppCompatActivity() {
 
         log_out_btn.setOnClickListener {
             logOut()
+        }
+
+        closeBtn.setOnClickListener {
+            finish()
         }
     }
 

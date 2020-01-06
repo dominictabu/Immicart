@@ -64,6 +64,23 @@ class DeliveryCartFragment : Fragment() {
                 //                cartItems = items
 //                badge.text = it.count().toString()
 //                adapter.setCartItems(it)
+
+
+
+                if (items.isEmpty()) {
+                    rv_personal_cart.setVisibility(View.GONE);
+                    empty_items_text_view.setVisibility(View.VISIBLE);
+                    checkoutlayout_disabled.visibility = View.VISIBLE
+                    checkoutlayout.visibility = View.GONE
+                }
+                else {
+                    rv_personal_cart.setVisibility(View.VISIBLE);
+                    empty_items_text_view.setVisibility(View.GONE);
+                    checkoutlayout.visibility = View.VISIBLE
+                    checkoutlayout_disabled.visibility = View.GONE
+
+                }
+
                 cartItems = items
                 adapter.submitList(it)
 
@@ -89,6 +106,13 @@ class DeliveryCartFragment : Fragment() {
 //            startActivity(intent)
 
             findNavController().navigate(R.id.action_deliveryCartFragment_to_deliveryDetailsFragment)
+        }
+
+
+        back_action.setOnClickListener {
+            activity?.let {
+                it.finish()
+            }
         }
 
     }
@@ -127,8 +151,26 @@ class DeliveryCartFragment : Fragment() {
                 )
             },
             { cartItem: DeliveryCart -> removeItemClicked(cartItem) })
-        rv_personal_cart.adapter = adapter
-        rv_personal_cart.layoutManager = linearLayoutManager
+        rv_personal_cart?.layoutManager = linearLayoutManager
+
+        adapter.registerAdapterDataObserver(emptyObserver)
+        rv_personal_cart?.adapter = adapter
+
+    }
+
+    private val emptyObserver = object : RecyclerView.AdapterDataObserver() {
+        override fun onChanged() {
+            val adapter = rv_personal_cart.getAdapter()
+            if (adapter != null && empty_items_text_view != null) {
+                if (adapter!!.getItemCount() == 0) {
+                    empty_items_text_view.setVisibility(View.VISIBLE)
+                    rv_personal_cart.setVisibility(View.GONE)
+                } else {
+                    empty_items_text_view.setVisibility(View.GONE)
+                    rv_personal_cart.setVisibility(View.VISIBLE)
+                }
+            }
+        }
     }
 
     private fun removeItemClicked(cartItem: DeliveryCart) {
@@ -137,7 +179,6 @@ class DeliveryCartFragment : Fragment() {
 
         val id = cartItem.itemId
         deliveryCartViewModel.deleteById(id)
-
     }
 
 

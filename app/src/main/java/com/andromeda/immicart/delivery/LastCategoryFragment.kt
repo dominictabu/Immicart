@@ -31,6 +31,7 @@ class LastCategoryFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     val db = FirebaseFirestore.getInstance();
+    private var cartItems: List<DeliveryCart> = ArrayList()
 
     private var param2: String? = null
     private lateinit var lastVisibleSnapShot: DocumentSnapshot
@@ -132,7 +133,7 @@ class LastCategoryFragment : Fragment() {
         Log.d(TAG, "newQuantity : $newQuantity , $cartItem ")
 
 
-        if (com.andromeda.immicart.delivery.cartItems.contains(cartItem)) {
+        if (cartItems.contains(cartItem)) {
             Log.d(TAG, "CartItems contain the item")
             viewModel?.updateQuantity(cartItem.key, newQuantity)
 
@@ -151,7 +152,7 @@ class LastCategoryFragment : Fragment() {
 //            .whereEqualTo("categoryOne", category)
             .limit(10)
 
-        var productsArray: ArrayList<__Product__> = ArrayList()
+        var productsArray: ArrayList<DeliveryCart> = ArrayList()
         products.get().addOnSuccessListener { documentSnapshots ->
             for (document in documentSnapshots) {
                 val offer = document.data as HashMap<String, Any>
@@ -159,7 +160,7 @@ class LastCategoryFragment : Fragment() {
                 val deadline = offer["deadline"] as String
                 val normalPrice: String = offer["normal_price"] as String
                 val offerPrice = offer["offer_price"] as String
-                val category = offer["categoryOne"]
+                val category = offer["categoryOne"] as String
                 var barcode = offer["barcode"] as String?
                 val fileURL = offer["imageUrl"] as String
 
@@ -171,10 +172,10 @@ class LastCategoryFragment : Fragment() {
                 }
 
                 val deliveryCart =
-                    DeliveryCart(document.id, barcode, productName, intOfferPrice, intNormalPrice, 1, fileURL)
+                    DeliveryCart(document.id, barcode, productName,category, intOfferPrice, intNormalPrice, 1, fileURL)
                 val product =
-                    __Product__(document.id, barcode, productName, intOfferPrice, intNormalPrice, 1, fileURL, false)
-                productsArray.add(product)
+                    __Product__(document.id, barcode, productName,category, intOfferPrice, intNormalPrice, 1, fileURL, false)
+                productsArray.add(deliveryCart)
 //                deliveryCartItems.forEach {
 //                    if(it.key == deliveryCart.key) {
 //                        val product = __Product__(document.id, barcode, productName, intOfferPrice, intNormalPrice, 1, fileURL, true)

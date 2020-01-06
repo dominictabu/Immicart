@@ -2,7 +2,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:descendantFocusability="beforeDescendants"
+                android:layout_height="match_parent"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
                 tools:context=".delivery.search.SearchResultsFragment">
 	
 	<androidx.appcompat.widget.Toolbar
@@ -59,7 +61,7 @@
 						android:id="@+id/badge"
 						android:layout_gravity="top|end"
 						android:gravity="center"
-						android:text="3"
+						android:text="0"
 						android:textColor="@android:color/white"
 						android:background="@drawable/badge_bg"
 						android:layout_width="30dp"
@@ -103,6 +105,9 @@
 						android:layout_weight="1"
 						android:layout_height="wrap_content"/>
 				<TextView
+						android:clickable="true"
+						android:focusable="true"
+						android:id="@+id/sort_txtview"
 						android:fontFamily="@font/roboto_medium"
 						android:textColor="@color/colorGreen"
 						android:drawablePadding="4dp"

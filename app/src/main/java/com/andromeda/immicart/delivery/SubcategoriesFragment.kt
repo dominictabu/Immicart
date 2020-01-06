@@ -22,6 +22,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_subcategories.*
+//import kotlinx.android.synthetic.main.fragment_subcategories.badge
+import kotlinx.android.synthetic.main.fragment_subcategories.cart_frame_layout
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -91,10 +93,6 @@ class SubcategoriesFragment : Fragment() {
                     storeId = store.key
                     getCategories()
 
-
-
-
-
                 } else {
                     Log.d(TAG, "Stores size 0")
 
@@ -107,19 +105,19 @@ class SubcategoriesFragment : Fragment() {
 
 
 
-        viewModel?.allDeliveryItems()?.observe(this, Observer { items ->
-
-            Log.d(TAG, "CartItems: $items")
-            items?.let {
-                cartItems = it
-                val cartIteemsNumber = it.size
-                badge.text = cartIteemsNumber.toString()
-                Log.d(TAG, "CartItems Length: ${items.count()}")
-
-                categoryRecyclerAdapter?.updateItems(it as ArrayList<DeliveryCart>)
-
-            }
-        })
+//        viewModel?.allDeliveryItems()?.observe(this, Observer { items ->
+//
+//            Log.d(TAG, "CartItems: $items")
+//            items?.let {
+//                cartItems = it
+//                val cartIteemsNumber = it.size
+//                badge.text = cartIteemsNumber.toString()
+//                Log.d(TAG, "CartItems Length: ${items.count()}")
+//
+//                categoryRecyclerAdapter?.updateItems(it as ArrayList<DeliveryCart>)
+//
+//            }
+//        })
 
 
         viewModel?.categoryParent?.observe(this, Observer { category ->
@@ -235,6 +233,18 @@ class SubcategoriesFragment : Fragment() {
                 }
 
                 intializeRecycler(categories)
+                viewModel.allDeliveryItems().observe(activity!!, Observer { items ->
+                    Log.d(TAG, "CartItems: $items")
+                    items?.let {
+                        cartItems = it
+                        val cartIteemsNumber = it.size
+                        badge?.text = cartIteemsNumber.toString()
+                        Log.d(TAG, "CartItems Length: ${items.count()}")
+                        categoryRecyclerAdapter?.updateItems(cartItems as ArrayList<DeliveryCart>)
+                    }
+
+
+                })
 
 
             }
@@ -248,7 +258,8 @@ class SubcategoriesFragment : Fragment() {
         products_items_recycler.setNestedScrollingEnabled(false);
 
         products_items_recycler.setLayoutManager(linearLayoutManager)
-        categoryRecyclerAdapter = CategoryRecyclerAdapter(storeId, categories, activity!!, { cartItem : DeliveryCart, newQuantity: Int -> cartItemClicked(cartItem, newQuantity)}, {category: __Category__ -> viewAll(category)})
+        categoryRecyclerAdapter = CategoryRecyclerAdapter(storeId,
+            categories as ArrayList<__Category__>, activity!!, { cartItem : DeliveryCart, newQuantity: Int -> cartItemClicked(cartItem, newQuantity)}, { category: __Category__ -> viewAll(category)})
 
 
         products_items_recycler.setAdapter(categoryRecyclerAdapter)
@@ -359,16 +370,16 @@ class SubcategoriesFragment : Fragment() {
         //TODO Change Quantity
         Log.d(TAG, "newQuantity : $newQuantity , $cartItem ")
 
-
-        if (com.andromeda.immicart.delivery.cartItems.contains(cartItem)) {
-            Log.d(TAG, "CartItems contain the item")
-            viewModel?.updateQuantity(cartItem.key, newQuantity)
-
-        } else {
-            Log.d(TAG, "CartItems DO NOT  contain the item")
-
-            viewModel?.insert(cartItem)
+        cartItems.forEach {
+            if(it.key == cartItem.key) {
+                Log.d(TAG, "CartItems contain the item")
+                viewModel.updateQuantity(cartItem.key, newQuantity)
+                return
+            }
         }
+
+        Log.d(TAG, "CartItems DO NOT  contain the item")
+        viewModel.insert(cartItem)
 
     }
 

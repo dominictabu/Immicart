@@ -43,25 +43,23 @@ class StoreLocationFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_store_location, container, false)
     }
 
-
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         continue_btn.setOnClickListener {
-            findNavController().navigate(R.id.select_store_action)
+//            findNavController().navigate(R.id.select_store_action)
 
         }
 
         login_txtview.setOnClickListener {
-            findNavController().navigate(R.id.go_to_log_in)
+//            findNavController().navigate(R.id.go_to_log_in)
 
         }
         log_in_btn.setOnClickListener {
-            findNavController().navigate(R.id.go_to_log_in)
+//            findNavController().navigate(R.id.go_to_log_in)
 
         }
 
     }
-
 
     companion object {
         /**

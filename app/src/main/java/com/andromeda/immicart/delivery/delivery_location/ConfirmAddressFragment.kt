@@ -111,7 +111,6 @@ class ConfirmAddressFragment : Fragment() {
 
         getCurrentLocation()
 
-
         add_location_button.setOnClickListener {
             findNavController().navigate(R.id.action_confirmAddressFragment2_to_searchAddressFragment2)
         }
@@ -135,7 +134,6 @@ class ConfirmAddressFragment : Fragment() {
                 addressRecyclerAdapters.set_CurrentLocation(currentLocation)
 
             }
-
 
         }
 
@@ -235,10 +233,12 @@ class ConfirmAddressFragment : Fragment() {
 
 
         val linearLayoutManager = LinearLayoutManager(activity!!, RecyclerView.VERTICAL, false)
-        delivery_locations_addresses.setNestedScrollingEnabled(false);
+        linearLayoutManager.reverseLayout = true
+        linearLayoutManager.stackFromEnd = true
+        delivery_locations_addresses?.setNestedScrollingEnabled(false);
 
-        delivery_locations_addresses.setLayoutManager(linearLayoutManager)
-        delivery_locations_addresses.setAdapter(addressRecyclerAdapters)
+        delivery_locations_addresses?.setLayoutManager(linearLayoutManager)
+        delivery_locations_addresses?.setAdapter(addressRecyclerAdapters)
     }
 
     internal inner class AddressResultReceiver(handler: Handler) : ResultReceiver(handler) {
@@ -264,7 +264,7 @@ class ConfirmAddressFragment : Fragment() {
 //                showToast(getString(R.string.address_found))
 
                 lastKnownLocation?.let {
-                    current_location_address_two.text = addressOutput
+                    current_location_address_two?.text = addressOutput
 
                 }
 
@@ -272,7 +272,6 @@ class ConfirmAddressFragment : Fragment() {
 
         }
     }
-
 
 
     companion object {

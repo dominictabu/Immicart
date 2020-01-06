@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools" android:id="@+id/order_nav_graph"
+            app:startDestination="@id/trackOrderFragment">
+	
+	<fragment android:id="@+id/trackOrderFragment"
+	          android:name="com.andromeda.immicart.delivery.trackingorder.TrackOrderFragment"
+	          android:label="fragment_track_order" tools:layout="@layout/fragment_track_order">
+		<action android:id="@+id/action_trackOrderFragment_to_trackMapFragment" app:destination="@id/trackMapFragment"/>
+	</fragment>
+	<fragment android:id="@+id/trackMapFragment"
+	          android:name="com.andromeda.immicart.delivery.trackingorder.TrackMapFragment"
+	          android:label="fragment_track_map2" tools:layout="@layout/fragment_track_map2"/>
+</navigation>
