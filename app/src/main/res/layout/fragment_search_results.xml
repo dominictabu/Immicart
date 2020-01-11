@@ -74,8 +74,9 @@
 	</androidx.appcompat.widget.Toolbar>
 	
 	<androidx.cardview.widget.CardView
+			android:id="@+id/top_cardview"
 			app:cardElevation="0dp"
-			android:layout_marginTop="10dp"
+			android:layout_marginTop="4dp"
 			android:layout_below="@+id/toolbar"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content">
@@ -107,13 +108,28 @@
 				<TextView
 						android:clickable="true"
 						android:focusable="true"
+						android:id="@+id/filter_txtview"
+						android:fontFamily="@font/roboto_medium"
+						android:textColor="@color/colorGreen"
+						android:drawablePadding="4dp"
+						android:textSize="16sp"
+						android:layout_marginEnd="10dp"
+						android:layout_marginStart="20dp"
+						android:gravity="center"
+						android:drawableStart="@drawable/ic_filter_list_black_24dp"
+						android:text="Filter"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"/>
+				<TextView
+						android:clickable="true"
+						android:focusable="true"
 						android:id="@+id/sort_txtview"
 						android:fontFamily="@font/roboto_medium"
 						android:textColor="@color/colorGreen"
 						android:drawablePadding="4dp"
 						android:textSize="16sp"
 						android:layout_marginEnd="20dp"
-						android:layout_marginStart="20dp"
+						android:layout_marginStart="4dp"
 						android:gravity="center"
 						android:drawableStart="@drawable/ic_sort_green_24dp"
 						android:text="Sort"
@@ -128,6 +144,29 @@
 					android:background="@color/lightGrey"
 					android:layout_width="wrap_content"
 					android:layout_height="1dp"/>
+		</LinearLayout>
+	</androidx.cardview.widget.CardView>
+
+	<androidx.cardview.widget.CardView
+			android:layout_below="@id/top_cardview"
+			android:layout_width="match_parent"
+	                                   android:layout_height="match_parent">
+		<ScrollView android:layout_width="match_parent"
+		            android:layout_height="wrap_content">
+			
+		<LinearLayout
+				android:orientation="vertical"
+				android:layout_width="match_parent"
+		              android:layout_height="wrap_content">
+			
+				<TextView
+					android:textSize="16sp"
+					android:textStyle="bold"
+					android:id="@+id/stats"
+					android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+					android:padding="8dp"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"/>
 			
 			<androidx.recyclerview.widget.RecyclerView
 					android:nestedScrollingEnabled="false"
@@ -139,6 +178,7 @@
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"/>
 		</LinearLayout>
+		</ScrollView>
 	
 	</androidx.cardview.widget.CardView>
 

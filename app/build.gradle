@@ -31,6 +31,10 @@ android {
         exclude("META-INF/*.kotlin_module")
     }
 
+    androidExtensions {
+        experimental = true
+    }
+
 //    packagingOptions {
 //        exclude 'META-INF/atomicfu.kotlin_module'
 //    }
@@ -82,7 +86,7 @@ dependencies {
     implementation "androidx.camera:camera-view:$camerax_view_version"
     // If you to use Camera Extensions
     implementation "androidx.camera:camera-extensions:$camerax_ext_version"
-    implementation 'com.google.android.material:material:1.0.0'
+    implementation 'com.google.android.material:material:1.1.0-beta01'
     //ButterKnife
     implementation 'com.jakewharton:butterknife:10.2.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
@@ -125,8 +129,6 @@ dependencies {
     api "org.jetbrains.kotlinx:kotlinx-coroutines-core:$rootProject.coroutines"
     api "org.jetbrains.kotlinx:kotlinx-coroutines-android:$rootProject.coroutines"
 
-    //MLKit
-    implementation 'com.google.firebase:firebase-ml-vision:23.0.0'
 
     //    Dagger components
 
@@ -166,14 +168,19 @@ dependencies {
     implementation 'uk.co.chrisjenx:calligraphy:2.3.0'
 
 
-    //Firebase
+    //FIREBASE
     implementation 'com.google.firebase:firebase-dynamic-links:19.0.0'
     implementation 'com.google.firebase:firebase-analytics:17.2.1'
     implementation 'com.google.firebase:firebase-functions:19.0.1'
+    implementation 'com.google.firebase:firebase-database:19.2.0'
+    implementation 'com.firebaseui:firebase-ui-auth:6.1.0'
+    implementation 'com.google.android.gms:play-services-auth:17.0.0'
+    implementation 'com.google.firebase:firebase-messaging:20.0.1'
 
-
+    //MLKit
+    implementation 'com.google.firebase:firebase-ml-vision:23.0.0'
     //FireStore
-    implementation 'com.firebaseui:firebase-ui-firestore:5.0.0'
+    implementation 'com.google.firebase:firebase-firestore:21.3.0'
     implementation 'com.firebase:geofire-android:3.0.0'
 
 
@@ -189,17 +196,9 @@ dependencies {
     //Places AutoComplete
     implementation 'com.google.android.libraries.places:places:1.1.0'
 
-    //Firebase Realtime Database
-    implementation 'com.google.firebase:firebase-database:19.2.0'
-    implementation 'com.firebaseui:firebase-ui-auth:6.1.0'
-    implementation 'com.google.android.gms:play-services-auth:17.0.0'
-    implementation 'com.google.firebase:firebase-messaging:20.0.1'
-    implementation 'com.google.api-client:google-api-client:1.25.0'
-
 
     //Segmented Control for Android
     implementation 'info.hoang8f:android-segmented:1.0.6'
-    implementation 'com.google.android.material:material:1.0.0'
 
     //Calligraphy
     implementation 'uk.co.chrisjenx:calligraphy:2.3.0'
@@ -209,8 +208,8 @@ dependencies {
     implementation 'com.jakewharton.timber:timber:4.7.1'
 
     //Algolia for Search
-//    implementation 'com.algolia:algoliasearch-android:3.+'
-
+    implementation 'com.algolia:instantsearch-android:2.2.1'
+    implementation "androidx.lifecycle:lifecycle-common-java8:2.1.0"
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'

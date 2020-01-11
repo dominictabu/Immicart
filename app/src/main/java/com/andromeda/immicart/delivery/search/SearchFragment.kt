@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.andromeda.immicart.R
 import com.andromeda.immicart.delivery.*
 import com.andromeda.immicart.delivery.checkout.DeliveryCartActivity
+import com.andromeda.immicart.delivery.search.visionSearch.LiveBarcodeScanningActivity
 import com.google.firebase.firestore.FirebaseFirestore
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -117,6 +118,12 @@ class SearchFragment : Fragment() {
         }
 
 
+        barcode_search?.setOnClickListener {
+            startActivity(Intent(activity!!, LiveBarcodeScanningActivity::class.java))
+
+        }
+
+
 
 
 
@@ -191,7 +198,8 @@ class SearchFragment : Fragment() {
     fun searchTerm(category: __Category__) {
 
         viewModel.setSearchWord(category.name!!)
-        findNavController().navigate(R.id.action_searchFragment_to_searchResultsFragment)
+//        findNavController().navigate(R.id.action_searchFragment_to_searchResultsFragment)
+        startActivity(Intent(requireActivity(), SearchResultsActivity::class.java))
 
     }
 

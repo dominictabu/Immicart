@@ -24,6 +24,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 import android.content.Intent
 import android.view.MenuItem
+import com.google.firebase.dynamiclinks.DynamicLink
 import com.google.firebase.dynamiclinks.ShortDynamicLink
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -286,7 +287,9 @@ class ProductDetailActivity : AppCompatActivity() {
        FirebaseDynamicLinks.getInstance().createDynamicLink()
             .setLink(Uri.parse(link))
             .setDomainUriPrefix("https://immicart.page.link")
-            // Set parameters
+           .setAndroidParameters(DynamicLink.AndroidParameters.Builder().build())
+
+           // Set parameters
             // ...
             .buildShortDynamicLink(ShortDynamicLink.Suffix.SHORT)
             .addOnSuccessListener { result ->

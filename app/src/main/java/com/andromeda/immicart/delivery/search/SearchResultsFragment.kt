@@ -11,9 +11,19 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.algolia.instantsearch.core.connection.ConnectionHandler
+import com.algolia.instantsearch.helper.android.list.autoScrollToStart
+import com.algolia.instantsearch.helper.android.searchbox.SearchBoxViewAppCompat
+import com.algolia.instantsearch.helper.android.searchbox.connectView
+import com.algolia.instantsearch.helper.android.stats.StatsTextView
+import com.algolia.instantsearch.helper.stats.StatsPresenterImpl
+import com.algolia.instantsearch.helper.stats.connectView
 
 import com.andromeda.immicart.R
 import com.andromeda.immicart.delivery.*
+import com.andromeda.immicart.delivery.search.algolia.MyViewModel
 import com.bumptech.glide.Glide
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
@@ -39,10 +49,14 @@ class SearchResultsFragment : Fragment() {
 
     private lateinit var lastVisibleSnapShot: DocumentSnapshot
     private  lateinit var viewModel: ProductsViewModel
+    private  lateinit var searchViewModel: MyViewModel
     private lateinit var storeId: String
     private lateinit var productsAdapter: ProductsAdapter
     private var TAG = "SearchResultsFragment"
     private var cartItems: List<DeliveryCart> = ArrayList()
+
+    private val connection = ConnectionHandler()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,19 +78,19 @@ class SearchResultsFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(activity!!).get(ProductsViewModel::class.java)
-        val gridLayoutManager = GridLayoutManager(activity!!,2 )
+//        searchViewModel = ViewModelProviders.of(activity!!).get(MyViewModel::class.java)
 
-        products_items_recycler?.setLayoutManager(gridLayoutManager)
-        productsAdapter = ProductsAdapter(
-            activity!!,
-            { cartItem: DeliveryCart, newQuantity: Int ->
-                cartItemClicked(
-                    cartItem,
-                    newQuantity
-                )
-            })
-
-        products_items_recycler.setAdapter(productsAdapter)
+//        products_items_recycler?.setLayoutManager(gridLayoutManager)
+//        productsAdapter = ProductsAdapter(
+//            activity!!,
+//            { cartItem: DeliveryCart, newQuantity: Int ->
+//                cartItemClicked(
+//                    cartItem,
+//                    newQuantity
+//                )
+//            })
+//
+//        products_items_recycler.setAdapter(productsAdapter)
 
         viewModel.currentStores().observe(activity!!, Observer {
             it?.let {
@@ -86,7 +100,7 @@ class SearchResultsFragment : Fragment() {
                     storeId = store.key
                     search_view_search_fragment?.queryHint = "Search ${store.name}"
                     Glide.with(activity!!).load(store.logoUrl).into(store_image)
-                    getProducts()
+//                    getProducts()
                 } else {
                     Log.d(TAG, "Stores size 0")
 
@@ -96,7 +110,6 @@ class SearchResultsFragment : Fragment() {
 
         viewModel.searchWord.observe(activity!!, Observer {
             search_view_search_fragment?.setQuery(it, false)
-
 
         })
         viewModel.allDeliveryItems().observe(activity!!, Observer { items ->
@@ -117,6 +130,47 @@ class SearchResultsFragment : Fragment() {
         sort_txtview?.setOnClickListener {
             startActivity(Intent(activity!!, SortActivity::class.java))
         }
+        filter_txtview?.setOnClickListener {
+            startActivity(Intent(activity!!, FilterActivity::class.java))
+
+        }
+
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val viewModel = ViewModelProviders.of(requireActivity())[MyViewModel::class.java]
+
+        viewModel.products.observe(this, Observer { hits ->
+
+            Log.d(TAG, "Hits Loaded Count: " + hits.loadedCount)
+            Log.d(TAG, "Hits Snapshot: " + hits.snapshot())
+
+            stats?.text = "${hits.size} results"
+            search_view_search_fragment?.query?.length?.let {
+                if(it > 0) {
+                    stats.text = "${hits.size} results for '${search_view_search_fragment?.query}'"
+
+                } else {
+                    stats.text = "${hits.size} results"
+                }
+            }
+            viewModel.adapterProduct.submitList(hits)
+        })
+
+        val searchBoxView = SearchBoxViewAppCompat(search_view_search_fragment)
+
+        connection += viewModel.searchBox.connectView(searchBoxView)
+        val statsView = StatsTextView(stats)
+        connection += viewModel.stats.connectView(statsView, StatsPresenterImpl())
+        products_items_recycler.let {
+            it.itemAnimator = null
+            it.adapter = viewModel.adapterProduct
+            it.layoutManager = GridLayoutManager(requireContext(), 2)
+            it.autoScrollToStart(viewModel.adapterProduct)
+        }
+
+//        filters.setOnClickListener { (requireActivity() as MainActivity).showFacetFragment() }
 
     }
 
@@ -183,6 +237,11 @@ class SearchResultsFragment : Fragment() {
             }
             productsAdapter.updateList(productsArray, storeId)
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        connection.disconnect()
     }
 
     private fun cartItemClicked(cartItem : DeliveryCart, newQuantity: Int) {
