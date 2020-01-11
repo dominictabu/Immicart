@@ -43,11 +43,11 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.ViewHolder> 
     }
 
 
-    public StoreAdapter(ArrayList<Store> stores, Context context, LatLng currentLocation, OnItemClickListener onItemClickListener) {
+    public StoreAdapter(ArrayList<Store> stores, Context context, OnItemClickListener onItemClickListener) {
         this.stores = stores;
         this.context = context;
         this.mOnItemClickListener = onItemClickListener;
-        this.currentLocation = currentLocation;
+//        this.currentLocation = currentLocation;
     }
 
     @NonNull
@@ -81,11 +81,11 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.ViewHolder> 
             String storeLatLng = store.getLatlng();
             LatLng _storeLatLng = computeLatLng(storeLatLng);
 
-            double distance = computeDistance(currentLocation, _storeLatLng);
-            Log.d(TAG, "Second call: calculateDistance");
-            calculateDistance(currentLocation, _storeLatLng);
-            LatLng latLng = new LatLng(-1.289261, 36.82416);
-            Log.d(TAG, "Distance from KICC");
+//            double distance = computeDistance(currentLocation, _storeLatLng);
+//            Log.d(TAG, "Second call: calculateDistance");
+//            calculateDistance(currentLocation, _storeLatLng);
+//            LatLng latLng = new LatLng(-1.289261, 36.82416);
+//            Log.d(TAG, "Distance from KICC");
 //            String distance_ = calculateDistance(currentLocation, _storeLatLng);
 
 

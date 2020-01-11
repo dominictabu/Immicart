@@ -2,8 +2,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" xmlns:app="http://schemas.android.com/apk/res-auto"
-                tools:context=".delivery.SearchFragment">
+                android:layout_height="match_parent"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                tools:context=".delivery.search.SearchFragment">
 	
 	<androidx.appcompat.widget.Toolbar
 			android:id="@+id/toolbar"
@@ -23,7 +24,7 @@
 					app:closeIcon="@drawable/ic_close_black__24dp"
 					app:searchIcon="@drawable/ic_search_black__24dp"
 					app:searchHintIcon="@drawable/ic_search_black__24dp"
-					android:id="@+id/search_view_browse"
+					android:id="@+id/search_view_search_fragment"
 					android:layout_margin="10dp"
 					app:defaultQueryHint="Search malls, stores"
 					android:background="@drawable/search_store_bg"
@@ -59,7 +60,7 @@
 						android:id="@+id/badge"
 						android:layout_gravity="top|end"
 						android:gravity="center"
-						android:text="3"
+						android:text="0"
 						android:textColor="@android:color/white"
 						android:background="@drawable/badge_bg"
 						android:layout_width="30dp"

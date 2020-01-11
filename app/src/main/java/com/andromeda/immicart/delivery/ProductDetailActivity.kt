@@ -23,7 +23,9 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 import android.content.Intent
+import android.view.MenuItem
 import com.google.firebase.dynamiclinks.ShortDynamicLink
+import com.google.firebase.firestore.FirebaseFirestore
 
 
 class ProductDetailActivity : AppCompatActivity() {
@@ -35,14 +37,20 @@ class ProductDetailActivity : AppCompatActivity() {
     var deliveryCart : DeliveryCart? = null
     var productIDLink : String? = null
     var productID : String? = null
+    val db = FirebaseFirestore.getInstance()
+
+    var shareLink : String? = null
+
 
     companion object {
 
         public val PRODUCT_ID = "PRODUCT_ID"
+        public val STORE_ID = "STORE_ID"
         public val QUERY_PARAM_PRODUCT_ID = "QUERY_PARAM_PRODUCT_ID"
         private val PRODUCT_ID_LINK = "PRODUCT_ID_LINK"
         private val TAG = "ProductDetailActivity"
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_product_detail)
@@ -56,61 +64,77 @@ class ProductDetailActivity : AppCompatActivity() {
         supportActionBar!!.setHomeButtonEnabled(true);
         supportActionBar!!.setDisplayHomeAsUpEnabled(true);
 
-        if(intent.hasExtra(PRODUCT_ID)) {
+                if (intent.hasExtra(PRODUCT_ID) && intent.hasExtra(STORE_ID)) {
+
 //            productIDLink = intent.getStringExtra(PRODUCT_ID_LINK)
-            val id = intent.getIntExtra(PRODUCT_ID, -1)
-            productID = id.toString()
-            getProduct(id)
-            viewModel.allDeliveryItems().observe(this, Observer { items ->
+                    val id = intent.getStringExtra(PRODUCT_ID)
+                    val storeId = intent.getStringExtra(STORE_ID)
+                    productID = id.toString()
+                    getProductFromFirestore(storeId)
+                    val shareLink_ = createShareUri(productId = productID!!)
+                    shareContent(shareLink_.toString())
+                }
 
-                Log.d(TAG, "CartItems: $items")
-                items?.let {
-                    it.forEach {
-                        if (id == it._id) {
-                            existsInCart = true
+
+//            getProduct(id)
+                    viewModel.allDeliveryItems().observe(this, Observer { items ->
+
+                        Log.d(TAG, "CartItems: $items")
+                        items?.let {
+                            it.forEach {
+                                if (productID == it.key) {
+                                    existsInCart = true
+                                }
+                            }
+
                         }
+
+                        if (existsInCart) {
+                            addToCartButton.text = "Update Quantity"
+                        } else {
+                            addToCartButton.text = "Add to cart"
+
+                        }
+                    })
+
+
+
+
+                    updateQty()
+
+
+                    addToCartButton.setOnClickListener {
+                        var currentQuantityString = quantityTv.text.toString()
+                        var currentQuantityInt = currentQuantityString.toInt()
+
+                        if(existsInCart) {
+                            viewModel.updateQuantity(productID!!, currentQuantityInt)
+                        } else {
+                            deliveryCart?.let {
+                                viewModel.insert(it)
+
+                            }
+                        }
+
+
                     }
 
-                }
-
-                if (existsInCart) {
-                    addToCartButton.text = "Update Quantity"
-                } else {
-                    addToCartButton.text = "Add to cart"
-
-                }
-            })
 
 
 
 
-            updateQty()
-
-
-            addToCartButton.setOnClickListener {
-                var currentQuantityString = quantityTv.text.toString()
-                var currentQuantityInt = currentQuantityString.toInt()
-
-                if(existsInCart) {
-                    viewModel.updateQuantity(id, currentQuantityInt)
-                } else {
-                    deliveryCart?.let {
-                        viewModel.insert(it)
-
-                    }
-                }
-
-
-            }
-
-        }
 
         share_ll.setOnClickListener {
             productID?.let{
-                val shareLink = createShareUri(productId = productID!!)
-                shareContent(shareLink.toString())
+//                val shareLink = createShareUri(productId = productID!!)
+//                shareContent(shareLink.toString())
+                shareLink?.let {
+                    shareDeepLink(it)
+                }
             }
         }
+
+
 
 
 //        val animation = AnimationUtils.loadAnimation(this, R.anim.rotate_circle)
@@ -119,6 +143,8 @@ class ProductDetailActivity : AppCompatActivity() {
 
     }
 
+
+    //FROM REST Endpoint using Retrofit
     fun getProduct(id: Int) {
         val retrofitResponse = immicartAPIService.getSingleProductById(id)
 
@@ -158,13 +184,58 @@ class ProductDetailActivity : AppCompatActivity() {
                     Log.d(TAG, "unitPrice $unitPrice")
                     val id = singleProduct._id
 
-                    deliveryCart = DeliveryCart(singleProduct._id, singleProduct.barcode, singleProduct.name, singleProduct.price.toInt(), 1, singleProduct.image_url )
+//                    deliveryCart = DeliveryCart(singleProduct._id, singleProduct.barcode, singleProduct.name, singleProduct.price.toInt(), 1, singleProduct.image_url )
 
                 }
             }
         })
 
 
+    }
+
+    //FROM Firebase Firestore
+    fun getProductFromFirestore(storeId: String) {
+
+
+        productID?.let {
+            val documentPath = "stores/" + storeId + "/offers/" + productID
+            db.document(documentPath).get().addOnSuccessListener { documentSnapshot ->
+                val offer = documentSnapshot.data as HashMap<String, Any>
+                val key = documentSnapshot.id
+                val productName = offer["name"] as String
+                val deadline = offer["deadline"] as String
+                val normalPrice : String = offer["normal_price"] as String
+                val offerPrice = offer["offer_price"] as String
+                val category = offer["categoryOne"] as String
+                var barcode = offer["barcode"] as String?
+                val fileURL = offer["imageUrl"] as String
+
+                if(barcode == null) {
+                    barcode = "Not Set"
+                }
+
+                val intOfferPrice = offerPrice.toInt()
+                val intNormalPrice = normalPrice.toInt()
+
+                val savings = intNormalPrice - intOfferPrice
+                savings_tv.text = savings.toString()
+
+                product_description.text = productName
+
+                val unitPrice = intOfferPrice
+                val price = "KES $unitPrice"
+                product_price.text = price
+                val _normalPrice = "KES $intNormalPrice"
+                deals_off.text = _normalPrice
+                deals_off.paintFlags = deals_off.getPaintFlags() or Paint.STRIKE_THRU_TEXT_FLAG
+                Glide.with(this@ProductDetailActivity).load(fileURL).into(product_image)
+                //                    deliveryCart = DeliveryCart(singleProduct._id, singleProduct.barcode, singleProduct.name, singleProduct.price.toInt(), 1, singleProduct.image_url )
+
+                deliveryCart = DeliveryCart(key, barcode, productName, category, intOfferPrice, intNormalPrice, 1, fileURL)
+
+            }
+
+        }
     }
 
     fun updateQty() {
@@ -222,8 +293,8 @@ class ProductDetailActivity : AppCompatActivity() {
                 // Short link created
                 val shortLink = result.shortLink
                 Log.d(TAG, "shortLink : $shortLink")
-
-                shareDeepLink(shortLink.toString())
+                shareLink = shortLink.toString()
+//                shareDeepLink(shortLink.toString())
                 val flowchartLink = result.previewLink
             }.addOnFailureListener {
                 // Error
@@ -240,6 +311,16 @@ class ProductDetailActivity : AppCompatActivity() {
         intent.putExtra(Intent.EXTRA_SUBJECT, "Immicart")
         intent.putExtra(Intent.EXTRA_TEXT, deepLink)
         startActivity(Intent.createChooser(intent, "Share this product with: "))
+    }
+
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        item?.let {
+            if(it.itemId == android.R.id.home) {
+                finish()
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
 }

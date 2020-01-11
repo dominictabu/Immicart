@@ -1,15 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    
     <color name="colorPrimary">#008577</color>
     <color name="colorGreen">#4FA553</color>
+    <color name="colorGreen70">#B2DBB6</color>
     <color name="colorGreen_">#358638</color>
     <color name="colorGreenBrighter">#516937</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+    <color name="red">#E0142C</color>
+    <color name="colorAccent70">#E79C9F</color>
     <color name="lightGrey70">#40d7d6d6</color>
     <color name="lightGrey">#A5A2A2</color>
     <color name="lightGrey_">#5F5F5F</color>
     <color name="orange">#f57f17</color>
+    <color name="blue">#2877EE</color>
+    <color name="fb_blue">#3b5998</color>
     <color name="background">#dddddd</color>
 
 </resources>

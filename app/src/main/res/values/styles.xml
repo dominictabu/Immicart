@@ -7,6 +7,9 @@
 		<item name="colorPrimaryDark">@color/colorPrimaryDark</item>
 		<item name="colorAccent">@color/colorAccent</item>
 		<item name="android:textColor">@android:color/black</item>
+		<item name="android:fontFamily">@font/roboto</item>
+		<item name="bottomSheetDialogTheme">@style/AppBottomSheetDialogTheme</item>
+	
 	</style>
 	
 	<style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
@@ -27,28 +30,46 @@
 	<style name="AppTheme.ProductDetail" parent="AppTheme">
 		<item name="android:homeAsUpIndicator">@drawable/ic_close_white_24dp</item>
 	</style>
-
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:textColor">@android:color/black</item>
-    </style>
-    
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
-
-    <style name="AppTheme.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
-    
-    <style name="AppTheme.CartActivity" parent="AppTheme">
-        <item name="android:homeAsUpIndicator">@drawable/ic_close_white_24dp</item>
-    </style>
-
-  
-
+	
+	<style name="AppTheme.ChangeLocation" parent="AppTheme">
+		<item name="android:homeAsUpIndicator">@drawable/ic_close_white_24dp</item>
+	</style>
+	
+	
+	
+	<style name="AppBottomSheetDialogTheme"
+	       parent="Theme.Design.Light.BottomSheetDialog">
+		<item name="bottomSheetStyle">@style/AppModalStyle</item>
+	</style>
+	
+	<style name="AppModalStyle"
+	       parent="Widget.Design.BottomSheet.Modal">
+		<item name="behavior_peekHeight">@dimen/custom_peek_height</item>
+	</style>
+	
+	
+	<style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
+		<item name="android:windowBackground">@drawable/immicart_splash</item>
+		<item name="android:statusBarColor">@android:color/white</item>
+	</style>
+	
+	<style name="AuthenticationBackground" parent="AppTheme">
+		<item name="android:statusBarColor">@android:color/white</item>
+	</style>
+	
+	
+	
+	
+	<dimen name="custom_peek_height">200dp</dimen>
+	
+	<style name="BottomSheet" parent="@style/Widget.Design.BottomSheet.Modal">
+		<item name="android:background">@drawable/rounded_bottomsheet</item>
+	</style>
+	
+	<style name="BaseBottomSheetDialog" parent="@style/Theme.Design.Light.BottomSheetDialog">
+		<item name="android:windowIsFloating">false</item>
+		<item name="bottomSheetStyle">@style/BottomSheet</item>
+	</style>
+	
+	<style name="BottomSheetDialogTheme" parent="BaseBottomSheetDialog" />
 </resources>

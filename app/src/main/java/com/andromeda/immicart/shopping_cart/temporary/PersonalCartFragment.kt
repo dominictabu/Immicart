@@ -82,8 +82,8 @@ class PersonalCartFragment : Fragment() {
 
 
             }
-        })
-    }
+//        })
+//    }
 
     private fun cartItemClicked(cartItem : Cart, newQuantity: Int) {
 //        Toast.makeText(this, "Clicked: ${cartItem.name}", Toast.LENGTH_LONG).show()

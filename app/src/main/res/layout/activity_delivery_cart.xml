@@ -7,30 +7,14 @@
 		android:layout_height="match_parent"
 		tools:context=".shopping_cart.CartActivity">
 	
-	<androidx.appcompat.widget.Toolbar
-			android:layout_alignParentTop="true"
-			android:id="@+id/toolbar"
-			android:background="@android:color/white"
-			app:popupTheme="@style/AppTheme.PopupOverlay"
-			android:layout_width="match_parent"
-			android:layout_height="?attr/actionBarSize">
-		<TextView
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:text="Personal Cart"
-				android:textSize="20sp"
-				android:textStyle="bold"
-				android:layout_gravity="center"
-				android:id="@+id/toolbar_title" />
-	
-	</androidx.appcompat.widget.Toolbar>
-	
-	<FrameLayout
+	<fragment
 			android:layout_below="@+id/toolbar"
-			android:id="@+id/content_cart_fragment"
 			android:layout_width="match_parent"
-			android:layout_height="match_parent">
-	
-	</FrameLayout>
+			android:layout_height="match_parent"
+			android:id="@+id/delivery_cart_nav_host_fragment"
+			android:name="androidx.navigation.fragment.NavHostFragment"
+			app:navGraph="@navigation/checkout_nav_graph"
+			app:defaultNavHost="true"
+	/>
 
 </RelativeLayout>

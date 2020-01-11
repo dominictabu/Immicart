@@ -2,26 +2,20 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
+                android:layout_marginBottom="20dp"
                 android:layout_height="match_parent" xmlns:app="http://schemas.android.com/apk/res-auto"
                 tools:context=".delivery.trackingorder.OrdersListFragment">
 	
-	<androidx.appcompat.widget.Toolbar
-			android:id="@+id/toolbar"
-			android:layout_width="match_parent"
-			android:layout_height="?attr/actionBarSize"
-			android:background="@android:color/white"
-			app:popupTheme="@style/AppTheme.PopupOverlay">
+	
 			<LinearLayout
-					android:gravity="center_vertical"
+					android:id="@+id/toolbar_ll"
+					android:background="@android:color/white"
+					android:gravity="center"
 					android:layout_width="match_parent"
-			              android:layout_height="wrap_content">
-				<ImageButton
-						style="@style/Widget.AppCompat.Button.Borderless"
-						android:background="@null"
-						android:src="@drawable/ic_close_white_24dp"
-						android:layout_width="wrap_content"
-				             android:layout_height="wrap_content"/>
+			              android:layout_height="?attr/actionBarSize">
+				
 				<TextView
+						android:layout_marginStart="10dp"
 						android:textStyle="bold"
 						android:textSize="18sp"
 						android:gravity="center"
@@ -30,12 +24,11 @@
 						android:layout_width="wrap_content"
 				          android:layout_height="wrap_content"/>
 			</LinearLayout>
-	</androidx.appcompat.widget.Toolbar>
 	
 	<androidx.recyclerview.widget.RecyclerView
 			tools:listitem="@layout/item_order"
 			android:layout_marginTop="10dp"
-			android:layout_below="@+id/toolbar"
+			android:layout_below="@+id/toolbar_ll"
 			android:id="@+id/recycler_items_orders"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"/>

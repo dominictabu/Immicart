@@ -1,14 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             tools:context=".delivery.WalletFragment">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                tools:context=".delivery.wallet.WalletFragment">
 	
-	<!-- TODO: Update blank fragment layout -->
-	<TextView
+	<androidx.appcompat.widget.Toolbar
+			android:layout_alignParentTop="true"
+			android:id="@+id/toolbar"
+			android:background="@android:color/white"
+			app:popupTheme="@style/AppTheme.PopupOverlay"
 			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			android:text="@string/hello_blank_fragment"/>
+			android:layout_height="?attr/actionBarSize">
+		<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="Wallet"
+				android:textSize="18sp"
+				android:textStyle="bold"
+				android:layout_gravity="center"
+				android:id="@+id/toolbar_title" />
+	
+	</androidx.appcompat.widget.Toolbar>
+	
+	<TextView
+			android:id="@+id/your_credit"
+			android:layout_margin="20dp"
+			android:textSize="20sp"
+			android:layout_below="@+id/toolbar"
+			android:text="Your Credit"
+			android:layout_width="match_parent"
+	          android:layout_height="wrap_content"/>
+	
+	<TextView
+			android:textColor="@color/colorGreen"
+			android:layout_margin="20dp"
+			android:layout_below="@+id/your_credit"
+			android:textSize="24sp"
+			android:textStyle="bold"
+			android:text="KES 0"
+			android:id="@+id/wallet_credit"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"/>
+	<Button
+			android:elevation="8dp"
+			android:textSize="16sp"
+			android:layout_margin="20dp"
+			android:layout_below="@+id/wallet_credit"
+			android:textAllCaps="false"
+			android:id="@+id/top_up_button"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:background="@drawable/small_corners_blue"
+			android:text="Top Up"
+			android:textColor="@android:color/white"
+			android:textStyle="bold" />
 
-</FrameLayout>
+</RelativeLayout>

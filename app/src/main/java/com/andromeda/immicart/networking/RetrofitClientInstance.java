@@ -13,11 +13,12 @@ public class RetrofitClientInstance {
     static OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
     private static Retrofit retrofit;
     private static final String BASE_URL = "http://157.245.68.46/api/v1/";
+    private static final String Url = "https://us-central1-immicart-2ca69.cloudfunctions.net/";
 
     public static Retrofit getRetrofitInstance() {
         if (retrofit == null) {
             retrofit = new retrofit2.Retrofit.Builder()
-                    .baseUrl(BASE_URL)
+                    .baseUrl(Url)
                     .client(client)
 
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())

@@ -7,61 +7,159 @@
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
 			xmlns:tools="http://schemas.android.com/tools">
+	
+	<androidx.appcompat.widget.Toolbar
+			android:layout_alignParentTop="true"
+			android:id="@+id/toolbar"
+			android:background="@android:color/white"
+			app:popupTheme="@style/AppTheme.PopupOverlay"
+			android:layout_width="match_parent"
+			android:layout_height="?attr/actionBarSize">
+		<TextView
+				
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="Change Delivery Location"
+				android:textSize="20sp"
+				android:textStyle="bold"
+				android:layout_gravity="center"
+				android:id="@+id/toolbar_title" />
+	
+	</androidx.appcompat.widget.Toolbar>
+	
+	
+	<TextView
+			android:layout_marginTop="20dp"
+			android:layout_marginStart="12dp"
+			android:id="@+id/deliver_to"
+			android:layout_below="@+id/toolbar"
+			android:textStyle="bold"
+			android:text="Deliver to"
+			android:layout_width="wrap_content"
+	          android:layout_height="wrap_content"/>
+	<LinearLayout
+			android:orientation="horizontal"
+			android:gravity="center_vertical"
+			android:layout_below="@+id/deliver_to"
+			android:id="@+id/current_location_ll"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content">
+		
+		<RadioButton
+				android:buttonTint="@color/colorGreen"
+				android:clickable="false"
+				android:checked="true"
+				android:layout_marginStart="12dp"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"/>
 		<LinearLayout
-				android:layout_marginTop="40dp"
-				android:layout_marginBottom="10dp"
-				android:layout_marginStart="4dp"
-				android:layout_marginEnd="10dp"
+				android:orientation="vertical"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content">
+			
+			<TextView
+					android:layout_marginTop="16dp"
+					android:layout_marginStart="12dp"
+					android:id="@+id/current_location_address"
+					android:textStyle="bold"
+					android:text="Munret Mens Hostel"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"/>
+			<TextView
+					android:layout_marginBottom="10dp"
+					android:layout_marginStart="12dp"
+					android:textColor="@color/lightGrey_"
+					android:id="@+id/current_location_address_two"
+					android:text="Sumba Road, Nairobi City, Kenya"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"/>
+		</LinearLayout>
+	</LinearLayout>
+	
+	<LinearLayout
+			android:orientation="horizontal"
+			android:gravity="center_vertical"
+			android:layout_below="@+id/current_location_ll"
+			android:id="@+id/address_ll"
+			android:layout_width="wrap_content"
+	              android:layout_height="wrap_content">
+		
+	<RadioButton
+			android:buttonTint="@color/colorGreen"
+			android:clickable="false"
+			android:checked="false"
+			android:layout_marginStart="12dp"
+			android:layout_width="wrap_content"
+	             android:layout_height="wrap_content"/>
+	<LinearLayout
+			android:orientation="vertical"
+			android:layout_width="wrap_content"
+	              android:layout_height="wrap_content">
+		
+	<TextView
+			android:layout_marginTop="16dp"
+			android:layout_marginStart="12dp"
+			android:id="@+id/address_one"
+			android:textStyle="bold"
+			android:text="Munret Mens Hostel"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"/>
+	<TextView
+			android:layout_marginBottom="10dp"
+			android:layout_marginStart="12dp"
+			android:textColor="@color/lightGrey_"
+			android:id="@+id/address_two"
+			android:text="Sumba Road, Nairobi City, Kenya"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"/>
+	</LinearLayout>
+	</LinearLayout>
+	
+	
+	
+	<LinearLayout
+				android:layout_below="@+id/address_ll"
+				android:layout_margin="10dp"
 				android:id="@+id/top_ll"
 				android:gravity="center"
-				android:layout_alignParentTop="true"
 				android:orientation="horizontal"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content">
-			<ImageButton
-					style="@style/Widget.AppCompat.Button.Borderless"
-					android:id="@+id/myBackIcon"
-					android:layout_centerVertical="true"
-					android:src="@drawable/ic_keyboard_arrow_left_green_24dp"
-					android:layout_width="48dp"
-					android:layout_height="48dp"/>
+			
 			
 			<androidx.appcompat.widget.SearchView
 					android:layout_weight="1"
-					android:background="@drawable/search_store_bg"
+					android:background="@drawable/search_location"
 					android:id="@+id/enter_location_searchview"
 					android:queryHint="Search products, categories, brands"
 					android:layout_width="0dp"
 					android:layout_height="wrap_content"
 			/>
-			
-			
-			<androidx.appcompat.widget.AppCompatImageView
-					android:layout_marginStart="4dp"
-					android:id="@+id/close_dialog"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:background="@drawable/grey_background"
-					android:clickable="true"
-					android:padding="4dp"
-					app:srcCompat="@drawable/ic_close_16dp" />
 		
 		</LinearLayout>
 		
-		<View
-				android:layout_marginTop="4dp"
-				android:id="@+id/bottom_view"
-				android:layout_below="@+id/top_ll"
-				android:background="@android:color/darker_gray"
-				android:layout_width="match_parent"
-				android:layout_height="1dp"/>
+		
 		
 		<androidx.recyclerview.widget.RecyclerView
 				tools:listitem="@layout/item_store_picker"
 				android:layout_marginTop="10dp"
-				android:layout_below="@+id/bottom_view"
+				android:layout_marginBottom="10dp"
+				android:layout_below="@+id/top_ll"
 				android:id="@+id/recycler_items"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"/>
+	
+	<Button
+			android:textSize="16sp"
+			android:layout_margin="10dp"
+			android:layout_below="@+id/recycler_items"
+			android:textAllCaps="false"
+			android:id="@+id/save_location_button"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:background="@drawable/small_corners_blue"
+			android:text="Save"
+			android:textColor="@android:color/white"
+			android:textStyle="bold" />
 	
 	</RelativeLayout>

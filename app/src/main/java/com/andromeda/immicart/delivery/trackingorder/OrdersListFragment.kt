@@ -1,6 +1,7 @@
 package com.andromeda.immicart.delivery.trackingorder
 
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -11,7 +12,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 import com.andromeda.immicart.R
+import com.andromeda.immicart.delivery.PlaceOrder
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.fragment_orders_list.*
 
 // TODO: Rename parameter arguments, choose names that match
@@ -48,53 +52,121 @@ class OrdersListFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        database = FirebaseDatabase.getInstance().reference
         retrieveOrders()
+//        getOrders()
 
     }
 
 
     fun retrieveOrders() {
-        val ordersArray = arrayListOf<Order>()
+        val ordersArray = arrayListOf<OrderObject>()
+        val db = FirebaseFirestore.getInstance()
 
-        // My top posts by number of stars
-        val myOrdersQuery = database.child("orders")
-        myOrdersQuery.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                for (postSnapshot in dataSnapshot.children) {
+
+        val docRef = db.collection("orders")
+        docRef.addSnapshotListener { snapshot, e ->
+            if (e != null) {
+                Log.w(TAG, "Listen failed.", e)
+                return@addSnapshotListener
+            }
+
+            if (snapshot != null) {
+                Log.d(TAG, "Current data: ${snapshot.documents}")
+                for (postSnapshot in snapshot.documents) {
                     // TODO: handle the post
-                    val order = postSnapshot.getValue(Order::class.java)
+                    val order = postSnapshot.toObject(OrderObject::class.java)
+
                     order?.let {
 
                         ordersArray.add(it)
                     }
-
                 }
-
                 initializeRecyclerView(ordersArray)
+
+            } else {
+                Log.d(TAG, "Current data: null")
             }
+        }
 
 
-            override fun onCancelled(databaseError: DatabaseError) {
-                // Getting Post failed, log a message
-                Log.w(TAG, "loadPost:onCancelled", databaseError.toException())
-                // ...
-            }
-        })
+//        // My top posts by number of stars
+//        val myOrdersQuery = database.child("orders")
+//        myOrdersQuery.addValueEventListener(object : ValueEventListener {
+//            override fun onDataChange(dataSnapshot: DataSnapshot) {
+//                for (postSnapshot in dataSnapshot.children) {
+//                    // TODO: handle the post
+//                    val order = postSnapshot.getValue(Order::class.java)
+//                    order?.let {
+//
+//                        ordersArray.add(it)
+//                    }
+//
+//                }
+//
+//                initializeRecyclerView(ordersArray)
+//            }
+//
+//
+//            override fun onCancelled(databaseError: DatabaseError) {
+//                // Getting Post failed, log a message
+//                Log.w(TAG, "loadPost:onCancelled", databaseError.toException())
+//                // ...
+//            }
+//        })
 
     }
 
 
-    fun initializeRecyclerView(orders: ArrayList<Order>) {
+    fun initializeRecyclerView(orders: ArrayList<OrderObject>) {
         recycler_items_orders
 
         val linearLayoutManager = LinearLayoutManager(activity!!, RecyclerView.VERTICAL, false)
-        recycler_items_orders.setNestedScrollingEnabled(false);
+        recycler_items_orders?.setNestedScrollingEnabled(false);
 
-        recycler_items_orders.setLayoutManager(linearLayoutManager)
-        val orderListRecyclerAdapter = OrderListRecyclerAdapter(orders)
-        recycler_items_orders.setAdapter(orderListRecyclerAdapter)
+        recycler_items_orders?.setLayoutManager(linearLayoutManager)
+        val orderListRecyclerAdapter = OrderListRecyclerAdapter(orders, {order -> orderClick(order)})
+        recycler_items_orders?.setAdapter(orderListRecyclerAdapter)
 
+    }
+
+
+    private  var SELECTED_ORDER: String = "SELECTED_ORDER"
+
+    fun orderClick(order: OrderObject) {
+
+        val intent = Intent(activity!!, OrderActivity::class.java)
+        intent.putExtra(SELECTED_ORDER, order.orderID!!)
+        startActivity(intent)
+
+
+
+    }
+
+
+    fun getOrders() {
+
+        val customerId = FirebaseAuth.getInstance().currentUser?.uid
+        val collectionPath =  "orders"
+        val db = FirebaseFirestore.getInstance();
+
+
+        db.collection(collectionPath)
+//            .whereEqualTo("customerUID", customerId)
+            .get()
+            .addOnSuccessListener { documents ->
+                for (document in documents) {
+                    Log.d(TAG, "${document.id} => ${document.data}")
+                    val order = document.toObject(PlaceOrder::class.java)
+
+                    Log.d(TAG, "Orders: $order")
+
+//                    val serviceFee = document.data.
+
+                }
+            }
+            .addOnFailureListener { exception ->
+                Log.w(TAG, "Error getting documents: ", exception)
+            }
     }
 
 
