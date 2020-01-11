@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:descendantFocusability="beforeDescendants"
+                android:layout_height="match_parent"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                tools:context=".delivery.search.SearchResultsFragment">
+	
+	<androidx.appcompat.widget.Toolbar
+			android:id="@+id/toolbar"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			app:layout_collapseMode="pin"
+			app:popupTheme="@style/AppTheme.PopupOverlay" >
+		<LinearLayout
+				android:id="@+id/top_search_view_ll"
+				android:gravity="center_vertical"
+				android:orientation="horizontal"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content">
+			<androidx.appcompat.widget.SearchView
+					android:padding="8dp"
+					android:queryBackground="@null"
+					app:closeIcon="@drawable/ic_close_black__24dp"
+					app:searchIcon="@drawable/ic_search_black__24dp"
+					app:searchHintIcon="@drawable/ic_search_black__24dp"
+					android:id="@+id/search_view_search_fragment"
+					android:layout_margin="10dp"
+					app:defaultQueryHint="Search malls, stores"
+					android:background="@drawable/search_store_bg"
+					app:queryHint="Search Tuskys"
+					app:iconifiedByDefault="false"
+					android:layout_width="0dp"
+					android:layout_weight="1"
+					android:layout_height="wrap_content"/>
+			
+			<FrameLayout
+					android:layout_alignParentEnd="true"
+					android:clickable="true"
+					android:focusable="true"
+					android:visibility="visible"
+					android:id="@+id/cart_frame_layout"
+					android:layout_margin="10dp"
+					android:layout_gravity="top|end"
+					android:layout_width="48dp"
+					android:layout_height="48dp">
+				
+				<ImageButton
+						android:clickable="false"
+						android:id="@+id/cartImageButton"
+						style="@style/Base.Widget.AppCompat.Button.Borderless"
+						android:background="@null"
+						android:layout_gravity="bottom"
+						android:src="@drawable/ic_shopping_cart_black_24dp"
+						android:layout_width="30dp"
+						android:layout_height="30dp" />
+				
+				<TextView
+						android:clickable="false"
+						android:id="@+id/badge"
+						android:layout_gravity="top|end"
+						android:gravity="center"
+						android:text="0"
+						android:textColor="@android:color/white"
+						android:background="@drawable/badge_bg"
+						android:layout_width="30dp"
+						android:layout_height="30dp"/>
+			</FrameLayout>
+		
+		
+		</LinearLayout>
+	
+	</androidx.appcompat.widget.Toolbar>
+	
+	<androidx.cardview.widget.CardView
+			android:id="@+id/top_cardview"
+			app:cardElevation="0dp"
+			android:layout_marginTop="4dp"
+			android:layout_below="@+id/toolbar"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content">
+		
+		<LinearLayout
+				android:orientation="vertical"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content">
+			<LinearLayout
+					android:gravity="center_vertical"
+					android:orientation="horizontal"
+					android:layout_width="match_parent"
+	                android:layout_height="wrap_content">
+				<de.hdodenhof.circleimageview.CircleImageView
+						android:id="@+id/store_image"
+						android:layout_marginStart="8dp"
+						android:src="@color/colorGreen"
+						android:layout_width="40dp"
+                       android:layout_height="40dp"/>
+				<TextView
+						android:maxLines="1"
+						android:layout_margin="8dp"
+						android:textStyle="bold"
+						android:textSize="16sp"
+						android:text="Naivas Supermarket"
+						android:layout_width="0dp"
+						android:layout_weight="1"
+						android:layout_height="wrap_content"/>
+				<TextView
+						android:clickable="true"
+						android:focusable="true"
+						android:id="@+id/filter_txtview"
+						android:fontFamily="@font/roboto_medium"
+						android:textColor="@color/colorGreen"
+						android:drawablePadding="4dp"
+						android:textSize="16sp"
+						android:layout_marginEnd="10dp"
+						android:layout_marginStart="20dp"
+						android:gravity="center"
+						android:drawableStart="@drawable/ic_filter_list_black_24dp"
+						android:text="Filter"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"/>
+				<TextView
+						android:clickable="true"
+						android:focusable="true"
+						android:id="@+id/sort_txtview"
+						android:fontFamily="@font/roboto_medium"
+						android:textColor="@color/colorGreen"
+						android:drawablePadding="4dp"
+						android:textSize="16sp"
+						android:layout_marginEnd="20dp"
+						android:layout_marginStart="4dp"
+						android:gravity="center"
+						android:drawableStart="@drawable/ic_sort_green_24dp"
+						android:text="Sort"
+						android:layout_width="wrap_content"
+			            android:layout_height="wrap_content"/>
+				
+			</LinearLayout>
+			
+			<View
+					android:layout_margin="8dp"
+					android:id="@+id/view_delivery_to"
+					android:background="@color/lightGrey"
+					android:layout_width="wrap_content"
+					android:layout_height="1dp"/>
+		</LinearLayout>
+	</androidx.cardview.widget.CardView>
+
+	<androidx.cardview.widget.CardView
+			android:layout_below="@id/top_cardview"
+			android:layout_width="match_parent"
+	                                   android:layout_height="match_parent">
+		<ScrollView android:layout_width="match_parent"
+		            android:layout_height="wrap_content">
+			
+		<LinearLayout
+				android:orientation="vertical"
+				android:layout_width="match_parent"
+		              android:layout_height="wrap_content">
+			
+				<TextView
+					android:textSize="16sp"
+					android:textStyle="bold"
+					android:id="@+id/stats"
+					android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+					android:padding="8dp"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"/>
+			
+			<androidx.recyclerview.widget.RecyclerView
+					android:nestedScrollingEnabled="false"
+					android:orientation="vertical"
+					tools:listitem="@layout/item_product"
+					app:spanCount="2"
+					app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+					android:id="@+id/products_items_recycler"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"/>
+		</LinearLayout>
+		</ScrollView>
+	
+	</androidx.cardview.widget.CardView>
+
+</RelativeLayout>

@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                tools:context=".delivery.delivery_location.ConfirmAddressFragment">
+	
+	<androidx.appcompat.widget.Toolbar
+			android:layout_alignParentTop="true"
+			android:id="@+id/toolbar"
+			android:background="@android:color/white"
+			app:popupTheme="@style/AppTheme.PopupOverlay"
+			android:layout_width="match_parent"
+			android:layout_height="?attr/actionBarSize">
+		<ImageButton
+				android:id="@+id/go_back_button"
+				android:layout_margin="8dp"
+				android:background="@android:color/white"
+				android:src="@drawable/ic_keyboard_arrow_left_green_24dp"
+				android:layout_width="48dp"
+				android:layout_height="48dp"/>
+		<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="Confirm Address"
+				android:textSize="20sp"
+				android:textStyle="bold"
+				android:layout_gravity="center"
+				android:id="@+id/toolbar_title" />
+	
+	</androidx.appcompat.widget.Toolbar>
+	
+	<LinearLayout
+			android:clickable="true"
+			android:layout_marginTop="40dp"
+			android:orientation="horizontal"
+			android:gravity="center_vertical"
+			android:layout_below="@+id/toolbar"
+			android:id="@+id/current_location_ll"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:focusable="true">
+		
+		<RadioButton
+				android:id="@+id/radiobutton_current_location"
+				android:buttonTint="@color/colorGreen"
+				android:clickable="false"
+				android:checked="false"
+				android:layout_marginStart="12dp"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"/>
+		<LinearLayout
+				android:clickable="false"
+				android:orientation="vertical"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content">
+			
+			<TextView
+					android:clickable="false"
+					android:layout_marginTop="16dp"
+					android:layout_marginStart="12dp"
+					android:id="@+id/current_location_address"
+					android:textColor="@color/colorGreen"
+					android:textStyle="bold"
+					android:text="Use Current Location"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"/>
+			<TextView
+					android:clickable="false"
+					android:layout_marginBottom="10dp"
+					android:layout_marginStart="12dp"
+					android:textColor="@color/lightGrey_"
+					android:id="@+id/current_location_address_two"
+					android:text="Munret Hostels, Sumba Road, Nairobi City, Kenya"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"/>
+		</LinearLayout>
+	</LinearLayout>
+	
+	<androidx.recyclerview.widget.RecyclerView
+			app:fastScrollEnabled="true"
+			app:fastScrollHorizontalThumbDrawable="@drawable/thumb_drawable"
+			app:fastScrollHorizontalTrackDrawable="@drawable/line_drawable"
+			app:fastScrollVerticalThumbDrawable="@drawable/thumb_drawable"
+			app:fastScrollVerticalTrackDrawable="@drawable/line_drawable"
+			android:layout_marginBottom="140dp"
+			android:layout_below="@+id/current_location_ll"
+			android:id="@+id/delivery_locations_addresses"
+			tools:listitem="@layout/item_delivery_location"
+			android:layout_width="match_parent"
+           android:layout_height="wrap_content"/>
+	
+	<LinearLayout
+			android:background="@android:color/white"
+			android:layout_alignParentBottom="true"
+			android:orientation="vertical"
+			android:layout_width="match_parent"
+	              android:layout_height="wrap_content">
+		
+	<Button
+			android:textSize="16sp"
+			android:layout_marginStart="10dp"
+			android:layout_marginEnd="10dp"
+			android:layout_marginTop="10dp"
+			android:layout_below="@+id/delivery_locations_addresses"
+			android:textAllCaps="false"
+			android:id="@+id/save_location_button"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:background="@drawable/small_corners_blue"
+			android:text="Confirm Address"
+			android:textColor="@android:color/white"
+			android:textStyle="bold" />
+	
+	<Button
+			style="@style/Widget.AppCompat.Button.Borderless"
+			android:textSize="16sp"
+			android:layout_margin="10dp"
+			android:layout_below="@+id/save_location_button"
+			android:textAllCaps="false"
+			android:id="@+id/add_location_button"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:background="@drawable/blue_bg"
+			android:text="Add address"
+			android:textColor="@android:color/white"
+			android:textStyle="bold" />
+	
+	</LinearLayout>
+</RelativeLayout>

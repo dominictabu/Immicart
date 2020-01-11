@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+		xmlns:android="http://schemas.android.com/apk/res/android"
+		xmlns:tools="http://schemas.android.com/tools"
+		android:layout_width="match_parent"
+		android:background="@android:color/white"
+		android:layout_height="match_parent" xmlns:app="http://schemas.android.com/apk/res-auto"
+		tools:context=".delivery.authentication.CreateAccountFragment">
+	
+<RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+	
+	
+	
+	<TextView
+			android:id="@+id/save_time"
+			android:textStyle="bold"
+			android:textSize="26sp"
+			android:layout_marginStart="20dp"
+			android:layout_marginTop="20dp"
+			android:layout_marginEnd="20dp"
+			android:layout_below="@+id/immicart_logo"
+			android:text="Save time,"
+			android:gravity="center"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"/>
+	<TextView
+			android:id="@+id/starting_now"
+			android:textStyle="bold"
+			android:textSize="26sp"
+			android:layout_marginStart="20dp"
+			android:layout_marginEnd="20dp"
+			android:layout_below="@+id/save_time"
+			android:text="starting now"
+			android:gravity="center"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"/>
+	<TextView
+			android:layout_marginStart="20dp"
+			android:layout_marginEnd="20dp"
+			android:textSize="18sp"
+			android:id="@+id/subtagline"
+			android:layout_below="@+id/starting_now"
+			android:text="Get the things you love from the stores you trust"
+			android:layout_width="wrap_content"
+	          android:layout_height="wrap_content"/>
+	<ImageView
+			android:id="@+id/immicart_image"
+			android:layout_margin="8dp"
+			android:src="@drawable/immicart_resizedpng"
+			android:layout_centerHorizontal="true"
+			android:layout_below="@+id/subtagline"
+			android:layout_width="match_parent"
+	           android:layout_height="200dp"/>
+	<TextView
+			android:id="@+id/terms_title"
+			android:textSize="16sp"
+			android:gravity="center"
+			android:layout_below="@+id/immicart_image"
+			android:text="By signing up, you agree to our"
+			android:layout_width="match_parent"
+	          android:layout_height="wrap_content"/>
+	<LinearLayout
+			android:id="@+id/terms_privacy_policy_link"
+			android:layout_marginTop="8dp"
+			android:gravity="center"
+			android:layout_below="@+id/terms_title"
+			android:orientation="horizontal"
+			android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+		<TextView
+				android:textStyle="bold"
+				android:textColor="@color/colorGreen"
+				android:id="@+id/terms_link"
+				android:textSize="16sp"
+				android:gravity="center"
+				android:text="Terms of Service"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"/>
+		<TextView
+				android:layout_marginStart="8dp"
+				android:layout_marginEnd="8dp"
+				android:text="&amp;"
+				android:layout_width="wrap_content"
+		          android:layout_height="wrap_content"/>
+		<TextView
+				android:textStyle="bold"
+				android:textColor="@color/colorGreen"
+				android:id="@+id/privacy_policy_link"
+				android:textSize="16sp"
+				android:gravity="center"
+				android:text="Privacy Policy"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"/>
+	</LinearLayout>
+	
+	<Button
+			android:fontFamily="@font/roboto_medium"
+			android:layout_below="@+id/terms_privacy_policy_link"
+			android:layout_marginTop="10dp"
+			android:layout_marginStart="20dp"
+			android:layout_marginEnd="20dp"
+			android:textAllCaps="false"
+			android:id="@+id/email_btn"
+			android:textColor="@android:color/white"
+			android:padding="4dp"
+			android:background="@drawable/time_bg"
+			android:textSize="20sp"
+			android:text=" Create account with Email"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content" />
+	<LinearLayout
+			android:id="@+id/or_ll"
+			android:layout_below="@+id/email_btn"
+			android:layout_marginTop="4dp"
+			android:layout_marginStart="20dp"
+			android:layout_marginEnd="20dp"
+			android:gravity="center_vertical"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content">
+		<View
+				android:layout_weight="1"
+				android:background="@color/lightGrey_"
+				android:layout_width="0dp"
+				android:layout_height="2dp"/>
+		<TextView
+				android:textSize="16sp"
+				android:layout_margin="8dp"
+				android:text="or"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"/>
+		<View
+				android:layout_weight="1"
+				android:background="@color/lightGrey_"
+				android:layout_width="0dp"
+				android:layout_height="2dp"/>
+	</LinearLayout>
+	
+	<LinearLayout
+			android:layout_marginTop="8dp"
+			android:layout_marginStart="20dp"
+			android:layout_marginEnd="20dp"
+			android:layout_below="@+id/fblayout"
+			android:clickable="true"
+			android:id="@+id/googlelayout"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="horizontal"
+			android:layout_gravity="bottom"
+			android:background="@drawable/blue_bg"
+			android:padding="8dp"
+			android:focusable="true">
+		
+		<ImageView
+				android:clickable="false"
+				android:layout_marginStart="16dp"
+				android:src="@drawable/google_icon"
+				android:layout_width="wrap_content"
+		           android:layout_height="wrap_content"/>
+		<androidx.appcompat.widget.AppCompatTextView
+				android:clickable="false"
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:layout_weight="1"
+				android:layout_gravity="center"
+				android:gravity="center"
+				android:text="Continue with Google"
+				android:textColor="@android:color/white"
+				android:id="@+id/payText"
+				android:visibility="visible"
+				android:textAppearance="@style/TextAppearance.AppCompat.Large"
+				app:fontFamily="@font/roboto_medium"/>
+	
+	
+	</LinearLayout>
+	<LinearLayout
+			android:visibility="gone"
+			android:gravity="center"
+			android:layout_marginTop="8dp"
+			android:layout_marginStart="20dp"
+			android:layout_marginEnd="20dp"
+			android:layout_below="@+id/googlelayout"
+			android:clickable="true"
+			android:id="@+id/google_signInloadinglayout"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="horizontal"
+			android:layout_gravity="bottom"
+			android:background="@drawable/blue_bg"
+			android:padding="8dp">
+		<TextView
+				android:textStyle="bold"
+				android:textSize="16sp"
+				android:text="Signing  "
+				android:textColor="@android:color/white"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"/>
+		<com.wang.avi.AVLoadingIndicatorView
+				app:indicatorColor="@android:color/white"
+				android:layout_width="36dp"
+				android:layout_height="36dp"
+				app:indicatorName="LineSpinFadeLoaderIndicator"/>
+	
+	
+	</LinearLayout>
+	
+	<LinearLayout
+			android:layout_below="@+id/or_ll"
+			android:clickable="true"
+			android:id="@+id/fblayout"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="horizontal"
+			android:layout_gravity="bottom"
+			android:background="@drawable/fb_blue_bg"
+			android:padding="8dp"
+			android:layout_marginTop="4dp"
+			android:layout_marginStart="20dp"
+			android:layout_marginEnd="20dp">
+		
+		<ImageView
+				android:tint="@android:color/white"
+				android:layout_marginStart="16dp"
+				android:src="@drawable/facebook_icon"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"/>
+		<androidx.appcompat.widget.AppCompatTextView
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:layout_weight="1"
+				android:layout_gravity="center"
+				android:gravity="center"
+				android:text="Continue with Facebook"
+				android:textColor="@android:color/white"
+				android:id="@+id/fb_icon"
+				android:visibility="visible"
+				android:textAppearance="@style/TextAppearance.AppCompat.Large"
+				app:fontFamily="@font/roboto_medium"/>
+	
+	
+	</LinearLayout>
+	
+	
+	<LinearLayout
+			android:layout_marginTop="10dp"
+			android:layout_marginBottom="20dp"
+			android:id="@+id/login_link_ll"
+			android:gravity="center"
+			android:layout_below="@+id/google_signInloadinglayout"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content">
+		<TextView
+				android:textSize="18sp"
+				android:text="Already have an account? "
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"/>
+		<TextView
+				android:id="@+id/login_txtview"
+				android:clickable="true"
+				android:layout_marginStart="8dp"
+				android:textStyle="bold"
+				android:textColor="@color/colorGreen"
+				android:textSize="18sp"
+				android:text="Log in "
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"/>
+	</LinearLayout>
+	
+</RelativeLayout>
+</androidx.core.widget.NestedScrollView>

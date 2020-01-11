@@ -38,7 +38,7 @@
                 android:layout_height="wrap_content">
             
             <RelativeLayout
-                    android:visibility="gone"
+                    android:visibility="visible"
                     android:layout_marginTop="16dp"
                     android:gravity="center"
                     android:orientation="horizontal"

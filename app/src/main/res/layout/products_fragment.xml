@@ -1,9 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.coordinatorlayout.widget.CoordinatorLayout
+<FrameLayout
 		xmlns:app="http://schemas.android.com/apk/res-auto"
 		xmlns:android="http://schemas.android.com/apk/res/android"
 		xmlns:tools="http://schemas.android.com/tools"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		tools:context=".delivery.ProductsFragment">
+	
+	<FrameLayout
+			android:layout_gravity="center"
+			android:id="@+id/loading_view"
+			android:layout_marginTop="28dp"
+			android:layout_marginBottom="20dp"
+			android:layout_width="128dp"
+			android:layout_height="128dp">
+		
+		<ProgressBar
+				android:background="@drawable/circle_shape"
+				android:layout_gravity="center"
+				android:layout_marginTop="8dp"
+				android:id="@+id/progress"
+				android:layout_width="116dp"
+				android:layout_height="116dp"
+				android:indeterminate="true"
+				android:visibility="visible"
+				android:indeterminateTintMode="src_atop"
+				android:indeterminateTint="@color/colorGreen"
+				style="?android:attr/progressBarStyleLargeInverse"
+		/>
+		
+		<ImageView
+				android:layout_gravity="center"
+				android:src="@drawable/immicart_shopper_logo"
+				android:layout_width="96dp"
+				android:layout_height="96dp"/>
+	
+	</FrameLayout>
+	
+	
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+		android:id="@+id/coordinator_layout"
+		android:visibility="gone"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		tools:context=".delivery.ProductsFragment">
@@ -47,7 +85,6 @@
 							android:id="@+id/profile_image"
 							android:layout_width="96dp"
 							android:layout_height="96dp"
-							android:src="@drawable/immicartlogo"
 							app:civ_border_width="2dp"
 							app:civ_border_color="#FFF"/>
 					
@@ -59,12 +96,35 @@
 							android:text="Buy more, pay less"
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"/>
+					<LinearLayout
+							android:gravity="center_vertical"
+							android:orientation="horizontal"
+							android:id="@+id/navigatetosearch"
+							android:clickable="true"
+							android:layout_margin="10dp"
+							android:background="@drawable/search_bg"
+							android:layout_width="match_parent"
+					              android:layout_height="wrap_content">
+						<ImageView
+								android:clickable="false"
+								android:layout_margin="12dp"
+								android:src="@drawable/ic_search_black__24dp"
+								android:layout_width="wrap_content"
+						           android:layout_height="wrap_content"/>
+						<TextView
+								android:id="@+id/search_hint"
+								android:textSize="18sp"
+								android:textColor="@color/lightGrey_"
+								android:text="Search products"
+								android:layout_width="wrap_content"
+						          android:layout_height="wrap_content"/>
+					</LinearLayout>
 					<androidx.appcompat.widget.SearchView
+							android:visibility="gone"
+							android:focusable="false"
 							android:padding="4dp"
 							android:queryBackground="@null"
-							app:closeIcon="@drawable/ic_close_black__24dp"
 							app:searchIcon="@drawable/ic_search_black__24dp"
-							app:searchHintIcon="@drawable/ic_search_black__24dp"
 							android:id="@+id/search_view_browse"
 							android:layout_margin="10dp"
 							app:defaultQueryHint="Search malls, stores"
@@ -138,7 +198,7 @@
 								android:id="@+id/badge"
 								android:layout_gravity="top|end"
 								android:gravity="center"
-								android:text="3"
+								android:text="0"
 								android:textColor="@android:color/white"
 								android:background="@drawable/badge_bg"
 								android:layout_width="30dp"
@@ -151,6 +211,7 @@
 	</com.google.android.material.appbar.AppBarLayout>
 	
 <androidx.core.widget.NestedScrollView
+		android:id="@+id/nested_scrolling_view"
 		app:layout_behavior="@string/appbar_scrolling_view_behavior"
 		android:layout_below="@+id/app_bar"
 		android:layout_width="match_parent"
@@ -175,7 +236,7 @@
 						android:id="@+id/delivery_to_tv"
 						android:textStyle="bold"
 						android:layout_margin="8dp"
-						android:text="Delivery to"
+						android:text="Deliver to"
 						android:layout_width="wrap_content"
 				          android:layout_height="wrap_content"/>
 				<View
@@ -185,19 +246,50 @@
 						android:background="@color/lightGrey"
 						android:layout_width="wrap_content"
 				      android:layout_height="1dp"/>
-				      <TextView
-						      android:id="@+id/delivery_address"
-						      android:textSize="16sp"
-						      android:gravity="center"
-						      android:drawablePadding="4dp"
-						      android:drawableEnd="@drawable/ic_edit_green_24dp"
-						      android:layout_margin="8dp"
-						      android:layout_below="@+id/view_delivery_to"
-						      android:text="Hall 11 State House Road"
-						      android:layout_width="wrap_content"
-				                android:layout_height="wrap_content"/>
-				
-				
+				<LinearLayout
+						android:orientation="horizontal"
+						android:gravity="center_vertical"
+						android:layout_below="@+id/view_delivery_to"
+						android:id="@+id/address_ll"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content">
+					
+					<RadioButton
+							android:buttonTint="@color/colorGreen"
+							android:clickable="false"
+							android:checked="true"
+							android:layout_marginStart="12dp"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"/>
+					<LinearLayout
+							android:layout_weight="1"
+							android:orientation="vertical"
+							android:layout_width="0dp"
+							android:layout_height="wrap_content">
+						
+						<TextView
+								android:layout_marginTop="16dp"
+								android:layout_marginStart="12dp"
+								android:id="@+id/address_one"
+								android:textStyle="bold"
+								android:text="Munret Mens Hostel"
+								android:layout_width="wrap_content"
+								android:layout_height="wrap_content"/>
+						<TextView
+								android:layout_marginBottom="16dp"
+								android:layout_marginStart="12dp"
+								android:textColor="@color/lightGrey_"
+								android:id="@+id/address_two"
+								android:text="Sumba Road, Nairobi City, Kenya"
+								android:layout_width="wrap_content"
+								android:layout_height="wrap_content"/>
+					</LinearLayout>
+					<ImageView
+							android:layout_marginEnd="20dp"
+							android:src="@drawable/ic_edit_green_24dp"
+							android:layout_width="wrap_content"
+					           android:layout_height="wrap_content"/>
+				</LinearLayout>
 				
 			</RelativeLayout>
 			
@@ -212,12 +304,8 @@
 				android:layout_height="wrap_content"/>
 		
 	</RelativeLayout>
-	
-	
-	
-	
-	
-	
 
 </androidx.core.widget.NestedScrollView>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</FrameLayout>
+

@@ -8,27 +8,50 @@
 	          android:label="products_fragment" tools:layout="@layout/products_fragment">
 		<action android:id="@+id/go_to_subcategories" app:destination="@id/subcategoriesFragment"
 		        app:enterAnim="@anim/nav_default_exit_anim" app:exitAnim="@anim/nav_default_exit_anim"/>
-		<action android:id="@+id/go_to_myAccount" app:destination="@id/myAccountFragment"
-		        app:popEnterAnim="@anim/nav_default_pop_enter_anim" app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
 		<action android:id="@+id/go_to_settings" app:destination="@id/searchFragment"/>
 		<action android:id="@+id/go_to_orders" app:destination="@id/ordersListFragment"/>
 	</fragment>
 	<fragment android:id="@+id/subcategoriesFragment"
 	          android:name="com.andromeda.immicart.delivery.SubcategoriesFragment"
-	          android:label="fragment_subcategories" tools:layout="@layout/fragment_subcategories"/>
-	<fragment android:id="@+id/myAccountFragment" android:name="com.andromeda.immicart.delivery.MyAccountFragment"
-	          android:label="fragment_my_account" tools:layout="@layout/fragment_my_account"/>
-	<fragment android:id="@+id/searchFragment" android:name="com.andromeda.immicart.delivery.SearchFragment"
-	          android:label="fragment_search" tools:layout="@layout/fragment_search"/>
-	<fragment android:id="@+id/walletFragment" android:name="com.andromeda.immicart.wallet.WalletFragment"
+	          android:label="fragment_subcategories" tools:layout="@layout/fragment_subcategories">
+		<action android:id="@+id/action_subcategoriesFragment_to_subCategoryTwoFragment"
+		        app:destination="@id/subCategoryTwoFragment"/>
+	</fragment>
+	<fragment android:id="@+id/searchFragment" android:name="com.andromeda.immicart.delivery.search.SearchFragment"
+	          android:label="fragment_search" tools:layout="@layout/fragment_search">
+		<action android:id="@+id/action_searchFragment_to_searchResultsFragment"
+		        app:destination="@id/searchResultsFragment"/>
+	</fragment>
+	<fragment android:id="@+id/walletFragment" android:name="com.andromeda.immicart.delivery.wallet.WalletFragment"
 	          android:label="fragment_wallet" tools:layout="@layout/fragment_wallet">
-		<action android:id="@+id/action_walletFragment_to_paymentDetailsFragment"
-		        app:destination="@id/paymentDetailsFragment"/>
+		<action android:id="@+id/action_walletFragment_to_MPESAFragment" app:destination="@id/MPESAFragment"/>
 	</fragment>
 	<fragment android:id="@+id/ordersListFragment"
 	          android:name="com.andromeda.immicart.delivery.trackingorder.OrdersListFragment"
 	          android:label="fragment_orders_list" tools:layout="@layout/fragment_orders_list"/>
-	<fragment android:id="@+id/paymentDetailsFragment"
-	          android:name="com.andromeda.immicart.wallet.PaymentDetailsFragment"
-	          android:label="fragment_payment_details" tools:layout="@layout/fragment_payment_details"/>
+	<fragment android:id="@+id/personalCartFragment"
+	          android:name="com.andromeda.immicart.shopping_cart.temporary.PersonalCartFragment"
+	          android:label="fragment_personal_cart" tools:layout="@layout/fragment_personal_cart"/>
+	<fragment android:id="@+id/subCategoryTwoFragment"
+	          android:name="com.andromeda.immicart.delivery.SubCategoryTwoFragment"
+	          android:label="fragment_sub_category_two" tools:layout="@layout/fragment_sub_category_two">
+		<action android:id="@+id/action_subCategoryTwoFragment_to_lastCategoryFragment"
+		        app:destination="@id/lastCategoryFragment"/>
+	</fragment>
+	<fragment android:id="@+id/lastCategoryFragment" android:name="com.andromeda.immicart.delivery.LastCategoryFragment"
+	          android:label="fragment_last_category" tools:layout="@layout/fragment_last_category"/>
+	<fragment android:id="@+id/searchResultsFragment"
+	          android:name="com.andromeda.immicart.delivery.search.SearchResultsFragment"
+	          android:label="fragment_search_results" tools:layout="@layout/fragment_search_results"/>
+	<fragment android:id="@+id/confirmAddressFragment"
+	          android:name="com.andromeda.immicart.delivery.delivery_location.ConfirmAddressFragment"
+	          android:label="fragment_confirm_address" tools:layout="@layout/fragment_confirm_address">
+		<action android:id="@+id/action_confirmAddressFragment_to_searchAddressFragment"
+		        app:destination="@id/searchAddressFragment"/>
+	</fragment>
+	<fragment android:id="@+id/searchAddressFragment"
+	          android:name="com.andromeda.immicart.delivery.delivery_location.SearchAddressFragment"
+	          android:label="fragment_search_address" tools:layout="@layout/fragment_search_address"/>
+	<fragment android:id="@+id/MPESAFragment" android:name="com.andromeda.immicart.delivery.wallet.MPESAFragment"
+	          android:label="fragment_mpesa" tools:layout="@layout/fragment_mpesa"/>
 </navigation>

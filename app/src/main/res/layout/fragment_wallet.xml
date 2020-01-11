@@ -1,74 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-		xmlns:android="http://schemas.android.com/apk/res/android"
-		xmlns:app="http://schemas.android.com/apk/res-auto"
-		xmlns:tools="http://schemas.android.com/tools"
-		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		tools:context=".wallet.WalletFragment"
-		android:id="@+id/frameLayout"
-		android:backgroundTint="@color/cardview_light_background">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                tools:context=".delivery.wallet.WalletFragment">
+	
+	<androidx.appcompat.widget.Toolbar
+			android:layout_alignParentTop="true"
+			android:id="@+id/toolbar"
+			android:background="@android:color/white"
+			app:popupTheme="@style/AppTheme.PopupOverlay"
+			android:layout_width="match_parent"
+			android:layout_height="?attr/actionBarSize">
+		<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="Wallet"
+				android:textSize="18sp"
+				android:textStyle="bold"
+				android:layout_gravity="center"
+				android:id="@+id/toolbar_title" />
+	
+	</androidx.appcompat.widget.Toolbar>
+	
 	<TextView
-			android:text="Wallet"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:id="@+id/wallet"
-			app:layout_constraintEnd_toEndOf="parent"
-			android:layout_marginEnd="8dp"
-			app:layout_constraintStart_toStartOf="parent"
-			android:layout_marginStart="16dp"
-			android:layout_marginTop="40dp"
-			app:layout_constraintTop_toTopOf="parent"
-			app:layout_constraintHorizontal_bias="0.0"
-			android:ellipsize="start"
-			android:textSize="36sp"
-			android:fontFamily="@font/roboto_bold"/>
-	<TextView
+			android:id="@+id/your_credit"
+			android:layout_margin="20dp"
+			android:textSize="20sp"
+			android:layout_below="@+id/toolbar"
 			android:text="Your Credit"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:id="@+id/yourCredit"
-			app:layout_constraintEnd_toEndOf="parent"
-			android:layout_marginEnd="8dp"
-			app:layout_constraintStart_toStartOf="parent"
-			android:layout_marginStart="8dp"
-			app:layout_constraintTop_toBottomOf="@+id/wallet"
-			android:fontFamily="@font/roboto_medium"
-			android:textSize="24sp"
-			android:layout_marginTop="116dp"
-			app:layout_constraintHorizontal_bias="0.029"/>
+			android:layout_width="match_parent"
+	          android:layout_height="wrap_content"/>
+	
 	<TextView
-			android:text="@string/ksh_350"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:id="@+id/walletAmount"
-			app:layout_constraintEnd_toEndOf="parent"
-			android:layout_marginEnd="8dp"
-			app:layout_constraintTop_toBottomOf="@+id/yourCredit"
-			app:layout_constraintStart_toStartOf="parent"
-			android:layout_marginStart="16dp"
-			android:textSize="40sp"
-			android:fontFamily="@font/roboto_bold"
-			android:layout_marginTop="32dp"
-			app:layout_constraintHorizontal_bias="0.0"/>
-	<Button
-			android:text="Add Credit"
+			android:textColor="@color/colorGreen"
+			android:layout_margin="20dp"
+			android:layout_below="@+id/your_credit"
 			android:textSize="24sp"
-			android:layout_width="0dp"
-			android:layout_height="wrap_content"
-			android:id="@+id/button_add_credit"
-			app:layout_constraintStart_toStartOf="parent"
-			android:layout_marginStart="16dp"
-			app:layout_constraintEnd_toEndOf="parent"
-			android:layout_marginEnd="16dp"
-			android:layout_marginTop="8dp"
-			app:layout_constraintTop_toBottomOf="@+id/walletAmount"
-			android:layout_marginBottom="8dp"
-			app:layout_constraintBottom_toBottomOf="parent"
-			app:layout_constraintHorizontal_bias="0.498"
-			app:layout_constraintVertical_bias="0.264"
-			android:background="@drawable/pay_design"
+			android:textStyle="bold"
+			android:text="KES 0"
+			android:id="@+id/wallet_credit"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"/>
+	<Button
+			android:elevation="8dp"
+			android:textSize="16sp"
+			android:layout_margin="20dp"
+			android:layout_below="@+id/wallet_credit"
 			android:textAllCaps="false"
+			android:id="@+id/top_up_button"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:background="@drawable/small_corners_blue"
+			android:text="Top Up"
 			android:textColor="@android:color/white"
-	/>
-</androidx.constraintlayout.widget.ConstraintLayout>
+			android:textStyle="bold" />
+
+</RelativeLayout>

@@ -1,7 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView
+		android:layout_marginBottom="6dp"
+		xmlns:android="http://schemas.android.com/apk/res/android"
+		xmlns:app="http://schemas.android.com/apk/res-auto"
+		android:orientation="horizontal"
+		android:padding="4dp"
+		app:cardElevation="0dp"
+		app:cardBackgroundColor="@android:color/white"
+		android:gravity="center_vertical"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content">
+	
+	
+<LinearLayout
               android:orientation="horizontal"
-              android:padding="4dp"
+              android:padding="6dp"
               android:gravity="center_vertical"
               android:layout_width="match_parent"
               android:layout_height="wrap_content">
@@ -44,15 +57,14 @@
 					android:layout_width="wrap_content"
 			          android:layout_height="wrap_content"/>
 			<TextView
-					
 					android:textStyle="bold"
-					android:id="@+id/time_open"
+					android:id="@+id/order_status"
 					android:textColor="@android:color/white"
-					android:padding="8dp"
-					android:background="@drawable/time_bg"
-					android:textSize="18dp"
+					android:padding="6dp"
+					android:background="@drawable/blue_bg"
+					android:textSize="16dp"
 					android:layout_marginEnd="8dp"
-					android:text=" Reorder "
+					android:text=" Ongoing "
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content" />
 		</LinearLayout>
@@ -60,3 +72,5 @@
 	
 
 </LinearLayout>
+
+</androidx.cardview.widget.CardView>

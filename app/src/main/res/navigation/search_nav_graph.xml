@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools" android:id="@+id/search_nav_graph"
+            app:startDestination="@id/searchResultsFragment2">
+	<fragment android:id="@+id/facetFragment"
+	          android:name="com.andromeda.immicart.delivery.search.algolia.FacetFragment" android:label="fragment_facet"
+	          tools:layout="@layout/fragment_facet"/>
+	<fragment android:id="@+id/searchResultsFragment2"
+	          android:name="com.andromeda.immicart.delivery.search.SearchResultsFragment"
+	          android:label="fragment_search_results" tools:layout="@layout/fragment_search_results">
+		<action android:id="@+id/action_searchResultsFragment2_to_facetFragment" app:destination="@id/facetFragment"/>
+	</fragment>
+</navigation>

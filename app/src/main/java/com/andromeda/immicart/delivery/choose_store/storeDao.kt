@@ -16,7 +16,7 @@ interface storeDao {
     fun loadAllStores(): LiveData<List<Store>>
 
     @Query("DELETE FROM store")
-    fun deleteAll()
+    suspend fun deleteAll()
 
 
 

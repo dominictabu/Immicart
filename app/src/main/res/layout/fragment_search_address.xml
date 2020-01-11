@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" xmlns:app="http://schemas.android.com/apk/res-auto"
+                tools:context=".delivery.delivery_location.SearchAddressFragment">
+	<androidx.appcompat.widget.Toolbar
+			android:layout_alignParentTop="true"
+			android:id="@+id/toolbar"
+			android:background="@android:color/white"
+			app:popupTheme="@style/AppTheme.PopupOverlay"
+			android:layout_width="match_parent"
+			android:layout_height="?attr/actionBarSize">
+		<ImageButton
+				android:id="@+id/go_back_button"
+				android:layout_margin="8dp"
+				android:background="@android:color/white"
+				android:src="@drawable/ic_keyboard_arrow_left_green_24dp"
+				android:layout_width="48dp"
+				android:layout_height="48dp"/>
+		<TextView
+				
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="Add Delivery Address"
+				android:textSize="20sp"
+				android:textStyle="bold"
+				android:layout_gravity="center"
+				android:id="@+id/toolbar_title" />
+	
+	</androidx.appcompat.widget.Toolbar>
+	<LinearLayout
+			android:layout_below="@+id/toolbar"
+			android:layout_margin="10dp"
+			android:id="@+id/top_ll"
+			android:gravity="center"
+			android:orientation="horizontal"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content">
+		
+		
+		<androidx.appcompat.widget.SearchView
+				android:layout_weight="1"
+				android:background="@drawable/search_location"
+				android:id="@+id/enter_location_searchview"
+				android:queryHint="type new delivery address"
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+		/>
+	
+	</LinearLayout>
+	
+	
+	<!-- TODO: Update blank fragment layout -->
+	<com.wang.avi.AVLoadingIndicatorView
+			android:layout_below="@+id/top_ll"
+			android:id="@+id/av_view"
+			android:layout_centerHorizontal="true"
+			android:layout_marginTop="40dp"
+			android:layout_marginBottom="20dp"
+			app:indicatorColor="@color/colorGreen"
+			android:layout_width="48dp"
+			android:layout_height="48dp"
+			app:indicatorName="LineSpinFadeLoaderIndicator"/>
+	
+	
+	
+	<androidx.recyclerview.widget.RecyclerView
+			tools:listitem="@layout/item_store_picker"
+			android:layout_marginTop="10dp"
+			android:layout_marginBottom="10dp"
+			android:layout_below="@+id/top_ll"
+			android:id="@+id/recycler_items"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"/>
+	
+	<!--<Button-->
+			<!--android:layout_marginBottom="20dp"-->
+			<!--android:layout_alignParentBottom="true"-->
+			<!--android:textSize="16sp"-->
+			<!--android:layout_margin="10dp"-->
+			<!--android:textAllCaps="false"-->
+			<!--android:id="@+id/save_location_button"-->
+			<!--android:layout_width="match_parent"-->
+			<!--android:layout_height="wrap_content"-->
+			<!--android:background="@drawable/small_corners_blue"-->
+			<!--android:text="Save"-->
+			<!--android:textColor="@android:color/white"-->
+			<!--android:textStyle="bold" />-->
+	
+
+</RelativeLayout>

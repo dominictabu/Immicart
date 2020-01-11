@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools" android:id="@+id/delivery_address_nav_graph"
+            app:startDestination="@id/confirmAddressFragment2">
+	
+	<fragment android:id="@+id/confirmAddressFragment2"
+	          android:name="com.andromeda.immicart.delivery.delivery_location.ConfirmAddressFragment"
+	          android:label="fragment_confirm_address" tools:layout="@layout/fragment_confirm_address">
+		<action android:id="@+id/action_confirmAddressFragment2_to_searchAddressFragment2"
+		        app:destination="@id/searchAddressFragment2"/>
+	</fragment>
+	<fragment android:id="@+id/searchAddressFragment2"
+	          android:name="com.andromeda.immicart.delivery.delivery_location.SearchAddressFragment"
+	          android:label="fragment_search_address" tools:layout="@layout/fragment_search_address"/>
+</navigation>

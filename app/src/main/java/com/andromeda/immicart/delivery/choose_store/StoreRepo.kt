@@ -17,6 +17,4 @@ class StoreRepository(private val storeDao: storeDao) {
         storeDao.deleteAll()
     }
 
-
-
 }
