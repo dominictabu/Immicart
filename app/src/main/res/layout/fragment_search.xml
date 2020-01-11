@@ -72,10 +72,97 @@
 		
 	</androidx.appcompat.widget.Toolbar>
 	
+	<LinearLayout
+			android:id="@+id/search_options"
+			android:layout_marginTop="10dp"
+			android:layout_marginBottom="10dp"
+			android:layout_centerHorizontal="true"
+			android:layout_below="@+id/toolbar"
+			android:weightSum="2"
+			android:orientation="horizontal"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content">
+		<LinearLayout
+				android:clickable="true"
+				android:id="@+id/barcode_search"
+				android:gravity="center"
+				android:orientation="vertical"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:focusable="true">
+			<ImageView
+					android:clickable="false"
+					android:tint="@android:color/white"
+					android:id="@+id/barcode_scanner"
+					android:padding="16dp"
+					android:background="@drawable/blue_bg_more_rounded"
+					android:src="@drawable/barcode"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content" />
+			<TextView
+					android:clickable="false"
+					android:textStyle="bold"
+					android:text="Barcode Search"
+					android:layout_width="wrap_content"
+			          android:layout_height="wrap_content"/>
+		</LinearLayout>
+	
+	<LinearLayout
+			android:clickable="true"
+			android:id="@+id/image_search"
+			android:layout_marginStart="16dp"
+			android:gravity="center"
+			android:orientation="vertical"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:focusable="true">
+		<ImageView
+				android:clickable="false"
+				android:layout_marginStart="4dp"
+				android:padding="16dp"
+				android:background="@drawable/green_more_rounded"
+				android:src="@drawable/ic_camera_alt_white_24dp"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content" />
+		<TextView
+				android:clickable="false"
+				android:textStyle="bold"
+				android:text="Image Search"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"/>
+	</LinearLayout>
+		
+	
+	
+	</LinearLayout>
+	
+	<!---->
+	<!--<LinearLayout-->
+			<!--android:layout_centerHorizontal="true"-->
+			<!--android:id="@+id/search_options"-->
+			<!--android:layout_below="@+id/toolbar"-->
+			<!--android:layout_width="wrap_content"-->
+	              <!--android:layout_height="wrap_content">-->
+		<!--<ImageButton-->
+				<!--android:padding="16dp"-->
+				<!--android:background="@drawable/blue_bg_more_rounded"-->
+				<!--android:src="@drawable/ic_camera_alt_white_24dp"-->
+				<!--android:layout_width="wrap_content"-->
+		             <!--android:layout_height="wrap_content"/>-->
+		<!---->
+		<!--<ImageButton-->
+				<!--android:layout_marginStart="40dp"-->
+				<!--android:padding="16dp"-->
+				<!--android:background="@drawable/pay_design"-->
+				<!--android:src="@drawable/ic_camera_alt_white_24dp"-->
+				<!--android:layout_width="wrap_content"-->
+				<!--android:layout_height="wrap_content"/>-->
+	<!--</LinearLayout>-->
+	
 	<androidx.cardview.widget.CardView
 			app:cardElevation="0dp"
 			android:layout_marginTop="10dp"
-			android:layout_below="@+id/toolbar"
+			android:layout_below="@+id/search_options"
 			android:layout_width="match_parent"
            android:layout_height="wrap_content">
 		

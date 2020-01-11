@@ -1,14 +1,17 @@
 package com.andromeda.immicart.delivery
 
+import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import kotlinx.android.parcel.Parcelize
 
 data class DeliveryCart_(@PrimaryKey @ColumnInfo(name = "_id") val _id: Int, val barcode: String, val name: String, val price: Int,
                         var quantity: Int, val image_url: String)
+@Parcelize
 @Entity(tableName = "delivery_cart")
 data class DeliveryCart(@ColumnInfo(name = "itemKey") val key: String, val barcode: String, val name: String, val category: String,  val offerPrice: Int, val normalPrice: Int,
-                        var quantity: Int, val image_url: String, var isInCart: Boolean? = false) {
+                        var quantity: Int, val image_url: String, var isInCart: Boolean? = false) : Parcelable {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "itemId")
     var itemId: Int = 0
