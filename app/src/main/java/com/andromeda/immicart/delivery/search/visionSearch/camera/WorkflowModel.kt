@@ -15,9 +15,7 @@ import com.andromeda.immicart.delivery.choose_store.Store
 import com.andromeda.immicart.delivery.choose_store.StoreRepository
 import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcode
 import kotlinx.coroutines.launch
-
-import java.util.HashSet
-
+import java.util.*
 
 
 /** View model for handling application workflow based on camera preview.  */

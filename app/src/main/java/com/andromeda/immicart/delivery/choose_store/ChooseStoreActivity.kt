@@ -2,12 +2,11 @@ package com.andromeda.immicart.delivery.choose_store
 
 import android.Manifest
 import android.content.pm.PackageManager
-import android.location.Geocoder
 import android.location.Location
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -23,7 +22,6 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.QuerySnapshot
 import kotlinx.android.synthetic.main.activity_choose_store.*
 import kotlinx.android.synthetic.main.content_choose_store.*
 import java.util.*

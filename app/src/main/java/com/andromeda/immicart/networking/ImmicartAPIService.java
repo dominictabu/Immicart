@@ -1,6 +1,5 @@
 package com.andromeda.immicart.networking;
 
-import com.andromeda.immicart.delivery.trackingorder.model.Result;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import retrofit2.Call;

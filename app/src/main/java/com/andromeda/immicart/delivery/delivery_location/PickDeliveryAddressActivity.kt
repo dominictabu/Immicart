@@ -1,7 +1,7 @@
 package com.andromeda.immicart.delivery.delivery_location
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.andromeda.immicart.R
 
 class PickDeliveryAddressActivity : AppCompatActivity() {

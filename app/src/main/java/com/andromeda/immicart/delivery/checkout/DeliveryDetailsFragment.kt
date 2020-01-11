@@ -4,56 +4,42 @@ package com.andromeda.immicart.delivery.checkout
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.RadioButton
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-
 import com.andromeda.immicart.R
 import com.andromeda.immicart.checkout.CartImagesAdapter
-import com.andromeda.immicart.checkout.DeliveryCartItemsAdapter
 import com.andromeda.immicart.checkout.DeliveryCartItemsAdapter_
-import com.andromeda.immicart.delivery.*
-import com.andromeda.immicart.delivery.delivery_location.Place
-import com.andromeda.immicart.delivery.persistence.CurrentLocation
-import com.google.firebase.firestore.DocumentReference
-import com.google.android.gms.tasks.OnSuccessListener
-import com.google.android.libraries.places.internal.it
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.android.synthetic.main.fragment_delivery_details.*
-import java.text.DecimalFormat
+import com.andromeda.immicart.delivery.DeliveryCart
 import com.andromeda.immicart.delivery.choose_store.Store
 import com.andromeda.immicart.delivery.delivery_location.PickDeliveryAddressActivity
+import com.andromeda.immicart.delivery.persistence.CurrentLocation
 import com.andromeda.immicart.delivery.wallet.MPESAActivity
 import com.firebase.geofire.GeoFire
 import com.firebase.geofire.GeoLocation
+import com.google.android.gms.tasks.OnSuccessListener
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.EventListener
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.type.LatLng
-
-
+import kotlinx.android.synthetic.main.fragment_delivery_details.*
+import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
-
-
-
-
-
-
 
 
 class DeliveryDetailsFragment : Fragment() {

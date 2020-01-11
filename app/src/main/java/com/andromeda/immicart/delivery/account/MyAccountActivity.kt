@@ -1,20 +1,19 @@
 package com.andromeda.immicart.delivery.account
 
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
-import com.andromeda.immicart.R
-import kotlinx.android.synthetic.main.activity_my_account.*
 import android.content.Intent
 import android.net.Uri
+import android.os.Bundle
 import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.andromeda.immicart.BuildConfig
+import com.andromeda.immicart.R
 import com.andromeda.immicart.delivery.authentication.AuthenticationActivity
 import com.firebase.ui.auth.AuthUI
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 import com.google.firebase.dynamiclinks.ShortDynamicLink
-
+import kotlinx.android.synthetic.main.activity_my_account.*
 
 
 class MyAccountActivity : AppCompatActivity() {

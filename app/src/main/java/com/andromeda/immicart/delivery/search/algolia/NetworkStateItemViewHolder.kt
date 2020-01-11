@@ -1,12 +1,12 @@
 package com.andromeda.immicart.delivery.search.algolia
 
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
 import com.andromeda.immicart.R
 import com.andromeda.immicart.delivery.search.NetworkState
 import com.andromeda.immicart.delivery.search.Status

@@ -1,10 +1,5 @@
 package com.andromeda.immicart.networking
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.PrimaryKey
-import com.google.android.gms.common.internal.FallbackServiceBroker
-
 object Model {
     data class Result(val query: Query)
     data class Query(val searchinfo: SearchInfo)

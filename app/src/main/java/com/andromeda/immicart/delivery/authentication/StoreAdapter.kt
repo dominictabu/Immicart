@@ -8,7 +8,7 @@ import com.andromeda.immicart.R
 import com.andromeda.immicart.delivery.choose_store.Store
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.item_store_item.view.*
-import java.util.ArrayList
+import java.util.*
 
 
 class StoreListRecyclerAdapter(val stores: ArrayList<Store>, val storeItemCLickListener: (Store) -> Unit) : RecyclerView.Adapter<StoreListRecyclerAdapter.StoreListRecyclerViewHolder>() {

@@ -14,11 +14,10 @@ import com.andromeda.immicart.R
 import com.andromeda.immicart.delivery.search.visionSearch.PreferenceUtils
 import com.andromeda.immicart.delivery.search.visionSearch.Utils
 import com.google.android.gms.common.images.Size
-
 import com.google.firebase.ml.vision.common.FirebaseVisionImageMetadata
 import java.io.IOException
 import java.nio.ByteBuffer
-import java.util.IdentityHashMap
+import java.util.*
 import kotlin.math.abs
 import kotlin.math.ceil
 

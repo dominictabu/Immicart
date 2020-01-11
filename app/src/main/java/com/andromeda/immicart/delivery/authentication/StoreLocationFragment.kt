@@ -2,12 +2,10 @@ package com.andromeda.immicart.delivery.authentication
 
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.fragment.findNavController
-
+import androidx.fragment.app.Fragment
 import com.andromeda.immicart.R
 import kotlinx.android.synthetic.main.fragment_store_location.*
 

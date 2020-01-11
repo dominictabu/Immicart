@@ -2,15 +2,12 @@ package com.andromeda.immicart.delivery.authentication
 
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.andromeda.immicart.R
-import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper
-import androidx.core.app.ComponentActivity.ExtraData
-import androidx.core.content.ContextCompat.getSystemService
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
 import com.andromeda.immicart.delivery.ProductsPageActivity
 import com.google.firebase.auth.FirebaseAuth
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper
 
 
 class AuthenticationActivity : AppCompatActivity() {

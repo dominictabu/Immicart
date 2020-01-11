@@ -5,20 +5,19 @@ import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
 import android.os.Build
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-
 import com.andromeda.immicart.R
 import com.andromeda.immicart.delivery.account.MyAccountActivity
 import com.andromeda.immicart.delivery.checkout.DeliveryCartActivity
@@ -34,7 +33,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.iid.FirebaseInstanceId
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.products_fragment.*
-
 
 
 val immicartAPIService by lazy {

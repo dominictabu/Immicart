@@ -1,7 +1,7 @@
 package com.andromeda.immicart.delivery.wallet
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.andromeda.immicart.R
 
 class MPESAActivity : AppCompatActivity() {
