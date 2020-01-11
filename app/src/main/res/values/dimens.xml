@@ -9,4 +9,5 @@
 	<dimen name="placeholderTextHeight">8dp</dimen>
 	<dimen name="padding_10">10dp</dimen>
 	<dimen name="locations">8dp</dimen>
+	<dimen name="standard_margin">16dp</dimen>
 </resources>
