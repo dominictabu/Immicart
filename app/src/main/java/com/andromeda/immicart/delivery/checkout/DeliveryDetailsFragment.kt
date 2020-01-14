@@ -8,6 +8,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
@@ -33,6 +35,8 @@ import com.google.firebase.firestore.EventListener
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.type.LatLng
 import kotlinx.android.synthetic.main.fragment_delivery_details.*
+import kotlinx.android.synthetic.main.fragment_place_order.*
+import kotlinx.android.synthetic.main.item_product.*
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -481,7 +485,39 @@ class DeliveryDetailsFragment : Fragment() {
                     Log.d(TAG, "$source data: null")
                 }
             })
+
+
+        }
+    }
+
+    fun amountEnough(){
+
+
+        var deliveryFee = delivery_fee.toString().toInt()
+        val storeSubtotal = store_subtotal.toString().toInt()
+        var serviceCharge = service_fee_amount.toString().toInt()
+
+
+        when(storeSubtotal){
+            in 0..500 -> delivery_fee.text = "KES 100"
+            in 501..1000 -> delivery_fee.text = "KES 120"
+            in 1001..2000 -> delivery_fee.text = "KES 150"
+            in 2001..5000 -> delivery_fee.text = "KES 180"
+            else  -> delivery_fee.text = "KES 200"
+        }
+//        Calculating service charge
+        serviceCharge = 5*storeSubtotal/100
+        service_fee_amount.text = "KES "+serviceCharge
+
+
+        val mpesaAmount = wallet_cardview.toString().toInt()
+        val amount = total_amount.toString().toInt()
+
+        if (amount.toBigDecimal() >= mpesaAmount.toBigDecimal()){
+            place_order_button_disabled.isGone
+            place_order_button.isVisible
         }
     }
 
 }
+
