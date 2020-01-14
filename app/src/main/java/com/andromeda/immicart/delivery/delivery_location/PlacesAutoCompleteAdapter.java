@@ -6,15 +6,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
-
-import java.util.ArrayList;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.andromeda.immicart.R;
+
+import java.util.ArrayList;
 
 public class PlacesAutoCompleteAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 

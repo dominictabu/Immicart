@@ -317,7 +317,7 @@
 						android:padding="4dp"
 						android:layout_margin="4dp"
 						android:textSize="16sp"
-						android:text="0796026997"
+						android:text="0712345678"
 						android:background="@null"
 						android:id="@+id/phone_number_edittext"
 						android:backgroundTint="@android:color/white"
@@ -631,6 +631,7 @@
 						android:layout_weight="1"
 						android:layout_height="wrap_content"/>
 				<TextView
+						android:id="@+id/delivery_fee"
 						android:textSize="16sp"
 						android:text="KES 100"
 						android:layout_width="wrap_content"
@@ -644,13 +645,14 @@
 						android:layout_height="wrap_content">
 					
 					<TextView
-							
+							android:id="@+id/service_fee_text"
 							android:textSize="16sp"
 							android:text="Service fee"
 							android:layout_width="0dp"
 							android:layout_weight="1"
 							android:layout_height="wrap_content"/>
 					<TextView
+							android:id="@+id/service_fee_amount"
 							android:textSize="16sp"
 							android:text="KES 60"
 							android:layout_width="wrap_content"
@@ -671,6 +673,7 @@
 							android:layout_weight="1"
 							android:layout_height="wrap_content"/>
 					<TextView
+							android:id="@+id/total_amount"
 							android:textStyle="bold"
 							android:textSize="18sp"
 							android:text="KES 760"
@@ -690,9 +693,9 @@
 			android:background="@android:color/white"
 			android:layout_alignParentBottom="true"
 			android:layout_width="match_parent"
-			android:layout_height="wrap_content">
+			android:layout_height="wrap_content" android:layout_marginBottom="-135dp">
 		<Button
-				android:visibility="visible"
+				android:visibility="gone"
 				android:id="@+id/place_order_button"
 				android:layout_marginBottom="@dimen/standard_margin"
 				android:textSize="20sp"
@@ -706,9 +709,10 @@
 				android:layout_height="wrap_content"/>
 		<Button
 				android:fontFamily="@font/roboto_medium"
-				android:visibility="gone"
+				android:visibility="visible"
 				android:textSize="20sp"
 				android:layout_margin="@dimen/standard_margin"
+				android:clickable="false"
 				android:textAllCaps="false"
 				android:id="@+id/place_order_button_disabled"
 				android:layout_width="match_parent"
@@ -716,6 +720,6 @@
 				android:background="@drawable/disabled_btn"
 				android:text="@string/place_order"
 				android:textColor="@android:color/white"
-				android:textStyle="bold" />
+				android:textStyle="bold"/>
 	</LinearLayout>
 </RelativeLayout>

@@ -44,13 +44,15 @@
 		             android:textSize="@dimen/default_text_size"
 		             android:padding="@dimen/standard_margin"
 		             android:fontFamily="@font/roboto_black"
-		             android:text="Within One Hour" android:id="@+id/urgentDelivery"/>
+		             android:text="Within One Hour"
+		             android:id="@+id/urgentDelivery"/>
 		<RadioButton android:layout_width="wrap_content"
 		             android:layout_height="wrap_content"
 		             android:padding="@dimen/standard_margin"
 		             android:textSize="@dimen/default_text_size"
 		             android:fontFamily="@font/roboto_black"
-		             android:text="7 am - 9 am" android:id="@+id/_7to9Delivery"/>
+		             android:text="7 am - 9 am"
+		             android:id="@+id/_7to9Delivery"/>
 		<RadioButton android:layout_width="wrap_content"
 		             android:layout_height="wrap_content"
 		             android:padding="@dimen/standard_margin"

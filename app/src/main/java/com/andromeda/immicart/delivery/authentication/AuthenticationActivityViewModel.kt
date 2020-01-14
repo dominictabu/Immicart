@@ -1,13 +1,12 @@
 package com.andromeda.immicart.delivery.authentication
 
-import com.andromeda.immicart.delivery.choose_store.Store
-import com.andromeda.immicart.delivery.choose_store.StoreRepository
-
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import com.andromeda.immicart.Scanning.persistence.ImmicartRoomDatabase
+import com.andromeda.immicart.delivery.choose_store.Store
+import com.andromeda.immicart.delivery.choose_store.StoreRepository
 import kotlinx.coroutines.launch
 
 

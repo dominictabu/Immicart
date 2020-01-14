@@ -5,10 +5,10 @@ import android.graphics.Bitmap
 import android.util.Log
 import com.google.android.gms.tasks.Task
 import com.google.firebase.ml.vision.FirebaseVision
+import com.google.firebase.ml.vision.common.FirebaseVisionImage
 import com.google.firebase.ml.vision.label.FirebaseVisionCloudImageLabelerOptions
 import com.google.firebase.ml.vision.label.FirebaseVisionImageLabel
 import com.google.firebase.ml.vision.label.FirebaseVisionImageLabeler
-import com.google.firebase.ml.vision.common.FirebaseVisionImage
 
 /** Cloud Label Detector Demo.  */
 class CloudImageLabelingProcessor : VisionProcessorBase<List<FirebaseVisionImageLabel>>() {

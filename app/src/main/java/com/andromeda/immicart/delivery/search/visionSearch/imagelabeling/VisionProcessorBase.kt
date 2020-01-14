@@ -1,13 +1,7 @@
 package com.andromeda.immicart.delivery.search.visionSearch.imagelabeling
 
-import android.graphics.Bitmap;
-import android.media.Image;
 
-
-
-import com.google.firebase.ml.common.FirebaseMLException
-
-
+import android.graphics.Bitmap
 import androidx.annotation.GuardedBy
 import com.google.android.gms.tasks.Task
 import com.google.firebase.ml.vision.common.FirebaseVisionImage

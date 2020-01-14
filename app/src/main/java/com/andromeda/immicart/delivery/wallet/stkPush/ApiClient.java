@@ -1,8 +1,6 @@
 package com.andromeda.immicart.delivery.wallet.stkPush;
 
 
-import java.util.concurrent.TimeUnit;
-
 import com.andromeda.immicart.delivery.wallet.stkPush.interceptor.AccessTokenInterceptor;
 import com.andromeda.immicart.delivery.wallet.stkPush.interceptor.AuthInterceptor;
 import com.andromeda.immicart.delivery.wallet.stkPush.services.STKPushService;
@@ -10,6 +8,8 @@ import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+
+import java.util.concurrent.TimeUnit;
 
 import static com.andromeda.immicart.delivery.wallet.stkPush.util.AppConstants.*;
 

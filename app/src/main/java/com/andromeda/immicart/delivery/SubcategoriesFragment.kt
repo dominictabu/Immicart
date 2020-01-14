@@ -1,17 +1,19 @@
 package com.andromeda.immicart.delivery
 
 
+//import kotlinx.android.synthetic.main.fragment_subcategories.badge
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-
 import com.andromeda.immicart.R
 import com.andromeda.immicart.delivery.checkout.DeliveryCartActivity
 import com.andromeda.immicart.networking.ImmicartAPIService
@@ -22,8 +24,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_subcategories.*
-//import kotlinx.android.synthetic.main.fragment_subcategories.badge
-import kotlinx.android.synthetic.main.fragment_subcategories.cart_frame_layout
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER

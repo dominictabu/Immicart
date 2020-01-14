@@ -12,7 +12,6 @@ import com.andromeda.immicart.R
 import com.andromeda.immicart.delivery.search.NetworkState
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.item_product.view.*
-import kotlin.math.roundToInt
 
 
 class ProductAdapter(private val retryCallback: () -> Unit) : PagedListAdapter<Product, RecyclerView.ViewHolder>(ProductAdapter) {

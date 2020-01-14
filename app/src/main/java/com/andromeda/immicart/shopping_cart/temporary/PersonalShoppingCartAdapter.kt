@@ -1,22 +1,25 @@
 package com.andromeda.immicart.shopping_cart.temporary
 
+//import kotlinx.android.synthetic.main.content_payment.view.
 import android.content.Context
+import android.graphics.Paint
 import android.graphics.Point
 import android.graphics.drawable.BitmapDrawable
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
-import androidx.recyclerview.widget.ListAdapter
+import android.widget.ImageButton
+import android.widget.LinearLayout
+import android.widget.PopupWindow
+import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.andromeda.immicart.R
 import com.andromeda.immicart.Scanning.persistence.Cart
 import com.bumptech.glide.Glide
-//import kotlinx.android.synthetic.main.content_payment.view.
 import kotlinx.android.synthetic.main.personal_cart_item.view.*
-import android.graphics.Paint
 import java.text.DecimalFormat
 
 

@@ -1,32 +1,27 @@
 package com.andromeda.immicart.delivery
 
+import android.content.Intent
 import android.graphics.Paint
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import com.google.android.material.snackbar.Snackbar
-import androidx.appcompat.app.AppCompatActivity;
+import android.view.MenuItem
+import android.widget.ImageButton
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.andromeda.immicart.R
-import com.andromeda.immicart.networking.ImmicartAPIService
 import com.andromeda.immicart.networking.Model
 import com.bumptech.glide.Glide
-
+import com.google.firebase.dynamiclinks.DynamicLink
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
+import com.google.firebase.dynamiclinks.ShortDynamicLink
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_product_detail.*
 import kotlinx.android.synthetic.main.content_product_detail.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-
-import android.view.animation.AnimationUtils
-import android.widget.ImageButton
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
-import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
-import android.content.Intent
-import android.view.MenuItem
-import com.google.firebase.dynamiclinks.DynamicLink
-import com.google.firebase.dynamiclinks.ShortDynamicLink
-import com.google.firebase.firestore.FirebaseFirestore
 
 
 class ProductDetailActivity : AppCompatActivity() {

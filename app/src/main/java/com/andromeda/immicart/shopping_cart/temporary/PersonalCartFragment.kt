@@ -2,25 +2,22 @@ package com.andromeda.immicart.shopping_cart.temporary
 
 
 import android.content.Intent
+import android.graphics.drawable.InsetDrawable
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-
 import com.andromeda.immicart.R
 import com.andromeda.immicart.Scanning.persistence.Cart
+import com.andromeda.immicart.checkout.CheckoutActivity
 import com.andromeda.immicart.shopping_cart.view_model.PersonalCartViewModel
 import kotlinx.android.synthetic.main.fragment_personal_cart.*
-import androidx.recyclerview.widget.DividerItemDecoration
-import android.graphics.drawable.InsetDrawable
-import android.graphics.drawable.Drawable
-import android.content.res.TypedArray
-import com.andromeda.immicart.checkout.CheckoutActivity
 import java.text.DecimalFormat
 
 
