@@ -4,15 +4,13 @@ package com.andromeda.immicart.delivery.search
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.algolia.instantsearch.core.connection.ConnectionHandler
 import com.algolia.instantsearch.helper.android.list.autoScrollToStart
 import com.algolia.instantsearch.helper.android.searchbox.SearchBoxViewAppCompat
@@ -20,9 +18,11 @@ import com.algolia.instantsearch.helper.android.searchbox.connectView
 import com.algolia.instantsearch.helper.android.stats.StatsTextView
 import com.algolia.instantsearch.helper.stats.StatsPresenterImpl
 import com.algolia.instantsearch.helper.stats.connectView
-
 import com.andromeda.immicart.R
-import com.andromeda.immicart.delivery.*
+import com.andromeda.immicart.delivery.DeliveryCart
+import com.andromeda.immicart.delivery.ProductsAdapter
+import com.andromeda.immicart.delivery.ProductsViewModel
+import com.andromeda.immicart.delivery.__Product__
 import com.andromeda.immicart.delivery.search.algolia.MyViewModel
 import com.bumptech.glide.Glide
 import com.google.firebase.firestore.DocumentSnapshot

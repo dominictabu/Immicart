@@ -1,34 +1,31 @@
 package com.andromeda.immicart.delivery.checkout
 
+import android.content.Context
+import android.graphics.Paint
+import android.graphics.Point
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.InsetDrawable
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
+import android.widget.LinearLayout
+import android.widget.PopupWindow
+import android.widget.TextView
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.LinearLayoutManager
-
-import com.andromeda.immicart.R
-import kotlinx.android.synthetic.main.fragment_personal_cart.*
-import androidx.recyclerview.widget.DividerItemDecoration
-import android.graphics.drawable.InsetDrawable
-import java.text.DecimalFormat
-
-import android.content.Context
-import android.graphics.Point
-import android.graphics.drawable.BitmapDrawable
-import android.view.Gravity
-import android.widget.*
-import androidx.recyclerview.widget.ListAdapter
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import kotlinx.android.synthetic.main.personal_cart_item.view.*
-import android.graphics.Paint
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.*
+import com.andromeda.immicart.R
 import com.andromeda.immicart.delivery.DeliveryCart
+import com.bumptech.glide.Glide
+import kotlinx.android.synthetic.main.fragment_personal_cart.*
+import kotlinx.android.synthetic.main.personal_cart_item.view.*
+import java.text.DecimalFormat
 
 class DeliveryCartFragment : Fragment() {
     private lateinit var adapter: PersonalShoppingCartAdapter

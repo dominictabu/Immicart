@@ -3,19 +3,17 @@ package com.andromeda.immicart.delivery.authentication
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.text.TextUtils
+import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
+import androidx.fragment.app.Fragment
 import com.andromeda.immicart.R
 import com.andromeda.immicart.delivery.ProductsPageActivity
 import com.google.firebase.auth.FirebaseAuth
-import android.util.Patterns
-import android.text.TextUtils
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.fragment_sign_up.*
-import kotlin.math.sign
 
 
 // TODO: Rename parameter arguments, choose names that match

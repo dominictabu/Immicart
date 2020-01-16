@@ -1,9 +1,7 @@
 package com.andromeda.immicart.delivery.trackingorder
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
-import androidx.lifecycle.ViewModel
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
 import com.andromeda.immicart.R
 

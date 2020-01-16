@@ -1,11 +1,11 @@
 package com.andromeda.immicart.delivery.wallet.stkPush.interceptor;
 
-import java.io.IOException;
-
 import androidx.annotation.NonNull;
 import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
+
+import java.io.IOException;
 
 /**
  * This class add information an authorization key to {@link okhttp3.OkHttpClient} which is passed in

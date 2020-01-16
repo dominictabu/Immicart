@@ -1,7 +1,6 @@
 package com.andromeda.immicart.delivery.search.algolia
 
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.paging.LivePagedListBuilder
@@ -25,7 +24,6 @@ import com.algolia.search.model.APIKey
 import com.algolia.search.model.ApplicationID
 import com.algolia.search.model.Attribute
 import com.algolia.search.model.IndexName
-import com.andromeda.immicart.delivery.DeliveryCart
 import io.ktor.client.features.logging.LogLevel
 
 

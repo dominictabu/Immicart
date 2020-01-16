@@ -1,10 +1,7 @@
 package com.andromeda.immicart.delivery.search.visionSearch.imagelabeling;
 
 import android.graphics.Bitmap;
-import android.media.Image;
-
 import com.google.firebase.ml.common.FirebaseMLException;
-import com.google.firebase.ml.vision.common.FirebaseVisionImage;
 
 import java.nio.ByteBuffer;
 

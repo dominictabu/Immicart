@@ -1,7 +1,5 @@
 package com.andromeda.immicart.delivery.search
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 

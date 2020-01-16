@@ -2,9 +2,8 @@ package com.andromeda.immicart.delivery;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import com.andromeda.immicart.R;
+import androidx.appcompat.app.AppCompatActivity;
 import com.andromeda.immicart.delivery.authentication.AuthenticationActivity;
 
 public class SplashActivity extends AppCompatActivity {

@@ -1,23 +1,19 @@
 package com.andromeda.immicart.delivery.wallet;
 
 
-import android.graphics.Color;
 import android.os.Bundle;
-import android.provider.DocumentsContract;
 import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.text.*;
-import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.*;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
 import com.androidstudy.daraja.Daraja;
 import com.androidstudy.daraja.DarajaListener;
 import com.androidstudy.daraja.model.LNMExpress;
@@ -31,12 +27,14 @@ import com.andromeda.immicart.delivery.wallet.stkPush.model.STKPush;
 import com.andromeda.immicart.delivery.wallet.stkPush.util.Utils;
 import com.andromeda.immicart.networking.ImmicartAPIService;
 import com.andromeda.immicart.networking.Model;
-import com.google.android.gms.tasks.*;
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.*;
 import com.google.firebase.functions.FirebaseFunctions;
-import com.google.firebase.functions.FirebaseFunctionsException;
 import com.google.firebase.functions.HttpsCallableResult;
 import org.jetbrains.annotations.NotNull;
 import retrofit2.Call;
@@ -44,7 +42,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import timber.log.Timber;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 

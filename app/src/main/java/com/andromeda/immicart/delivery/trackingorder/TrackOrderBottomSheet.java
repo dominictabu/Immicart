@@ -9,19 +9,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.TextView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatImageButton;
 import com.andromeda.immicart.R;
 import com.github.lzyzsd.circleprogress.DonutProgress;
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 public class TrackOrderBottomSheet extends BottomSheetDialogFragment {
 

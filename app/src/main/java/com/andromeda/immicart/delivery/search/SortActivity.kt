@@ -1,17 +1,14 @@
 package com.andromeda.immicart.delivery.search
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.RadioButton
 import android.widget.RadioGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProviders
 import com.andromeda.immicart.R
 import kotlinx.android.synthetic.main.activity_sort.*
-import android.widget.RadioButton
-
-
 
 
 class SortActivity : AppCompatActivity() {
