@@ -53,19 +53,39 @@
 			android:background="@drawable/et_bg_no_white"
 			android:id="@+id/reviewText" android:layout_marginEnd="8dp"
 			app:layout_constraintEnd_toEndOf="parent" android:layout_marginStart="8dp"
-			app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toBottomOf="@+id/review"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toBottomOf="@+id/review"
 			android:layout_marginTop="68dp" app:layout_constraintHorizontal_bias="1.0"
 			android:layout_margin="@dimen/standard_margin"/>
 	
+	<!--<android.support.design.widget.FloatingActionButton-->
+			<!--android:id="@+id/fab"-->
+			<!--android:layout_width="wrap_content"-->
+			<!--android:layout_height="wrap_content"-->
+			<!--android:layout_gravity="end|bottom"-->
+			<!--android:contentDescription="@string/submit"-->
+			<!--android:layout_margin="16dp" -->
+			<!--android:layout_marginStart="8dp"-->
+			<!--app:layout_constraintStart_toStartOf="parent" -->
+			<!--android:layout_marginEnd="8dp"-->
+			<!--app:layout_constraintEnd_toEndOf="parent" -->
+			<!--app:layout_constraintTop_toBottomOf="@+id/reviewText"-->
+			<!--android:layout_marginBottom="8dp" -->
+			<!--app:layout_constraintBottom_toBottomOf="parent"-->
+			<!--app:layout_constraintHorizontal_bias="1.0" -->
+			<!--app:layout_constraintVertical_bias="0.972"/>-->
 	<com.google.android.material.floatingactionbutton.FloatingActionButton
-			android:layout_width="56dp"
-			android:layout_height="56dp"
-			app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
-			app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp" android:layout_marginBottom="8dp"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:id="@+id/fab"
+			android:src="@drawable/ic_send_black_24dp"
+			style="@style/Widget.Design.FloatingActionButton"
+			android:background="@color/colorPrimary"
+			app:layout_constraintEnd_toEndOf="parent"
+			android:layout_marginEnd="8dp" app:layout_constraintStart_toStartOf="parent"
+			android:layout_marginStart="8dp" android:layout_marginBottom="8dp"
 			app:layout_constraintBottom_toBottomOf="parent" android:layout_marginTop="8dp"
-			app:layout_constraintTop_toBottomOf="@+id/reviewText" app:layout_constraintHorizontal_bias="0.928"
-			app:layout_constraintVertical_bias="0.909"
-			android:background="@drawable/ic_send_black_24dp"
-			android:id="@+id/fabSend"/>
-	
+			app:layout_constraintTop_toBottomOf="@+id/reviewText" app:layout_constraintHorizontal_bias="0.905"
+			app:layout_constraintVertical_bias="0.798"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
