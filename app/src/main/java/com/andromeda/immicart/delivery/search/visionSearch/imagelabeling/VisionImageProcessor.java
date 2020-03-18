@@ -1,10 +1,7 @@
 package com.andromeda.immicart.delivery.search.visionSearch.imagelabeling;
 
 import android.graphics.Bitmap;
-import android.media.Image;
-
 import com.google.firebase.ml.common.FirebaseMLException;
-import com.google.firebase.ml.vision.common.FirebaseVisionImage;
 
 import java.nio.ByteBuffer;
 
@@ -17,6 +14,8 @@ public interface VisionImageProcessor {
 
     /** Processes the bitmap images. */
     void process(Bitmap bitmap, GraphicOverlay graphicOverlay);
+
+    void process(Bitmap bitmap);
 
     /** Stops the underlying machine learning model and release resources. */
     void stop();

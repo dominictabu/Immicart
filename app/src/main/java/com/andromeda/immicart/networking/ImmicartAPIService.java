@@ -1,13 +1,11 @@
 package com.andromeda.immicart.networking;
 
 import com.andromeda.immicart.delivery.trackingorder.model.Result;
+import com.andromeda.immicart.delivery.wallet.stkPush.model.AccessToken;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import retrofit2.Call;
-import retrofit2.http.GET;
-import retrofit2.http.POST;
-import retrofit2.http.Path;
-import retrofit2.http.Query;
+import retrofit2.http.*;
 
 import java.util.List;
 
@@ -28,7 +26,11 @@ public interface ImmicartAPIService {
     @POST("mpesaCallbackURL")
     Call<Model.MPESAResponse> getMPESAResponse();
 
+    @POST("requestNodeSendyDelivery")
+    Call<Model.SendyRequestResponse> makeSendyDeliveryRequest(@Query("from_name") String from_name, @Query("from_lat") Double from_lat, @Query("from_long") Double from_long, @Query("to_name") String to_name, @Query("to_lat") Double to_lat, @Query("to_long") Double to_long);
 
+    @POST("mpesaAPI/token")
+    Call<AccessToken> getToken();
     //Google Maps
     @GET("maps/api/directions/json")
     Single<String> getDirections(@Query("mode") String mode,
@@ -37,8 +39,8 @@ public interface ImmicartAPIService {
                                  @Query("destination") String destination,
                                  @Query("key") String apiKey);
 
-    public static ImmicartAPIService create() {
-        ImmicartAPIService service = RetrofitClientInstance.getRetrofitInstance().create(ImmicartAPIService.class);
+    public static ImmicartAPIService create(String baseURL) {
+        ImmicartAPIService service = RetrofitClientInstance.getRetrofitInstance(baseURL).create(ImmicartAPIService.class);
 
         return service;
     }

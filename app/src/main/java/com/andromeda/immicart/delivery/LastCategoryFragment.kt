@@ -3,15 +3,20 @@ package com.andromeda.immicart.delivery
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-
 import com.andromeda.immicart.R
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.fragment_last_category.*
@@ -71,21 +76,21 @@ class LastCategoryFragment : Fragment() {
 
         products_items_recycler.setAdapter(productsAdapter)
 
-        viewModel.currentStores().observe(activity!!, Observer {
-            it?.let {
-                if(it.size > 0) {
-                    Log.d(TAG, "Stores size more than 0")
-                    val store = it[0]
-                    storeId = store.key
-                    getProducts()
-                } else {
-                    Log.d(TAG, "Stores size 0")
-
-                }
-
-
-            }
-        })
+//        viewModel.currentStores().observe(activity!!, Observer {
+//            it?.let {
+//                if(it.size > 0) {
+//                    Log.d(TAG, "Stores size more than 0")
+//                    val store = it[0]
+//                    storeId = store.key
+//                    getProducts()
+//                } else {
+//                    Log.d(TAG, "Stores size 0")
+//
+//                }
+//
+//
+//            }
+//        })
 
 
 
@@ -105,10 +110,18 @@ class LastCategoryFragment : Fragment() {
         })
 
         viewModel.categoryLastChild.observe(this, Observer { subcategory ->
-            category_name.text = subcategory.name
+            subcategory?.let {
+                category_name.text = subcategory.name
+                getCurrentStore(it.name!!)
+            }
 
 
         })
+
+
+//        myBackIcon?.let{
+//            findNavController().popBackStack()
+//        }
 
 
 
@@ -146,10 +159,14 @@ class LastCategoryFragment : Fragment() {
     }
 
 
-    fun getProducts() {
+    fun getProducts(category : String) {
         val collectionPath = "stores/" + storeId + "/offers"
+//        val products = FirebaseFirestore.getInstance().collection(collectionPath)
+////            .whereEqualTo("categoryOne", category)
+//            .limit(10)
+
         val products = FirebaseFirestore.getInstance().collection(collectionPath)
-//            .whereEqualTo("categoryOne", category)
+            .whereEqualTo("categoryThree", category)
             .limit(10)
 
         var productsArray: ArrayList<DeliveryCart> = ArrayList()
@@ -190,6 +207,30 @@ class LastCategoryFragment : Fragment() {
             }
             productsAdapter.updateList(productsArray, storeId)
         }
+    }
+
+
+    fun getCurrentStore(category : String) {
+        val userUID = FirebaseAuth.getInstance().uid
+        val ref = FirebaseDatabase.getInstance().reference.child("customers/$userUID/current_store")
+
+        ref.addListenerForSingleValueEvent(object: ValueEventListener {
+            override fun onCancelled(p0: DatabaseError) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+                val store = p0.getValue(CurrentStore::class.java)
+
+                store?.let {
+                    storeId = store.storeID as String
+                    getProducts(category)
+
+                }
+            }
+
+        })
+
     }
 
         companion object {

@@ -10,19 +10,19 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.ResultReceiver
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-
 import com.andromeda.immicart.R
+import com.andromeda.immicart.delivery.Utils.MyLocation
 import com.andromeda.immicart.delivery.persistence.CurrentLocation
 import com.andromeda.immicart.delivery.persistence.DeliveryLocation
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -82,16 +82,16 @@ class ConfirmAddressFragment : Fragment() {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(activity!!)
 
 
-        addressRecyclerAdapters = AddressRecyclerAdapters({place: CurrentLocation -> setCurrentLocation(place)})
+//        addressRecyclerAdapters = AddressRecyclerAdapters({place: CurrentLocation -> setCurrentLocation(place)})
         intializeRecycler()
-
-        pickDeliveryLocationViewModel.allOtherDeliveryLocations.observe(activity!!, Observer {
-
-            alldeliveryLocations = it
-            addressRecyclerAdapters.set_DeliveryLocations(it)
-
-
-        })
+//
+//        pickDeliveryLocationViewModel.allOtherDeliveryLocations.observe(activity!!, Observer {
+//
+//            alldeliveryLocations = it
+//            addressRecyclerAdapters.set_DeliveryLocations(it)
+//
+//
+//        })
 
         pickDeliveryLocationViewModel.allDeliveryLocations.observe(activity!!, Observer {
 
@@ -100,7 +100,7 @@ class ConfirmAddressFragment : Fragment() {
                 if(it.size > 0) {
 
                     val place = it[0]
-                    addressRecyclerAdapters.set_CurrentLocation(place)
+//                    addressRecyclerAdapters.set_CurrentLocation(place)
 
 
                 }
@@ -131,7 +131,7 @@ class ConfirmAddressFragment : Fragment() {
 
                 pickDeliveryLocationViewModel.deleteAllDeliveryLocations()
                 pickDeliveryLocationViewModel.insertCurrentDeliveryLocation(currentLocation)
-                addressRecyclerAdapters.set_CurrentLocation(currentLocation)
+//                addressRecyclerAdapters.set_CurrentLocation(currentLocation)
 
             }
 
@@ -191,15 +191,31 @@ class ConfirmAddressFragment : Fragment() {
         } else {
             Log.d(TAG, "onMApInitialized Called: Location Permisiin");
             mLocationPermissionGranted = true;
-            fusedLocationClient.lastLocation
-                .addOnSuccessListener { location: Location? ->
-                    // Got last known location. In some rare situations this can be null.
+//            fusedLocationClient.lastLocation
+//                .addOnSuccessListener { location: Location? ->
+//                    // Got last known location. In some rare situations this can be null.
+//
+//                    if (!Geocoder.isPresent()) {
+//                        Toast.makeText(activity!!,
+//                            R.string.no_geocoder_available,
+//                            Toast.LENGTH_LONG).show()
+//                        return@addOnSuccessListener
+//                    }
+//
+//                    location?.let {
+//
+//                        lastKnownLocation = it
+//                        startIntentService(it)
+//                    }
+//                }
 
+            val locationResult = object : MyLocation.LocationResult() {
+                override fun gotLocation(location: Location?) {
                     if (!Geocoder.isPresent()) {
                         Toast.makeText(activity!!,
                             R.string.no_geocoder_available,
                             Toast.LENGTH_LONG).show()
-                        return@addOnSuccessListener
+                        return
                     }
 
                     location?.let {
@@ -207,8 +223,19 @@ class ConfirmAddressFragment : Fragment() {
                         lastKnownLocation = it
                         startIntentService(it)
                     }
-                }
+
+
+                };
+            }
+            myLocation.getLocation(activity, locationResult);
         }
+
+    }
+    val myLocation =  MyLocation();
+
+    override fun onPause() {
+        super.onPause()
+        myLocation.cancelTimer()
 
     }
 

@@ -2,11 +2,10 @@ package com.andromeda.immicart.delivery.account
 
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
+import androidx.fragment.app.Fragment
 import com.andromeda.immicart.R
 
 // TODO: Rename parameter arguments, choose names that match
@@ -19,7 +18,12 @@ import com.andromeda.immicart.R
  * Use the [MyAccountFragment.newInstance] factory method to
  * create an instance of this fragment.
  *
+ *
+ *
+ *
  */
+
+//TODO add the customers details
 class MyAccountFragment : Fragment() {
     // TODO: Rename and change types of parameters
 //    private var param1: String? = null
@@ -62,3 +66,6 @@ class MyAccountFragment : Fragment() {
             }
     }
 }
+
+
+

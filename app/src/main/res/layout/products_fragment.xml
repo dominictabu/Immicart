@@ -6,9 +6,11 @@
 		xmlns:tools="http://schemas.android.com/tools"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
+		xmlns:segmentedgroup="http://schemas.android.com/tools"
 		tools:context=".delivery.ProductsFragment">
 	
 	<FrameLayout
+			android:visibility="gone"
 			android:layout_gravity="center"
 			android:id="@+id/loading_view"
 			android:layout_marginTop="28dp"
@@ -41,7 +43,7 @@
 	
 <androidx.coordinatorlayout.widget.CoordinatorLayout
 		android:id="@+id/coordinator_layout"
-		android:visibility="gone"
+		android:visibility="visible"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		tools:context=".delivery.ProductsFragment">
@@ -112,32 +114,33 @@
 								android:layout_width="wrap_content"
 						           android:layout_height="wrap_content"/>
 						<TextView
+								android:layout_weight="1"
+								android:ellipsize="end"
+								android:maxLines="1"
 								android:id="@+id/search_hint"
 								android:textSize="18sp"
 								android:textColor="@color/lightGrey_"
 								android:text="Search products"
-								android:layout_width="wrap_content"
+								android:layout_width="0dp"
 						          android:layout_height="wrap_content"/>
+						
+						<ImageView
+								android:id="@+id/image_search"
+								android:clickable="false"
+								android:layout_margin="12dp"
+								android:src="@drawable/ic_camera_alt_black_24dp"
+								android:layout_width="wrap_content"
+								android:layout_height="wrap_content"/>
+						<ImageView
+								android:id="@+id/barcode_search"
+								android:clickable="false"
+								android:layout_margin="12dp"
+								android:src="@drawable/barcode"
+								android:layout_width="wrap_content"
+								android:layout_height="wrap_content"/>
 					</LinearLayout>
-					<androidx.appcompat.widget.SearchView
-							android:visibility="gone"
-							android:focusable="false"
-							android:padding="4dp"
-							android:queryBackground="@null"
-							app:searchIcon="@drawable/ic_search_black__24dp"
-							android:id="@+id/search_view_browse"
-							android:layout_margin="10dp"
-							app:defaultQueryHint="Search malls, stores"
-							android:background="@drawable/search_bg"
-							app:queryHint="Search Tuskys"
-							app:iconifiedByDefault="false"
-							android:layout_width="match_parent"
-							android:layout_height="wrap_content">
 					
-					</androidx.appcompat.widget.SearchView>
 				</LinearLayout>
-			
-			
 			</FrameLayout>
 			
 			<androidx.appcompat.widget.Toolbar
@@ -217,10 +220,10 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		>
-	
-	<RelativeLayout android:layout_width="match_parent"
+	<RelativeLayout
+			android:descendantFocusability="blocksDescendants"
+			android:layout_width="match_parent"
 	                android:layout_height="wrap_content">
-		
 		
 		<androidx.cardview.widget.CardView
 				app:cardElevation="0dp"
@@ -230,26 +233,52 @@
 			<RelativeLayout
 					android:padding="4dp"
 					android:layout_width="wrap_content"
-			                android:layout_height="wrap_content">
-				<TextView
-						android:textSize="16sp"
-						android:id="@+id/delivery_to_tv"
-						android:textStyle="bold"
-						android:layout_margin="8dp"
-						android:text="Deliver to"
+					android:layout_height="wrap_content">
+				<info.hoang8f.android.segmented.SegmentedGroup
+						app:sc_tint_color="@color/colorGreen"
+						android:layout_centerHorizontal="true"
+						android:id="@+id/segmented2"
 						android:layout_width="wrap_content"
-				          android:layout_height="wrap_content"/>
-				<View
-						android:layout_margin="8dp"
-						android:id="@+id/view_delivery_to"
-						android:layout_below="@+id/delivery_to_tv"
-						android:background="@color/lightGrey"
-						android:layout_width="wrap_content"
-				      android:layout_height="1dp"/>
+						android:layout_height="wrap_content"
+						android:layout_margin="10dp"
+						android:orientation="horizontal"
+						segmentedgroup:sc_border_width="2dp"
+						segmentedgroup:sc_corner_radius="10dp">
+					<RadioButton
+							android:background="@color/colorGreen"
+							android:id="@+id/button_delivery"
+							android:layout_width="120dp"
+							android:layout_height="40dp"
+							android:text="DELIVERY"
+							style="@style/RadioButton" />
+					<RadioButton
+							android:checked="true"
+							android:id="@+id/button_pick_up"
+							android:layout_width="120dp"
+							android:layout_height="40dp"
+							android:text="PICK UP"
+							style="@style/RadioButton" />
+				</info.hoang8f.android.segmented.SegmentedGroup>
+				<!--<TextView-->
+						<!--android:textSize="16sp"-->
+						<!--android:id="@+id/delivery_to_tv"-->
+						<!--android:textStyle="bold"-->
+						<!--android:layout_margin="8dp"-->
+						<!--android:text="Deliver to"-->
+						<!--android:layout_width="wrap_content"-->
+				          <!--android:layout_height="wrap_content"/>-->
+				<!--<View-->
+						<!--android:layout_margin="8dp"-->
+						<!--android:id="@+id/view_delivery_to"-->
+						<!--android:layout_below="@+id/delivery_to_tv"-->
+						<!--android:background="@color/lightGrey"-->
+						<!--android:layout_width="wrap_content"-->
+				      <!--android:layout_height="1dp"/>-->
 				<LinearLayout
+						android:visibility="gone"
 						android:orientation="horizontal"
 						android:gravity="center_vertical"
-						android:layout_below="@+id/view_delivery_to"
+						android:layout_below="@+id/segmented2"
 						android:id="@+id/address_ll"
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content">
@@ -289,6 +318,42 @@
 							android:src="@drawable/ic_edit_green_24dp"
 							android:layout_width="wrap_content"
 					           android:layout_height="wrap_content"/>
+				</LinearLayout>
+				
+				<TextView
+						android:layout_marginTop="8dp"
+						android:layout_marginBottom="8dp"
+						android:layout_marginStart="12dp"
+						android:layout_marginEnd="20dp"
+						android:layout_below="@+id/segmented2"
+						android:visibility="gone"
+						android:id="@+id/pickup_store"
+						android:text="Collect the order at the store"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"/>
+				
+				<LinearLayout
+						android:gravity="center"
+						android:visibility="gone"
+						android:weightSum="1"
+						android:id="@+id/add_address_ll"
+						android:background="@android:color/white"
+						android:layout_below="@+id/segmented2"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content">
+					<Button
+							android:id="@+id/add_address_btn"
+							android:textSize="12sp"
+							android:fontFamily="@font/roboto_medium"
+							android:background="@drawable/pay_button_design"
+							android:textColor="@android:color/white"
+							android:text="Add delivery address"
+							android:textAllCaps="false"
+							android:layout_marginTop="8dp"
+							android:layout_marginBottom="8dp"
+							android:layout_width="0dp"
+							android:layout_weight="0.5"
+							android:layout_height="wrap_content"/>
 				</LinearLayout>
 				
 			</RelativeLayout>

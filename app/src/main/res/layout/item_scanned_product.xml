@@ -3,7 +3,7 @@
               android:orientation="horizontal"
               android:background="@android:color/white"
               android:layout_margin="8dp"
-              android:layout_width="320dp"
+              android:layout_width="match_parent"
               android:paddingTop="8dp"
               android:layout_height="wrap_content">
     
@@ -29,21 +29,29 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
         <LinearLayout
-                android:layout_marginTop="16dp"
+                android:gravity="center"
                 android:layout_width="wrap_content"
-                      android:layout_height="wrap_content">
+                android:layout_height="wrap_content">
             
         <TextView
                 android:id="@+id/quantity_tv"
                 android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
                 android:gravity="center"
                 android:textSize="20sp"
-                android:padding="8dp"
+                android:padding="4dp"
                 android:text="1"
-                android:layout_width="64dp"
+                android:layout_width="56dp"
                   android:background="@drawable/quantity_bg"
                   android:layout_height="56dp"/>
+            <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_marginStart="8dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                
             <TextView
+                    android:textColor="@color/colorAccent"
                     android:textSize="16sp"
                     android:layout_marginStart="16dp"
                     android:layout_width="wrap_content"
@@ -51,6 +59,16 @@
                       android:id="@+id/price_tv"
                       android:text="KES 500"
             />
+                <TextView
+                        android:textSize="16sp"
+                        android:layout_marginStart="16dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/normal_price_tv"
+                        android:text="KES 500"
+                />
+            </LinearLayout>
+
         </LinearLayout>
         <TextView
                 android:gravity="center"

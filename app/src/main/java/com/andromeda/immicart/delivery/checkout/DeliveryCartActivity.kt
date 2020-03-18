@@ -1,15 +1,9 @@
 package com.andromeda.immicart.delivery.checkout
 
 import android.os.Bundle
-import com.google.android.material.snackbar.Snackbar
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupWithNavController
 import com.andromeda.immicart.R
-
-import kotlinx.android.synthetic.main.activity_delivery_cart.*
 
 class DeliveryCartActivity : AppCompatActivity() {
 

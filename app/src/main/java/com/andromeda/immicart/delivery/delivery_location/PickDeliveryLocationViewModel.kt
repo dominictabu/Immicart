@@ -16,7 +16,7 @@ class PickDeliveryLocationViewModel(application: Application) : AndroidViewModel
     private val repository: DeliveryRepository
     // LiveData gives us updated words when they change.
     val allDeliveryLocations: LiveData<List<CurrentLocation>>
-    val allOtherDeliveryLocations: LiveData<List<DeliveryLocation>>
+//    val allOtherDeliveryLocations: LiveData<List<DeliveryLocation>>
 
     init {
         // Gets reference to WordDao from WordRoomDatabase to construct
@@ -24,25 +24,25 @@ class PickDeliveryLocationViewModel(application: Application) : AndroidViewModel
         val deliveryDao = ImmicartRoomDatabase.getDatabase(application, viewModelScope).deliveryDao()
         repository = DeliveryRepository(deliveryDao)
         allDeliveryLocations = repository.allDeliveryLocations
-        allOtherDeliveryLocations = repository.allOtherDeliveryLocations
+//        allOtherDeliveryLocations = repository.allOtherDeliveryLocations
     }
 
 
     fun allDeliveryLocations() : LiveData<List<CurrentLocation>> {
         return allDeliveryLocations
     }
-    fun allOtherDeliveryLocations() : LiveData<List<DeliveryLocation>> {
-        return allOtherDeliveryLocations
-    }
+//    fun allOtherDeliveryLocations() : LiveData<List<DeliveryLocation>> {
+//        return allOtherDeliveryLocations
+//    }
+//
+//    fun deleteAllOtherDeliveryLocations() = viewModelScope.launch {
+//        repository.deleteAllOtherDeliveryLocations()
+//    }
 
-    fun deleteAllOtherDeliveryLocations() = viewModelScope.launch {
-        repository.deleteAllOtherDeliveryLocations()
-    }
 
-
-    fun insertDeliveryLocation(deliveryLocation: DeliveryLocation) = viewModelScope.launch {
-        repository.insertInAllDeliveryLocation(deliveryLocation)
-    }
+//    fun insertDeliveryLocation(deliveryLocation: DeliveryLocation) = viewModelScope.launch {
+//        repository.insertInAllDeliveryLocation(deliveryLocation)
+//    }
 
     fun insertCurrentDeliveryLocation(place: CurrentLocation) = viewModelScope.launch {
         repository.insertCurrentDeliveryLocation(place)

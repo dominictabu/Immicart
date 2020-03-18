@@ -5,8 +5,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.andromeda.immicart.R
-import com.andromeda.immicart.delivery.PlaceOrder
-import com.andromeda.immicart.networking.Model
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.item_order.view.*
 
@@ -55,18 +53,43 @@ class OrderListRecyclerAdapter(val orders : ArrayList<OrderObject>, val clicklis
     }
     override fun getItemViewType(position: Int): Int {
 
-        val isCompleted = orders.get(position).orderStatus?.assigned
+        val isCompleted = orders.get(position).orderStatus?.completed
         //categoriesPr.get(position).isInCart
+        val isPickUp = orders.get(position).deliveryMode?.isPickUp
+        val isDelivery = orders.get(position).deliveryMode?.isDelivery
 
-        isCompleted?.let {
-            if(it) {
-                return R.layout.item_order_completed
-            } else {
-                return R.layout.item_order
+        isDelivery?.let {
+
+            isPickUp?.let {
+                isCompleted?.let {
+
+                    if (it && isPickUp!!) {
+                        return R.layout.item_pick_up_completed_order
+
+                    } else if (it && isDelivery!!) {
+                        return R.layout.item_order_completed
+
+                    } else if (!it && isPickUp!!) {
+                        return R.layout.item_pickup_order
+                    } else if (!it && isDelivery!!) {
+                        return R.layout.item_order
+                    }
+                }
             }
         }
 
-        return R.layout.item_order
+//        isCompleted?.let {
+//            if(it) {
+//                return R.layout.item_order_completed
+//            } else {
+//                return R.layout.item_order
+//            }
+//
+//
+//        }
+        return -1
+
+//        return R.layout.item_order
 
     }
 

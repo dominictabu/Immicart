@@ -18,6 +18,7 @@
 	<style name="AppTheme.NoActionBar">
 		<item name="windowActionBar">false</item>
 		<item name="windowNoTitle">true</item>
+		
 	</style>
 	
 	<style name="AppTheme.CartActivity" parent="AppTheme">
@@ -26,6 +27,8 @@
 	
 	<style name="AppTheme.Checkout" parent="AppTheme">
 		<item name="android:homeAsUpIndicator">@drawable/ic_close_white_24dp</item>
+		<item name="colorAccent">@color/colorGreen</item>
+	
 	</style>
 	<style name="AppTheme.ProductDetail" parent="AppTheme">
 		<item name="android:homeAsUpIndicator">@drawable/ic_close_white_24dp</item>
@@ -34,7 +37,6 @@
 	<style name="AppTheme.ChangeLocation" parent="AppTheme">
 		<item name="android:homeAsUpIndicator">@drawable/ic_close_white_24dp</item>
 	</style>
-	
 	
 	
 	<style name="AppBottomSheetDialogTheme"
@@ -68,7 +70,7 @@
 		<item name="bottomSheetStyle">@style/BottomSheet</item>
 	</style>
 	
-	<style name="BottomSheetDialogTheme" parent="BaseBottomSheetDialog" />
+	<style name="BottomSheetDialogTheme" parent="BaseBottomSheetDialog"/>
 	
 	<style name="Icon">
 		<item name="android:padding">4dp</item>
@@ -81,5 +83,31 @@
 	
 	<style name="VisionSearchTheme" parent="Theme.MaterialComponents.NoActionBar">
 	
+	</style>
+	
+	<style name="GreenTheme" parent="FirebaseUI">
+		<!-- Required for sign-in flow styling -->
+		<item name="colorPrimary">@color/colorGreen</item>
+		<item name="colorPrimaryDark">@color/colorPrimary</item>
+		<item name="colorAccent">@color/blue</item>
+		
+		<!--<item name="colorControlNormal">@color/material_green_500</item>-->
+		<!--<item name="colorControlActivated">@color/material_lime_a700</item>-->
+		<!--<item name="colorControlHighlight">@color/material_green_a200</item>-->
+	</style>
+	
+	<style name="CheckOutTheme" parent="AppTheme">
+		<item name="colorAccent">@color/colorGreen</item>
+	
+	</style>
+	
+	<style name="TextLabel" parent="TextAppearance.AppCompat">
+		<!-- Hint color and label color in FALSE state -->
+		<item name="android:textColorHint">@color/lightGrey_</item>
+		<item name="android:textSize">20sp</item>
+		<!-- Label color in TRUE state and bar color FALSE and TRUE State -->
+		<item name="colorAccent">@color/colorGreen</item>
+		<!--<item name="colorControlNormal">@color/colorGreen_</item>-->
+		<!--<item name="colorControlActivated">@color/Color Name</item>-->
 	</style>
 </resources>

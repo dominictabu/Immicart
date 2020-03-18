@@ -37,7 +37,6 @@
 				android:layout_marginTop="10dp"
 				android:id="@+id/immicart_logo"
 				android:layout_centerHorizontal="true"
-				android:layout_below="@+id/go_back_button"
 				android:layout_alignParentTop="true"
 				android:src="@drawable/immicart_logo_01"
 				android:layout_width="160dp"

@@ -38,3 +38,4 @@ data class PlaceOrder(
 )
 
 data class Store(val _id: Int? = null, val name: String? = null, val address: String? = null, val latLng: String? = null, val image_url: String? = null)
+

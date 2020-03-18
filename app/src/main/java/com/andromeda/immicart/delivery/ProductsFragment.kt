@@ -5,40 +5,52 @@ import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
 import android.os.Build
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
+import android.widget.RadioButton
+import android.widget.RadioGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-
 import com.andromeda.immicart.R
+import com.andromeda.immicart.delivery.Utils.MyDatabaseUtil
 import com.andromeda.immicart.delivery.account.MyAccountActivity
 import com.andromeda.immicart.delivery.checkout.DeliveryCartActivity
 import com.andromeda.immicart.delivery.choose_store.ChooseStoreActivity
 import com.andromeda.immicart.delivery.delivery_location.PickDeliveryAddressActivity
+import com.andromeda.immicart.delivery.persistence.DeliveryLocation
+import com.andromeda.immicart.delivery.search.SearchResultsActivity
+import com.andromeda.immicart.delivery.search.visionSearch.LiveBarcodeScanningActivity
+import com.andromeda.immicart.delivery.search.visionSearch.imagelabeling.ImageLabelingActivity
 import com.andromeda.immicart.networking.ImmicartAPIService
 import com.bumptech.glide.Glide
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.appbar.AppBarLayout
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.iid.FirebaseInstanceId
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.products_fragment.*
+import java.io.Serializable
 
-
+private val _baseURL = "https://us-central1-immicart-2ca69.cloudfunctions.net/"
 
 val immicartAPIService by lazy {
-    ImmicartAPIService.create()
+    ImmicartAPIService.create(_baseURL)
 }
 
 
@@ -50,7 +62,7 @@ class ProductsFragment : Fragment() {
 
     var disposable: Disposable? = null
 
-    private lateinit var lastVisibleSnapShot: DocumentSnapshot
+    private  var lastVisibleSnapShot: DocumentSnapshot? = null
     private var loading = true;
 
     val categories: ArrayList<__Category__> = ArrayList()
@@ -68,6 +80,7 @@ class ProductsFragment : Fragment() {
 
     private lateinit var viewModel: ProductsViewModel
     private lateinit var storeId: String
+    private  var deliveryLocation: DeliveryLocation? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -120,45 +133,48 @@ class ProductsFragment : Fragment() {
 
         })
 
-        viewModel.currentStores().observe(activity!!, Observer {
-            it?.let {
-                if(it.size > 0) {
-                    Log.d(TAG, "Stores size more than 0")
-                    val store = it[0]
-                    storeId = store.key
-                    store_name?.text = store.name
-                    search_hint?.text = "Search ${store.name}"
-                    Glide.with(activity!!).load(store.logoUrl).into(profile_image)
-                    getCategories()
+        getCurrentDeliveryLocation()
+        getCurrentStore()
+
+//        viewModel.currentStores().observe(activity!!, Observer {
+//            it?.let {
+//                if(it.size > 0) {
+//                    Log.d(TAG, "Stores size more than 0")
+//                    val store = it[0]
+//                    storeId = store.key
+//                    store_name?.text = store.name
+//                    search_hint?.text = "Search ${store.name}"
+//                    Glide.with(activity!!).load(store.logoUrl).into(profile_image)
+//                    getCategories()
+//
+//
+//
+//                } else {
+//                    Log.d(TAG, "Stores size 0")
+//
+//                }
+//
+//
+//            }
+//        })
 
 
+//        viewModel.allDeliveryLocations().observe(activity!!, androidx.lifecycle.Observer {
+//
+//            it?.let {
+//                if(it.size > 0) {
+//                    val place = it[0]
+//
+//                    address_one?.text = place.name
+//                    address_two?.text = place.address
+//
+//                }
+//
+//            }
+//
+//        })
 
-                } else {
-                    Log.d(TAG, "Stores size 0")
-
-                }
-
-
-            }
-        })
-
-
-        viewModel.allDeliveryLocations().observe(activity!!, androidx.lifecycle.Observer {
-
-            it?.let {
-                if(it.size > 0) {
-                    val place = it[0]
-
-                    address_one?.text = place.name
-                    address_two?.text = place.address
-
-                }
-
-            }
-
-        })
-
-        nested_scrolling_view.getViewTreeObserver().addOnScrollChangedListener(object : ViewTreeObserver.OnScrollChangedListener {
+        nested_scrolling_view?.getViewTreeObserver()?.addOnScrollChangedListener(object : ViewTreeObserver.OnScrollChangedListener {
             override fun onScrollChanged() {
                 nested_scrolling_view?.let {
 
@@ -170,72 +186,137 @@ class ProductsFragment : Fragment() {
                     if (diff == 0) {
                         // your pagination code
                         lastVisibleSnapShot?.let {
-                            paginateToNext(lastVisibleSnapShot)
-
+                            paginateToNext(it)
                         }
-
                     }
                 }
             }
-
         })
-
 
 //        retrieveCategories()
         // TODO: Use the ViewModel
 
-
         cart_frame_layout?.setOnClickListener {
-
             startActivity(Intent(activity!!, DeliveryCartActivity::class.java))
         }
 
         myAccountIcon?.setOnClickListener {
             startActivity(Intent(activity!!, MyAccountActivity::class.java))
-
         }
 
         address_ll?.setOnClickListener {
             startActivity(Intent(activity!!, PickDeliveryAddressActivity::class.java))
+        }
+        add_address_btn?.setOnClickListener {
+            startActivity(Intent(activity!!, PickDeliveryAddressActivity::class.java))
+        }
 
+        barcode_search?.setOnClickListener {
+            startActivity(Intent(activity!!, LiveBarcodeScanningActivity::class.java))
+        }
+
+        image_search?.setOnClickListener {
+            startActivity(Intent(activity!!, ImageLabelingActivity::class.java))
         }
 
         navigatetosearch?.visibility = View.VISIBLE
         navigatetosearch?.setOnClickListener {
-            activity?.let {
-                (activity!! as ProductsPageActivity).navigateToSearch()
-            }
+            val intent = Intent(requireActivity(), SearchResultsActivity::class.java)
+            startActivity(intent)
+
+//            activity?.let {
+//                (activity!! as ProductsPageActivity).navigateToSearch()
+//            }
         }
 
         getToken()
         createNotificationChannel()
 
-
-        store_name.setOnClickListener {
+        store_name?.setOnClickListener {
             startActivity(Intent(activity!!, ChooseStoreActivity::class.java))
 
         }
 
+        val shared = activity!!.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        val channel = (shared.getBoolean(keyChannel, false));
+        val radioBtnPickUp =  activity!!.findViewById<RadioButton>(R.id.button_pick_up);
+        val radioBtnDelivery =  activity!!.findViewById<RadioButton>(R.id.button_delivery);
+        if(channel) {
+//            delivery_time_textView?.text = "Choose your Pick up time"
+            radioBtnPickUp?.isChecked = true
+//            discloser?.visibility = View.GONE
+            pickup_store?.visibility = View.VISIBLE
+            address_ll?.visibility = View.GONE
+            add_address_ll?.visibility = View.GONE
+        } else {
+            radioBtnDelivery?.isChecked  = true
+            pickup_store?.visibility = View.GONE
+            if(deliveryLocation != null) {
+                add_address_ll?.visibility = View.GONE
+                address_ll?.visibility = View.VISIBLE
+                address_one?.text = deliveryLocation!!.name
+                address_two?.text = deliveryLocation!!.address
+            } else {
+                address_ll?.visibility = View.GONE
+                add_address_ll?.visibility = View.VISIBLE
+            }
 
+        }
+
+        segmented2?.setOnCheckedChangeListener(object : RadioGroup.OnCheckedChangeListener {
+            override fun onCheckedChanged(group: RadioGroup?, checkedId: Int) {
+                if(checkedId == R.id.button_delivery) {
+                    val editor = activity?.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)?.edit()
+                    editor?.putBoolean(keyChannel, false)
+                    editor?.apply()
+                    pickup_store?.visibility = View.GONE
+                    if(deliveryLocation != null) {
+                        add_address_ll?.visibility = View.GONE
+                        address_ll?.visibility = View.VISIBLE
+                        address_one?.text = deliveryLocation!!.name
+                        address_two?.text = deliveryLocation!!.address
+                    } else {
+                        address_ll?.visibility = View.GONE
+                        add_address_ll?.visibility = View.VISIBLE
+                    }
+
+                } else {
+                    val editor = activity?.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)?.edit()
+                    editor?.putBoolean(keyChannel, true)
+                    editor?.apply()
+                    pickup_store?.visibility = View.VISIBLE
+                    address_ll?.visibility = View.GONE
+                    add_address_ll?.visibility = View.GONE
+
+                }
+            }
+        })
 
     }
+
+    val PREF_NAME = "IS_PICKUP"
+    val keyChannel = "IS_PICKUP"
 
     fun navigateToSubCategories(categoryId: String) {
         viewModel.setCategoryId(categoryId)
     }
 
-
     fun intializeRecycler(categories: List<__Category__>) {
 
-        val linearLayoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
-        category_items_recycler?.setNestedScrollingEnabled(false);
+        activity?.let {
 
-        category_items_recycler?.setLayoutManager(linearLayoutManager)
-        categoryRecyclerAdapter = CategoryRecyclerAdapter(storeId,
-            categories as ArrayList<__Category__>, activity!!, { cartItem : DeliveryCart, newQuantity: Int -> cartItemClicked(cartItem, newQuantity)}, { category: __Category__ -> viewAll(category)})
+            val linearLayoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
+            category_items_recycler?.setNestedScrollingEnabled(false);
 
+            category_items_recycler?.setLayoutManager(linearLayoutManager)
+            categoryRecyclerAdapter = CategoryRecyclerAdapter(storeId,
+                categories as ArrayList<__Category__>,
+                activity!!,
+                { cartItem: DeliveryCart, newQuantity: Int -> cartItemClicked(cartItem, newQuantity) },
+                { category: __Category__ -> viewAll(category) })
 
-        category_items_recycler?.setAdapter(categoryRecyclerAdapter)
+            category_items_recycler?.setAdapter(categoryRecyclerAdapter)
+        }
 //
 //        var pastVisiblesItems : Int
 //        var visibleItemCount: Int
@@ -527,7 +608,7 @@ class ProductsFragment : Fragment() {
                 // Log and toast
 //                val msg = getString(R.string.msg_token_fmt, token)
 //                Log.d(TAG, msg)
-                Toast.makeText(activity!!, "Token Retrieved", Toast.LENGTH_SHORT).show()
+//                Toast.makeText(activity!!, "Token Retrieved", Toast.LENGTH_SHORT).show()
             })
     }
 
@@ -579,4 +660,79 @@ class ProductsFragment : Fragment() {
         }
     }
 
+    fun getCurrentStore() {
+        val userUID = FirebaseAuth.getInstance().uid
+        val ref = MyDatabaseUtil.getDatabase().reference.child("customers/$userUID/current_store")
+
+        ref.addListenerForSingleValueEvent(object: ValueEventListener{
+            override fun onCancelled(p0: DatabaseError) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+                val store = p0.getValue(CurrentStore::class.java)
+
+                store?.let {
+
+                    storeId = store.storeID as String
+                    store_name?.text = store.storeName
+                    search_hint?.text = "Search ${store.storeName}"
+                    activity?.let {
+                        Glide.with(it).load(store.storeLogo).into(profile_image)
+                    }
+                    getCategories()
+                    pickup_store?.text = "Collect your order at ${store.storeName} , ${store.storeAddress}"
+
+                }
+            }
+        })
+    }
+
+    fun getCurrentDeliveryLocation() {
+        val userUID = FirebaseAuth.getInstance().uid
+        val ref = MyDatabaseUtil.getDatabase().reference.child("customers/$userUID").child("delivery_locations/current_location")
+
+        val shared = activity!!.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        val channel = (shared.getBoolean(keyChannel, false));
+        ref.addValueEventListener(object: ValueEventListener {
+            override fun onCancelled(p0: DatabaseError) {
+//                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+                val location = p0.getValue(DeliveryLocation::class.java)
+                deliveryLocation = location
+                if (!channel) {
+                    if (location != null) {
+                        Log.d(TAG, "location NOT null")
+
+                        add_address_ll?.visibility = View.GONE
+                        address_ll?.visibility = View.VISIBLE
+                        address_one?.text = location.name
+                        address_two?.text = location.address
+
+                    } else {
+                        address_ll?.visibility = View.GONE
+                        add_address_ll?.visibility = View.VISIBLE
+                        Log.d(TAG, "location  null")
+                    }
+                } else {
+                    address_ll?.visibility = View.GONE
+                    add_address_ll?.visibility = View.GONE
+                }
+            }
+
+        })
+
+    }
+
 }
+
+data class CurrentStore(
+    var storeID: String? = "",
+    var storeName: String? = "",
+    var storeLogo: String? = "",
+    var storeLatLng: String? = "",
+    var storeAddress: String? = ""
+
+) : Serializable

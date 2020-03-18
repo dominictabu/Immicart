@@ -1,13 +1,7 @@
 package com.andromeda.immicart.delivery.search.visionSearch.imagelabeling
 
-import android.graphics.Bitmap;
-import android.media.Image;
 
-
-
-import com.google.firebase.ml.common.FirebaseMLException
-
-
+import android.graphics.Bitmap
 import androidx.annotation.GuardedBy
 import com.google.android.gms.tasks.Task
 import com.google.firebase.ml.vision.common.FirebaseVisionImage
@@ -60,6 +54,13 @@ abstract class VisionProcessorBase<T> : VisionImageProcessor {
         )
     }
 
+    // Bitmap version
+    override fun process(bitmap: Bitmap) {
+        detectInVisionImage(
+            null, /* bitmap */
+            FirebaseVisionImage.fromBitmap(bitmap))
+    }
+
     @Synchronized
     private fun processLatestImage(graphicOverlay: GraphicOverlay) {
         processingImage = latestImage
@@ -100,10 +101,21 @@ abstract class VisionProcessorBase<T> : VisionImageProcessor {
             .addOnSuccessListener { results ->
                 onSuccess(
                     originalCameraImage, results,
-                    metadata!!,
+                    metadata,
                     graphicOverlay
                 )
                 processLatestImage(graphicOverlay)
+            }
+            .addOnFailureListener { e -> onFailure(e) }
+    }
+
+    private fun detectInVisionImage(
+        originalCameraImage: Bitmap?,
+        image: FirebaseVisionImage) {
+        detectInImage(image)
+            .addOnSuccessListener { results ->
+                onSuccess(
+                    originalCameraImage, results)
             }
             .addOnFailureListener { e -> onFailure(e) }
     }
@@ -121,9 +133,12 @@ abstract class VisionProcessorBase<T> : VisionImageProcessor {
     protected abstract fun onSuccess(
         originalCameraImage: Bitmap?,
         results: T,
-        frameMetadata: FrameMetadata,
+        frameMetadata: FrameMetadata?,
         graphicOverlay: GraphicOverlay
     )
+    protected abstract fun onSuccess(
+        originalCameraImage: Bitmap?,
+        results: T)
 
     protected abstract fun onFailure(e: Exception)
 }

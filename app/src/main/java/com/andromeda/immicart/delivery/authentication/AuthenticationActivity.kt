@@ -9,6 +9,7 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper
 import androidx.core.app.ComponentActivity.ExtraData
 import androidx.core.content.ContextCompat.getSystemService
 import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+import androidx.navigation.findNavController
 import com.andromeda.immicart.delivery.ProductsPageActivity
 import com.google.firebase.auth.FirebaseAuth
 
@@ -30,14 +31,15 @@ class AuthenticationActivity : AppCompatActivity() {
 
     }
 
-    public override fun onStart() {
-        super.onStart()
-        // Check if user is signed in (non-null) and update UI accordingly.
-        val currentUser = auth.currentUser
-
-        if(currentUser != null) {
-            startActivity(Intent(this, ProductsPageActivity::class.java))
-        }
-    }
+//    public override fun onStart() {
+//        super.onStart()
+//        // Check if user is signed in (non-null) and update UI accordingly.
+//        val currentUser = auth.currentUser
+//
+//        if(currentUser != null) {
+//            findNavController(R.id.my_nav_host_fragment).navigate(R.id.action_firebaseUIAuthenticationFragment_to_selectStoreFragment)
+////            startActivity(Intent(this, ProductsPageActivity::class.java))
+//        }
+//    }
 
 }

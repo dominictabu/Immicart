@@ -3,6 +3,7 @@ package com.andromeda.immicart.delivery.checkout
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.andromeda.immicart.Scanning.persistence.CartRepository
 import com.andromeda.immicart.Scanning.persistence.ImmicartRoomDatabase
@@ -24,6 +25,10 @@ class DeliveryCartViewModel(application: Application) : AndroidViewModel(applica
     val allDeliveryLocations: LiveData<List<CurrentLocation>>
     private val repository_: StoreRepository
     val allStores: LiveData<List<Store>>
+    val deliveryDetails = MutableLiveData<DeliveryDetails>()
+    val trackingLink = MutableLiveData<String>()
+    val sendy_order_number = MutableLiveData<String>()
+
 
 
     // LiveData gives us updated words when they change.
@@ -45,14 +50,26 @@ class DeliveryCartViewModel(application: Application) : AndroidViewModel(applica
         allStores = repository_.allStores
     }
 
-    fun currentStores() : LiveData<List<Store>> {
+    fun setDeliveryDetails(orderObject: DeliveryDetails) {
+        deliveryDetails.value = orderObject
+    }
 
+    fun setTrackingLink(link: String) {
+        trackingLink.value = link
+    }
+
+    fun setOrderNumber(number: String) {
+        sendy_order_number.value = number
+    }
+
+    fun currentStores() : LiveData<List<Store>> {
         return allStores
     }
 
     fun allDeliveryLocations() : LiveData<List<CurrentLocation>> {
         return allDeliveryLocations
     }
+
     fun allDeliveryItems() : LiveData<List<DeliveryCart>> {
         return allDeliveryItems
     }

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ImageView
+		android:id="@+id/furniture_image_selected"
+		android:background="@drawable/log_out_bg"
+		android:layout_margin="4dp"
+		xmlns:android="http://schemas.android.com/apk/res/android"
+		android:scaleType="fitCenter"
+		android:src="@drawable/sofa"
+		android:layout_width="120dp"
+		android:layout_height="120dp"/>
+

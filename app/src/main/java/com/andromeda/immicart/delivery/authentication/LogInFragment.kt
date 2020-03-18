@@ -11,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.navigation.fragment.findNavController
 
 import com.andromeda.immicart.R
 import com.andromeda.immicart.delivery.ProductsPageActivity
@@ -109,6 +110,11 @@ class LogInFragment : Fragment() {
 
                 login(email, password)
             }
+
+        }
+
+        go_back_button?.setOnClickListener {
+            findNavController().popBackStack()
 
         }
     }

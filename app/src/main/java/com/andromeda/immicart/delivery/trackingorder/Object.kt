@@ -15,7 +15,8 @@ package com.andromeda.immicart.delivery.trackingorder
 
 data class OrderObject(val customerUID: String? = null, val orderID: String? = null, var mobileNumber:String? = null,
                        val items: List<DeliveryCart_>? = null, val datePosted: String? = null, var timeInMillisCreated:Long? = null,
-                       val payments: Payments? = null, val deliveryAddress: DeliveryAddress? = null, var store:DeliveryStore? = null, var orderStatus : OrderStatus? = null)
+                       val payments: Payments? = null, val deliveryAddress: DeliveryAddress? = null, var store:DeliveryStore? = null, var orderStatus : OrderStatus? = null,
+                        val deliveryMode : DeliveryMode? = null)
 
 
 data class Payments(val storeSubtotal : Float? = null, val serviceFee : Float? = null, val deliveryFee : Float? = null)
@@ -26,3 +27,5 @@ data class DeliveryStore(val key : String? = null, val logoURL : String? = null,
 
 data class DeliveryCart_(val key: String? = null, val barcode: String? = null, val name: String? = null, val category: String? = null,  val offerPrice: Int? = null, val normalPrice: Int? = null,
                         var quantity: Int? = null, val image_url : String? = null)
+
+data class DeliveryMode(val deliveryMode: Long? = null, val isDelivery : Boolean? = true, val isPickUp: Boolean? = false )

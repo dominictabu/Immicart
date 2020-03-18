@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools" android:id="@+id/furniture_nav_graph"
+            app:startDestination="@id/homeFragment">
+	
+	<fragment android:id="@+id/homeFragment" android:name="com.andromeda.immicart.delivery.furniture.HomeFragment"
+	          android:label="fragment_home" tools:layout="@layout/fragment_home">
+		<action android:id="@+id/action_homeFragment_to_subCategoryFurnitureFragment"
+		        app:destination="@id/subCategoryFurnitureFragment"/>
+		<action android:id="@+id/action_homeFragment_to_furnitureSearchFragment"
+		        app:destination="@id/furnitureSearchFragment"/>
+	</fragment>
+	<fragment android:id="@+id/myAccountFragment"
+	          android:name="com.andromeda.immicart.delivery.account.MyAccountFragment"
+	          android:label="fragment_my_account" tools:layout="@layout/fragment_my_account"/>
+	<fragment android:id="@+id/subCategoryFurnitureFragment"
+	          android:name="com.andromeda.immicart.delivery.furniture.SubCategoryFurnitureFragment"
+	          android:label="fragment_sub_category_furniture" tools:layout="@layout/fragment_sub_category_furniture">
+		<action android:id="@+id/action_subCategoryFurnitureFragment_to_categoryFurnitureProductsFragment"
+		        app:destination="@id/categoryFurnitureProductsFragment"/>
+	</fragment>
+	<fragment android:id="@+id/categoryFurnitureProductsFragment"
+	          android:name="com.andromeda.immicart.delivery.furniture.CategoryFurnitureProductsFragment"
+	          android:label="fragment_category_furniture_products"
+	          tools:layout="@layout/fragment_category_furniture_products"/>
+	<fragment android:id="@+id/furnitureOrdersListFragment"
+	          android:name="com.andromeda.immicart.delivery.trackingorder.OrdersListFragment"
+	          android:label="fragment_orders_list" tools:layout="@layout/fragment_orders_list"/>
+	<fragment android:id="@+id/furnitureSearchFragment"
+	          android:name="com.andromeda.immicart.delivery.furniture.algolia.FurnitureSearchFragment"
+	          android:label="fragment_furniture_search" tools:layout="@layout/fragment_furniture_search"/>
+</navigation>

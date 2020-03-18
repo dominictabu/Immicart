@@ -1,16 +1,13 @@
 package com.andromeda.immicart.delivery
 
 import android.os.Bundle
-import com.google.android.material.snackbar.Snackbar
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.andromeda.immicart.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
-
-import kotlinx.android.synthetic.main.activity_products_page.*
 
 class ProductsPageActivity : AppCompatActivity() {
 

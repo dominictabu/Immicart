@@ -13,6 +13,7 @@ class OrdersViewModel : ViewModel() {
     fun setSelectedOrder(orderObject: OrderObject) {
         selectedOrder.value = orderObject
     }
+
     fun setSelectedOrderID(orderObject: String) {
         selectedOrderID.value = orderObject
     }

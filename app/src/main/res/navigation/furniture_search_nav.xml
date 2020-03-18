@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools" android:id="@+id/furniture_search_nav"
+            app:startDestination="@id/furnitureSearchFragment2">
+	
+	<fragment android:id="@+id/furnitureSearchFragment2"
+	          android:name="com.andromeda.immicart.delivery.furniture.algolia.FurnitureSearchFragment"
+	          android:label="fragment_furniture_search" tools:layout="@layout/fragment_furniture_search">
+		<action android:id="@+id/action_furnitureSearchFragment2_to_facetFragment3"
+		        app:destination="@id/facetFragment3"/>
+	</fragment>
+	<fragment android:id="@+id/facetFragment3"
+	          android:name="com.andromeda.immicart.delivery.furniture.algolia.FacetFragment"
+	          android:label="facet_fragment" tools:layout="@layout/facet_fragment"/>
+</navigation>

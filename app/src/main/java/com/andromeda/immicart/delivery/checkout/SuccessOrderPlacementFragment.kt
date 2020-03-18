@@ -2,12 +2,11 @@ package com.andromeda.immicart.delivery.checkout
 
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-
+import androidx.fragment.app.Fragment
 import com.andromeda.immicart.R
 import kotlinx.android.synthetic.main.fragment_success_order_placement.*
 
@@ -61,7 +60,6 @@ class SuccessOrderPlacementFragment : Fragment() {
         super.onStop()
 
     }
-
 
     companion object {
         /**

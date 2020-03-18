@@ -51,28 +51,38 @@
 	</LinearLayout>
 	
 	
-	<!-- TODO: Update blank fragment layout -->
-	<com.wang.avi.AVLoadingIndicatorView
-			android:layout_below="@+id/top_ll"
-			android:id="@+id/av_view"
-			android:layout_centerHorizontal="true"
-			android:layout_marginTop="40dp"
-			android:layout_marginBottom="20dp"
-			app:indicatorColor="@color/colorGreen"
-			android:layout_width="48dp"
-			android:layout_height="48dp"
-			app:indicatorName="LineSpinFadeLoaderIndicator"/>
-	
-	
+	<!--&lt;!&ndash; TODO: Update blank fragment layout &ndash;&gt;-->
+	<!--<com.wang.avi.AVLoadingIndicatorView-->
+			<!--android:layout_below="@+id/top_ll"-->
+			<!--android:id="@+id/av_view"-->
+			<!--android:layout_centerHorizontal="true"-->
+			<!--android:layout_marginTop="40dp"-->
+			<!--android:layout_marginBottom="20dp"-->
+			<!--app:indicatorColor="@color/colorGreen"-->
+			<!--android:layout_width="48dp"-->
+			<!--android:layout_height="48dp"-->
+			<!--app:indicatorName="LineSpinFadeLoaderIndicator"/>-->
 	
 	<androidx.recyclerview.widget.RecyclerView
+			android:visibility="gone"
+			android:layout_below="@+id/top_ll"
+			android:id="@+id/delivery_locations_addresses"
+			tools:listitem="@layout/item_delivery_location"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"/>
+	
+	<androidx.recyclerview.widget.RecyclerView
+			
+			android:visibility="gone"
 			tools:listitem="@layout/item_store_picker"
 			android:layout_marginTop="10dp"
 			android:layout_marginBottom="10dp"
-			android:layout_below="@+id/top_ll"
+			android:layout_below="@+id/delivery_locations_addresses"
 			android:id="@+id/recycler_items"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"/>
+	
+	
 	
 	<!--<Button-->
 			<!--android:layout_marginBottom="20dp"-->

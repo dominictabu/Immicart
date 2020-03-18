@@ -1,35 +1,30 @@
 package com.andromeda.immicart.delivery.authentication
 
 
+import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.fragment.findNavController
-
-import com.andromeda.immicart.R
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import kotlinx.android.synthetic.main.fragment_create_account.*
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import androidx.core.app.ActivityCompat.startActivityForResult
-import android.content.Intent
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.google.android.gms.tasks.Task
-import com.google.android.gms.common.api.ApiException
-
-import android.util.Log
-import android.view.Display
 import android.widget.Toast
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import com.andromeda.immicart.R
 import com.andromeda.immicart.delivery.ProductsPageActivity
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.OnCompleteListener
+import com.google.android.gms.tasks.Task
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.iid.FirebaseInstanceId
-
+import kotlinx.android.synthetic.main.fragment_create_account.*
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -119,6 +114,7 @@ class CreateAccountFragment : Fragment() {
         if (requestCode == RC_SIGN_IN) {
             // The Task returned from this call is always completed, no need to attach
             // a listener.
+            Log.d(TAG, "onActivityResult : requestCode is RC_SIGN_IN")
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
             handleSignInResult(task)
         }
@@ -130,10 +126,15 @@ class CreateAccountFragment : Fragment() {
             val email = account?.email
             val photoURL = account?.photoUrl
             val displayName = account?.displayName
-            account?.let {
-                firebaseAuthWithGoogle(account, email!!, photoURL.toString()!!, displayName!!)
-
+            if(account != null) {
+                Log.d(TAG, "GoogleSignInAccount NOT null")
+                account?.let {
+                    firebaseAuthWithGoogle(account, email!!, photoURL.toString()!!, displayName!!)
+                }
+            } else {
+                Log.d(TAG, "GoogleSignInAccount is null")
             }
+
 
             // Signed in successfully, show authenticated UI.
 //            updateUI(account)
@@ -178,13 +179,20 @@ class CreateAccountFragment : Fragment() {
         user.put("email", email)
         user.put("imageUrl", photoURL)
 
-        db.document(documentPath).set(user).addOnSuccessListener {
-            activity?.let{
-                it.finish()
-                startActivity(Intent(activity, ProductsPageActivity::class.java))
+        db.document(documentPath).set(user).addOnCompleteListener {
+
+            if (it.isSuccessful) {
+                Log.d(TAG, "Task isSuccessful")
+                activity?.let {
+                    findNavController().navigate(R.id.action_createAccountFragment_to_selectStoreFragment)
+
+//                it.finish()
+//                startActivity(Intent(activity, SelectStoreFragment::class.java))
+                }
+            } else {
+                Log.d(TAG, "Task is Unsuccessful")
 
             }
-
 
         }
     }

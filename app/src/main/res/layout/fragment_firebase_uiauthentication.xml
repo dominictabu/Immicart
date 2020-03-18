@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             tools:context=".delivery.authentication.FirebaseUIAuthenticationFragment">
+	
+	<!-- TODO: Update blank fragment layout -->
+	<ImageView
+			android:src="@drawable/immicart_test_jamison_philippi_5"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"/>
+	
+	<LinearLayout
+			android:orientation="vertical"
+			android:layout_alignParentBottom="true"
+			android:id="@+id/bottom_view"
+			android:background="@drawable/rounded_bottomsheet"
+			android:layout_width="match_parent"
+	              android:layout_height="wrap_content">
+		<TextView
+				android:id="@+id/save_time"
+				android:textStyle="bold"
+				android:textSize="26sp"
+				android:layout_marginStart="20dp"
+				android:layout_marginTop="24dp"
+				android:layout_marginEnd="20dp"
+				android:layout_below="@+id/immicart_logo"
+				android:text="Save time, starting now"
+				android:gravity="center"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"/>
+		<TextView
+				android:layout_marginStart="20dp"
+				android:layout_marginEnd="20dp"
+				android:textSize="18sp"
+				android:id="@+id/subtagline"
+				android:layout_below="@+id/starting_now"
+				android:text="Get the things you love from the stores you trust"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"/>
+		<LinearLayout
+				android:layout_marginBottom="28dp"
+				android:layout_marginTop="10dp"
+				android:layout_width="match_parent"
+		              android:layout_height="wrap_content">
+			<Button
+					android:id="@+id/login"
+					android:padding="8dp"
+					android:textSize="16sp"
+					android:layout_marginTop="4dp"
+					android:layout_marginStart="16dp"
+					android:layout_marginEnd="8dp"
+					android:textColor="@color/colorGreen"
+					android:background="@drawable/log_out_bg"
+					android:elevation="24dp"
+					android:textAllCaps="false"
+					android:layout_weight="1"
+					android:textStyle="bold"
+					android:text="Log in"
+					android:layout_width="0dp"
+					android:layout_height="48dp"/>
+		<Button
+				android:id="@+id/signup"
+				android:padding="8dp"
+				android:textSize="16sp"
+				android:layout_marginTop="4dp"
+				android:layout_marginEnd="16dp"
+				android:layout_marginStart="8dp"
+				android:textColor="@android:color/white"
+				android:background="@drawable/pay_button_design"
+				android:elevation="24dp"
+				android:textAllCaps="false"
+				android:layout_weight="1"
+				android:textStyle="bold"
+				android:text="Sign up"
+				android:layout_width="0dp"
+				android:layout_height="48dp"/>
+		</LinearLayout>
+	
+	</LinearLayout>
+
+</RelativeLayout>

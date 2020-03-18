@@ -30,7 +30,6 @@
 	                android:layout_height="match_parent">
 		
 		<FrameLayout
-				android:layout_below="@+id/closeBtn"
 				android:id="@+id/av_view"
 				android:layout_centerHorizontal="true"
 				android:layout_marginTop="28dp"

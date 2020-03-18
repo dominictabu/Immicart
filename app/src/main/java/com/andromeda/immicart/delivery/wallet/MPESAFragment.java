@@ -1,23 +1,19 @@
 package com.andromeda.immicart.delivery.wallet;
 
 
-import android.graphics.Color;
 import android.os.Bundle;
-import android.provider.DocumentsContract;
 import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.text.*;
-import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.*;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
 import com.androidstudy.daraja.Daraja;
 import com.androidstudy.daraja.DarajaListener;
 import com.androidstudy.daraja.model.LNMExpress;
@@ -31,12 +27,14 @@ import com.andromeda.immicart.delivery.wallet.stkPush.model.STKPush;
 import com.andromeda.immicart.delivery.wallet.stkPush.util.Utils;
 import com.andromeda.immicart.networking.ImmicartAPIService;
 import com.andromeda.immicart.networking.Model;
-import com.google.android.gms.tasks.*;
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.*;
 import com.google.firebase.functions.FirebaseFunctions;
-import com.google.firebase.functions.FirebaseFunctionsException;
 import com.google.firebase.functions.HttpsCallableResult;
 import org.jetbrains.annotations.NotNull;
 import retrofit2.Call;
@@ -44,7 +42,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import timber.log.Timber;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -156,7 +153,7 @@ public class MPESAFragment extends Fragment {
 
         mApiClient = new ApiClient();
         mApiClient.setIsDebug(true); //Set True to enable logging, false to disable.
-        getAccessToken();
+        getAccess_Token();
 
 
 
@@ -341,9 +338,10 @@ public class MPESAFragment extends Fragment {
                 });
     }
 
+    private static final String Url_ = "https://us-central1-immicart-2ca69.cloudfunctions.net/";
 
     void makeRequest() {
-        ImmicartAPIService immicartAPIService = ImmicartAPIService.create();
+        ImmicartAPIService immicartAPIService = ImmicartAPIService.create(Url_);
         immicartAPIService.getMPESAResponse().enqueue(new Callback<Model.MPESAResponse>() {
             @Override
             public void onResponse(@NotNull Call<Model.MPESAResponse> call, @NotNull Response<Model.MPESAResponse> response) {
@@ -430,6 +428,34 @@ public class MPESAFragment extends Fragment {
                 }
         );
     }
+
+
+
+    private String _baseURL = "https://us-central1-immicart-2ca69.cloudfunctions.net/";
+
+    public void getAccess_Token() {
+        ImmicartAPIService.create(_baseURL).getToken().enqueue(new Callback<AccessToken>() {
+            @Override
+            public void onResponse(Call<AccessToken> call, Response<AccessToken> response) {
+
+                if (response.isSuccessful()) {
+
+                    Log.d(TAG, "AccessToken : " + response.body());
+                    String accessToken = response.body().accessToken;
+
+                    Log.d(TAG, "AccessToken : " + accessToken);
+                    mApiClient.setAuthToken(accessToken);
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<AccessToken> call, Throwable t) {
+
+            }
+        });
+    }
+
 
 
     public void getAccessToken() {
@@ -528,7 +554,7 @@ public class MPESAFragment extends Fragment {
         alertDialog.show();
     }
 
-    void showSuccessDialog() {
+    void showSuccessDialog(int amount) {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
 // ...Irrelevant code for customizing the buttons and title
         LayoutInflater inflater = this.getLayoutInflater();
@@ -537,9 +563,11 @@ public class MPESAFragment extends Fragment {
 
         Button button = (Button) dialogView.findViewById(R.id.close_dialog);
 
-        String s= "KES 500 was sucessfully deposited to your Immicart Wallet";
+        int length = ((int)(Math.log10(amount)+1)) + 3;
+
+        String s= "KES " + amount + " was sucessfully deposited to your Immicart Wallet";
         SpannableString ss1=  new SpannableString(s);
-        ss1.setSpan(new RelativeSizeSpan(1.2f), 0,7, 0); // set size
+        ss1.setSpan(new RelativeSizeSpan(1.2f), 0,length, 0); // set size
         ss1.setSpan(new android.text.style.StyleSpan(android.graphics.Typeface.BOLD), 0, 7, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 //        ss1.setSpan(new ForegroundColorSpan(Color.RED), 0, 6, 0);// set color
         TextView tv= (TextView) dialogView.findViewById(R.id.message);
@@ -585,7 +613,13 @@ public class MPESAFragment extends Fragment {
 
                                 if(success) {
                                     Log.d(TAG, "Success true");
-                                    showSuccessDialog();
+                                    if(stringObjectMap.containsKey("amount")) {
+
+                                        long amount = (long) stringObjectMap.get("amount");
+                                        showSuccessDialog(((int) amount));
+                                        updateCreditsAmount((int) amount);
+
+                                    }
                                 } else {
                                     Log.d(TAG, "Success false");
                                     showErrorDialog();
@@ -618,14 +652,17 @@ public class MPESAFragment extends Fragment {
             public Long apply(@NotNull Transaction transaction) throws FirebaseFirestoreException {
                 DocumentSnapshot snapshot = transaction.get(sfDocRef);
                 if(snapshot.contains("credit")) {
-                    int newCredit = (int) snapshot.get("credit") + currentAmountModified;
+                    long newCredit = (long) snapshot.get("credit") + currentAmountModified;
 
                     transaction.update(sfDocRef, "credit", newCredit);
                     return (long) newCredit;
 
                 } else {
+                    Map<String, Object> data = new HashMap<>();
+                    data.put("credit", currentAmountModified);
 
-                    transaction.update(sfDocRef, "credit", currentAmountModified);
+
+                    transaction.set(sfDocRef,  data);
                     return (long) currentAmountModified;
 
                 }
@@ -665,7 +702,7 @@ public class MPESAFragment extends Fragment {
         Map<String, Object> mpesaRequest = new HashMap<>();
         mpesaRequest.put("amount", amount);
         mpesaRequest.put("phone", phone);
-        String uid = currentFirebaseUser.getUid();
+         String uid = currentFirebaseUser.getUid();
         String collectionPath = "wallet/" + uid + "/requests";
 
 

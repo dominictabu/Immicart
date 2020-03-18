@@ -2,7 +2,12 @@ package com.andromeda.immicart.delivery.search
 
 
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.ImageDecoder
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -10,19 +15,37 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.NavHostFragment.findNavController
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 import com.andromeda.immicart.R
 import com.andromeda.immicart.delivery.*
+import com.andromeda.immicart.delivery.Utils.MyDatabaseUtil
 import com.andromeda.immicart.delivery.checkout.DeliveryCartActivity
 import com.andromeda.immicart.delivery.search.visionSearch.LiveBarcodeScanningActivity
+import com.andromeda.immicart.delivery.search.visionSearch.imagelabeling.*
+import com.bumptech.glide.Glide
+import com.google.android.gms.tasks.Task
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.ml.vision.FirebaseVision
+import com.google.firebase.ml.vision.common.FirebaseVisionImage
+import com.google.firebase.ml.vision.label.FirebaseVisionCloudImageLabelerOptions
+import com.google.firebase.ml.vision.label.FirebaseVisionImageLabel
+import com.google.firebase.ml.vision.label.FirebaseVisionImageLabeler
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_search.*
+import java.io.IOException
+import kotlin.math.max
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -40,11 +63,14 @@ class SearchFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
     var disposable: Disposable? = null
-    private var TAG = "SearchFragment"
     val db = FirebaseFirestore.getInstance();
     private lateinit var viewModel: ProductsViewModel
 
     private var cartItems: List<DeliveryCart> = ArrayList()
+
+
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,7 +93,7 @@ class SearchFragment : Fragment() {
         viewModel = ViewModelProviders.of(activity!!).get(ProductsViewModel::class.java)
 
 //        search_view_search_fragment.requestFocusFromTouch();
-        search_view_search_fragment?.requestFocus()
+//        search_view_search_fragment?.requestFocus()
 
 //        search_view_search_fragment.onFocusChangeListener(object : View.OnFocusChangeListener {
 //            override fun onFocusChange(v: View?, hasFocus: Boolean) {
@@ -77,26 +103,24 @@ class SearchFragment : Fragment() {
 //        })
 
 
-        viewModel.currentStores().observe(activity!!, Observer {
-            it?.let {
-                if(it.size > 0) {
-                    Log.d(TAG, "Stores size more than 0")
-                    val store = it[0]
-                    val storeId = store.key
-                    val storeName = store.name
-                    search_view_search_fragment.queryHint = "Search $storeName"
-                    getCategories(storeId)
-
-
-
-                } else {
-                    Log.d(TAG, "Stores size 0")
-
-                }
-
-
-            }
-        })
+//        viewModel.currentStores().observe(activity!!, Observer {
+//            it?.let {
+//                if(it.size > 0) {
+//                    Log.d(TAG, "Stores size more than 0")
+//                    val store = it[0]
+//                    val storeId = store.key
+//                    val storeName = store.name
+//                    search_view_search_fragment.queryHint = "Search $storeName"
+//                    getCategories(storeId)
+//
+//                } else {
+//                    Log.d(TAG, "Stores size 0")
+//
+//                }
+//
+//
+//            }
+//        })
 
         viewModel.allDeliveryItems().observe(activity!!, Observer { items ->
 
@@ -112,7 +136,7 @@ class SearchFragment : Fragment() {
             }
         })
 
-        cart_frame_layout.setOnClickListener {
+        cart_frame_layout?.setOnClickListener {
 
             startActivity(Intent(activity!!, DeliveryCartActivity::class.java))
         }
@@ -123,9 +147,16 @@ class SearchFragment : Fragment() {
 
         }
 
+        image_search?.setOnClickListener {
+            startActivity(Intent(activity!!, ImageLabelingActivity::class.java))
 
+        }
+        search_ll?.setOnClickListener {
+            val intent = Intent(requireActivity(), SearchResultsActivity::class.java)
+            startActivity(intent)
+        }
 
-
+        getCurrentStore()
 
 //        retrieveCategories()
     }
@@ -185,22 +216,60 @@ class SearchFragment : Fragment() {
 //                    val serviceFee = document.data.
 
                 }
-
                 intializeRecycler(categories)
-
-
             }
-
-
     }
+
 
 
     fun searchTerm(category: __Category__) {
 
-        viewModel.setSearchWord(category.name!!)
-//        findNavController().navigate(R.id.action_searchFragment_to_searchResultsFragment)
-        startActivity(Intent(requireActivity(), SearchResultsActivity::class.java))
+//        viewModel.setSearchWord(category.name!!)
+////        findNavController().navigate(R.id.action_searchFragment_to_searchResultsFragment)
+//        val intent = Intent(requireActivity(), SearchResultsActivity::class.java)
+//        intent.putExtra(SERACH_TERM, category.name!!)
+//        startActivity(intent)
 
+        viewModel.setCategoryId(category.key!!)
+        viewModel.setCategoryParent(category)
+
+//        val options = navOptions {
+//            anim {
+//                enter = R.anim.slide_in_right
+//                exit = R.anim.slide_out_left
+//                popEnter = R.anim.slide_in_left
+//                popExit = R.anim.slide_out_right
+//            }
+//        }
+
+        findNavController().navigate(R.id.action_searchFragment_to_subcategoriesFragment)
+
+    }
+
+    fun process(bitmap: Bitmap) {
+        detectInVisionImage(
+            null, /* bitmap */
+            FirebaseVisionImage.fromBitmap(bitmap))
+    }
+
+    private val detector: FirebaseVisionImageLabeler by lazy {
+        FirebaseVisionCloudImageLabelerOptions.Builder()
+            .build().let { options ->
+                FirebaseVision.getInstance().getCloudImageLabeler(options)
+            }
+    }
+    fun detectInImage(image: FirebaseVisionImage): Task<List<FirebaseVisionImageLabel>> {
+        return detector.processImage(image)
+    }
+
+    private fun detectInVisionImage(
+        originalCameraImage: Bitmap?,
+        image: FirebaseVisionImage) {
+        detectInImage(image)
+            .addOnSuccessListener { results ->
+
+            }
+            .addOnFailureListener { e -> e.stackTrace}
     }
 
 
@@ -208,31 +277,61 @@ class SearchFragment : Fragment() {
     fun intializeRecycler(category: List<__Category__>) {
 
 
-        val linearLayoutManager = LinearLayoutManager(activity!!, RecyclerView.VERTICAL, false)
-        recycler_items_search.setNestedScrollingEnabled(false);
+//        val linearLayoutManager = LinearLayoutManager(activity!!, RecyclerView.VERTICAL, false)
+        recycler_items_search?.setNestedScrollingEnabled(false);
+        recycler_items_search?.layoutManager = GridLayoutManager(requireContext(), 2)
+        recycler_items_search?.isNestedScrollingEnabled = false
 
-        recycler_items_search.setLayoutManager(linearLayoutManager)
+//        recycler_items_search.setLayoutManager(linearLayoutManager)
         val searchSuggestionsAdapter = SearchSuggestionsAdapter(
             category as ArrayList<__Category__>,
             { category: __Category__ -> searchTerm(category) })
-        recycler_items_search.setAdapter(searchSuggestionsAdapter)
+        recycler_items_search?.setAdapter(searchSuggestionsAdapter)
     }
 
-
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment SearchFragment.
-         */
-        // TODO: Rename and change types and number of parameters
+
+        private const val TAG = "SearchFragment"
+        private const val SERACH_TERM = "SERACH_TERM"
+
         @JvmStatic
         fun newInstance() =
             SearchFragment().apply {
 
             }
+
+        fun getCloudLabelingItems(items: ArrayList<String>?) {
+            Log.d(TAG, "items passed : $items")
+
+            items?.let {
+                Log.d(TAG, "items passed NOT NULL : $items")
+//                val visionSearchResultsFragment = VisionSearchResultsFragment.newInstance(it)
+
+            }
+
+        }
+    }
+
+    fun getCurrentStore() {
+        val userUID = FirebaseAuth.getInstance().uid
+        val ref =  MyDatabaseUtil.getDatabase().reference.child("customers/$userUID/current_store")
+
+        ref.addListenerForSingleValueEvent(object: ValueEventListener {
+            override fun onCancelled(p0: DatabaseError) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+                val store = p0.getValue(CurrentStore::class.java)
+
+                store?.let {
+                    val storeId = store.storeID as String
+                    query_hint?.text = "Search ${store.storeName}"
+                    getCategories(storeId)
+                }
+            }
+
+        })
+
     }
 }

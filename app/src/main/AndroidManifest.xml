@@ -9,6 +9,21 @@
 	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
 	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
 	<uses-permission android:name="android.permission.CAMERA"/>
+	
+	<uses-feature android:name="android.hardware.camera"/>
+	<uses-feature android:name="android.hardware.camera.autofocus"/> <!-- Sceneform requires OpenGLES 3.0 or later. -->
+	<uses-feature
+			android:glEsVersion="0x00030000"
+			android:required="true"/>
+	<!--
+ Indicates that this app requires Google Play Services for AR ("AR Required") and results in
+		 the app only being visible in the Google Play Store on devices that support ARCore.
+		 For an "AR Optional" app, remove this tag.
+    -->
+	<uses-feature
+			android:name="android.hardware.camera.ar"
+			android:required="true"/>
+	
 	<uses-permission android:name="android.permission.INTERNET"/>
 	
 	<application
@@ -16,10 +31,54 @@
 			android:allowBackup="true"
 			android:icon="@mipmap/ic_launcher_logo"
 			android:label="@string/app_name"
+			android:networkSecurityConfig="@xml/network_security_config"
 			android:roundIcon="@mipmap/ic_launcher_logo_round"
 			android:supportsRtl="true"
-			android:networkSecurityConfig="@xml/network_security_config"
 			android:theme="@style/AppTheme">
+		<activity android:name=".delivery.furniture.algolia.FurnitureSearchActivity">
+		</activity>
+		<activity android:name=".delivery.furniture.FurnitureMainActivity">
+		</activity>
+		<activity android:name=".delivery.furniture.FurnitureCheckoutActivity">
+		</activity>
+		<activity android:name=".delivery.furniture.PaymentMethodsActivity">
+		</activity>
+		<activity android:name=".delivery.furniture.InformationActivity">
+		</activity>
+		<activity android:name=".delivery.furniture.AtAGlanceActivity">
+		</activity>
+		<activity android:name=".delivery.furniture.SpecificationsActivity">
+		</activity>
+		<activity android:name=".delivery.furniture.FurnitureProductPageActivity">
+		</activity>
+		<activity android:name=".delivery.furniture.MultiPhotoActivity">
+		</activity>
+		<activity android:name=".delivery.ar.SceneformActivity">
+		</activity>
+		<!--
+ Indicates that this app requires Google Play Services for AR ("AR Required") and causes
+			the Google Play Store to download and intall Google Play Services for AR along with
+			the app. For an "AR Optional" app, specify "optional" instead of "required".
+        -->
+		<meta-data
+				android:name="com.google.ar.core"
+				android:value="required"/>
+		<meta-data
+				android:name="com.pesapal.pesapalandroid.MERCHANT_ID"
+				android:value="19"/>
+		
+		<activity android:name=".delivery.pick_up.NavigateToStoreActivity">
+		</activity>
+		<activity android:name=".delivery.pick_up.ShopperActivity">
+		</activity>
+		<activity android:name=".delivery.choose_store.MapActivity">
+		</activity>
+		<activity android:name=".delivery.authentication.SelectStoreActivity">
+		</activity>
+		<activity android:name=".delivery.checkout.DriversTipActivity">
+		</activity>
+		<activity android:name=".delivery.search.visionSearch.imagelabeling.ImageLabelingActivity">
+		</activity>
 		<activity android:name=".delivery.search.FilterActivity">
 		</activity>
 		<activity
@@ -107,7 +166,8 @@
 		<activity
 				android:name=".delivery.checkout.DeliveryCartActivity"
 				android:label="@string/title_activity_delivery_cart"
-				android:theme="@style/AppTheme.NoActionBar">
+				android:theme="@style/CheckOutTheme"
+				android:windowSoftInputMode="adjustPan">
 		</activity>
 		<activity
 				android:name=".delivery.ProductDetailActivity"

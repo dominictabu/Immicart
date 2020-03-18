@@ -2,7 +2,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
             xmlns:tools="http://schemas.android.com/tools" android:id="@+id/delivery_address_nav_graph"
-            app:startDestination="@id/confirmAddressFragment2">
+            app:startDestination="@id/searchAddressFragment2">
 	
 	<fragment android:id="@+id/confirmAddressFragment2"
 	          android:name="com.andromeda.immicart.delivery.delivery_location.ConfirmAddressFragment"

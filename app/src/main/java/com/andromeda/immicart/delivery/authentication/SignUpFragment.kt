@@ -3,6 +3,7 @@ package com.andromeda.immicart.delivery.authentication
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +14,8 @@ import com.andromeda.immicart.delivery.ProductsPageActivity
 import com.google.firebase.auth.FirebaseAuth
 import android.util.Patterns
 import android.text.TextUtils
+import android.text.TextWatcher
+import androidx.navigation.fragment.findNavController
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.fragment_sign_up.*
 import kotlin.math.sign
@@ -72,8 +75,8 @@ class SignUpFragment : Fragment() {
                 error_password_edittext.visibility = View.VISIBLE
 
             } else if (TextUtils.isEmpty(name) && !isEmailValid(email = email)) {
-                error_name_edittext.visibility = View.VISIBLE
-                error_email_edittext.visibility = View.VISIBLE
+                error_name_edittext?.visibility = View.VISIBLE
+                error_email_edittext?.visibility = View.VISIBLE
             } else if (TextUtils.isEmpty(name) && !isPasswordValid(password)) {
                 error_name_edittext.visibility = View.VISIBLE
                 error_password_edittext.visibility = View.VISIBLE
@@ -85,30 +88,50 @@ class SignUpFragment : Fragment() {
 
 
             } else if (!isPasswordValid(password)) {
-                error_password_edittext.visibility = View.VISIBLE
+                error_password_edittext?.visibility = View.VISIBLE
 
 
             } else {
                 error_name_edittext.visibility = View.GONE
-                error_email_edittext.visibility = View.GONE
-                error_password_edittext.visibility = View.GONE
+                error_email_edittext?.visibility = View.GONE
+                error_password_edittext?.visibility = View.GONE
 
-                signIn(email, password)
+                signIn(email, password, name)
             }
 
+        }
+
+        error_email_edittext?.addTextChangedListener(object: TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                error_email_edittext?.visibility = View.GONE
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+
+        })
+
+        go_back_button?.setOnClickListener {
+            findNavController().popBackStack()
         }
 
     }
 
 
-    fun signIn(email: String, password: String) {
+    fun signIn(email: String, password: String, name : String) {
         loadinglayout.visibility = View.VISIBLE
         create_account_btn.visibility = View.GONE
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener {
                 if(it.isSuccessful) {
-                    val intent : Intent = Intent(activity!!, ProductsPageActivity::class.java)
-                    startActivity(intent)
+                    createProfile(name, email)
+
 
                 } else {
 
@@ -129,17 +152,21 @@ class SignUpFragment : Fragment() {
 
     }
 
-    fun createProfile(name: String, email: String, photoURL: String) {
+    fun createProfile(name: String, email: String) {
         val db = FirebaseFirestore.getInstance();
         val userUID = FirebaseAuth.getInstance().uid
-        val documentPath = "users/$userUID"
+        val documentPath = "customers/$userUID"
 
         val user = HashMap<String, Any>()
         user.put("name", name)
         user.put("email", email)
-        user.put("imageUrl", photoURL)
+
+//        user.put("imageUrl", photoURL)
 
         db.document(documentPath).set(user).addOnSuccessListener {
+
+            findNavController().navigate(R.id.action_signUpFragment_to_selectStoreFragment)
+
 
         }
     }

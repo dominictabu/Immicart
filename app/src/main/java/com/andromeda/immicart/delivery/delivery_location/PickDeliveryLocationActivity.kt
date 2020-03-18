@@ -1,37 +1,36 @@
 package com.andromeda.immicart.delivery.delivery_location
 
 import android.Manifest
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
-import com.andromeda.immicart.R
-
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.location.Geocoder
 import android.location.Location
+import android.os.Bundle
 import android.os.Handler
+import android.os.ResultReceiver
 import android.util.Log
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.libraries.places.api.Places
-import com.google.android.libraries.places.api.model.Place
-import java.util.*
-import com.google.android.libraries.places.api.model.AutocompleteSessionToken
-import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest
+import com.andromeda.immicart.R
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
-import kotlinx.android.synthetic.main.content_pick_delivery_location.*
-import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper
-import kotlin.collections.ArrayList
-import android.os.ResultReceiver
-import android.location.Geocoder
+import com.google.android.libraries.places.api.Places
+import com.google.android.libraries.places.api.model.AutocompleteSessionToken
+import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.api.net.FetchPlaceRequest
+import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest
 import com.google.android.libraries.places.api.net.PlacesClient
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.android.synthetic.main.content_pick_delivery_location.*
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper
+import java.util.*
+import kotlin.collections.ArrayList
 
 //import androidx.car.cluster.navigation.LatLng
 

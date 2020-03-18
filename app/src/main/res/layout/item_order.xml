@@ -9,68 +9,88 @@
 		app:cardBackgroundColor="@android:color/white"
 		android:gravity="center_vertical"
 		android:layout_width="match_parent"
-		android:layout_height="wrap_content">
+		android:layout_height="140dp">
 	
-	
-<LinearLayout
-              android:orientation="horizontal"
-              android:padding="6dp"
-              android:gravity="center_vertical"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content">
-	
-	<ImageView
-			android:id="@+id/store_image"
-			android:scaleType="fitXY"
-			android:src="@drawable/groceriesbanner600pxby450px"
-			android:layout_width="96dp"
-	           android:layout_height="96dp"/>
 	
 	<LinearLayout
-			android:layout_marginStart="8dp"
-			android:orientation="vertical"
-			android:layout_width="0dp"
-			android:layout_weight="1"
+			android:orientation="horizontal"
+			android:padding="6dp"
+			android:gravity="center_vertical"
+			android:layout_width="match_parent"
 			android:layout_height="wrap_content">
-		<TextView
-				android:id="@+id/store_name"
-				android:textSize="18dp"
-				android:text="Onn The Way Supermarket"
-				android:layout_width="match_parent"
-		          android:layout_height="wrap_content"/>
-		<TextView
-				android:id="@+id/products_single_liner"
-				android:textSize="16dp"
-				android:layout_marginTop="4dp"
-				android:text="5 x Fresh Tmato / Kg"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"/>
+		
+		<ImageView
+				android:id="@+id/store_image"
+				android:scaleType="fitXY"
+				android:src="@drawable/groceriesbanner600pxby450px"
+				android:layout_width="96dp"
+				android:layout_height="96dp"/>
+		
 		<LinearLayout
-				android:layout_marginTop="16dp"
-				android:layout_width="match_parent"
-		              android:layout_height="wrap_content">
+				android:layout_marginStart="8dp"
+				android:orientation="vertical"
+				android:layout_width="0dp"
+				android:layout_weight="1"
+				android:layout_height="wrap_content">
 			<TextView
+					android:id="@+id/store_name"
+					android:textSize="18dp"
+					android:text="Onn The Way Supermarket"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"/>
+			<TextView
+					android:id="@+id/products_single_liner"
+					android:textSize="16dp"
+					android:layout_marginTop="4dp"
+					android:text="5 x Fresh Tmato / Kg"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"/>
+			
+			<TextView
+					android:layout_marginTop="16dp"
 					android:id="@+id/total_price"
 					android:textSize="20sp"
 					android:layout_weight="1"
 					android:text="KES 650.00"
 					android:layout_width="wrap_content"
-			          android:layout_height="wrap_content"/>
+					android:layout_height="wrap_content"/>
+		</LinearLayout>
+		<RelativeLayout
+				android:gravity="center_horizontal"
+				android:layout_marginTop="4dp"
+				android:layout_marginBottom="4dp"
+				android:layout_marginEnd="4dp"
+				android:orientation="vertical"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content">
 			<TextView
+					android:layout_alignParentTop="true"
+					android:textStyle="bold"
+					android:id="@+id/order_type"
+					android:textColor="@android:color/white"
+					android:padding="6dp"
+					android:background="@drawable/orange_bg"
+					android:textSize="16dp"
+					android:layout_marginEnd="8dp"
+					android:text=" DELIVERY "
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content" />
+			
+			<TextView
+					android:layout_centerHorizontal="true"
+					android:layout_alignParentBottom="true"
 					android:textStyle="bold"
 					android:id="@+id/order_status"
 					android:textColor="@android:color/white"
 					android:padding="6dp"
 					android:background="@drawable/blue_bg"
 					android:textSize="16dp"
-					android:layout_marginEnd="8dp"
 					android:text=" Ongoing "
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content" />
-		</LinearLayout>
-	</LinearLayout>
+		</RelativeLayout>
 	
-
-</LinearLayout>
+	
+	</LinearLayout>
 
 </androidx.cardview.widget.CardView>

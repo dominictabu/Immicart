@@ -1,7 +1,7 @@
 package com.andromeda.immicart.delivery
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.andromeda.immicart.R
 import com.andromeda.immicart.delivery.checkout.DeliveryDetailsFragment
 import kotlinx.android.synthetic.main.activity_plcae_order.*

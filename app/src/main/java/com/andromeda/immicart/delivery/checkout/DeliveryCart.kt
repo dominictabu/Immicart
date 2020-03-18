@@ -25,10 +25,11 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import kotlinx.android.synthetic.main.personal_cart_item.view.*
+//import kotlinx.android.synthetic.main.personal_cart_item.view.*
 import android.graphics.Paint
 import androidx.navigation.fragment.findNavController
 import com.andromeda.immicart.delivery.DeliveryCart
+import kotlinx.android.synthetic.main.item_scanned_product.view.*
 
 class DeliveryCartFragment : Fragment() {
     private lateinit var adapter: PersonalShoppingCartAdapter
@@ -64,8 +65,6 @@ class DeliveryCartFragment : Fragment() {
                 //                cartItems = items
 //                badge.text = it.count().toString()
 //                adapter.setCartItems(it)
-
-
 
                 if (items.isEmpty()) {
                     rv_personal_cart.setVisibility(View.GONE);
@@ -110,6 +109,12 @@ class DeliveryCartFragment : Fragment() {
 
 
         back_action.setOnClickListener {
+            activity?.let {
+                it.finish()
+            }
+        }
+
+        add_items_btn?.setOnClickListener {
             activity?.let {
                 it.finish()
             }
@@ -200,7 +205,7 @@ class PersonalShoppingCartAdapter(var context: Context, val changeQuantityClickL
     * */
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val layout = LayoutInflater.from(context).inflate(R.layout.personal_cart_item, parent, false)
+        val layout = LayoutInflater.from(context).inflate(R.layout.item_scanned_product, parent, false)
         return ViewHolder(layout)
     }
 
@@ -298,8 +303,8 @@ class PersonalShoppingCartAdapter(var context: Context, val changeQuantityClickL
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         fun bindItem(cartItem: DeliveryCart, removeItemClickListener: (DeliveryCart) -> Unit) {
 
-            itemView.itemName.text = cartItem.name
-            itemView.itemDescription.text = "2kg"
+            itemView.description_product.text = cartItem.name
+//            itemView.itemDescription.text = "2kg"
 
             val productImage = cartItem.image_url
 //            TODO update the names?
@@ -307,22 +312,22 @@ class PersonalShoppingCartAdapter(var context: Context, val changeQuantityClickL
             val Oldprice = cartItem.quantity * cartItem.normalPrice
             val _formatter = DecimalFormat("#,###,###");
             val OldpriceFormattedString = _formatter.format(Oldprice.toInt());
-            itemView.itemOldPrice.text =  "KES " + OldpriceFormattedString
-            itemView.itemOldPrice.paintFlags = itemView.itemOldPrice.getPaintFlags() or Paint.STRIKE_THRU_TEXT_FLAG
+            itemView.normal_price_tv.text =  "KES " + OldpriceFormattedString
+            itemView.normal_price_tv.paintFlags = itemView.normal_price_tv.getPaintFlags() or Paint.STRIKE_THRU_TEXT_FLAG
 
             val price_ = cartItem.quantity * cartItem.offerPrice
             val formatter = DecimalFormat("#,###,###");
             val priceFormattedString = formatter.format(price_.toInt());
 
-            itemView.itemNewPrice.text = "KES " + priceFormattedString
+            itemView.price_tv.text = "KES " + priceFormattedString
 
-            itemView.itemNumber.setText(cartItem.quantity.toString())
-            Glide.with(itemView.context).load(productImage).into(itemView.cartImage)
+            itemView.quantity_tv.setText(cartItem.quantity.toString())
+            Glide.with(itemView.context).load(productImage).into(itemView.scanned_product_image)
 
-            itemView.itemNumber.setOnClickListener {
-                val currentQuantity = itemView.itemNumber.text
+            itemView.quantity_tv.setOnClickListener {
+                val currentQuantity = itemView.quantity_tv.text
                 val location = IntArray(2)
-                itemView.itemNumber!!.getLocationOnScreen(location)
+                itemView.quantity_tv!!.getLocationOnScreen(location)
                 val x = location[0]
                 val y = location[1]
                 val point = Point(x, y)
@@ -330,7 +335,7 @@ class PersonalShoppingCartAdapter(var context: Context, val changeQuantityClickL
                     itemView.context,
                     point,
                     currentQuantity as String,
-                    itemView.itemNumber,
+                    itemView.quantity_tv,
                     changeQuantityClickListener,
                     cartItem
                 )
@@ -339,7 +344,7 @@ class PersonalShoppingCartAdapter(var context: Context, val changeQuantityClickL
 
             }
 
-            itemView.deleteText.setOnClickListener{
+            itemView.remove_item.setOnClickListener{
 //                Log.d(TAG, "Remove Item Clicked")
                 removeItemClickListener(cartItem)
             }
