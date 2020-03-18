@@ -53,7 +53,7 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.ViewHolder> 
     @NonNull
     @Override
     public StoreAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_store_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_store_horizontal, parent, false);
         return new ViewHolder(view);
     }
 
@@ -61,7 +61,10 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.ViewHolder> 
     public void onBindViewHolder(@NonNull StoreAdapter.ViewHolder holder, int position) {
 
         if (stores != null) {
+            Log.d(TAG, "Stores NOT NULL");
+
             Store store = stores.get(position);
+            Log.d(TAG, "Stores : " + store);
             holder.store.setText(store.getName());
 //            String timeOpen = " " + store.get() + " ";
 //            holder.time_open.setText(timeOpen);
@@ -84,12 +87,12 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.ViewHolder> 
 //            double distance = computeDistance(currentLocation, _storeLatLng);
 //            Log.d(TAG, "Second call: calculateDistance");
 //            calculateDistance(currentLocation, _storeLatLng);
-//            LatLng latLng = new LatLng(-1.289261, 36.82416);
-//            Log.d(TAG, "Distance from KICC");
-//            String distance_ = calculateDistance(currentLocation, _storeLatLng);
+            LatLng latLng = new LatLng(-1.289261, 36.82416);
+            Log.d(TAG, "Distance from KICC");
+            String distance_ = calculateDistance(latLng, _storeLatLng);
 
 
-//            holder.distance.setText(distance_);
+            holder.distance.setText(distance_);
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -106,7 +109,7 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.ViewHolder> 
         if (distance > 1000) {
             float distanceComputed = ((float) distance)/1000;
             double doubleDis = round(distanceComputed, 1);
-            return doubleDis + "km";
+            return doubleDis + "km away";
 
         } else if (distance >100) {
             double distanceComputed = ((double) distance)/1000;
@@ -114,10 +117,10 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.ViewHolder> 
             DecimalFormat df = new DecimalFormat("#.#");
             df.setRoundingMode(RoundingMode.CEILING);
 
-            return df.format(distanceComputed) + "km";
+            return df.format(distanceComputed) + "km away";
 
         } else {
-            return distance + "m";
+            return distance + "m away";
 
         }
     }
@@ -173,18 +176,20 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.ViewHolder> 
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.store_image)
-        ImageView store_image;
-        @BindView(R.id.store)
-        TextView store;
-        @BindView(R.id.location)
-        TextView location;
-        @BindView(R.id.time_open)
-        TextView time_open;
+//        @BindView(R.id.store_image)
+        ImageView store_image = itemView.findViewById(R.id.store_image);
+//        @BindView(R.id.store)
+        TextView store = itemView.findViewById(R.id.store);
+//        @BindView(R.id.location)
+        TextView location = itemView.findViewById(R.id.location);
+//        @BindView(R.id.time_open)
+        TextView time_open = itemView.findViewById(R.id.time_open);
+//        @BindView(R.id.distance)
+        TextView distance = itemView.findViewById(R.id.distance);
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            ButterKnife.bind(this, itemView);
+//            ButterKnife.bind(this, itemView);
         }
     }
 }

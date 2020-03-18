@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" xmlns:app="http://schemas.android.com/apk/res-auto"
+                tools:context=".delivery.furniture.SubCategoryFurnitureFragment">
+	<LinearLayout
+			android:id="@+id/toolbar"
+			android:gravity="center_vertical"
+			android:orientation="horizontal"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content">
+		
+		<ImageButton
+				android:background="@android:color/white"
+				android:src="@drawable/ic_keyboard_arrow_left_green_24dp"
+				android:layout_width="48dp"
+		           android:layout_height="48dp"/>
+		
+		<LinearLayout
+				android:elevation="16dp"
+				android:layout_margin="8dp"
+				android:clickable="true"
+				android:id="@+id/search_ll"
+				android:gravity="center"
+				android:padding="12dp"
+				android:background="@drawable/search_store_bg"
+				android:layout_width="0dp"
+				android:layout_weight="1"
+				android:layout_height="wrap_content"
+				android:focusable="true">
+			<ImageView
+					android:clickable="false"
+					android:src="@drawable/ic_search_black__24dp"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"/>
+			<TextView
+					android:textStyle="bold"
+					android:textColor="@color/lightGrey_"
+					android:clickable="false"
+					android:id="@+id/query_hint"
+					android:ellipsize="end"
+					android:maxLines="1"
+					android:layout_marginStart="8dp"
+					android:text="Search Immicart Furniture"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"/>
+		
+		</LinearLayout>
+		
+		<FrameLayout
+				android:layout_alignParentEnd="true"
+				android:clickable="true"
+				android:focusable="true"
+				android:visibility="visible"
+				android:id="@+id/cart_frame_layout"
+				android:layout_marginStart="10dp"
+				android:layout_marginEnd="10dp"
+				android:layout_gravity="top|end"
+				android:layout_width="48dp"
+				android:layout_height="48dp">
+			
+			<ImageButton
+					android:clickable="false"
+					android:id="@+id/cartImageButton"
+					style="@style/Base.Widget.AppCompat.Button.Borderless"
+					android:background="@null"
+					android:layout_gravity="bottom"
+					android:src="@drawable/ic_shopping_cart_black_24dp"
+					android:layout_width="30dp"
+					android:layout_height="30dp" />
+			
+			<TextView
+					android:clickable="false"
+					android:id="@+id/badge"
+					android:layout_gravity="top|end"
+					android:gravity="center"
+					android:text="0"
+					android:textColor="@android:color/white"
+					android:background="@drawable/badge_bg"
+					android:layout_width="30dp"
+					android:layout_height="30dp"/>
+		</FrameLayout>
+	
+	
+	</LinearLayout>
+	
+	<androidx.core.widget.NestedScrollView
+			android:layout_below="@+id/toolbar"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content">
+		<RelativeLayout
+				android:layout_marginBottom="40dp"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content">
+			<TextView
+					android:layout_marginTop="20dp"
+					android:id="@+id/title"
+					android:layout_marginStart="16dp"
+					android:layout_marginBottom="8dp"
+					android:textStyle="bold"
+					android:textSize="20sp"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:text="Living Room Furniture"/>
+			<androidx.recyclerview.widget.RecyclerView
+					android:layout_below="@+id/title"
+					android:layout_marginTop="10dp"
+					android:layout_marginStart="8dp"
+					android:id="@+id/vertical_department_recycler_view"
+					android:orientation="vertical"
+					app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+					tools:listitem="@layout/item_furniture_category"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"/>
+			<TextView
+					android:layout_below="@+id/vertical_department_recycler_view"
+					android:id="@+id/best_sellers_title"
+					android:layout_marginStart="16dp"
+					android:layout_marginTop="16dp"
+					android:layout_marginBottom="8dp"
+					android:textStyle="bold"
+					android:textSize="20sp"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:text="Shop Best Sellers"/>
+			<androidx.recyclerview.widget.RecyclerView
+					android:nestedScrollingEnabled="false"
+					android:orientation="vertical"
+					android:layout_below="@+id/best_sellers_title"
+					tools:listitem="@layout/item_furniture"
+					app:spanCount="2"
+					app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+					android:id="@+id/products_items_recycler"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"/>
+		</RelativeLayout>
+	</androidx.core.widget.NestedScrollView>
+
+
+</RelativeLayout>

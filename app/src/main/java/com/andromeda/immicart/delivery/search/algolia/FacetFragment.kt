@@ -16,7 +16,7 @@ import kotlinx.android.synthetic.main.fragment_facet.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
+private const val ARG_STORE_ID = "storeID"
 private const val ARG_PARAM2 = "param2"
 
 /**
@@ -27,13 +27,13 @@ private const val ARG_PARAM2 = "param2"
  */
 class FacetFragment : Fragment() {
     // TODO: Rename and change types of parameters
-    private var param1: String? = null
+    private var storeID: String? = null
     private var param2: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
+            storeID = it.getString(ARG_STORE_ID)
             param2 = it.getString(ARG_PARAM2)
         }
     }
@@ -48,12 +48,25 @@ class FacetFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val viewModel = ViewModelProviders.of(requireActivity())[FacetViewModel::class.java]
+
+        val factory = SearchViewModelFactory(storeID)
+        val viewModel = ViewModelProviders.of(requireActivity(), factory)[MyViewModel::class.java]
+
+//        val viewModel = ViewModelProviders.of(requireActivity())[MyViewModel::class.java]
 
         facetList.let {
             it.adapter = viewModel.adapterFacet
             it.layoutManager = LinearLayoutManager(requireContext())
             it.autoScrollToStart(viewModel.adapterFacet)
+        }
+
+        type_facetList.let {
+            it.adapter = viewModel.typeAdapterFacet
+            it.layoutManager = LinearLayoutManager(requireContext())
+            it.autoScrollToStart(viewModel.typeAdapterFacet)
+        }
+
+        see_more_txtview?.setOnClickListener {
         }
 
         cancel_action?.setOnClickListener {
@@ -76,7 +89,7 @@ class FacetFragment : Fragment() {
         fun newInstance(param1: String, param2: String) =
             FacetFragment().apply {
                 arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
+                    putString(storeID, param1)
                     putString(ARG_PARAM2, param2)
                 }
             }

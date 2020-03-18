@@ -2,7 +2,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
             xmlns:tools="http://schemas.android.com/tools" android:id="@+id/authentication_nav_graph"
-            app:startDestination="@id/createAccountFragment">
+            app:startDestination="@id/firebaseUIAuthenticationFragment">
 	
 	<fragment android:id="@+id/storeLocationFragment"
 	          android:name="com.andromeda.immicart.delivery.authentication.StoreLocationFragment"
@@ -30,4 +30,11 @@
 	<fragment android:id="@+id/listOfStoresFragment"
 	          android:name="com.andromeda.immicart.delivery.choose_store.ListOfStoresFragment"
 	          android:label="fragment_list_of_stores2" tools:layout="@layout/fragment_list_of_stores2"/>
+	<fragment android:id="@+id/firebaseUIAuthenticationFragment"
+	          android:name="com.andromeda.immicart.delivery.authentication.FirebaseUIAuthenticationFragment"
+	          android:label="fragment_firebase_uiauthentication"
+	          tools:layout="@layout/fragment_firebase_uiauthentication">
+		<action android:id="@+id/action_firebaseUIAuthenticationFragment_to_selectStoreFragment"
+		        app:destination="@id/selectStoreFragment"/>
+	</fragment>
 </navigation>

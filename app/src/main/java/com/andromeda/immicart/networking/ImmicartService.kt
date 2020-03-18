@@ -5,6 +5,7 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 
 interface ImmicartService {
+
     @GET("products/{product_id}")
     fun getSingleProductById(
         @Path(
@@ -21,8 +22,16 @@ interface ImmicartService {
         ) productBarcode: String
     ): Call<Model.ResponseData>
 
-    fun create(): ImmicartService {
+    @GET("product/{product_barcode}")
+    suspend fun makeSendyDeliveryRequest(
+        @Path(
+            value = "product_barcode",
+            encoded = true
+        ) productBarcode: String
+    ): Call<Model.SendyRequestResponse>
 
-        return RetrofitClientInstance.getRetrofitInstance().create(ImmicartService::class.java)
+    fun create(baseURL : String): ImmicartService {
+
+        return RetrofitClientInstance.getRetrofitInstance(baseURL).create(ImmicartService::class.java)
     }
 }

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" xmlns:app="http://schemas.android.com/apk/res-auto"
+                tools:context=".delivery.search.visionSearch.imagelabeling.PhotoOptionsFragment">
+	
+	<ImageButton
+			android:layout_alignParentTop="true"
+			android:layout_margin="20dp"
+			android:layout_centerVertical="true"
+			android:layout_alignParentStart="true"
+			android:id="@+id/closeBtn"
+			android:gravity="center"
+			android:src="@drawable/ic_close_16dp"
+			android:textSize="16sp"
+			android:textColor="@android:color/white"
+			android:background="@drawable/close_bg"
+			android:layout_width="32dp"
+			android:layout_height="32dp"/>
+	<ImageView
+			android:layout_centerInParent="true"
+			android:id="@+id/previewPane"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:scaleType="fitStart">
+	</ImageView>
+	
+	<!--<com.andromeda.immicart.delivery.search.visionSearch.imagelabeling.GraphicOverlay-->
+			<!--android:id="@+id/previewOverlay"-->
+			<!--android:layout_width="fill_parent"-->
+			<!--android:layout_height="fill_parent"-->
+			<!--android:layout_alignParentStart="true"-->
+			<!--android:layout_alignParentTop="true"-->
+			<!--android:layout_alignParentBottom="true"/>-->
+	
+	<LinearLayout
+			android:layout_centerInParent="true"
+			android:layout_height="wrap_content"
+			android:orientation="vertical"
+			android:id="@+id/controlPanel"
+			android:layout_width="match_parent"
+			android:layout_alignParentStart="true">
+		<Button
+				android:visibility="visible"
+				android:layout_marginBottom="20dp"
+				app:fontFamily="@font/roboto_medium"
+				android:layout_below="@+id/error_password_edittext"
+				android:layout_marginStart="20dp"
+				android:layout_marginTop="10dp"
+				android:layout_marginEnd="20dp"
+				android:textStyle="normal"
+				android:textAllCaps="false"
+				android:id="@+id/gallery_btn"
+				android:textColor="@android:color/white"
+				android:background="@drawable/time_bg"
+				android:textSize="20sp"
+				android:text=" Pick Photo from Gallery "
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content" />
+		
+		<Button
+				android:visibility="visible"
+				app:fontFamily="@font/roboto_medium"
+				android:layout_below="@+id/error_password_edittext"
+				android:layout_marginStart="20dp"
+				android:layout_marginTop="10dp"
+				android:layout_marginEnd="20dp"
+				android:textStyle="normal"
+				android:textAllCaps="false"
+				android:id="@+id/camera_btn"
+				android:textColor="@android:color/white"
+				android:background="@drawable/blue_bg"
+				android:textSize="20sp"
+				android:text=" Take Photo with Camera "
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content" />
+	
+	</LinearLayout>
+	
+	<FrameLayout
+			android:id="@+id/loading_view"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:background="@color/dark"
+			android:visibility="gone">
+		<LinearLayout
+				android:gravity="center"
+				android:orientation="vertical"
+				android:layout_gravity="center"
+				android:layout_width="wrap_content"
+		              android:layout_height="wrap_content">
+			
+		<ProgressBar
+				android:layout_width="@dimen/search_progress_bar_size"
+				android:layout_height="@dimen/search_progress_bar_size"
+				android:indeterminate="true"
+				android:indeterminateTint="@color/white"
+				android:indeterminateTintMode="src_in"/>
+		
+		<TextView
+				android:layout_marginTop="10dp"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="bottom|center_horizontal"
+				android:text="@string/prompt_searching"
+				android:textColor="@color/white"
+				android:textSize="16sp"/>
+		</LinearLayout>
+	
+	
+	</FrameLayout>
+
+</RelativeLayout>

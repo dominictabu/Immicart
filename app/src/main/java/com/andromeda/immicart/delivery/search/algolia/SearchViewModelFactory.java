@@ -1,33 +1,29 @@
 package com.andromeda.immicart.delivery.search.algolia;
 
 
+import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
+import com.andromeda.immicart.delivery.search.algolia.MyViewModel;
 
-/**
- * Factory for ViewModels
- */
-public class MyViewModelFactory extends ViewModelProvider.NewInstanceFactory {
+public class SearchViewModelFactory implements ViewModelProvider.Factory {
 
-    MyViewModel myViewModel;
+//    private Application mApplication;
+    private String algoliaIndex;
 
-    public MyViewModelFactory() {
-        if(myViewModel == null) {
-            myViewModel = new MyViewModel();
-        }
-
+    public SearchViewModelFactory(String extra) {
+        algoliaIndex = extra;
     }
 
     @NonNull
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
+
         if (modelClass.isAssignableFrom(MyViewModel.class)) {
-            return (T) myViewModel;
+            return (T) new MyViewModel(algoliaIndex);
         }
         //noinspection unchecked
         throw new IllegalArgumentException("Unknown ViewModel class");
     }
-
-
 }

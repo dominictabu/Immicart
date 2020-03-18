@@ -38,6 +38,9 @@ public class AppConstants {
     public static final String TRANSACTION_TYPE = "CustomerPayBillOnline";
     public static final String PARTYB = "174379";
     public static final String CALLBACKURL = "https://us-central1-immicart-2ca69.cloudfunctions.net/mpesaAPI/stk_callback?regId=";
+    public static final String CONFIRMATIONURL = "https://us-central1-immicart-2ca69.cloudfunctions.net/c2b/confirmation";
+    public static final String VALIDATIONURL = "https://us-central1-immicart-2ca69.cloudfunctions.net/c2b/validation";
+
 
 }
 

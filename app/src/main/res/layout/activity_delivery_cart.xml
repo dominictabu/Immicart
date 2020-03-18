@@ -8,7 +8,6 @@
 		tools:context=".shopping_cart.CartActivity">
 	
 	<fragment
-			android:layout_below="@+id/toolbar"
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
 			android:id="@+id/delivery_cart_nav_host_fragment"

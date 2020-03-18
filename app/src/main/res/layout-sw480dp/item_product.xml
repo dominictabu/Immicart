@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="180dp"
+                android:padding="4dp"
+                android:layout_margin="4dp"
+                android:layout_height="wrap_content">
+	<FrameLayout
+			android:id="@+id/image_fl"
+			android:layout_alignParentTop="true"
+			android:layout_width="204dp"
+			android:layout_height="wrap_content">
+		
+		<ImageView
+				android:layout_gravity="start|top"
+				android:scaleType="centerInside"
+				android:src="@drawable/aerial_soap"
+				android:id="@+id/product_picture"
+				android:layout_width="172dp"
+				android:layout_height="172dp"/>
+		
+		<ImageButton
+				android:layout_gravity="end|top"
+				android:id="@+id/addToCartBtn"
+				android:gravity="center"
+				android:src="@drawable/ic_add_white_24dp"
+				android:textSize="16sp"
+				android:textColor="@android:color/white"
+				android:background="@drawable/add_to_cart_bg"
+				android:layout_width="28dp"
+				android:layout_height="28dp"/>
+	</FrameLayout>
+	
+	<LinearLayout
+			android:layout_marginTop="10dp"
+			android:id="@+id/price_ll"
+			android:gravity="start"
+			android:orientation="horizontal"
+			android:layout_below="@+id/image_fl"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content">
+		<TextView
+				android:layout_weight="0.6"
+				android:maxLines="1"
+				android:textStyle="bold"
+				android:textColor="@color/colorAccent"
+				android:textSize="16sp"
+				android:id="@+id/offer_price"
+				android:text="KES 699"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"/>
+		<TextView
+				android:layout_weight="0.4"
+				android:maxLines="1"
+				android:textStyle="bold"
+				android:textColor="@color/lightGrey"
+				android:textSize="14sp"
+				android:layout_marginStart="10dp"
+				android:id="@+id/normal_price"
+				android:text="KES 619"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"/>
+	
+	</LinearLayout>
+	
+	<TextView
+			android:ellipsize="end"
+			android:lines="2"
+			android:layout_marginTop="8dp"
+			android:textSize="16sp"
+			android:id="@+id/product_name"
+			android:gravity="start"
+			android:layout_below="@+id/price_ll"
+			android:text="Aerial washing powder"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"/>
+	<TextView
+			android:id="@+id/size"
+			android:layout_marginTop="8dp"
+			android:textColor="@color/lightGrey"
+			android:gravity="start"
+			android:layout_below="@+id/product_name"
+			android:text="2 kg"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"/>
+	<TextView
+			android:layout_marginTop="8dp"
+			android:textStyle="bold"
+			android:textColor="@color/colorAccent"
+			android:padding="8dp"
+			android:gravity="center"
+			android:background="@drawable/dotted"
+			android:textSize="16sp"
+			android:id="@+id/save_amt"
+			android:layout_below="@+id/size"
+			android:text="Save KES 80"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"/>
+</RelativeLayout>

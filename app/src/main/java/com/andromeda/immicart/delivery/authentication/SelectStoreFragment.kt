@@ -8,19 +8,26 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RadioGroup
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 import com.andromeda.immicart.R
+import com.andromeda.immicart.delivery.CurrentStore
 import com.andromeda.immicart.delivery.ProductsPageActivity
 import com.andromeda.immicart.delivery.choose_store.Store
+import com.bumptech.glide.Glide
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.*
 import com.google.firebase.firestore.EventListener
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
 import kotlinx.android.synthetic.main.fragment_select_store.*
 import java.util.ArrayList
+import android.content.Context.MODE_PRIVATE
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -35,6 +42,7 @@ private const val ARG_PARAM2 = "param2"
  */
 
 class SelectStoreFragment : Fragment() {
+    private lateinit var database: DatabaseReference
 
     // TODO: Rename and change types of parameters
     private var param1: String? = null
@@ -62,10 +70,44 @@ class SelectStoreFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_select_store, container, false)
     }
 
+    val PREF_NAME = "IS_PICKUP"
+    val keyChannel = "IS_PICKUP"
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        database = FirebaseDatabase.getInstance().reference
 
-        getAllDocs()
+        val editor = activity!!.getSharedPreferences(PREF_NAME, MODE_PRIVATE).edit()
+        editor.putBoolean(keyChannel, true)
+        editor.apply()
+
+        getCurrentStore()
+
+
+
+
+
+        segmented2?.setOnCheckedChangeListener(object : RadioGroup.OnCheckedChangeListener {
+            override fun onCheckedChanged(group: RadioGroup?, checkedId: Int) {
+
+                    if(checkedId == R.id.button_delivery) {
+                        val editor = activity!!.getSharedPreferences(PREF_NAME, MODE_PRIVATE).edit()
+                        editor.putBoolean(keyChannel, false)
+                        editor.apply()
+
+
+                    } else {
+                        val editor = activity!!.getSharedPreferences(PREF_NAME, MODE_PRIVATE).edit()
+                        editor.putBoolean(keyChannel, true)
+                        editor.apply()
+
+                    }
+
+
+                }
+
+        })
+
     }
 
     fun getAllDocs() {
@@ -166,8 +208,57 @@ class SelectStoreFragment : Fragment() {
         Log.d(TAG, "Selected Store: "  + store)
         authenticationActivityViewModel.deleteAll()
         authenticationActivityViewModel.insert(store)
+        setCurrentStore(store)
+
 //        findNavController().navigate(R.id.create_account_action)
 //        startActivity(Intent(context, ProductsPageActivity::class.java))
+
+    }
+
+
+    fun setCurrentStore(store: Store) {
+
+        val storeMap = HashMap<String, Any>()
+        storeMap.put("storeID", store.key)
+        storeMap.put("storeName", store.name)
+        storeMap.put("storeLogo", store.logoUrl)
+        storeMap.put("storeLatLng", store.latlng)
+
+
+        val userUID = FirebaseAuth.getInstance().uid
+        val ref = database.child("customers/$userUID").child("current_store")
+            ref.setValue(storeMap).addOnSuccessListener {
+                Log.d(TAG, "Store selected successfully")
+                        startActivity(Intent(context, ProductsPageActivity::class.java))
+
+            }
+
+
+    }
+
+    fun getCurrentStore() {
+        val userUID = FirebaseAuth.getInstance().uid
+        val ref = FirebaseDatabase.getInstance().reference.child("customers/$userUID/current_store")
+
+        ref.addListenerForSingleValueEvent(object: ValueEventListener {
+            override fun onCancelled(p0: DatabaseError) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+                val store = p0.getValue(CurrentStore::class.java)
+
+                if(store!= null) {
+                    startActivity(Intent(context, ProductsPageActivity::class.java))
+                } else {
+                    getAllDocs()
+
+                }
+
+
+            }
+
+        })
 
     }
 
@@ -193,3 +284,5 @@ class SelectStoreFragment : Fragment() {
             }
     }
 }
+
+

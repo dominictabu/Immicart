@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+	<item android:id="@+id/homeFragment"
+	      android:title="@string/menu_shop"
+	      android:icon="@drawable/ic_home_black_24dp" />
+	<item android:id="@+id/searchFragment"
+	      android:title="@string/menu_search"
+	      android:icon="@drawable/ic_search_black_24dp" />
+	<item android:id="@+id/furnitureOrdersListFragment"
+	      android:title="@string/menu_orders"
+	      android:icon="@drawable/ic_bookmark_black_24dp" />
+	<item android:id="@+id/myAccountFragment"
+	      android:title="Account"
+	      android:icon="@drawable/ic_account_circle_green_24dp" />
+</menu>

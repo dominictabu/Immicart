@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+		
+		android:clickable="true"
+		android:orientation="horizontal"
+		android:gravity="center_vertical"
+		android:layout_below="@+id/toolbar"
+		android:id="@+id/current_location_ll"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:focusable="true"
+		xmlns:android="http://schemas.android.com/apk/res/android">
+	
+	<RadioButton
+			android:id="@+id/radiobutton"
+			android:buttonTint="@color/colorGreen"
+			android:clickable="false"
+			android:checked="false"
+			android:layout_marginStart="12dp"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"/>
+	<LinearLayout
+			android:clickable="false"
+			android:orientation="vertical"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content">
+		
+		<TextView
+				android:clickable="false"
+				android:layout_marginTop="16dp"
+				android:layout_marginStart="12dp"
+				android:id="@+id/current_location_address"
+				android:textColor="@color/colorGreen"
+				android:textStyle="bold"
+				android:text="Use Current Location"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"/>
+		<TextView
+				android:clickable="false"
+				android:layout_marginBottom="10dp"
+				android:layout_marginStart="12dp"
+				android:textColor="@color/lightGrey_"
+				android:id="@+id/current_location_address_two"
+				android:text="Munret Hostels, Sumba Road, Nairobi City, Kenya"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"/>
+	</LinearLayout>
+</LinearLayout>

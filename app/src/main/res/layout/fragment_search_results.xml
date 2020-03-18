@@ -19,6 +19,12 @@
 				android:orientation="horizontal"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content">
+			<ImageButton
+					android:id="@+id/go_back_button"
+					android:background="@android:color/white"
+					android:src="@drawable/ic_keyboard_arrow_left_green_24dp"
+					android:layout_width="24dp"
+					android:layout_height="24dp"/>
 			<androidx.appcompat.widget.SearchView
 					android:padding="8dp"
 					android:queryBackground="@null"
@@ -151,8 +157,6 @@
 			android:layout_below="@id/top_cardview"
 			android:layout_width="match_parent"
 	                                   android:layout_height="match_parent">
-		<ScrollView android:layout_width="match_parent"
-		            android:layout_height="wrap_content">
 			
 		<LinearLayout
 				android:orientation="vertical"
@@ -178,8 +182,6 @@
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"/>
 		</LinearLayout>
-		</ScrollView>
-	
 	</androidx.cardview.widget.CardView>
 
 </RelativeLayout>

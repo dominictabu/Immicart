@@ -1,42 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-                android:background="@color/colorGreen"
-                android:gravity="center"
-             tools:context=".delivery.checkout.SuccessOrderPlacementFragment">
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" xmlns:app="http://schemas.android.com/apk/res-auto"
+                tools:context=".delivery.checkout.SuccessOrderPlacementFragment">
+	<androidx.appcompat.widget.Toolbar
+			android:layout_alignParentTop="true"
+			android:id="@+id/toolbar"
+			android:background="@android:color/white"
+			app:popupTheme="@style/AppTheme.PopupOverlay"
+			android:layout_width="match_parent"
+			android:layout_height="?attr/actionBarSize">
+		<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="Complete checkout"
+				android:textSize="16sp"
+				android:textStyle="bold"
+				android:layout_gravity="center"
+				android:id="@+id/toolbar_title" />
 	
+	</androidx.appcompat.widget.Toolbar>
+	<LinearLayout
+			android:layout_centerInParent="true"
+			android:id= "@+id/empty_items_text_view"
+			android:layout_gravity="center"
+			android:gravity="center"
+			android:orientation="vertical"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content">
+		
+		<de.hdodenhof.circleimageview.CircleImageView
+				android:padding="10dp"
+				android:background="@drawable/dotted_grey"
+				android:src="@drawable/celebration_emoji"
+				android:layout_width="80dp"
+				android:layout_height="80dp"/>
+		
+		<TextView
+				android:textSize="18sp"
+				android:layout_marginTop="10dp"
+				android:layout_marginStart="20dp"
+				android:layout_marginEnd="20dp"
+				android:gravity="center"
+				android:visibility="visible"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:text="Congratulations - You have successfully placed your order!"
+		/>
+		<Button
+				android:layout_margin="20dp"
+				android:textAllCaps="true"
+				android:id="@+id/complete_order_button"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:background="@drawable/small_corners_blue"
+				android:text="Complete"
+				android:textColor="@android:color/white"
+				android:textStyle="bold" />
+	</LinearLayout>
 	<!-- TODO: Update blank fragment layout -->
-	<TextView
-			android:textColor="@android:color/white"
-			android:id="@+id/thanks"
-			android:gravity="center_horizontal"
-			android:textSize="20sp"
-			android:textStyle="bold"
-			android:text="Thanks - Order Received!"
-			android:layout_width="match_parent"
-	          android:layout_height="wrap_content"/>
-	<TextView
-			android:id="@+id/assign_tv"
-			android:layout_marginTop="20dp"
-			android:textColor="@android:color/white"
-			android:layout_centerHorizontal="true"
-			android:layout_below="@+id/thanks"
-			android:text="We will assign a shopper and get it delivered"
-			android:layout_width="wrap_content"
-	          android:layout_height="wrap_content"/>
-	<Button
-			android:layout_below="@+id/assign_tv"
-			android:id="@+id/complete_order_button"
-			android:textSize="20sp"
-			android:fontFamily="@font/roboto_medium"
-			android:background="@drawable/log_out_bg"
-			android:textColor="@color/colorGreen"
-			android:text="Complete"
-			android:textAllCaps="false"
-			android:layout_margin="40dp"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"/>
+	<!--<TextView-->
+			<!--android:textColor="@android:color/white"-->
+			<!--android:id="@+id/thanks"-->
+			<!--android:gravity="center_horizontal"-->
+			<!--android:textSize="20sp"-->
+			<!--android:textStyle="bold"-->
+			<!--android:text="Thanks - Order Received!"-->
+			<!--android:layout_width="match_parent"-->
+	          <!--android:layout_height="wrap_content"/>-->
+	<!--<TextView-->
+			<!--android:id="@+id/assign_tv"-->
+			<!--android:layout_marginTop="20dp"-->
+			<!--android:textColor="@android:color/white"-->
+			<!--android:layout_centerHorizontal="true"-->
+			<!--android:layout_below="@+id/thanks"-->
+			<!--android:text="We will assign a shopper and get it delivered"-->
+			<!--android:layout_width="wrap_content"-->
+	          <!--android:layout_height="wrap_content"/>-->
+	<!--<Button-->
+			<!--android:layout_below="@+id/assign_tv"-->
+			<!--android:id="@+id/complete_order_button"-->
+			<!--android:textSize="20sp"-->
+			<!--android:fontFamily="@font/roboto_medium"-->
+			<!--android:background="@drawable/log_out_bg"-->
+			<!--android:textColor="@color/colorGreen"-->
+			<!--android:text="Complete"-->
+			<!--android:textAllCaps="false"-->
+			<!--android:layout_margin="40dp"-->
+			<!--android:layout_width="match_parent"-->
+			<!--android:layout_height="wrap_content"/>-->
 
 </RelativeLayout>

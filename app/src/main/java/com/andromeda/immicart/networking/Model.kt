@@ -40,4 +40,9 @@ object Model {
 
     //PAYMENTS
     data class MPESAResponse(val error: String)
+
+    data class SendyRequestResponse(val status: Boolean,val data: SendyRequestData?, val description: String?, val request_token_id: String)
+    data class PairingResponse(val status : Boolean, val message : String, val rider_phone: String)
+    data class SendyRequestData(val order_no: String, val amount: Float, val currency: String,val vendor: String,val distance: String,val eta: String,
+                                val etd: String, val amount_return: Int, val order_status: String,  val pick_up_date: String,  val drop_shipping_order: String,val pairing_response: PairingResponse, val tracking_link: String)
 }

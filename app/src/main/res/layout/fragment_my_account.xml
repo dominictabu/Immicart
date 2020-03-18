@@ -1,14 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             tools:context=".delivery.account.MyAccountFragment">
-	
-	<!-- TODO: Update blank fragment layout -->
-	<TextView
-			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			android:text="@string/hello_blank_fragment"/>
+<RelativeLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".delivery.account.MyAccountFragment">
 
-</FrameLayout>
+<RelativeLayout
+		android:id="@+id/toolbar_ll"
+		android:background="@android:color/white"
+		android:gravity="center_vertical"
+		android:layout_width="match_parent"
+		android:layout_height="?attr/actionBarSize">
+	<ImageView
+			android:layout_centerInParent="true"
+			android:layout_marginStart="20dp"
+			android:id="@+id/immicart_logo"
+			android:src="@drawable/immicart_logo_01"
+			android:layout_width="140dp"
+			android:layout_height="40dp"/>
+
+</RelativeLayout>
+
+
+
+
+<LinearLayout
+		android:id="@+id/account_info_ll"
+		android:layout_margin="20dp"
+		android:gravity="center_vertical"
+		android:layout_below="@+id/toolbar_ll"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content">
+	
+	<TextView
+			android:id="@+id/user_name"
+			android:layout_weight="1"
+			android:fontFamily="@font/roboto_medium"
+			android:textSize="32sp"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"/>
+	
+	<ImageView
+			android:id="@+id/profile_image"
+			android:src="@drawable/ic_account_circle_green_24dp"
+			android:layout_width="64dp"
+			android:layout_height="64dp"/>
+
+</LinearLayout>
+
+
+<LinearLayout
+		android:focusable="true"
+		android:clickable="true"
+		android:id="@+id/inivite_frds_ll"
+		android:layout_margin="20dp"
+		android:gravity="center_vertical"
+		android:layout_below="@+id/account_info_ll"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content">
+	<ImageView
+			android:src="@drawable/ic_share_grey_24dp"
+			android:layout_width="40dp"
+			android:layout_height="40dp"/>
+	<TextView
+			android:layout_weight="1"
+			android:layout_marginStart="20dp"
+			android:textSize="20sp"
+			android:text="Invite friends"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"/>
+	<ImageView
+			android:src="@drawable/ic_keyboard_arrow_right_black_24dp"
+			android:layout_width="40dp"
+			android:layout_height="40dp"/>
+
+</LinearLayout>
+
+
+
+
+<Button
+		android:layout_alignParentBottom="true"
+		android:visibility="visible"
+		app:fontFamily="@font/roboto_medium"
+		android:layout_marginStart="20dp"
+		android:layout_marginTop="10dp"
+		android:layout_marginBottom="40dp"
+		android:layout_marginEnd="20dp"
+		android:textStyle="normal"
+		android:textAllCaps="false"
+		android:id="@+id/log_out_btn"
+		android:textColor="@color/colorGreen"
+		android:background="@drawable/log_out_bg"
+		android:textSize="24sp"
+		android:text=" Log out "
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content" />
+
+</RelativeLayout>

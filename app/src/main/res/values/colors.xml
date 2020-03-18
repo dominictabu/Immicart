@@ -41,5 +41,9 @@
     <color name="barcode_field_value">#797979</color>
     <color name="barcode_field_box_stroke">#757575</color>
     <color name="product_description">#5F6368</color>
+    
+    <color name="simpletooltip_background">@color/lightGrey_</color>
+    <color name="simpletooltip_text">@android:color/white</color>
+    <color name="simpletooltip_arrow">@color/lightGrey_</color>
 
 </resources>

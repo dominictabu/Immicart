@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+		app:cardElevation="0dp"
+		android:layout_margin="4dp"
+		xmlns:android="http://schemas.android.com/apk/res/android"
+		android:orientation="vertical"
+		android:layout_width="188dp"
+		android:layout_height="wrap_content" xmlns:app="http://schemas.android.com/apk/res-auto">
+	
+<RelativeLayout
+		android:padding="4dp"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content">
+	<ImageView
+			android:id="@+id/image"
+			android:src="@drawable/sofa"
+			android:layout_width="180dp"
+	           android:layout_height="180dp"/>
+	<TextView
+			android:layout_marginTop="8dp"
+			android:id="@+id/furniture_name"
+			android:textSize="18sp"
+			android:text="Hemphill 104 Reversible Sectional with Ottoman"
+			android:layout_below="@+id/image"
+			android:layout_width="match_parent"
+	          android:layout_height="wrap_content"/>
+	<TextView
+			android:id="@+id/furniture_price"
+			android:layout_marginTop="8dp"
+			android:textStyle="bold"
+			android:textSize="20sp"
+			android:layout_below="@+id/furniture_name"
+			android:text="KES 50,000"
+			android:layout_width="wrap_content"
+	          android:layout_height="wrap_content"/>
+
+</RelativeLayout>
+</androidx.cardview.widget.CardView>

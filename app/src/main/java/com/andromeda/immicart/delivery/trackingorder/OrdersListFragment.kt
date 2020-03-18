@@ -118,7 +118,7 @@ class OrdersListFragment : Fragment() {
 
 
     fun initializeRecyclerView(orders: ArrayList<OrderObject>) {
-        recycler_items_orders
+//        recycler_items_orders
 
         val linearLayoutManager = LinearLayoutManager(activity!!, RecyclerView.VERTICAL, false)
         recycler_items_orders?.setNestedScrollingEnabled(false);

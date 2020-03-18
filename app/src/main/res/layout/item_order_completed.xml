@@ -9,7 +9,7 @@
 		app:cardBackgroundColor="@android:color/white"
 		android:gravity="center_vertical"
 		android:layout_width="match_parent"
-		android:layout_height="wrap_content">
+		android:layout_height="140dp">
 	
 	
 	<LinearLayout
@@ -56,19 +56,41 @@
 						android:text="KES 650.00"
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"/>
-				<TextView
-						android:textStyle="bold"
-						android:id="@+id/order_status"
-						android:textColor="@color/colorGreen"
-						android:padding="6dp"
-						android:background="@drawable/log_out_bg"
-						android:textSize="16dp"
-						android:layout_marginEnd="8dp"
-						android:text=" Completed "
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content" />
 			</LinearLayout>
 		</LinearLayout>
+		
+		<RelativeLayout
+				android:layout_marginTop="4dp"
+				android:layout_marginBottom="4dp"
+				android:orientation="vertical"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content">
+			<TextView
+					android:layout_alignParentTop="true"
+					android:textStyle="bold"
+					android:id="@+id/order_type"
+					android:textColor="@android:color/white"
+					android:padding="6dp"
+					android:background="@drawable/orange_bg"
+					android:textSize="16dp"
+					android:layout_marginEnd="8dp"
+					android:text=" DELIVERY "
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content" />
+			
+			<TextView
+					android:layout_alignParentBottom="true"
+					android:textStyle="bold"
+					android:id="@+id/order_status"
+					android:textColor="@color/colorGreen"
+					android:padding="6dp"
+					android:background="@drawable/log_out_bg"
+					android:textSize="16dp"
+					android:layout_marginEnd="8dp"
+					android:text=" Completed "
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content" />
+		</RelativeLayout>
 	
 	
 	</LinearLayout>

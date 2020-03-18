@@ -23,7 +23,9 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 import android.content.Intent
+import android.os.Handler
 import android.view.MenuItem
+import android.view.View
 import com.google.firebase.dynamiclinks.DynamicLink
 import com.google.firebase.dynamiclinks.ShortDynamicLink
 import com.google.firebase.firestore.FirebaseFirestore
@@ -105,6 +107,8 @@ class ProductDetailActivity : AppCompatActivity() {
 
 
                     addToCartButton.setOnClickListener {
+                        addToCartButton?.visibility = View.GONE
+                        loading_indicator?.visibility = View.VISIBLE
                         var currentQuantityString = quantityTv.text.toString()
                         var currentQuantityInt = currentQuantityString.toInt()
 
@@ -116,6 +120,10 @@ class ProductDetailActivity : AppCompatActivity() {
 
                             }
                         }
+                        Handler().postDelayed({
+                            loading_indicator?.visibility = View.GONE
+                            addToCartButton?.visibility = View.VISIBLE
+                        }, 3000)
 
 
                     }
@@ -201,39 +209,44 @@ class ProductDetailActivity : AppCompatActivity() {
         productID?.let {
             val documentPath = "stores/" + storeId + "/offers/" + productID
             db.document(documentPath).get().addOnSuccessListener { documentSnapshot ->
-                val offer = documentSnapshot.data as HashMap<String, Any>
-                val key = documentSnapshot.id
-                val productName = offer["name"] as String
-                val deadline = offer["deadline"] as String
-                val normalPrice : String = offer["normal_price"] as String
-                val offerPrice = offer["offer_price"] as String
-                val category = offer["categoryOne"] as String
-                var barcode = offer["barcode"] as String?
-                val fileURL = offer["imageUrl"] as String
+                documentSnapshot.data?.let {
 
-                if(barcode == null) {
-                    barcode = "Not Set"
+
+                    val offer = documentSnapshot.data as HashMap<String, Any>
+                    val key = documentSnapshot.id
+                    val productName = offer["name"] as String
+                    val deadline = offer["deadline"] as String
+                    val normalPrice: String = offer["normal_price"] as String
+                    val offerPrice = offer["offer_price"] as String
+                    val category = offer["categoryOne"] as String
+                    var barcode = offer["barcode"] as String?
+                    val fileURL = offer["imageUrl"] as String
+
+                    if (barcode == null) {
+                        barcode = "Not Set"
+                    }
+
+                    val intOfferPrice = offerPrice.toInt()
+                    val intNormalPrice = normalPrice.toInt()
+
+                    val savings = intNormalPrice - intOfferPrice
+                    savings_tv.text = savings.toString()
+
+                    product_description.text = productName
+
+                    val unitPrice = intOfferPrice
+                    val price = "KES $unitPrice"
+                    product_price.text = price
+                    val _normalPrice = "KES $intNormalPrice"
+                    deals_off.text = _normalPrice
+                    deals_off.paintFlags = deals_off.getPaintFlags() or Paint.STRIKE_THRU_TEXT_FLAG
+                    Glide.with(this@ProductDetailActivity).load(fileURL).into(product_image)
+                    //                    deliveryCart = DeliveryCart(singleProduct._id, singleProduct.barcode, singleProduct.name, singleProduct.price.toInt(), 1, singleProduct.image_url )
+
+                    deliveryCart =
+                        DeliveryCart(key, barcode, productName, category, intOfferPrice, intNormalPrice, 1, fileURL)
+
                 }
-
-                val intOfferPrice = offerPrice.toInt()
-                val intNormalPrice = normalPrice.toInt()
-
-                val savings = intNormalPrice - intOfferPrice
-                savings_tv.text = savings.toString()
-
-                product_description.text = productName
-
-                val unitPrice = intOfferPrice
-                val price = "KES $unitPrice"
-                product_price.text = price
-                val _normalPrice = "KES $intNormalPrice"
-                deals_off.text = _normalPrice
-                deals_off.paintFlags = deals_off.getPaintFlags() or Paint.STRIKE_THRU_TEXT_FLAG
-                Glide.with(this@ProductDetailActivity).load(fileURL).into(product_image)
-                //                    deliveryCart = DeliveryCart(singleProduct._id, singleProduct.barcode, singleProduct.name, singleProduct.price.toInt(), 1, singleProduct.image_url )
-
-                deliveryCart = DeliveryCart(key, barcode, productName, category, intOfferPrice, intNormalPrice, 1, fileURL)
-
             }
 
         }

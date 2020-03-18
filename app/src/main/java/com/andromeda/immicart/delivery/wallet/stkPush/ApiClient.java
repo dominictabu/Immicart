@@ -3,6 +3,7 @@ package com.andromeda.immicart.delivery.wallet.stkPush;
 
 import java.util.concurrent.TimeUnit;
 
+import com.andromeda.immicart.delivery.wallet.C2BService.services.SimulateService;
 import com.andromeda.immicart.delivery.wallet.stkPush.interceptor.AccessTokenInterceptor;
 import com.andromeda.immicart.delivery.wallet.stkPush.interceptor.AuthInterceptor;
 import com.andromeda.immicart.delivery.wallet.stkPush.services.STKPushService;
@@ -111,5 +112,10 @@ public class ApiClient {
     public STKPushService mpesaService() {
         return getRestAdapter().create(STKPushService.class);
     }
+
+    public SimulateService mpesaSimulateService() {
+        return getRestAdapter().create(SimulateService.class);
+    }
+
 
 }

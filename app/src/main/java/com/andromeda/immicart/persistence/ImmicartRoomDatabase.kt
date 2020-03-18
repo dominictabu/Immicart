@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 
 
 // Annotates class to be a Room Database with a table (entity) of the Word class
-@Database(entities = arrayOf(Cart::class, DeliveryCart::class, Store::class, Place::class, DeliveryLocation::class, CurrentLocation::class), version = 10)
+@Database(entities = arrayOf(Cart::class, DeliveryCart::class, Store::class, Place::class, CurrentLocation::class), version = 12, exportSchema = false)
 public abstract class ImmicartRoomDatabase : RoomDatabase() {
 
     abstract fun cartDao(): CartDao

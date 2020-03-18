@@ -48,10 +48,11 @@ private lateinit var adapter: ProductsRecyclerAdapter
 private lateinit var mainActivityViewModel: MainActivityViewModel
 
 lateinit var cartItems: List<Cart>
+val baseURL = "https://us-central1-immicart-2ca69.cloudfunctions.net/"
 
 private val TAG = "MainActivity"
     val immicartAPIService by lazy {
-        ImmicartAPIService.create()
+        ImmicartAPIService.create(baseURL)
     }
 
 class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsResultCallback {

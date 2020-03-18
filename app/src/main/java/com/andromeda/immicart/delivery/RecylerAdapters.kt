@@ -34,9 +34,10 @@ import kotlinx.android.synthetic.main.item_product.view.product_picture
 import kotlinx.android.synthetic.main.item_search_suggestion.view.*
 import kotlinx.android.synthetic.main.item_subcategory.view.*
 
+val baseURL = "https://us-central1-immicart-2ca69.cloudfunctions.net/"
 
 val _immicartAPIService by lazy {
-    ImmicartAPIService.create()
+    ImmicartAPIService.create(baseURL)
 }
 class ProductsAdapter (val context: Context, val addQuantityClickListener: (DeliveryCart, Int) -> Unit) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -63,6 +64,11 @@ class ProductsAdapter (val context: Context, val addQuantityClickListener: (Deli
         categoriesPr = items
         storeId_ = storeId
         notifyDataSetChanged()
+
+    }
+
+    fun updateCartItems(items: ArrayList<DeliveryCart>) {
+
 
     }
 
@@ -429,8 +435,12 @@ class ProductsAdapter (val context: Context, val addQuantityClickListener: (Deli
             .whereEqualTo("categoryOne", category.name!!)
             .limit(10)
 
+        Log.d(TAG, "Category : ${category.name}")
+
         var productsArray: ArrayList<DeliveryCart> = ArrayList()
         products.get().addOnSuccessListener { documentSnapshots ->
+            Log.d(TAG, "documentSnapshots : $documentSnapshots")
+
             for (document in documentSnapshots) {
                 val offer = document.data as HashMap<String, Any>
                 val productName = offer["name"] as String
@@ -453,17 +463,12 @@ class ProductsAdapter (val context: Context, val addQuantityClickListener: (Deli
                 val product =
                     __Product__(document.id, barcode, productName,category, intOfferPrice, intNormalPrice, 1, fileURL, false)
                 productsArray.add(deliveryCart)
+                Log.d(TAG, "Product : $deliveryCart")
+                Log.d(TAG, "Product Array Size : ${productsArray.size}")
 
             }
 
-            if(productsArray.size == 0) {
-                val index = categories.indexOf(category)
-                categories.remove(category)
-//                categories.drop(index)
-                notifyItemRemoved(index)
-//                notifyItemRangeRemoved(index, 1)
-            } else {
-
+            if(productsArray.size != 0) {
                 productsArray.forEach {
                     val product = it
                     val index = productsArray.indexOf(product)
@@ -480,6 +485,13 @@ class ProductsAdapter (val context: Context, val addQuantityClickListener: (Deli
                 adapter.updateList(productsArray, storeId)
 
 
+            } else {
+//                val index = categories.indexOf(category)
+////                Log.d(TAG, )
+//                categories.remove(category)
+////                categories.drop(index)
+//                notifyItemRemoved(index)
+////                notifyItemRangeRemoved(index, 1)
             }
 
 
@@ -541,6 +553,418 @@ class ProductsAdapter (val context: Context, val addQuantityClickListener: (Deli
     }
 }
 
+
+
+class CategoryTwoRecyclerAdapter(val storeId: String, val categories: ArrayList<__Category__>,  val context: Context, val addQuantityClickListener: (DeliveryCart, Int) -> Unit, val clickListener: (__Category__) -> Unit ): RecyclerView.Adapter<CategoryTwoRecyclerAdapter.CategoryViewHolder>() {
+
+    private val TAG = "CategoryRecyclerAdapter"
+    var deliveryCartItems: ArrayList<DeliveryCart> = ArrayList()
+    var isLoading = false
+    var isMoreDataAvailable_ = false
+
+    fun setIsLoading(is_Loading: Boolean) {
+        isLoading = is_Loading
+    }
+
+    public fun setMoreDataAvailable(moreDataAvailable: Boolean) {
+        isMoreDataAvailable_ = moreDataAvailable;
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryViewHolder {
+        return CategoryViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_category, parent, false))
+    }
+
+    fun updateItems(items: ArrayList<DeliveryCart>) {
+        deliveryCartItems = items
+        notifyDataSetChanged()
+
+    }
+//     fun retrieveCategoryProducts(id: Int, shimmerFrameLayout: ShimmerFrameLayout, adapter: ProductsAdapter) {
+//
+//         shimmerFrameLayout.stopShimmerAnimation()
+//         shimmerFrameLayout.visibility = View.GONE
+//         deliveryCartItems.forEach {
+//
+//         }
+//
+//
+//
+//         val retrofitResponse = _immicartAPIService.getCategoryProducts(id)
+//        immicartAPIService.getCategoryProducts(id)
+//            .subscribeOn(Schedulers.io())
+//            .observeOn(AndroidSchedulers.mainThread())
+//            .subscribe(
+//                { result ->
+//
+//                    Log.d(TAG, "Retrofit Products Results $result")
+//
+//
+//                    result.products?.let {
+//
+//                        Log.d(TAG, "Product Results $it")
+//                        shimmerFrameLayout.stopShimmerAnimation()
+//                        shimmerFrameLayout.visibility = View.GONE
+//
+//                        var listOfProducts = it as ArrayList<Model.Product_>
+//
+//                        it.forEach {
+//                            val product = it
+//                            val index = listOfProducts.indexOf(product)
+//
+//                            deliveryCartItems.forEach {
+//                                if(product._id == it._id) {
+//                                    product.isInCart = true
+//                                    val product__ = Model.Product_(product._id, product.barcode, product.name, product.price, product.quantity, product.image_url, product.id_link, product.code_link, true)
+//                                    listOfProducts.set(index, product__)
+//
+//
+//                                }
+//                            }
+//                        }
+//                        adapter.updateList(listOfProducts)
+//
+//                    }
+//
+//                },
+//
+//                { error ->
+//                    Log.d(TAG, "Retrofit Error: ${error.message}")
+//
+//                    //                        showError(error.message)
+//                }
+//            )
+//
+//    }
+
+    fun getCategoryProducts(category: __Category__, shimmerFrameLayout: ShimmerFrameLayout, adapter: ProductsAdapter, cartItems: List<DeliveryCart>) {
+        val collectionPath = "stores/" + storeId + "/offers"
+        val products = FirebaseFirestore.getInstance().collection(collectionPath)
+            .whereEqualTo("categoryTwo", category.name!!)
+            .limit(10)
+
+        Log.d(TAG, "Category : ${category.name}")
+
+        var productsArray: ArrayList<DeliveryCart> = ArrayList()
+        products.get().addOnSuccessListener { documentSnapshots ->
+            Log.d(TAG, "documentSnapshots : $documentSnapshots")
+
+            for (document in documentSnapshots) {
+                val offer = document.data as HashMap<String, Any>
+                val productName = offer["name"] as String
+                val deadline = offer["deadline"] as String
+                val normalPrice: String = offer["normal_price"] as String
+                val offerPrice = offer["offer_price"] as String
+                val category = offer["categoryOne"] as String
+                var barcode = offer["barcode"] as String?
+                val fileURL = offer["imageUrl"] as String
+
+                val intOfferPrice = offerPrice.toInt()
+                val intNormalPrice = normalPrice.toInt()
+
+                if (barcode == null) {
+                    barcode = "Not Set"
+                }
+
+                val deliveryCart =
+                    DeliveryCart(document.id, barcode, productName,category, intOfferPrice, intNormalPrice, 1, fileURL)
+                val product =
+                    __Product__(document.id, barcode, productName,category, intOfferPrice, intNormalPrice, 1, fileURL, false)
+                productsArray.add(deliveryCart)
+                Log.d(TAG, "Product : $deliveryCart")
+                Log.d(TAG, "Product Array Size : ${productsArray.size}")
+
+            }
+
+            if(productsArray.size != 0) {
+                productsArray.forEach {
+                    val product = it
+                    val index = productsArray.indexOf(product)
+                    cartItems.forEach {
+                        if(product.key == it.key) {
+                            product.isInCart = true
+                            val deliveryCart =
+                                DeliveryCart(it.key, it.barcode, it.name,it.category, it.offerPrice, it.normalPrice, it.quantity, it.image_url, true)
+                            productsArray.set(index, deliveryCart)
+                        }
+                    }
+
+                }
+                adapter.updateList(productsArray, storeId)
+
+
+            } else {
+//                val index = categories.indexOf(category)
+////                Log.d(TAG, )
+//                categories.remove(category)
+////                categories.drop(index)
+//                notifyItemRemoved(index)
+//                notifyItemRangeRemoved(index, 1)
+            }
+
+
+//            adapter.setFoundItems(cartItems)
+
+            shimmerFrameLayout.stopShimmerAnimation()
+            shimmerFrameLayout.visibility = View.GONE
+
+        }
+    }
+
+
+    fun addProductItems(deliveryItems: List<DeliveryCart>, products: List<Model.Product_>) {
+
+
+    }
+
+    inner class CategoryViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+
+        fun bindItems(category: __Category__) {
+            itemView.category_tv.text = category.name
+
+            val parentShimmerLayout = itemView.parentShimmerLayout
+            parentShimmerLayout.startShimmerAnimation()
+            val categoryId = category.key
+            val linearLayoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
+
+            val recyclerView = itemView.productsRecyclerView
+            recyclerView.setNestedScrollingEnabled(false);
+
+            recyclerView.visibility = View.VISIBLE
+            recyclerView.setLayoutManager(linearLayoutManager)
+            val productsAdapter = ProductsAdapter(context, addQuantityClickListener)
+            recyclerView.adapter = productsAdapter
+            getCategoryProducts(category, itemView.parentShimmerLayout, productsAdapter, deliveryCartItems)
+//            retrieveCategoryProducts(categoryId, itemView.parentShimmerLayout, productsAdapter)
+
+            itemView.view_all_tv.setOnClickListener {
+                clickListener(category)
+            }
+
+        }
+
+    }
+
+
+    override fun getItemCount(): Int {
+        return categories.size
+
+    }
+
+    override fun onBindViewHolder(holder: CategoryViewHolder, position: Int) {
+        holder.bindItems(categories.get(position))
+        //check for last item
+//        if ((position >= itemCount - 1 && isLoading && isMoreDataAvailable_))
+//            isLoading = false;
+//            load();
+//        }
+    }
+}
+
+
+class CategoryThreeRecyclerAdapter(val storeId: String, val categories: ArrayList<__Category__>,  val context: Context, val addQuantityClickListener: (DeliveryCart, Int) -> Unit, val clickListener: (__Category__) -> Unit ): RecyclerView.Adapter<CategoryThreeRecyclerAdapter.CategoryViewHolder>() {
+
+    private val TAG = "CategoryRecyclerAdapter"
+    var deliveryCartItems: ArrayList<DeliveryCart> = ArrayList()
+    var isLoading = false
+    var isMoreDataAvailable_ = false
+
+    fun setIsLoading(is_Loading: Boolean) {
+        isLoading = is_Loading
+    }
+
+    public fun setMoreDataAvailable(moreDataAvailable: Boolean) {
+        isMoreDataAvailable_ = moreDataAvailable;
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryViewHolder {
+        return CategoryViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_category, parent, false))
+    }
+
+    fun updateItems(items: ArrayList<DeliveryCart>) {
+        deliveryCartItems = items
+        notifyDataSetChanged()
+
+    }
+//     fun retrieveCategoryProducts(id: Int, shimmerFrameLayout: ShimmerFrameLayout, adapter: ProductsAdapter) {
+//
+//         shimmerFrameLayout.stopShimmerAnimation()
+//         shimmerFrameLayout.visibility = View.GONE
+//         deliveryCartItems.forEach {
+//
+//         }
+//
+//
+//
+//         val retrofitResponse = _immicartAPIService.getCategoryProducts(id)
+//        immicartAPIService.getCategoryProducts(id)
+//            .subscribeOn(Schedulers.io())
+//            .observeOn(AndroidSchedulers.mainThread())
+//            .subscribe(
+//                { result ->
+//
+//                    Log.d(TAG, "Retrofit Products Results $result")
+//
+//
+//                    result.products?.let {
+//
+//                        Log.d(TAG, "Product Results $it")
+//                        shimmerFrameLayout.stopShimmerAnimation()
+//                        shimmerFrameLayout.visibility = View.GONE
+//
+//                        var listOfProducts = it as ArrayList<Model.Product_>
+//
+//                        it.forEach {
+//                            val product = it
+//                            val index = listOfProducts.indexOf(product)
+//
+//                            deliveryCartItems.forEach {
+//                                if(product._id == it._id) {
+//                                    product.isInCart = true
+//                                    val product__ = Model.Product_(product._id, product.barcode, product.name, product.price, product.quantity, product.image_url, product.id_link, product.code_link, true)
+//                                    listOfProducts.set(index, product__)
+//
+//
+//                                }
+//                            }
+//                        }
+//                        adapter.updateList(listOfProducts)
+//
+//                    }
+//
+//                },
+//
+//                { error ->
+//                    Log.d(TAG, "Retrofit Error: ${error.message}")
+//
+//                    //                        showError(error.message)
+//                }
+//            )
+//
+//    }
+
+    fun getCategoryProducts(category: __Category__, shimmerFrameLayout: ShimmerFrameLayout, adapter: ProductsAdapter, cartItems: List<DeliveryCart>) {
+        val collectionPath = "stores/" + storeId + "/offers"
+        val products = FirebaseFirestore.getInstance().collection(collectionPath)
+            .whereEqualTo("categoryThree", category.name!!)
+            .limit(10)
+
+        Log.d(TAG, "Category : ${category.name}")
+
+        var productsArray: ArrayList<DeliveryCart> = ArrayList()
+        products.get().addOnSuccessListener { documentSnapshots ->
+            Log.d(TAG, "documentSnapshots : $documentSnapshots")
+
+            for (document in documentSnapshots) {
+                val offer = document.data as HashMap<String, Any>
+                val productName = offer["name"] as String
+                val deadline = offer["deadline"] as String
+                val normalPrice: String = offer["normal_price"] as String
+                val offerPrice = offer["offer_price"] as String
+                val category = offer["categoryOne"] as String
+                var barcode = offer["barcode"] as String?
+                val fileURL = offer["imageUrl"] as String
+
+                val intOfferPrice = offerPrice.toInt()
+                val intNormalPrice = normalPrice.toInt()
+
+                if (barcode == null) {
+                    barcode = "Not Set"
+                }
+
+                val deliveryCart =
+                    DeliveryCart(document.id, barcode, productName,category, intOfferPrice, intNormalPrice, 1, fileURL)
+                val product =
+                    __Product__(document.id, barcode, productName,category, intOfferPrice, intNormalPrice, 1, fileURL, false)
+                productsArray.add(deliveryCart)
+                Log.d(TAG, "Product : $deliveryCart")
+                Log.d(TAG, "Product Array Size : ${productsArray.size}")
+
+            }
+
+            if(productsArray.size != 0) {
+                productsArray.forEach {
+                    val product = it
+                    val index = productsArray.indexOf(product)
+                    cartItems.forEach {
+                        if(product.key == it.key) {
+                            product.isInCart = true
+                            val deliveryCart =
+                                DeliveryCart(it.key, it.barcode, it.name,it.category, it.offerPrice, it.normalPrice, it.quantity, it.image_url, true)
+                            productsArray.set(index, deliveryCart)
+                        }
+                    }
+
+                }
+                adapter.updateList(productsArray, storeId)
+
+
+            } else {
+//                val index = categories.indexOf(category)
+////                Log.d(TAG, )
+//                categories.remove(category)
+////                categories.drop(index)
+//                notifyItemRemoved(index)
+//                notifyItemRangeRemoved(index, 1)
+            }
+
+
+//            adapter.setFoundItems(cartItems)
+
+            shimmerFrameLayout.stopShimmerAnimation()
+            shimmerFrameLayout.visibility = View.GONE
+
+        }
+    }
+
+
+    fun addProductItems(deliveryItems: List<DeliveryCart>, products: List<Model.Product_>) {
+
+
+    }
+
+    inner class CategoryViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+
+        fun bindItems(category: __Category__) {
+            itemView.category_tv.text = category.name
+
+            val parentShimmerLayout = itemView.parentShimmerLayout
+            parentShimmerLayout.startShimmerAnimation()
+            val categoryId = category.key
+            val linearLayoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
+
+            val recyclerView = itemView.productsRecyclerView
+            recyclerView.setNestedScrollingEnabled(false);
+
+            recyclerView.visibility = View.VISIBLE
+            recyclerView.setLayoutManager(linearLayoutManager)
+            val productsAdapter = ProductsAdapter(context, addQuantityClickListener)
+            recyclerView.adapter = productsAdapter
+            getCategoryProducts(category, itemView.parentShimmerLayout, productsAdapter, deliveryCartItems)
+//            retrieveCategoryProducts(categoryId, itemView.parentShimmerLayout, productsAdapter)
+
+            itemView.view_all_tv.setOnClickListener {
+                clickListener(category)
+            }
+
+        }
+
+    }
+
+
+    override fun getItemCount(): Int {
+        return categories.size
+
+    }
+
+    override fun onBindViewHolder(holder: CategoryViewHolder, position: Int) {
+        holder.bindItems(categories.get(position))
+        //check for last item
+//        if ((position >= itemCount - 1 && isLoading && isMoreDataAvailable_))
+//            isLoading = false;
+//            load();
+//        }
+    }
+}
 
     class SubCategoryRecyclerAdapter(val subCategories: ArrayList<__Category__>, val clickListener: (__Category__) -> Unit) :
         RecyclerView.Adapter<SubCategoryRecyclerAdapter.SubCategoryViewHolder>() {

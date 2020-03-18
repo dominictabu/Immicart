@@ -126,5 +126,127 @@
 	<string name="prompt_searching">Searching&#8230;</string>
 	
 	<string name="product_search_button">Search object</string>
+	
+	<string name="from9am">9am - 10am</string>
+	<string name="from10am">10am - 11am</string>
+	<string name="from11am">11am - 12pm</string>
+	<string name="from12pm">12pm - 1pm</string>
+	<string name="from1pm">1pm - 2pm</string>
+	<string name="from2pm">2pm - 3pm</string>
+	<string name="from3pm">3pm - 4pm</string>
+	<string name="from4pm">4pm - 5pm</string>
+	<string name="from5pm">5pm - 6pm</string>
+	<string name="from6pm">6pm - 7pm</string>
+	<string name="from7pm">7pm - 8pm</string>
+	<string name="from8pm">8pm - 9pm</string>
+	
+	
+	<string-array name="from_9am">
+		<item>9am - 10am</item>
+		<item>10am - 11am</item>
+		<item>11am - 12pm</item>
+		<item>12pm - 1pm</item>
+		<item>1pm - 2pm</item>
+		<item>2pm - 3pm</item>
+		<item>3pm - 4pm</item>
+		<item>4pm - 5pm</item>
+		<item>5pm - 6pm</item>
+		<item>6pm - 7pm</item>
+		<item>7pm - 8pm</item>
+		<item>8pm - 9pm</item>
+	</string-array>
+	<string-array name="from_10am">
+		<item>10am - 11am</item>
+		<item>11am - 12pm</item>
+		<item>12pm - 1pm</item>
+		<item>1pm - 2pm</item>
+		<item>2pm - 3pm</item>
+		<item>3pm - 4pm</item>
+		<item>4pm - 5pm</item>
+		<item>5pm - 6pm</item>
+		<item>6pm - 7pm</item>
+		<item>7pm - 8pm</item>
+		<item>8pm - 9pm</item>
+	</string-array>
+	<string-array name="from_11am">
+		<item>11am - 12pm</item>
+		<item>12pm - 1pm</item>
+		<item>1pm - 2pm</item>
+		<item>2pm - 3pm</item>
+		<item>3pm - 4pm</item>
+		<item>4pm - 5pm</item>
+		<item>5pm - 6pm</item>
+		<item>6pm - 7pm</item>
+		<item>7pm - 8pm</item>
+		<item>8pm - 9pm</item>
+	</string-array>
+	<string-array name="from_12pm">
+		<item>12pm - 1pm</item>
+		<item>1pm - 2pm</item>
+		<item>2pm - 3pm</item>
+		<item>3pm - 4pm</item>
+		<item>4pm - 5pm</item>
+		<item>5pm - 6pm</item>
+		<item>6pm - 7pm</item>
+		<item>7pm - 8pm</item>
+		<item>8pm - 9pm</item>
+	</string-array>
+	<string-array name="from_1pm">
+		<item>1pm - 2pm</item>
+		<item>2pm - 3pm</item>
+		<item>3pm - 4pm</item>
+		<item>4pm - 5pm</item>
+		<item>5pm - 6pm</item>
+		<item>6pm - 7pm</item>
+		<item>7pm - 8pm</item>
+		<item>8pm - 9pm</item>
+	</string-array>
+	<string-array name="from_2pm">
+		<item>2pm - 3pm</item>
+		<item>3pm - 4pm</item>
+		<item>4pm - 5pm</item>
+		<item>5pm - 6pm</item>
+		<item>6pm - 7pm</item>
+		<item>7pm - 8pm</item>
+		<item>8pm - 9pm</item>
+	</string-array>
+	<string-array name="from_3pm">
+		<item>3pm - 4pm</item>
+		<item>4pm - 5pm</item>
+		<item>5pm - 6pm</item>
+		<item>6pm - 7pm</item>
+		<item>7pm - 8pm</item>
+		<item>8pm - 9pm</item>
+	</string-array>
+	<string-array name="from_4pm">
+		<item>4pm - 5pm</item>
+		<item>5pm - 6pm</item>
+		<item>6pm - 7pm</item>
+		<item>7pm - 8pm</item>
+		<item>8pm - 9pm</item>
+	</string-array>
+	<string-array name="from_5pm">
+		<item>5pm - 6pm</item>
+		<item>6pm - 7pm</item>
+		<item>7pm - 8pm</item>
+		<item>8pm - 9pm</item>
+	</string-array>
+	<string-array name="from_6pm">
+		<item>6pm - 7pm</item>
+		<item>7pm - 8pm</item>
+		<item>8pm - 9pm</item>
+	</string-array>
+	<string-array name="from_7pm">
+		<item>7pm - 8pm</item>
+		<item>8pm - 9pm</item>
+	</string-array>
+	<string-array name="from_8pm">
+		<item>8pm - 9pm</item>
+	</string-array>
+	<!--<string name="title_activity_drivers_tip">DriversTipActivity</string>-->
+	<string name="go_to_driver">\u2022 100% of tips go to your shopper</string>
+	<string name="tip_optional">\u2022 Tips are always optional</string>
+	<string name="tips_changeable">\u2022 You can change your tip after your delivery or order pickup</string>
+
 
 </resources>

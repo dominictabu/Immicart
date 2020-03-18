@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+	
+	<com.airbnb.android.airmapview.AirMapView
+			android:id="@+id/map"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent" />
+	<ImageView
+			android:layout_alignParentTop="true"
+			android:padding="12dp"
+			android:id="@+id/close_button"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:contentDescription="@string/cd_close_button"
+			app:srcCompat="@drawable/ic_close_white_24dp"/>
+	<androidx.recyclerview.widget.RecyclerView
+			android:id="@+id/recycler_view_stores"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_alignParentBottom="true"
+			android:layout_marginStart="3dp"
+			android:layout_marginEnd="3dp"
+			android:layout_marginBottom="0dp"
+			android:orientation="horizontal"
+			app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+			tools:listitem="@layout/item_store_horizontal" />
+
+</RelativeLayout>

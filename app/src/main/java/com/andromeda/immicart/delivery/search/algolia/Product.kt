@@ -16,3 +16,13 @@ data class Product(
     public val highlightedName: HighlightedString?
         get() = getHighlight(Attribute("name"))
 }
+
+
+data class DeliveryCartSearch(val key: String, val barcode: String, val name: String, val category: String, val offerPrice: Int, val normalPrice: Int, val quantity : Int,
+                             val image_url: String, var isInCart: Boolean? = false,
+                              override val _highlightResult: JsonObject?
+)  : Highlightable {
+
+    public val highlightedName: HighlightedString?
+        get() = getHighlight(Attribute("name"))
+}

@@ -47,15 +47,42 @@
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
     
         </androidx.recyclerview.widget.RecyclerView>
+        
+        <LinearLayout
+                android:id= "@+id/empty_items_text_view"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                      android:layout_height="wrap_content">
+            
+        <de.hdodenhof.circleimageview.CircleImageView
+                android:padding="12dp"
+                android:background="@drawable/dotted_grey"
+                android:src="@drawable/shymonkey_emoji"
+                android:layout_width="60dp"
+                   android:layout_height="60dp"/>
     
         <TextView
-                android:visibility="visible"
-                android:id= "@+id/empty_items_text_view"
+                android:layout_marginTop="10dp"
                 android:gravity="center"
+                android:visibility="visible"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="Woah Chief, you haven't added any items to cart yet. "
+                android:layout_height="wrap_content"
+                android:text="You haven't added any items to cart yet. "
         />
+            <Button
+                    android:layout_margin="10dp"
+                    android:textAllCaps="false"
+                    android:id="@+id/add_items_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/small_corners_blue"
+                    android:text="ADD ITEMS"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold" />
+        </LinearLayout>
+
     </FrameLayout>
     
    

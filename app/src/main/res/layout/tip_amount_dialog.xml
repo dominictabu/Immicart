@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content">
+	
+	<TextView
+			android:textStyle="bold"
+			android:layout_marginTop="20dp"
+			android:textSize="20sp"
+			android:gravity="center"
+			android:text="Other amount"
+			android:layout_width="match_parent"
+	          android:layout_height="wrap_content"/>
+	<LinearLayout
+			android:id="@+id/amount_ll"
+			android:orientation="horizontal"
+			android:gravity="bottom"
+			android:layout_marginStart="40dp"
+			android:layout_marginEnd="40dp"
+			android:layout_marginTop="10dp"
+			android:layout_below="@+id/enter_amount_title"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content">
+		<TextView
+				android:textSize="20sp"
+				android:text="KES"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"/>
+		
+		<EditText
+				android:maxLength="10"
+				android:inputType="number"
+				android:id="@+id/amont_edittext"
+				android:textSize="20sp"
+				android:layout_marginStart="20dp"
+				android:hint="E.g 1,000"
+				android:layout_below="@+id/mobile_title"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"/>
+	
+	
+	</LinearLayout>
+	
+	<TextView
+			android:visibility="gone"
+			android:id="@+id/error_txtview"
+			android:textColor="@color/colorAccent"
+			android:layout_marginStart="40dp"
+			android:text="Enter the amount of tip to continue"
+			android:layout_width="wrap_content"
+	          android:layout_height="wrap_content"/>
+	
+		<!--<EditText-->
+				<!--android:background="@drawable/log_out_bg"-->
+				<!--android:padding="16dp"-->
+				<!--android:layout_margin="20dp"-->
+				<!--android:textSize="16sp"-->
+				<!--android:id="@+id/amont_edittext"-->
+				<!--android:layout_width="match_parent"-->
+				<!--android:inputType="phone"-->
+				<!--android:layout_height="wrap_content" />-->
+	<Button
+			android:visibility="visible"
+			android:textSize="16sp"
+			android:layout_marginTop="20dp"
+			android:layout_marginStart="40dp"
+			android:layout_marginBottom="40dp"
+			android:layout_marginEnd="40dp"
+			android:textAllCaps="false"
+			android:id="@+id/submit_amount"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:background="@drawable/small_corners_blue"
+			android:text="OK"
+			android:textColor="@android:color/white"
+			android:textStyle="bold" />
+
+</LinearLayout>

@@ -11,10 +11,12 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.andromeda.immicart.BuildConfig
 import com.andromeda.immicart.delivery.authentication.AuthenticationActivity
+import com.bumptech.glide.Glide
 import com.firebase.ui.auth.AuthUI
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 import com.google.firebase.dynamiclinks.ShortDynamicLink
-
+import com.google.firebase.firestore.FirebaseFirestore
 
 
 class MyAccountActivity : AppCompatActivity() {
@@ -32,6 +34,7 @@ class MyAccountActivity : AppCompatActivity() {
 
         viewModel = ViewModelProviders.of(this).get(MyAccountViewModel::class.java)
         shareContent()
+//        getAccountInfo()
 
 
         log_out_btn?.setOnClickListener {
@@ -46,6 +49,26 @@ class MyAccountActivity : AppCompatActivity() {
             shareApp()
 
         }
+
+        val auth = FirebaseAuth.getInstance()
+
+        val email = auth.currentUser?.email
+        val displayName = auth.currentUser?.displayName
+        val photoURL = auth.currentUser?.photoUrl
+        val phoneNumber = auth.currentUser?.phoneNumber
+
+        if(displayName != null) {
+            user_name?.text = "Hi, ${displayName}"
+
+        } else if (email != null) {
+            user_name?.text = "Hi, ${email}"
+
+        } else if (phoneNumber != null) {
+            user_name?.text = "Hi, ${phoneNumber}"
+
+        }
+        Glide.with(this).load(photoURL).placeholder(R.drawable.ic_account_circle_green_24dp).into(profile_image)
+
     }
 
     fun shareApp() {
@@ -96,6 +119,23 @@ class MyAccountActivity : AppCompatActivity() {
     }
 
 
+    fun getAccountInfo() {
+        val db = FirebaseFirestore.getInstance();
+        val userUID = FirebaseAuth.getInstance().uid
+        val documentPath = "customers/$userUID"
+        db.document(documentPath).get().addOnSuccessListener {
+            val user = it.toObject(UserInfo::class.java)
+            user?.let {
+                user_name?.text = "Hi, ${user.name}"
+                Glide.with(this).load(user.imageUrl).placeholder(R.drawable.ic_account_circle_green_24dp).into(profile_image)
+            }
+
+
+
+        }
+    }
+
+
 
 
 
@@ -106,11 +146,19 @@ class MyAccountActivity : AppCompatActivity() {
             .addOnCompleteListener {
                 if(it.isSuccessful) {
                     startActivity(Intent(this, AuthenticationActivity::class.java))
+                    finish()
 
-            }
+                }
 
     }
 
 
     }
 }
+
+
+data class UserInfo(
+    var name: String? = "",
+    var email: String? = "",
+    var imageUrl: String? = ""
+)

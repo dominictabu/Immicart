@@ -10,8 +10,8 @@ interface DeliveryDao {
     @Query("SELECT * from current_location")
     fun getAllDeliveryLocations(): LiveData<List<CurrentLocation>>
 
-    @Query("SELECT * from delivery_locations")
-    fun getAllOtherDeliveryLocations(): LiveData<List<DeliveryLocation>>
+//    @Query("SELECT * from delivery_locations")
+//    fun getAllOtherDeliveryLocations(): LiveData<List<DeliveryLocation>>
 
     @Query("DELETE FROM current_location")
     suspend fun deleteAllDeliveryLocations()
@@ -19,43 +19,44 @@ interface DeliveryDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertDeliveryLocation(place: CurrentLocation)
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertInAllDeliveryLocation(locations: DeliveryLocation)
+//    @Insert(onConflict = OnConflictStrategy.REPLACE)
+//    suspend fun insertInAllDeliveryLocation(locations: DeliveryLocation)
 
-    @Query("DELETE FROM delivery_locations")
-    suspend fun deleteAllOtherDeliveryLocations()
+//    @Query("DELETE FROM delivery_locations")
+//    suspend fun deleteAllOtherDeliveryLocations()
 }
 
 
 class DeliveryRepository(private val deliveryDao: DeliveryDao) {
 
     val allDeliveryLocations: LiveData<List<CurrentLocation>> = deliveryDao.getAllDeliveryLocations()
-    val allOtherDeliveryLocations: LiveData<List<DeliveryLocation>> = deliveryDao.getAllOtherDeliveryLocations()
+//    val allOtherDeliveryLocations: LiveData<List<DeliveryLocation>> = deliveryDao.getAllOtherDeliveryLocations()
 
     suspend fun insertCurrentDeliveryLocation(place: CurrentLocation) {
         deliveryDao.insertDeliveryLocation(place = place)
     }
 
-    suspend fun insertInAllDeliveryLocation(locations: DeliveryLocation) {
-        deliveryDao.insertInAllDeliveryLocation(locations = locations)
+//    suspend fun insertInAllDeliveryLocation(locations: DeliveryLocation) {
+//        deliveryDao.insertInAllDeliveryLocation(locations = locations)
+//
+//    }
 
-    }
-
-    suspend fun deleteAllOtherDeliveryLocations() {
-        deliveryDao.deleteAllOtherDeliveryLocations()
-    }
+//    suspend fun deleteAllOtherDeliveryLocations() {
+//        deliveryDao.deleteAllOtherDeliveryLocations()
+//    }
     suspend fun deleteAllDeliveryLocations() {
         deliveryDao.deleteAllDeliveryLocations()
     }
 
 }
 
-@Entity(tableName = "delivery_locations")
-data class DeliveryLocation(@NonNull @PrimaryKey var placeID: String,
+//@Entity(tableName = "delivery_locations")
+data class DeliveryLocation(var placeID: String? = null,
                             var name: String? = null,
                             var address: String? = null,
                             var placeFullText: String? = null,
-                            var latLng: String,
+                            var latLng: String? = null,
+                            var isCurrent: Boolean? = false,
                             var isSelected: Boolean = false )
 @Entity(tableName = "current_location")
 data class CurrentLocation(@NonNull @PrimaryKey var placeID: String,

@@ -119,6 +119,7 @@ class CreateAccountFragment : Fragment() {
         if (requestCode == RC_SIGN_IN) {
             // The Task returned from this call is always completed, no need to attach
             // a listener.
+            Log.d(TAG, "onActivityResult : requestCode is RC_SIGN_IN")
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
             handleSignInResult(task)
         }
@@ -130,10 +131,15 @@ class CreateAccountFragment : Fragment() {
             val email = account?.email
             val photoURL = account?.photoUrl
             val displayName = account?.displayName
-            account?.let {
-                firebaseAuthWithGoogle(account, email!!, photoURL.toString()!!, displayName!!)
-
+            if(account != null) {
+                Log.d(TAG, "GoogleSignInAccount NOT null")
+                account?.let {
+                    firebaseAuthWithGoogle(account, email!!, photoURL.toString()!!, displayName!!)
+                }
+            } else {
+                Log.d(TAG, "GoogleSignInAccount is null")
             }
+
 
             // Signed in successfully, show authenticated UI.
 //            updateUI(account)
@@ -178,13 +184,20 @@ class CreateAccountFragment : Fragment() {
         user.put("email", email)
         user.put("imageUrl", photoURL)
 
-        db.document(documentPath).set(user).addOnSuccessListener {
-            activity?.let{
-                it.finish()
-                startActivity(Intent(activity, ProductsPageActivity::class.java))
+        db.document(documentPath).set(user).addOnCompleteListener {
+
+            if (it.isSuccessful) {
+                Log.d(TAG, "Task isSuccessful")
+                activity?.let {
+                    findNavController().navigate(R.id.action_createAccountFragment_to_selectStoreFragment)
+
+//                it.finish()
+//                startActivity(Intent(activity, SelectStoreFragment::class.java))
+                }
+            } else {
+                Log.d(TAG, "Task is Unsuccessful")
 
             }
-
 
         }
     }

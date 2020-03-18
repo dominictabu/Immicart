@@ -16,6 +16,11 @@ import androidx.recyclerview.widget.RecyclerView
 
 import com.andromeda.immicart.R
 import com.andromeda.immicart.delivery.checkout.DeliveryCartActivity
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import io.reactivex.disposables.Disposable
@@ -37,6 +42,8 @@ class SubCategoryTwoFragment : Fragment() {
     private var param2: String? = null
 
     private  lateinit var viewModel: ProductsViewModel
+    private   var parentCategoryKey: String? = null
+    private   var childCategoryKey: String? = null
     lateinit var cartItems: List<DeliveryCart>
     private var TAG = "SubcategoriesFragment"
 
@@ -46,7 +53,7 @@ class SubCategoryTwoFragment : Fragment() {
     private lateinit var lastVisibleSnapShot: DocumentSnapshot
     val categories: ArrayList<__Category__> = ArrayList()
 
-    var categoryRecyclerAdapter: CategoryRecyclerAdapter? = null
+    var categoryRecyclerAdapter: CategoryThreeRecyclerAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,25 +76,26 @@ class SubCategoryTwoFragment : Fragment() {
 
         viewModel = ViewModelProviders.of(activity!!).get(ProductsViewModel::class.java)
 
+        getCurrentStore()
 
-        viewModel.currentStores().observe(activity!!, Observer {
-            it?.let {
-                if(it.size > 0) {
-                    Log.d(TAG, "Stores size more than 0")
-                    val store = it[0]
-                    storeId = store.key
-                    getCategories()
-
-
-
-                } else {
-                    Log.d(TAG, "Stores size 0")
-
-                }
-
-
-            }
-        })
+//        viewModel.currentStores().observe(activity!!, Observer {
+//            it?.let {
+//                if(it.size > 0) {
+//                    Log.d(TAG, "Stores size more than 0")
+//                    val store = it[0]
+//                    storeId = store.key
+//                    getCategories()
+//
+//
+//
+//                } else {
+//                    Log.d(TAG, "Stores size 0")
+//
+//                }
+//
+//
+//            }
+//        })
 
 
 
@@ -109,19 +117,21 @@ class SubCategoryTwoFragment : Fragment() {
 
 
         viewModel.categoryParent.observe(this, Observer { category ->
-            val parentCategoryKey = category.key
+             parentCategoryKey = category.key
             //            retrieveCategories(id)
             viewModel.categoryChildOne.observe(this, Observer { subcategory ->
 
-                val childCategoryKey = subcategory.key
+                 childCategoryKey = subcategory.key
                 category_name.text = subcategory.name
 
 
 
                 parentCategoryKey?.let {
                     childCategoryKey?.let {
+                        getCurrentStore()
 
-                        getSubCategories(parentCategoryKey, childCategoryKey)
+
+//                        getSubCategories(parentCategoryKey, childCategoryKey)
 
                     }
                 }
@@ -142,21 +152,21 @@ class SubCategoryTwoFragment : Fragment() {
 
 //        categoryId?.let { retrieveCategories(it) }
 
-        cart_frame_layout.setOnClickListener {
+        cart_frame_layout?.setOnClickListener {
 
             startActivity(Intent(activity!!, DeliveryCartActivity::class.java))
         }
-
-        myBackIcon.setOnClickListener {
-            findNavController().popBackStack()
-        }
+//
+//        myBackIcon?.setOnClickListener {
+//            findNavController().popBackStack()
+//        }
     }
 
 
-    fun getCategories() {
-        val collectionPath = "stores/" + storeId + "/categories"
+    private fun getCategories(categoryKey: String, subCategoryKey: String) {
+        val collectionPath = "stores/$storeId/categories/$categoryKey/subcategories/$subCategoryKey/subcategories"
         val first = db.collection(collectionPath)
-            .limit(3)
+            .limit(4)
 
         first.get()
             .addOnSuccessListener { documentSnapshots ->
@@ -190,7 +200,7 @@ class SubCategoryTwoFragment : Fragment() {
 
 
 
-    fun getSubCategories(categoryKey: String, subCategoryKey: String) {
+    private fun getSubCategories(categoryKey: String, subCategoryKey: String) {
         val collectionPath = "stores/$storeId/categories/$categoryKey/subcategories/$subCategoryKey/subcategories"
         val first = db.collection(collectionPath)
 
@@ -238,14 +248,14 @@ class SubCategoryTwoFragment : Fragment() {
 
 
 
-    fun intializeRecycler(categories: List<__Category__>) {
+    private fun intializeRecycler(categories: List<__Category__>) {
 
         val linearLayoutManager = LinearLayoutManager(activity!!, RecyclerView.VERTICAL, false)
         products_items_recycler.setNestedScrollingEnabled(false);
 
         products_items_recycler.setLayoutManager(linearLayoutManager)
-        categoryRecyclerAdapter = CategoryRecyclerAdapter(storeId,
-            categories as ArrayList<__Category__>, activity!!, { cartItem : DeliveryCart, newQuantity: Int -> cartItemClicked(cartItem, newQuantity)}, { category: __Category__ -> viewAll(category)})
+        categoryRecyclerAdapter = CategoryThreeRecyclerAdapter(storeId,
+            categories as ArrayList<__Category__>, activity!!, { cartItem : DeliveryCart, newQuantity: Int -> cartItemClicked(cartItem, newQuantity)}, { category: __Category__ -> subCategoryTwoFragmentviewAll(category)})
 
 
         products_items_recycler.setAdapter(categoryRecyclerAdapter)
@@ -268,21 +278,52 @@ class SubCategoryTwoFragment : Fragment() {
 
     }
 
-    fun viewAll(category: __Category__) {
+    private fun subCategoryTwoFragmentviewAll(category: __Category__) {
 
+        Log.d(TAG, "View All called :  FOR Category : $category")
         viewModel.setCategoryLastChild(category)
+//        findNavController().navigate(R.id.action_subCategoryTwoFragment_to_lastCategoryFragment)
         findNavController().navigate(R.id.action_subCategoryTwoFragment_to_lastCategoryFragment)
 
     }
 
 
-    fun initializeSubCategoryRecyclerView(subCategories: ArrayList<__Category__>) {
+    private fun initializeSubCategoryRecyclerView(subCategories: ArrayList<__Category__>) {
         val linearLayoutManager = LinearLayoutManager(activity!!, RecyclerView.HORIZONTAL, false)
         subcategory_items_recycler.setNestedScrollingEnabled(false);
 
         subcategory_items_recycler.setLayoutManager(linearLayoutManager)
-        val categoryRecyclerAdapter = SubCategoryRecyclerAdapter(subCategories, {category: __Category__ -> viewAll(category)})
+        val categoryRecyclerAdapter = SubCategoryRecyclerAdapter(subCategories, {category: __Category__ -> subCategoryTwoFragmentviewAll(category)})
         subcategory_items_recycler.setAdapter(categoryRecyclerAdapter)
+    }
+
+    private fun getCurrentStore() {
+        val userUID = FirebaseAuth.getInstance().uid
+        val ref = FirebaseDatabase.getInstance().reference.child("customers/$userUID/current_store")
+
+        ref.addListenerForSingleValueEvent(object: ValueEventListener {
+            override fun onCancelled(p0: DatabaseError) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+                val store = p0.getValue(CurrentStore::class.java)
+
+                store?.let {
+                    storeId = store.storeID as String
+                    parentCategoryKey?.let {
+                        childCategoryKey?.let {
+                            getCategories(parentCategoryKey!!, childCategoryKey!!)
+                            getSubCategories(parentCategoryKey!!, childCategoryKey!!)
+
+                        }
+                    }
+
+                }
+            }
+        })
+
+
     }
 
 

@@ -134,6 +134,7 @@ class DeliveryCartItemsAdapterViewHolder_ (view: View) : RecyclerView.ViewHolder
         val price_ = cartItem.quantity!! * cartItem.offerPrice!!
         val formatter = DecimalFormat("#,###,###");
         val priceFormattedString = formatter.format(price_.toInt());
+        Glide.with(itemView.context).load(cartItem.image_url).into(itemView.scanned_product_image)
 
         itemView.price_tv.text = "KES $priceFormattedString"
         itemView.description_product.text = cartItem.name

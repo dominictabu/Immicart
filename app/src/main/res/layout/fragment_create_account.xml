@@ -11,16 +11,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 	
-	
-	
 	<TextView
 			android:id="@+id/save_time"
 			android:textStyle="bold"
 			android:textSize="26sp"
 			android:layout_marginStart="20dp"
-			android:layout_marginTop="20dp"
+			android:layout_marginTop="24dp"
 			android:layout_marginEnd="20dp"
-			android:layout_below="@+id/immicart_logo"
 			android:text="Save time,"
 			android:gravity="center"
 			android:layout_width="wrap_content"
@@ -106,7 +103,7 @@
 			android:textColor="@android:color/white"
 			android:padding="4dp"
 			android:background="@drawable/time_bg"
-			android:textSize="20sp"
+			android:textSize="16sp"
 			android:text=" Create account with Email"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content" />
@@ -141,7 +138,7 @@
 			android:layout_marginTop="8dp"
 			android:layout_marginStart="20dp"
 			android:layout_marginEnd="20dp"
-			android:layout_below="@+id/fblayout"
+			android:layout_below="@+id/or_ll"
 			android:clickable="true"
 			android:id="@+id/googlelayout"
 			android:layout_width="match_parent"
@@ -159,6 +156,7 @@
 				android:layout_width="wrap_content"
 		           android:layout_height="wrap_content"/>
 		<androidx.appcompat.widget.AppCompatTextView
+				android:textSize="16sp"
 				android:clickable="false"
 				android:layout_width="0dp"
 				android:layout_height="wrap_content"
@@ -169,7 +167,6 @@
 				android:textColor="@android:color/white"
 				android:id="@+id/payText"
 				android:visibility="visible"
-				android:textAppearance="@style/TextAppearance.AppCompat.Large"
 				app:fontFamily="@font/roboto_medium"/>
 	
 	
@@ -205,41 +202,42 @@
 	
 	</LinearLayout>
 	
-	<LinearLayout
-			android:layout_below="@+id/or_ll"
-			android:clickable="true"
-			android:id="@+id/fblayout"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:orientation="horizontal"
-			android:layout_gravity="bottom"
-			android:background="@drawable/fb_blue_bg"
-			android:padding="8dp"
-			android:layout_marginTop="4dp"
-			android:layout_marginStart="20dp"
-			android:layout_marginEnd="20dp">
-		
-		<ImageView
-				android:tint="@android:color/white"
-				android:layout_marginStart="16dp"
-				android:src="@drawable/facebook_icon"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"/>
-		<androidx.appcompat.widget.AppCompatTextView
-				android:layout_width="0dp"
-				android:layout_height="wrap_content"
-				android:layout_weight="1"
-				android:layout_gravity="center"
-				android:gravity="center"
-				android:text="Continue with Facebook"
-				android:textColor="@android:color/white"
-				android:id="@+id/fb_icon"
-				android:visibility="visible"
-				android:textAppearance="@style/TextAppearance.AppCompat.Large"
-				app:fontFamily="@font/roboto_medium"/>
-	
-	
-	</LinearLayout>
+	<!--<LinearLayout-->
+			<!---->
+			<!--android:layout_below="@+id/or_ll"-->
+			<!--android:clickable="true"-->
+			<!--android:id="@+id/fblayout"-->
+			<!--android:layout_width="match_parent"-->
+			<!--android:layout_height="wrap_content"-->
+			<!--android:orientation="horizontal"-->
+			<!--android:layout_gravity="bottom"-->
+			<!--android:background="@drawable/fb_blue_bg"-->
+			<!--android:padding="8dp"-->
+			<!--android:layout_marginTop="4dp"-->
+			<!--android:layout_marginStart="20dp"-->
+			<!--android:layout_marginEnd="20dp">-->
+		<!---->
+		<!--<ImageView-->
+				<!--android:tint="@android:color/white"-->
+				<!--android:layout_marginStart="16dp"-->
+				<!--android:src="@drawable/facebook_icon"-->
+				<!--android:layout_width="wrap_content"-->
+				<!--android:layout_height="wrap_content"/>-->
+		<!--<androidx.appcompat.widget.AppCompatTextView-->
+				<!--android:layout_width="0dp"-->
+				<!--android:layout_height="wrap_content"-->
+				<!--android:layout_weight="1"-->
+				<!--android:layout_gravity="center"-->
+				<!--android:gravity="center"-->
+				<!--android:text="Continue with Facebook"-->
+				<!--android:textColor="@android:color/white"-->
+				<!--android:id="@+id/fb_icon"-->
+				<!--android:visibility="visible"-->
+				<!--android:textAppearance="@style/TextAppearance.AppCompat.Large"-->
+				<!--app:fontFamily="@font/roboto_medium"/>-->
+	<!---->
+	<!---->
+	<!--</LinearLayout>-->
 	
 	
 	<LinearLayout

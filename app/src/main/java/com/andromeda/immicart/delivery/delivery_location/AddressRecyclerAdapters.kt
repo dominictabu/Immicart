@@ -10,13 +10,13 @@ import com.andromeda.immicart.delivery.persistence.CurrentLocation
 import com.andromeda.immicart.delivery.persistence.DeliveryLocation
 import kotlinx.android.synthetic.main.item_delivery_location.view.*
 
-class AddressRecyclerAdapters(val currentLocationListener: (CurrentLocation) -> Unit) : RecyclerView.Adapter<AddressRecyclerAdapters.ViewHolder>() {
+class AddressRecyclerAdapters(val currentLocationListener: (DeliveryLocation) -> Unit) : RecyclerView.Adapter<AddressRecyclerAdapters.ViewHolder>() {
 
     private var lastChecked: RadioButton? = null
-    var currentLocation: CurrentLocation? = null
+    var currentLocation: DeliveryLocation? = null
     var deliveryLocations: List<DeliveryLocation> = ArrayList()
 
-    fun set_CurrentLocation(place: CurrentLocation) {
+    fun set_CurrentLocation(place: DeliveryLocation) {
         currentLocation = place
         setChecked()
 
@@ -32,12 +32,13 @@ class AddressRecyclerAdapters(val currentLocationListener: (CurrentLocation) -> 
 
     override fun getItemViewType(position: Int): Int {
 
-        val isCurrent = deliveryLocations.get(position).isSelected
+        val isCurrent = deliveryLocations.get(position).isCurrent
+        val isSelected = deliveryLocations.get(position).isCurrent
         //categoriesPr.get(position).isInCart
 
         isCurrent?.let {
             if(isCurrent!!) {
-                return R.layout.item_current_delivery_location
+                return R.layout.item_current_location
             } else {
                 return R.layout.item_delivery_location
             }
@@ -54,7 +55,7 @@ class AddressRecyclerAdapters(val currentLocationListener: (CurrentLocation) -> 
 
         when (viewType) {
             R.layout.item_delivery_location -> return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_delivery_location, parent, false))
-            R.layout.item_current_delivery_location -> return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_current_delivery_location, parent, false))
+            R.layout.item_current_location -> return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_current_location, parent, false))
             else -> { // Note the block
                 return ViewHolder(
                     LayoutInflater.from(parent.context).inflate(
@@ -90,17 +91,23 @@ class AddressRecyclerAdapters(val currentLocationListener: (CurrentLocation) -> 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
         val deliveryLocation_: DeliveryLocation = deliveryLocations.get(position)
-        holder.itemView.current_location_address.text = deliveryLocation_.name
+        if(!deliveryLocation_.isCurrent!!) {
+            holder.itemView.current_location_address.text = deliveryLocation_.name
+
+        }
+        val isCurrent = deliveryLocation_.isCurrent
         holder.itemView.current_location_address_two.text = deliveryLocation_.address
         holder.itemView.radiobutton.isChecked = deliveryLocation_.isSelected;
         holder.itemView.radiobutton.tag = Integer.valueOf(position);
 
 
         holder.itemView.setOnClickListener {
-            val currentLocation = CurrentLocation( deliveryLocation_.placeID,
+            deliveryLocations.get(position).isSelected = true
+            val currentLocation = DeliveryLocation( deliveryLocation_.placeID,
                 deliveryLocation_.name,
                 deliveryLocation_.address,
-                deliveryLocation_.placeFullText, deliveryLocation_.latLng, true)
+                deliveryLocation_.placeFullText, deliveryLocation_.latLng)
+            notifyItemChanged(position)
             currentLocationListener(currentLocation)
 
         }

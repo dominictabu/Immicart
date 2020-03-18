@@ -18,21 +18,50 @@
 				android:orientation="horizontal"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content">
-			<androidx.appcompat.widget.SearchView
+			
+			<LinearLayout
+					android:clickable="true"
+					android:id="@+id/search_ll"
+					android:gravity="center"
 					android:padding="8dp"
-					android:queryBackground="@null"
-					app:closeIcon="@drawable/ic_close_black__24dp"
-					app:searchIcon="@drawable/ic_search_black__24dp"
-					app:searchHintIcon="@drawable/ic_search_black__24dp"
-					android:id="@+id/search_view_search_fragment"
-					android:layout_margin="10dp"
-					app:defaultQueryHint="Search malls, stores"
 					android:background="@drawable/search_store_bg"
-					app:queryHint="Search Tuskys"
-					app:iconifiedByDefault="false"
 					android:layout_width="0dp"
 					android:layout_weight="1"
-					android:layout_height="wrap_content"/>
+					android:layout_height="wrap_content"
+					android:focusable="true">
+				<ImageView
+						android:clickable="false"
+						android:src="@drawable/ic_search_black__24dp"
+						android:layout_width="wrap_content"
+				           android:layout_height="wrap_content"/>
+				<TextView
+						android:clickable="false"
+						android:id="@+id/query_hint"
+						android:ellipsize="end"
+						android:maxLines="1"
+						android:layout_marginStart="8dp"
+						android:text="Search malls, stores"
+						android:layout_width="wrap_content"
+				          android:layout_height="wrap_content"/>
+				
+			</LinearLayout>
+			<!---->
+			<!--<androidx.appcompat.widget.SearchView-->
+					<!---->
+					<!--android:padding="8dp"-->
+					<!--android:queryBackground="@null"-->
+					<!--app:closeIcon="@drawable/ic_close_black__24dp"-->
+					<!--app:searchIcon="@drawable/ic_search_black__24dp"-->
+					<!--app:searchHintIcon="@drawable/ic_search_black__24dp"-->
+					<!--android:id="@+id/search_view_search_fragment"-->
+					<!--android:layout_margin="10dp"-->
+					<!--app:defaultQueryHint="Search malls, stores"-->
+					<!--android:background="@drawable/search_store_bg"-->
+					<!--app:queryHint="Search Tuskys"-->
+					<!--app:iconifiedByDefault="false"-->
+					<!--android:layout_width="0dp"-->
+					<!--android:layout_weight="1"-->
+					<!--android:layout_height="wrap_content"/>-->
 			
 			<FrameLayout
 					android:layout_alignParentEnd="true"
@@ -72,12 +101,19 @@
 		
 	</androidx.appcompat.widget.Toolbar>
 	
+	<androidx.core.widget.NestedScrollView
+			android:layout_below="@+id/toolbar"
+			android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+		
+	<RelativeLayout android:layout_width="match_parent"
+	                android:layout_height="wrap_content">
+		
 	<LinearLayout
 			android:id="@+id/search_options"
 			android:layout_marginTop="10dp"
 			android:layout_marginBottom="10dp"
 			android:layout_centerHorizontal="true"
-			android:layout_below="@+id/toolbar"
 			android:weightSum="2"
 			android:orientation="horizontal"
 			android:layout_width="wrap_content"
@@ -167,6 +203,7 @@
            android:layout_height="wrap_content">
 		
 		<LinearLayout
+				android:gravity="center"
 				android:orientation="vertical"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content">
@@ -174,11 +211,16 @@
 					android:layout_margin="8dp"
 					android:textStyle="bold"
 					android:textSize="16sp"
-					android:text="Popular searches"
+					android:text="Search by Departments"
 					android:layout_width="wrap_content"
 			          android:layout_height="wrap_content"/>
 		
 	<androidx.recyclerview.widget.RecyclerView
+			android:layout_marginBottom="40dp"
+			android:orientation="vertical"
+			android:gravity="center"
+			app:spanCount="2"
+			app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
 			tools:listitem="@layout/item_search_suggestion"
 			android:layout_marginTop="10dp"
 			android:layout_below="@+id/bottom_view"
@@ -188,5 +230,9 @@
 		</LinearLayout>
 	
 	</androidx.cardview.widget.CardView>
+	</RelativeLayout>
+	
+	</androidx.core.widget.NestedScrollView>
+
 
 </RelativeLayout>

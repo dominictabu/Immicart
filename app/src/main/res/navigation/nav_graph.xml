@@ -10,6 +10,8 @@
 		        app:enterAnim="@anim/nav_default_exit_anim" app:exitAnim="@anim/nav_default_exit_anim"/>
 		<action android:id="@+id/go_to_settings" app:destination="@id/searchFragment"/>
 		<action android:id="@+id/go_to_orders" app:destination="@id/ordersListFragment"/>
+		<action android:id="@+id/action_productsFragment_to_searchResultsFragment"
+		        app:destination="@id/searchResultsFragment"/>
 	</fragment>
 	<fragment android:id="@+id/subcategoriesFragment"
 	          android:name="com.andromeda.immicart.delivery.SubcategoriesFragment"
@@ -21,6 +23,8 @@
 	          android:label="fragment_search" tools:layout="@layout/fragment_search">
 		<action android:id="@+id/action_searchFragment_to_searchResultsFragment"
 		        app:destination="@id/searchResultsFragment"/>
+		<action android:id="@+id/action_searchFragment_to_subcategoriesFragment"
+		        app:destination="@id/subcategoriesFragment"/>
 	</fragment>
 	<fragment android:id="@+id/walletFragment" android:name="com.andromeda.immicart.delivery.wallet.WalletFragment"
 	          android:label="fragment_wallet" tools:layout="@layout/fragment_wallet">
@@ -42,7 +46,9 @@
 	          android:label="fragment_last_category" tools:layout="@layout/fragment_last_category"/>
 	<fragment android:id="@+id/searchResultsFragment"
 	          android:name="com.andromeda.immicart.delivery.search.SearchResultsFragment"
-	          android:label="fragment_search_results" tools:layout="@layout/fragment_search_results"/>
+	          android:label="fragment_search_results" tools:layout="@layout/fragment_search_results">
+		<action android:id="@+id/action_searchResultsFragment_to_facetFragment2" app:destination="@id/facetFragment2"/>
+	</fragment>
 	<fragment android:id="@+id/confirmAddressFragment"
 	          android:name="com.andromeda.immicart.delivery.delivery_location.ConfirmAddressFragment"
 	          android:label="fragment_confirm_address" tools:layout="@layout/fragment_confirm_address">
@@ -54,4 +60,10 @@
 	          android:label="fragment_search_address" tools:layout="@layout/fragment_search_address"/>
 	<fragment android:id="@+id/MPESAFragment" android:name="com.andromeda.immicart.delivery.wallet.MPESAFragment"
 	          android:label="fragment_mpesa" tools:layout="@layout/fragment_mpesa"/>
+	<dialog android:id="@+id/barcodeResultFragment"
+	        android:name="com.andromeda.immicart.delivery.search.visionSearch.barcodedetection.BarcodeResultFragment"
+	        android:label="BarcodeResultFragment"/>
+	<fragment android:id="@+id/facetFragment2"
+	          android:name="com.andromeda.immicart.delivery.search.algolia.FacetFragment" android:label="fragment_facet"
+	          tools:layout="@layout/fragment_facet"/>
 </navigation>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools" android:id="@+id/vision_search_nav_graph"
+            app:startDestination="@id/photoOptionsFragment">
+	
+	<fragment android:id="@+id/photoOptionsFragment"
+	          android:name="com.andromeda.immicart.delivery.search.visionSearch.imagelabeling.PhotoOptionsFragment"
+	          android:label="fragment_photo_options" tools:layout="@layout/fragment_photo_options">
+		<action android:id="@+id/action_photoOptionsFragment_to_visionSearchResultsFragment"
+		        app:destination="@id/visionSearchResultsFragment"/>
+	</fragment>
+	<fragment android:id="@+id/visionSearchResultsFragment"
+	          android:name="com.andromeda.immicart.delivery.search.visionSearch.imagelabeling.VisionSearchResultsFragment"
+	          android:label="fragment_vision_search_results" tools:layout="@layout/fragment_vision_search_results"/>
+</navigation>
