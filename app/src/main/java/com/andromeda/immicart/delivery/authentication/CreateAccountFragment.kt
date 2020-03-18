@@ -1,35 +1,30 @@
 package com.andromeda.immicart.delivery.authentication
 
 
+import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.fragment.findNavController
-
-import com.andromeda.immicart.R
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import kotlinx.android.synthetic.main.fragment_create_account.*
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import androidx.core.app.ActivityCompat.startActivityForResult
-import android.content.Intent
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.google.android.gms.tasks.Task
-import com.google.android.gms.common.api.ApiException
-
-import android.util.Log
-import android.view.Display
 import android.widget.Toast
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import com.andromeda.immicart.R
 import com.andromeda.immicart.delivery.ProductsPageActivity
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.OnCompleteListener
+import com.google.android.gms.tasks.Task
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.iid.FirebaseInstanceId
-
+import kotlinx.android.synthetic.main.fragment_create_account.*
 
 
 // TODO: Rename parameter arguments, choose names that match

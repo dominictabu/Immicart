@@ -2,37 +2,36 @@ package com.andromeda.immicart.delivery
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Paint
+import android.graphics.Point
+import android.graphics.drawable.BitmapDrawable
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
+import android.widget.LinearLayout
+import android.widget.PopupWindow
+import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.andromeda.immicart.R
 import com.andromeda.immicart.networking.ImmicartAPIService
 import com.andromeda.immicart.networking.Model
-import com.facebook.shimmer.ShimmerFrameLayout
-import kotlinx.android.synthetic.main.item_category.view.*
-import kotlinx.android.synthetic.main.item_product_in_cart.view.*
-import java.text.DecimalFormat
-
-import android.graphics.Paint
-import android.graphics.Point
-import android.graphics.drawable.BitmapDrawable
-import android.view.Gravity
-import android.widget.ImageButton
-import android.widget.LinearLayout
-import android.widget.PopupWindow
-import android.widget.TextView
 import com.bumptech.glide.Glide
+import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.android.synthetic.main.item_category.view.*
 import kotlinx.android.synthetic.main.item_product.view.*
 import kotlinx.android.synthetic.main.item_product.view.normal_price
 import kotlinx.android.synthetic.main.item_product.view.offer_price
 import kotlinx.android.synthetic.main.item_product.view.product_name
 import kotlinx.android.synthetic.main.item_product.view.product_picture
+import kotlinx.android.synthetic.main.item_product_in_cart.view.*
 import kotlinx.android.synthetic.main.item_search_suggestion.view.*
 import kotlinx.android.synthetic.main.item_subcategory.view.*
+import java.text.DecimalFormat
 
 val baseURL = "https://us-central1-immicart-2ca69.cloudfunctions.net/"
 

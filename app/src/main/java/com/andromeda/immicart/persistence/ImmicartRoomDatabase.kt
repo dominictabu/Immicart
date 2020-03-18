@@ -6,9 +6,9 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.andromeda.immicart.delivery.DeliveryCart
-import com.andromeda.immicart.delivery.delivery_location.Place
 import com.andromeda.immicart.delivery.choose_store.Store
 import com.andromeda.immicart.delivery.choose_store.storeDao
+import com.andromeda.immicart.delivery.delivery_location.Place
 import com.andromeda.immicart.delivery.persistence.CurrentLocation
 import com.andromeda.immicart.delivery.persistence.DeliveryDao
 import com.andromeda.immicart.delivery.persistence.DeliveryLocation

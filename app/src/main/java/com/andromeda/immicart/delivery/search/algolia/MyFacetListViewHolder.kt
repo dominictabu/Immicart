@@ -7,7 +7,6 @@ import com.algolia.instantsearch.helper.android.filter.facet.FacetListViewHolder
 import com.algolia.instantsearch.helper.android.inflate
 import com.algolia.search.model.search.Facet
 import com.andromeda.immicart.R
-import kotlinx.android.synthetic.main.item_filter.view.*
 
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter

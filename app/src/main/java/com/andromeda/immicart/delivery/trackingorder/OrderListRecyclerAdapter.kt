@@ -5,8 +5,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.andromeda.immicart.R
-import com.andromeda.immicart.delivery.PlaceOrder
-import com.andromeda.immicart.networking.Model
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.item_order.view.*
 
