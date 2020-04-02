@@ -66,6 +66,8 @@ class SearchFragment : Fragment() {
     val db = FirebaseFirestore.getInstance();
     private lateinit var viewModel: ProductsViewModel
 
+    private var storeId : String? = null
+
     private var cartItems: List<DeliveryCart> = ArrayList()
 
 
@@ -147,8 +149,14 @@ class SearchFragment : Fragment() {
 
         }
 
+
         image_search?.setOnClickListener {
-            startActivity(Intent(activity!!, ImageLabelingActivity::class.java))
+
+            storeId?.let {
+                val intent = Intent(activity!!, ImageLabelingActivity::class.java)
+                intent.putExtra(STORE_ID, storeId)
+                startActivity(intent)
+            }
 
         }
         search_ll?.setOnClickListener {
@@ -276,7 +284,6 @@ class SearchFragment : Fragment() {
 
     fun intializeRecycler(category: List<__Category__>) {
 
-
 //        val linearLayoutManager = LinearLayoutManager(activity!!, RecyclerView.VERTICAL, false)
         recycler_items_search?.setNestedScrollingEnabled(false);
         recycler_items_search?.layoutManager = GridLayoutManager(requireContext(), 2)
@@ -293,6 +300,7 @@ class SearchFragment : Fragment() {
 
         private const val TAG = "SearchFragment"
         private const val SERACH_TERM = "SERACH_TERM"
+        private const val STORE_ID = "STORE_ID"
 
         @JvmStatic
         fun newInstance() =
@@ -325,9 +333,9 @@ class SearchFragment : Fragment() {
                 val store = p0.getValue(CurrentStore::class.java)
 
                 store?.let {
-                    val storeId = store.storeID as String
+                     storeId = store.storeID as String
                     query_hint?.text = "Search ${store.storeName}"
-                    getCategories(storeId)
+                    getCategories(storeId!!)
                 }
             }
 

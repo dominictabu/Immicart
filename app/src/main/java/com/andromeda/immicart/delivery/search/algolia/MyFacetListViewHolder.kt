@@ -14,6 +14,7 @@ import com.algolia.instantsearch.core.Callback
 import com.algolia.instantsearch.core.selectable.list.SelectableItem
 import com.algolia.instantsearch.helper.filter.facet.FacetListItem
 import com.algolia.instantsearch.helper.filter.facet.FacetListView
+import kotlinx.android.synthetic.main.item_filter.view.*
 
 var MyFacetListViewHolder_TAG = "MyFacetListViewHolder"
 var SearchMyFacetListViewHolder_TAG = "SearchFacetListAdapter"

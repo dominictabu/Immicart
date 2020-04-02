@@ -14,6 +14,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.EventListener
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.android.synthetic.main.fragment_wallet.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -56,7 +57,7 @@ class WalletFragment : Fragment() {
         currentFirebaseUser = FirebaseAuth.getInstance().currentUser
         snapshotListeners()
 
-        top_up_button.setOnClickListener {
+        top_up_button?.setOnClickListener {
 //            findNavController().navigate(R.id.action_walletFragment_to_MPESAFragment)
             activity?.let {
                 startActivity(Intent(activity!!, MPESAActivity::class.java))

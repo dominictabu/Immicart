@@ -26,7 +26,7 @@ class WalletFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        walletAmount.text=3000.toString()  // Value to be triggered from firebase.
+//        walletAmount?.text=3000.toString()  // Value to be triggered from firebase.
         addCredit()
     }
 
@@ -34,9 +34,9 @@ class WalletFragment : Fragment() {
 
  fun addCredit(){
 
-     button_add_credit.setOnClickListener { view: View ->
-         Navigation.findNavController(view).navigate(R.id.action_walletFragment_to_paymentDetailsFragment)
-     }
+//     button_add_credit.setOnClickListener { view: View ->
+//         Navigation.findNavController(view).navigate(R.id.action_walletFragment_to_paymentDetailsFragment)
+//     }
 
  }
 

@@ -11,7 +11,7 @@
 		        app:destination="@id/deliveryDetailsFurnituireFragment"/>
 	</fragment>
 	<fragment android:id="@+id/deliveryDetailsFurnituireFragment"
-	          android:name="com.andromeda.immicart.delivery.checkout.DeliveryDetailsFurnituireFragment"
+	          android:name="com.andromeda.immicart.delivery.furniture.DeliveryDetailsFurnituireFragment"
 	          android:label="fragment_delivery_details_furnituire"
 	          tools:layout="@layout/fragment_delivery_details_furnituire"/>
 </navigation>

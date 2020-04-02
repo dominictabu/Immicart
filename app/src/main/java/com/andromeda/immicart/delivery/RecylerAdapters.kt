@@ -46,7 +46,6 @@ class ProductsAdapter (val context: Context, val addQuantityClickListener: (Deli
 
     private var TAG = "ProductsAdapter"
 
-
 //    //CArt Items
 //    fun setFoundItems(items : List<DeliveryCart>) {
 ////        foundItems = items as ArrayList<DeliveryCart>
@@ -63,14 +62,13 @@ class ProductsAdapter (val context: Context, val addQuantityClickListener: (Deli
         categoriesPr = items
         storeId_ = storeId
         notifyDataSetChanged()
+        Log.d(TAG, "updateList called : Items : $items")
 
     }
 
     fun updateCartItems(items: ArrayList<DeliveryCart>) {
 
-
     }
-
     // Gets the number of animals in the list
     override fun getItemCount(): Int {
             return categoriesPr!!.size
@@ -85,7 +83,6 @@ class ProductsAdapter (val context: Context, val addQuantityClickListener: (Deli
             else -> { // Note the block
                 return CartItemsAdapterViewHolder(LayoutInflater.from(context).inflate(R.layout.item_product, parent, false))            }
         }
-
     }
 
     // Binds each animal in the ArrayList to a view
@@ -130,7 +127,6 @@ class ProductsAdapter (val context: Context, val addQuantityClickListener: (Deli
         // Displaying the popup at the specified location, + offsets.
         changeCartItemNumberPopUp.showAtLocation(layout, Gravity.NO_GRAVITY, p.x + OFFSET_X, p.y + OFFSET_Y)
 
-
         // Getting a reference to Close button, and close the popup when clicked.
         val add = layout.findViewById<View>(R.id.add_quantity) as ImageButton
         val quantityText = layout.findViewById<View>(R.id.quantityTv) as TextView
@@ -143,15 +139,12 @@ class ProductsAdapter (val context: Context, val addQuantityClickListener: (Deli
 
         } else {
             (removeBtn as ImageButton).setImageResource(R.drawable.ic_remove_primary_color_24dp)
-
         }
 
         add.setOnClickListener {
-
             currentQuantityInt++
             quantityText.text = currentQuantityInt.toString()
             (removeBtn as ImageButton).setImageResource(R.drawable.ic_remove_primary_color_24dp)
-
         }
 
 
@@ -165,7 +158,6 @@ class ProductsAdapter (val context: Context, val addQuantityClickListener: (Deli
                 currentQuantityInt--
                 changeCartItemNumberPopUp.dismiss()
 
-
             }
 
         }
@@ -178,13 +170,10 @@ class ProductsAdapter (val context: Context, val addQuantityClickListener: (Deli
             addQuantityClickListener(cart, currentQuantityInt)
             Log.d(TAG, "addQuantityClickListener set.")
 
-
         }
-
 
 //         val newQuantity = (quantityTv.text).toString().toInt()
 //         return currentQuantityInt
-
 
 
     }
@@ -353,6 +342,7 @@ class ProductsAdapter (val context: Context, val addQuantityClickListener: (Deli
     var deliveryCartItems: ArrayList<DeliveryCart> = ArrayList()
     var isLoading = false
     var isMoreDataAvailable_ = false
+     var productsArray: ArrayList<DeliveryCart> = ArrayList()
 
     fun setIsLoading(is_Loading: Boolean) {
         isLoading = is_Loading
@@ -369,6 +359,26 @@ class ProductsAdapter (val context: Context, val addQuantityClickListener: (Deli
     fun updateItems(items: ArrayList<DeliveryCart>) {
         deliveryCartItems = items
         notifyDataSetChanged()
+
+//        if(productsArray.size != 0) {
+//            val changedIndex : Int? = null
+//            productsArray.forEach {
+//                val product = it
+//                val index = productsArray.indexOf(product)
+//                items.forEach {
+//                    if(product.key == it.key) {
+//                        product.isInCart = true
+//                        val deliveryCart =
+//                            DeliveryCart(it.key, it.barcode, it.name,it.category, it.offerPrice, it.normalPrice, it.quantity, it.image_url, true)
+//                        productsArray.set(index, deliveryCart)
+//                    }
+//                }
+//
+//            }
+//            adapter.updateList(productsArray, storeId)
+//
+//
+//        }
 
     }
 //     fun retrieveCategoryProducts(id: Int, shimmerFrameLayout: ShimmerFrameLayout, adapter: ProductsAdapter) {
@@ -428,79 +438,152 @@ class ProductsAdapter (val context: Context, val addQuantityClickListener: (Deli
 //
 //    }
 
-    fun getCategoryProducts(category: __Category__, shimmerFrameLayout: ShimmerFrameLayout, adapter: ProductsAdapter, cartItems: List<DeliveryCart>) {
-        val collectionPath = "stores/" + storeId + "/offers"
-        val products = FirebaseFirestore.getInstance().collection(collectionPath)
-            .whereEqualTo("categoryOne", category.name!!)
-            .limit(10)
+//    fun getCategoryProducts(category: __Category__, shimmerFrameLayout: ShimmerFrameLayout, adapter: ProductsAdapter, cartItems: List<DeliveryCart>) {
+//        val collectionPath = "stores/" + storeId + "/offers"
+//        val products = FirebaseFirestore.getInstance().collection(collectionPath)
+//            .whereEqualTo("categoryOne", category.name!!)
+//            .limit(10)
+//
+//        Log.d(TAG, "Category : ${category.name}")
+//
+//        products.get().addOnSuccessListener { documentSnapshots ->
+//            Log.d(TAG, "documentSnapshots : $documentSnapshots")
+//
+//            productsArray.clear()
+//            for (document in documentSnapshots) {
+//                val offer = document.data as HashMap<String, Any>
+//                val productName = offer["name"] as String
+//                val deadline = offer["deadline"] as String
+//                val normalPrice: String = offer["normal_price"] as String
+//                val offerPrice = offer["offer_price"] as String
+//                val category = offer["categoryOne"] as String
+//                var barcode = offer["barcode"] as String?
+//                val fileURL = offer["imageUrl"] as String
+//
+//                val intOfferPrice = offerPrice.toInt()
+//                val intNormalPrice = normalPrice.toInt()
+//
+//                if (barcode == null) {
+//                    barcode = "Not Set"
+//                }
+//
+//                val deliveryCart =
+//                    DeliveryCart(document.id, barcode, productName,category, intOfferPrice, intNormalPrice, 1, fileURL)
+//                val product =
+//                    __Product__(document.id, barcode, productName,category, intOfferPrice, intNormalPrice, 1, fileURL, false)
+//                productsArray.add(deliveryCart)
+//                Log.d(TAG, "Product : $deliveryCart")
+//                Log.d(TAG, "Product Array Size : ${productsArray.size}")
+//
+//            }
+//
+//            if(productsArray.size != 0) {
+//                productsArray.forEach {
+//                    val product = it
+//                    val index = productsArray.indexOf(product)
+//                    cartItems.forEach {
+//                        if(product.key == it.key) {
+//                            product.isInCart = true
+//                            val deliveryCart =
+//                                DeliveryCart(it.key, it.barcode, it.name,it.category, it.offerPrice, it.normalPrice, it.quantity, it.image_url, true)
+//                            productsArray.set(index, deliveryCart)
+//                        }
+//                    }
+//
+//                }
+//                adapter.updateList(productsArray, storeId)
+//
+//
+//            } else {
+////                val index = categories.indexOf(category)
+//////                Log.d(TAG, )
+////                categories.remove(category)
+//////                categories.drop(index)
+////                notifyItemRemoved(index)
+//////                notifyItemRangeRemoved(index, 1)
+//            }
+//
+//
+////            adapter.setFoundItems(cartItems)
+//
+//            shimmerFrameLayout.stopShimmerAnimation()
+//            shimmerFrameLayout.visibility = View.GONE
+//
+//        }
+//    }
+     fun getCategoryProducts(category: __Category__, shimmerFrameLayout: ShimmerFrameLayout, adapter: ProductsAdapter, cartItems: List<DeliveryCart>) {
+         val collectionPath = "stores/" + storeId + "/offers"
+         val products = FirebaseFirestore.getInstance().collection(collectionPath)
+             .whereEqualTo("categoryOne", category.name!!)
+             .limit(10)
 
-        Log.d(TAG, "Category : ${category.name}")
+         Log.d(TAG, "Category : ${category.name}")
 
-        var productsArray: ArrayList<DeliveryCart> = ArrayList()
-        products.get().addOnSuccessListener { documentSnapshots ->
-            Log.d(TAG, "documentSnapshots : $documentSnapshots")
+         var productsArray: ArrayList<DeliveryCart> = ArrayList()
+         products.get().addOnSuccessListener { documentSnapshots ->
+             Log.d(TAG, "documentSnapshots : $documentSnapshots")
 
-            for (document in documentSnapshots) {
-                val offer = document.data as HashMap<String, Any>
-                val productName = offer["name"] as String
-                val deadline = offer["deadline"] as String
-                val normalPrice: String = offer["normal_price"] as String
-                val offerPrice = offer["offer_price"] as String
-                val category = offer["categoryOne"] as String
-                var barcode = offer["barcode"] as String?
-                val fileURL = offer["imageUrl"] as String
+             for (document in documentSnapshots) {
+                 val offer = document.data as HashMap<String, Any>
+                 val productName = offer["name"] as String
+                 val deadline = offer["deadline"] as String
+                 val normalPrice: String = offer["normal_price"] as String
+                 val offerPrice = offer["offer_price"] as String
+                 val category = offer["categoryOne"] as String
+                 var barcode = offer["barcode"] as String?
+                 val fileURL = offer["imageUrl"] as String
 
-                val intOfferPrice = offerPrice.toInt()
-                val intNormalPrice = normalPrice.toInt()
+                 val intOfferPrice = offerPrice.toInt()
+                 val intNormalPrice = normalPrice.toInt()
 
-                if (barcode == null) {
-                    barcode = "Not Set"
-                }
+                 if (barcode == null) {
+                     barcode = "Not Set"
+                 }
 
-                val deliveryCart =
-                    DeliveryCart(document.id, barcode, productName,category, intOfferPrice, intNormalPrice, 1, fileURL)
-                val product =
-                    __Product__(document.id, barcode, productName,category, intOfferPrice, intNormalPrice, 1, fileURL, false)
-                productsArray.add(deliveryCart)
-                Log.d(TAG, "Product : $deliveryCart")
-                Log.d(TAG, "Product Array Size : ${productsArray.size}")
+                 val deliveryCart =
+                     DeliveryCart(document.id, barcode, productName,category, intOfferPrice, intNormalPrice, 1, fileURL)
+                 val product =
+                     __Product__(document.id, barcode, productName,category, intOfferPrice, intNormalPrice, 1, fileURL, false)
+                 productsArray.add(deliveryCart)
+                 Log.d(TAG, "Product : $deliveryCart")
+                 Log.d(TAG, "Product Array Size : ${productsArray.size}")
 
-            }
+             }
 
-            if(productsArray.size != 0) {
-                productsArray.forEach {
-                    val product = it
-                    val index = productsArray.indexOf(product)
-                    cartItems.forEach {
-                        if(product.key == it.key) {
-                            product.isInCart = true
-                            val deliveryCart =
-                                DeliveryCart(it.key, it.barcode, it.name,it.category, it.offerPrice, it.normalPrice, it.quantity, it.image_url, true)
-                            productsArray.set(index, deliveryCart)
-                        }
-                    }
+             if(productsArray.size != 0) {
+                 productsArray.forEach {
+                     val product = it
+                     val index = productsArray.indexOf(product)
+                     cartItems.forEach {
+                         if(product.key == it.key) {
+                             product.isInCart = true
+                             val deliveryCart =
+                                 DeliveryCart(it.key, it.barcode, it.name,it.category, it.offerPrice, it.normalPrice, it.quantity, it.image_url, true)
+                             productsArray.set(index, deliveryCart)
+                         }
+                     }
 
-                }
-                adapter.updateList(productsArray, storeId)
+                 }
+                 adapter.updateList(productsArray, storeId)
 
 
-            } else {
+             } else {
 //                val index = categories.indexOf(category)
 ////                Log.d(TAG, )
 //                categories.remove(category)
 ////                categories.drop(index)
 //                notifyItemRemoved(index)
-////                notifyItemRangeRemoved(index, 1)
-            }
+//                notifyItemRangeRemoved(index, 1)
+             }
 
 
 //            adapter.setFoundItems(cartItems)
 
-            shimmerFrameLayout.stopShimmerAnimation()
-            shimmerFrameLayout.visibility = View.GONE
+             shimmerFrameLayout.stopShimmerAnimation()
+             shimmerFrameLayout.visibility = View.GONE
 
-        }
-    }
+         }
+     }
 
 
     fun addProductItems(deliveryItems: List<DeliveryCart>, products: List<Model.Product_>) {
@@ -842,6 +925,7 @@ class CategoryThreeRecyclerAdapter(val storeId: String, val categories: ArrayLis
 //    }
 
     fun getCategoryProducts(category: __Category__, shimmerFrameLayout: ShimmerFrameLayout, adapter: ProductsAdapter, cartItems: List<DeliveryCart>) {
+        Log.d(TAG, "getCategoryProducts called")
         val collectionPath = "stores/" + storeId + "/offers"
         val products = FirebaseFirestore.getInstance().collection(collectionPath)
             .whereEqualTo("categoryThree", category.name!!)

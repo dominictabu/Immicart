@@ -18,8 +18,8 @@ data class Product(
 }
 
 
-data class DeliveryCartSearch(val key: String, val barcode: String, val name: String, val category: String, val offerPrice: Int, val normalPrice: Int, val quantity : Int,
-                             val image_url: String, var isInCart: Boolean? = false,
+data class DeliveryCartSearch(val key: String, val barcode: String, val name: String, val category: String, val offerPrice: Int, val normalPrice: Int, var quantity : Int,
+                              val image_url: String, var isInCart: Boolean? = false,
                               override val _highlightResult: JsonObject?
 )  : Highlightable {
 

@@ -552,7 +552,7 @@
 					android:layout_width="0dp"
 					android:orientation="vertical">
 				<TextView
-						android:text="Choose delivery time"
+						android:text="Choose delivery option"
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:id="@+id/delivery_time_textView"
@@ -583,33 +583,33 @@
 		          android:layout_height="wrap_content"/>
 		
 		
-		<info.hoang8f.android.segmented.SegmentedGroup
-				app:sc_tint_color="@color/colorGreen"
-				android:layout_centerHorizontal="true"
-				android:layout_below="@+id/discloser"
-				android:id="@+id/segmented2"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_margin="10dp"
-				android:orientation="horizontal"
-				segmentedgroup:sc_border_width="2dp"
-				segmentedgroup:sc_corner_radius="10dp">
-			
-			<RadioButton
-					android:background="@color/colorGreen"
-					android:id="@+id/button_deliver_today"
-					android:layout_width="100dp"
-					android:layout_height="40dp"
-					android:text="Today"
-					style="@style/RadioButton" />
-			
-			<RadioButton
-					android:id="@+id/button_deliver_tomorrow"
-					android:layout_width="100dp"
-					android:layout_height="40dp"
-					android:text="Tomorrow"
-					style="@style/RadioButton" />
-		</info.hoang8f.android.segmented.SegmentedGroup>
+		<!--<info.hoang8f.android.segmented.SegmentedGroup-->
+				<!--app:sc_tint_color="@color/colorGreen"-->
+				<!--android:layout_centerHorizontal="true"-->
+				<!--android:layout_below="@+id/discloser"-->
+				<!--android:id="@+id/segmented2"-->
+				<!--android:layout_width="wrap_content"-->
+				<!--android:layout_height="wrap_content"-->
+				<!--android:layout_margin="10dp"-->
+				<!--android:orientation="horizontal"-->
+				<!--segmentedgroup:sc_border_width="2dp"-->
+				<!--segmentedgroup:sc_corner_radius="10dp">-->
+			<!---->
+			<!--<RadioButton-->
+					<!--android:background="@color/colorGreen"-->
+					<!--android:id="@+id/button_deliver_today"-->
+					<!--android:layout_width="100dp"-->
+					<!--android:layout_height="40dp"-->
+					<!--android:text="Today"-->
+					<!--style="@style/RadioButton" />-->
+			<!---->
+			<!--<RadioButton-->
+					<!--android:id="@+id/button_deliver_tomorrow"-->
+					<!--android:layout_width="100dp"-->
+					<!--android:layout_height="40dp"-->
+					<!--android:text="Tomorrow"-->
+					<!--style="@style/RadioButton" />-->
+		<!--</info.hoang8f.android.segmented.SegmentedGroup>-->
 		
 		
 		<RadioGroup
@@ -617,9 +617,28 @@
 				android:id="@+id/delivery_time_radio_group"
 				android:layout_margin="16dp"
 				android:orientation="vertical"
-				android:layout_below="@+id/segmented2"
+				android:layout_below="@+id/discloser"
 				android:layout_width="match_parent"
 		            android:layout_height="wrap_content">
+			
+				<RadioButton
+						android:id="@+id/express"
+						android:layout_weight="1"
+						android:textStyle="bold"
+						android:textSize="16sp"
+						android:text="Express (within 2 hours for KES 300)"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"/>
+			
+				<RadioButton
+						android:id="@+id/later"
+						android:layout_weight="1"
+						android:textStyle="bold"
+						android:textSize="16sp"
+						android:text="Later (more than 2 hours for KES 200)"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"/>
+				
 			
 		</RadioGroup>
 		

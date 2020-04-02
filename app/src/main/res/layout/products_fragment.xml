@@ -231,14 +231,16 @@
 				android:layout_width="match_parent"
                android:layout_height="wrap_content">
 			<RelativeLayout
+					android:gravity="center_horizontal"
 					android:padding="4dp"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content">
 				<info.hoang8f.android.segmented.SegmentedGroup
+						android:gravity="center_horizontal"
 						app:sc_tint_color="@color/colorGreen"
 						android:layout_centerHorizontal="true"
 						android:id="@+id/segmented2"
-						android:layout_width="wrap_content"
+						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
 						android:layout_margin="10dp"
 						android:orientation="horizontal"

@@ -7,6 +7,9 @@ import android.widget.RadioGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.algolia.search.client.ClientSearch
+import com.algolia.search.model.APIKey
+import com.algolia.search.model.ApplicationID
 import com.andromeda.immicart.R
 import kotlinx.android.synthetic.main.activity_sort.*
 
@@ -15,6 +18,11 @@ class SortActivity : AppCompatActivity() {
 
 
     val TAG : String = "SortActivity"
+
+    val client = ClientSearch(
+        ApplicationID("TV1YRRL3K4"),
+        APIKey("YourAPIKey")
+    )
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

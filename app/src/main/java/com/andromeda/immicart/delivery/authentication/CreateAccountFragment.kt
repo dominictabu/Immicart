@@ -83,7 +83,6 @@ class CreateAccountFragment : Fragment() {
             .requestIdToken(getString(R.string.default_web_client_id))
             .requestEmail()
             .build()
-
         // Build a GoogleSignInClient with the options specified by gso.
         mGoogleSignInClient = GoogleSignIn.getClient(activity!!, gso);
 
@@ -95,7 +94,6 @@ class CreateAccountFragment : Fragment() {
             findNavController().navigate(R.id.action_createAccountFragment_to_logInFragment)
 
         }
-
 
     }
 
@@ -134,7 +132,6 @@ class CreateAccountFragment : Fragment() {
             } else {
                 Log.d(TAG, "GoogleSignInAccount is null")
             }
-
 
             // Signed in successfully, show authenticated UI.
 //            updateUI(account)
@@ -191,9 +188,7 @@ class CreateAccountFragment : Fragment() {
                 }
             } else {
                 Log.d(TAG, "Task is Unsuccessful")
-
             }
-
         }
     }
 
@@ -205,7 +200,6 @@ class CreateAccountFragment : Fragment() {
                     Log.w(TAG, "getInstanceId failed", task.exception)
                     return@OnCompleteListener
                 }
-
                 // Get new Instance ID token
                 val token = task.result?.token
                 Log.d(TAG, "Device Token: $token")
@@ -216,6 +210,7 @@ class CreateAccountFragment : Fragment() {
                 Toast.makeText(activity!!, "Token Retrieved", Toast.LENGTH_SHORT).show()
             })
     }
+
 
 
     companion object {

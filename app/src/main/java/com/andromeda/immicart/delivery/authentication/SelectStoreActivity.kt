@@ -27,7 +27,7 @@ class SelectStoreActivity : AppCompatActivity() {
     private var TAG: String = "SelectStoreActivity"
     private lateinit var database: DatabaseReference
 
-    val PREF_NAME = "IS_PICKUP"
+    val PREF_NAME = "STOREID"
     val keyChannel = "IS_PICKUP"
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,9 +35,7 @@ class SelectStoreActivity : AppCompatActivity() {
         setContentView(R.layout.fragment_select_store)
         database = MyDatabaseUtil.getDatabase().reference
 
-        val editor = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).edit()
-        editor.putBoolean(keyChannel, true)
-        editor.apply()
+//        val editor = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).edit()
 
 
 
@@ -48,10 +46,10 @@ class SelectStoreActivity : AppCompatActivity() {
                     editor.putBoolean(keyChannel, false)
                     editor.apply()
 
-                } else {
-                    val editor = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).edit()
-                    editor.putBoolean(keyChannel, true)
-                    editor.apply()
+//                } else {
+//                    val editor = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).edit()
+//                    editor.putBoolean(keyChannel, true)
+//                    editor.apply()
                 }
             }
         })
@@ -100,9 +98,19 @@ class SelectStoreActivity : AppCompatActivity() {
         })
     }
 
+    val CURRENT_STORE = "CURRENT_STORE"
     fun selectStore(store: Store) {
         Log.d(TAG, "Selected Store: "  + store)
-        setCurrentStore(store)
+
+        val editor = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).edit()
+        editor.putString(keyChannel, store.key)
+        editor.apply()
+
+        val intent = Intent(this@SelectStoreActivity, ProductsPageActivity::class.java)
+        intent.putExtra(CURRENT_STORE, store)
+
+        startActivity(intent)
+
 
 //        findNavController().navigate(R.id.create_account_action)
 //        startActivity(Intent(context, ProductsPageActivity::class.java))

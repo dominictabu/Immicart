@@ -107,15 +107,10 @@ class ProductsFragment : Fragment() {
 //
 //            }
 //        })
-
-
-
         app_bar.addOnOffsetChangedListener(object : AppBarLayout.OnOffsetChangedListener {
             override fun onOffsetChanged(appBarLayout: AppBarLayout?, verticalOffset: Int) {
-
                 if (Math.abs(verticalOffset) == appBarLayout?.getTotalScrollRange()) {
                     // Collapsed
-
                     store_name?.setTextColor(resources.getColor(R.color.colorGreen_))
                     store_name?.setCompoundDrawablesWithIntrinsicBounds( 0, 0, R.drawable.ic_keyboard_arrow_down_green_24dp, 0);
                     Glide.with(activity!!).load(R.drawable.ic_account_circle_green_24dp).into(myAccountIcon)
@@ -133,8 +128,21 @@ class ProductsFragment : Fragment() {
 
         })
 
+        val shared = activity!!.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        val storeID = (shared.getString(keyChannel, null));
+
+        viewModel.currentStore.observe(activity!!, Observer {
+            storeId = it
+            store_name?.text = it.storeName
+            search_hint?.text = "Search ${it.storeName}"
+            activity?.let {
+                Glide.with(it).load(it.storeLogo).into(profile_image)
+            }
+            getCategories()
+        })
+
         getCurrentDeliveryLocation()
-        getCurrentStore()
+//        getCurrentStore()
 
 //        viewModel.currentStores().observe(activity!!, Observer {
 //            it?.let {
@@ -157,7 +165,6 @@ class ProductsFragment : Fragment() {
 //
 //            }
 //        })
-
 
 //        viewModel.allDeliveryLocations().observe(activity!!, androidx.lifecycle.Observer {
 //
@@ -237,31 +244,31 @@ class ProductsFragment : Fragment() {
 
         }
 
-        val shared = activity!!.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        val channel = (shared.getBoolean(keyChannel, false));
+//        val shared = activity!!.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+//        val channel = (shared.getString(keyChannel, null));
         val radioBtnPickUp =  activity!!.findViewById<RadioButton>(R.id.button_pick_up);
         val radioBtnDelivery =  activity!!.findViewById<RadioButton>(R.id.button_delivery);
-        if(channel) {
-//            delivery_time_textView?.text = "Choose your Pick up time"
-            radioBtnPickUp?.isChecked = true
-//            discloser?.visibility = View.GONE
-            pickup_store?.visibility = View.VISIBLE
-            address_ll?.visibility = View.GONE
-            add_address_ll?.visibility = View.GONE
-        } else {
-            radioBtnDelivery?.isChecked  = true
-            pickup_store?.visibility = View.GONE
-            if(deliveryLocation != null) {
-                add_address_ll?.visibility = View.GONE
-                address_ll?.visibility = View.VISIBLE
-                address_one?.text = deliveryLocation!!.name
-                address_two?.text = deliveryLocation!!.address
-            } else {
-                address_ll?.visibility = View.GONE
-                add_address_ll?.visibility = View.VISIBLE
-            }
-
-        }
+//        if(channel) {
+//////            delivery_time_textView?.text = "Choose your Pick up time"
+////            radioBtnPickUp?.isChecked = true
+//////            discloser?.visibility = View.GONE
+////            pickup_store?.visibility = View.VISIBLE
+////            address_ll?.visibility = View.GONE
+////            add_address_ll?.visibility = View.GONE
+//        } else {
+//            radioBtnDelivery?.isChecked  = true
+//            pickup_store?.visibility = View.GONE
+//            if(deliveryLocation != null) {
+//                add_address_ll?.visibility = View.GONE
+//                address_ll?.visibility = View.VISIBLE
+//                address_one?.text = deliveryLocation!!.name
+//                address_two?.text = deliveryLocation!!.address
+//            } else {
+//                address_ll?.visibility = View.GONE
+//                add_address_ll?.visibility = View.VISIBLE
+//            }
+//
+//        }
 
         segmented2?.setOnCheckedChangeListener(object : RadioGroup.OnCheckedChangeListener {
             override fun onCheckedChanged(group: RadioGroup?, checkedId: Int) {
@@ -281,12 +288,12 @@ class ProductsFragment : Fragment() {
                     }
 
                 } else {
-                    val editor = activity?.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)?.edit()
-                    editor?.putBoolean(keyChannel, true)
-                    editor?.apply()
-                    pickup_store?.visibility = View.VISIBLE
-                    address_ll?.visibility = View.GONE
-                    add_address_ll?.visibility = View.GONE
+//                    val editor = activity?.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)?.edit()
+//                    editor?.putBoolean(keyChannel, true)
+//                    editor?.apply()
+//                    pickup_store?.visibility = View.VISIBLE
+//                    address_ll?.visibility = View.GONE
+//                    add_address_ll?.visibility = View.GONE
 
                 }
             }
@@ -372,10 +379,8 @@ class ProductsFragment : Fragment() {
 //        val subcategoriesFragment = SubcategoriesFragment.newInstance(category._id)
 //
 //        (activity!! as ProductsPageActivity).performFragmnetTransaction(subcategoriesFragment)
-
         viewModel.setCategoryId(category.key!!)
         viewModel.setCategoryParent(category)
-
 //        val options = navOptions {
 //            anim {
 //                enter = R.anim.slide_in_right
@@ -478,7 +483,6 @@ class ProductsFragment : Fragment() {
         first.get()
             .addOnSuccessListener { documentSnapshots ->
                 // ...
-
                 // Get the last visible document
                 lastVisibleSnapShot = documentSnapshots.documents[documentSnapshots.size() - 1]
 
@@ -492,9 +496,7 @@ class ProductsFragment : Fragment() {
                     categories.add(category)
 
                     Log.d(TAG, "Category: $category")
-
 //                    val serviceFee = document.data.
-
                 }
 
                 intializeRecycler(categories)
@@ -551,18 +553,8 @@ class ProductsFragment : Fragment() {
                     categories.addAll(insertIndex, categoriesArray);
                     categoryRecyclerAdapter?.notifyItemRangeInserted(insertIndex, categoriesArray.size);
 
-
-
                 }
-
-
-
-
-
             }
-
-
-
 
     }
 
@@ -612,16 +604,9 @@ class ProductsFragment : Fragment() {
             })
     }
 
-
-
-
-
-
-
     override fun onPause() {
         super.onPause()
         disposable?.dispose()
-
     }
 
     private fun cartItemClicked(cartItem : DeliveryCart, newQuantity: Int) {

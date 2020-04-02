@@ -19,6 +19,7 @@ import com.algolia.search.saas.Query
 import com.andromeda.immicart.R
 import com.andromeda.immicart.delivery.DeliveryCart
 import com.andromeda.immicart.delivery.ProductsAdapter
+import com.andromeda.immicart.delivery.search.algolia.AlgoliaCredentails
 import kotlinx.android.synthetic.main.fragment_vision_search_results.*
 import org.json.JSONArray
 import org.json.JSONObject
@@ -43,6 +44,7 @@ class VisionSearchResultsFragment : Fragment() {
     private var labels: ArrayList<String>? = null
     private lateinit var visionSearchViewModel: VisionSearchViewModel
     private lateinit var productsAdapter: ProductsAdapter
+    private var cartItems: List<DeliveryCart> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,8 +79,13 @@ class VisionSearchResultsFragment : Fragment() {
 
 
 
+
+
         visionSearchViewModel.labelslist.observe(activity!!, Observer {
-            algoliaSearch(it)
+            val labels = it
+            visionSearchViewModel.storeiD.observe(activity!!, Observer {
+                algoliaSearch(labels, it)
+            })
 
         })
 
@@ -92,9 +99,11 @@ class VisionSearchResultsFragment : Fragment() {
     val deliveryCarts  = ArrayList<DeliveryCart>()
     var hitsLength = 0
 
-    fun algoliaSearch(labels: List<String>) {
-        val client = Client("latency", "3d9875e51fbd20c7754e65422f7ce5e1")
-        val index = client.getIndex("bestbuy")
+    fun algoliaSearch(labels: List<String>, storeiD : String) {
+        val algoliaCredentails = AlgoliaCredentails("TV1YRRL3K4", "61548cf148fe8e4a22e19b50cb7a2e85")
+
+        val client = Client(algoliaCredentails.adminID, algoliaCredentails.adminKey)
+        val index = client.getIndex(storeiD)
 
         val completionHandler = object : CompletionHandler {
             override fun requestCompleted(p0: JSONObject?, p1: AlgoliaException?) {
@@ -106,36 +115,64 @@ class VisionSearchResultsFragment : Fragment() {
                     hitsLength += hits.length()
 
                     for (i in 0 until hits.length()) {
+
                         val hit = hits.getJSONObject(i)
                         val name = hit.getString("name")
-                        val category = hit.getString("category")
-                        val image = hit.getString("image")
-                        val salePrice = hit.getString("salePrice")
+                        val deadline = hit.getString("deadline")
+                        var barcode = hit.getString("barcode")
+
+                        val category = hit.getString("categoryOne")
+                        val image = hit.getString("imageUrl")
+                        val salePrice = hit.getString("offer_price")
+                        val normalPrice = hit.getString("normal_price")
                         val intPrice = salePrice.toFloat().toInt()
+                        val intNormalPrice = normalPrice.toFloat().toInt()
                         val objectID = hit.getString("objectID")
-                        val deliveryCart = DeliveryCart(objectID, objectID, name, category, intPrice, 10, 1,image)
+                        if (barcode == null) {
+                            barcode = "Not Set"
+                        }
+                        val deliveryCart = DeliveryCart(objectID, barcode, name, category, intPrice, intNormalPrice, 1,image)
                         deliveryCarts.add(deliveryCart)
                     }
 
                     stats?.text = "${hitsLength} similar items found"
-                    productsAdapter.updateList(deliveryCarts, "123")
+                    productsAdapter.updateList(deliveryCarts, storeiD)
 
-//                    val hitsObjects = hits[0] as JSONObject
-//
-//                    hitsObjects.forEach {
-//                        val name = it.getString("name")
-//                        val category = it.getString("category")
-//                        val image = it.getString("image")
-//                        val salePrice = it.getString("salePrice")
-//                        val intPrice = salePrice.toFloat().toInt()
-//                        val objectID = it.getString("objectID")
-//                        val deliveryCart = DeliveryCart(objectID, objectID, name, category, intPrice, 10, 1,image)
-//                        deliveryCarts.add(deliveryCart)
-//                    }
+
+                    visionSearchViewModel.allDeliveryItems().observe(activity!!, Observer { items ->
+                        Log.d(TAG, "CartItems: $items")
+                        items?.let {
+                            cartItems = it
+                            val cartIteemsNumber = it.size
+                            badge?.text = cartIteemsNumber.toString()
+                            Log.d(TAG, "CartItems Length: ${items.count()}")
+                            if(deliveryCarts.size != 0) {
+                                deliveryCarts.forEach {
+                                    val product = it
+                                    val index = deliveryCarts.indexOf(product)
+                                    cartItems.forEach {
+                                        if(product.key == it.key) {
+                                            product.isInCart = true
+                                            val deliveryCart =
+                                                DeliveryCart(it.key, it.barcode, it.name,it.category, it.offerPrice, it.normalPrice, it.quantity, it.image_url, true)
+                                            deliveryCarts.set(index, deliveryCart)
+                                        }
+                                    }
+
+                                }
+                                productsAdapter.updateList(deliveryCarts, storeiD)
+
+//                                adapter.updateList(productsArray, storeId)
+
+                            }
+//                            categoryRecyclerAdapter?.updateItems(cartItems as ArrayList<DeliveryCart>)
+                        }
+
+                    })
+
 
 
                 }
-
 
             }
 
@@ -183,6 +220,25 @@ class VisionSearchResultsFragment : Fragment() {
 //
 //            viewModel?.insert(cartItem)
 //        }
+
+
+        Log.d(TAG, "newQuantity : $newQuantity , $cartItem ")
+
+        var contains = false
+        for(item in cartItems) {
+            if(cartItem.key == item.key) {
+                contains = true
+                break
+            }
+        }
+
+        if(contains) {
+            Log.d(TAG, "CartItems contain the item")
+            visionSearchViewModel?.updateQuantity(cartItem.key, newQuantity)
+        } else {
+            Log.d(TAG, "CartItems DO NOT  contain the item")
+            visionSearchViewModel?.insert(cartItem)
+        }
 
     }
 

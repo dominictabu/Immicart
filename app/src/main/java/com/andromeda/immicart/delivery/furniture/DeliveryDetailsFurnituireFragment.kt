@@ -1,4 +1,4 @@
-package com.andromeda.immicart.delivery.checkout
+package com.andromeda.immicart.delivery.furniture
 
 
 import android.content.Intent
@@ -16,9 +16,9 @@ import com.andromeda.immicart.R
 import com.andromeda.immicart.checkout.DeliveryCartItemsAdapter_
 import com.andromeda.immicart.delivery.DeliveryCart
 import com.andromeda.immicart.delivery.Utils.MyDatabaseUtil
+import com.andromeda.immicart.delivery.checkout.DeliveryCartViewModel
+import com.andromeda.immicart.delivery.checkout.immicartAPIService
 import com.andromeda.immicart.delivery.delivery_location.PickDeliveryAddressActivity
-import com.andromeda.immicart.delivery.furniture.PaymentMethod
-import com.andromeda.immicart.delivery.furniture.PaymentMethodsActivity
 import com.andromeda.immicart.delivery.persistence.DeliveryLocation
 import com.andromeda.immicart.networking.Model
 import com.bumptech.glide.Glide

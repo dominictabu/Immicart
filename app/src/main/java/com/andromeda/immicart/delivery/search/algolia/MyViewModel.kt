@@ -31,14 +31,15 @@ import com.andromeda.immicart.delivery.DeliveryCart
 import io.ktor.client.features.logging.LogLevel
 
 
-class MyViewModel(indexName : String) : ViewModel() {
+class MyViewModel(algoliaCredentails: AlgoliaCredentails,indexName : String) : ViewModel() {
 
     private val TAG = "MyViewModel"
 
 //    val client = ClientSearch(ApplicationID("latency"), APIKey("3d9875e51fbd20c7754e65422f7ce5e1"), LogLevel.ALL)
 //    val index = client.initIndex(IndexName("bestbuy"))
 
-    val client = ClientSearch(ApplicationID("TV1YRRL3K4"), APIKey("6de0552fc52736f7f2891edbf087b2f9"), LogLevel.ALL)
+//    val client = ClientSearch(ApplicationID("TV1YRRL3K4"), APIKey("6de0552fc52736f7f2891edbf087b2f9"), LogLevel.ALL)
+    val client = ClientSearch(ApplicationID(algoliaCredentails.adminID), APIKey(algoliaCredentails.adminKey), LogLevel.ALL)
 //    val indexName = MutableLiveData<String>()
 
     val index = client.initIndex(IndexName(indexName))
@@ -75,12 +76,14 @@ class MyViewModel(indexName : String) : ViewModel() {
 
     val searchBox = SearchBoxConnectorPagedList(searcher, listOf(products))
     val filterState = FilterState()
+
     val facetList = FacetListConnector(
         searcher = searcher,
         filterState = filterState,
         attribute = Attribute("categoryOne"),
         selectionMode = SelectionMode.Multiple
     )
+
     val secondFacetList = FacetListConnector(
         searcher = searcher,
         filterState = filterState,
@@ -104,7 +107,6 @@ class MyViewModel(indexName : String) : ViewModel() {
         connection += facetList.connectView(adapterFacet, facetPresenter)
         connection += secondFacetList.connectView(typeAdapterFacet, facetPresenter)
         connection += filterState.connectPagedList(products)
-
     }
 
     override fun onCleared() {

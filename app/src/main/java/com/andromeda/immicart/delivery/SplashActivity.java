@@ -26,28 +26,31 @@ public class SplashActivity extends AppCompatActivity {
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-        startActivity(new Intent(this, AuthenticationActivity.class));
+//        startActivity(new Intent(this, AuthenticationActivity.class));
 //        finish();
     }
 
-//    @Override
-//    protected void onStart() {
-//        super.onStart();
-//        FirebaseUser auth = FirebaseAuth.getInstance().getCurrentUser();
-//
-//        if(auth != null) {
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FirebaseUser auth = FirebaseAuth.getInstance().getCurrentUser();
+
+        if(auth != null) {
 //            getCurrentStore(auth.getUid());
-//
-//        } else {
-//            startActivity(new Intent(SplashActivity.this, MultiPhotoActivity.class));
-//
-//        }
-//    }
+            startActivity(new Intent(this, SelectStoreActivity.class));
+
+
+        } else {
+            startActivity(new Intent(SplashActivity.this, AuthenticationActivity.class));
+
+        }
+    }
 
 
     void getCurrentStore(String userID) {
         DatabaseReference ref = MyDatabaseUtil.getDatabase().getReference().child("customers/" + userID + "/current_store");
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
+
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 CurrentStore store = dataSnapshot.getValue(CurrentStore.class);

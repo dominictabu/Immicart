@@ -1,5 +1,6 @@
 package com.andromeda.immicart.networking;
 
+import com.andromeda.immicart.delivery.search.algolia.AlgoliaCredentails;
 import com.andromeda.immicart.delivery.trackingorder.model.Result;
 import com.andromeda.immicart.delivery.wallet.stkPush.model.AccessToken;
 import io.reactivex.Observable;
@@ -31,6 +32,8 @@ public interface ImmicartAPIService {
 
     @POST("mpesaAPI/token")
     Call<AccessToken> getToken();
+    @POST("algoliaCredentails")
+    Call<AlgoliaCredentails> getAlgoliaCredentails();
     //Google Maps
     @GET("maps/api/directions/json")
     Single<String> getDirections(@Query("mode") String mode,

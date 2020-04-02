@@ -1,10 +1,13 @@
 package com.andromeda.immicart.delivery.search.visionSearch.imagelabeling
 
+import android.Manifest
 import android.app.Activity
 import android.content.ContentResolver
 import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageInfo
+import android.content.pm.PackageManager
 import android.content.res.Configuration
 
 import android.graphics.Bitmap
@@ -19,6 +22,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
+import android.widget.Toast
+import androidx.core.app.ActivityCompat
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import kotlin.math.max
@@ -85,6 +90,7 @@ class PhotoOptionsFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_photo_options, container, false)
     }
 
+    val cameraRequestCode : Int = 1001
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
@@ -96,7 +102,15 @@ class PhotoOptionsFragment : Fragment() {
         }
 
         camera_btn?.setOnClickListener {
-            startCameraIntentForResult()
+            if(hasPermissionInManifest(requireActivity(), Manifest.permission.CAMERA )) {
+                startCameraIntentForResult()
+            } else {
+                ActivityCompat.requestPermissions(
+                    activity!!,
+                    arrayOf(Manifest.permission.CAMERA),
+                    cameraRequestCode
+                )
+            }
         }
 
         closeBtn?.setOnClickListener {
@@ -125,6 +139,22 @@ class PhotoOptionsFragment : Fragment() {
         isLandScape = resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
 
 
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        if(requestCode == cameraRequestCode) {
+
+            // If request is cancelled, the result arrays are empty.
+            if (grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                startCameraIntentForResult()
+
+            } else {
+                Toast.makeText(activity, "Camera Permission denied", Toast.LENGTH_SHORT).show()
+
+            }
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -167,7 +197,6 @@ class PhotoOptionsFragment : Fragment() {
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
         }
     }
-
 
 
     private fun startChooseImageIntentForResult() {
@@ -223,9 +252,6 @@ class PhotoOptionsFragment : Fragment() {
             Log.e(TAG, "Error retrieving saved image")
         }
     }
-
-
-
 
 
     // Returns max image width, always for portrait mode. Caller needs to swap width / height for
@@ -334,12 +360,28 @@ class PhotoOptionsFragment : Fragment() {
 
     //Check for Manifest Permissions
 
-    fun hasPermissionInManifest( context: Context, permissionname: String) {
 
+    fun hasPermissionInManifest(context: Context, permissionName: String) : Boolean {
+        val packageName : String = context.packageName
+        try {
+            val packageInfo : PackageInfo = context.packageManager.getPackageInfo(packageName, PackageManager.GET_PERMISSIONS)
+            val declaredPermissions : Array<String> = packageInfo.requestedPermissions
 
+            if(declaredPermissions != null && declaredPermissions.size > 0) {
+                for (p in declaredPermissions) {
+                    if(p.equals(permissionName)) {
+                        return true
+                    }
+                }
+            }
+
+        } catch (e : PackageManager.NameNotFoundException) {
+
+        }
+
+        return false
     }
 
-//    fu
 //    public boolean hasPermissionInManifest(Context context, String permissionName) {
 //    final String packageName = context.getPackageName();
 //    try {

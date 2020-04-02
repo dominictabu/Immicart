@@ -231,19 +231,19 @@ class DeliveryDetailsFragment : Fragment() {
         cart_items_ll?.visibility = View.GONE
 
 
-        val shared = activity!!.getSharedPreferences(PREF_NAME, MODE_PRIVATE);
-        val channel = (shared.getBoolean(keyChannel, false));
+//        val shared = activity!!.getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+//        val channel = (shared.getBoolean(keyChannel, false));
         val radioBtnPickUp =  activity!!.findViewById<RadioButton>(R.id.button_pick_up);
         val radioBtnDelivery =  activity!!.findViewById<RadioButton>(R.id.button_delivery);
-        if(channel) {
-            delivery_time_textView?.text = "Choose your Pick up time"
-            radioBtnPickUp?.isChecked = true
-            discloser?.visibility = View.GONE
-        } else {
-            delivery_time_textView?.text = "Choose your delivery time"
-            radioBtnPickUp?.isChecked = true
-            discloser?.visibility = View.VISIBLE
-        }
+//        if(channel) {
+//            delivery_time_textView?.text = "Choose your Pick up time"
+//            radioBtnPickUp?.isChecked = true
+//            discloser?.visibility = View.GONE
+//        } else {
+//            delivery_time_textView?.text = "Choose your delivery time"
+//            radioBtnPickUp?.isChecked = true
+//            discloser?.visibility = View.VISIBLE
+//        }
 
         segmented1?.setOnCheckedChangeListener(object: RadioGroup.OnCheckedChangeListener {
             override fun onCheckedChanged(group: RadioGroup?, checkedId: Int) {
@@ -252,13 +252,13 @@ class DeliveryDetailsFragment : Fragment() {
                     delivery_time_textView?.text = "Choose your delivery time"
                     radioBtnDelivery?.isChecked = true
                     discloser?.visibility = View.VISIBLE
-                    tip_title?.text = "Shopper Tip"
+//                    tip_title?.text = "Shopper Tip"
 
                 } else {
-                    delivery_time_textView?.text = "Choose your Pick up time"
-                    radioBtnPickUp?.isChecked = true
-                    discloser?.visibility = View.GONE
-                    tip_title?.text = "Shopper Tip"
+//                    delivery_time_textView?.text = "Choose your Pick up time"
+//                    radioBtnPickUp?.isChecked = true
+//                    discloser?.visibility = View.GONE
+//                    tip_title?.text = "Shopper Tip"
 
                 }
             }
@@ -301,36 +301,50 @@ class DeliveryDetailsFragment : Fragment() {
 
         }
 
-        if (segmented2?.checkedRadioButtonId == R.id.button_deliver_today) {
-            getDeliveryTimes()
-        }
+        val expressRbtn =  activity!!.findViewById<RadioButton>(R.id.express);
+        val laterRbtn =  activity!!.findViewById<RadioButton>(R.id.later);
+
+//        expressRbtn?.setOnCheckedChangeListener { buttonView, isChecked ->
+//            if(isChecked) {
+//                laterRbtn?.isChecked = false
+//            }
+//        }
+//        laterRbtn?.setOnCheckedChangeListener { buttonView, isChecked ->
+//            if(isChecked) {
+//                expressRbtn?.isChecked = false
+//            }
+//        }
+
+//        if (segmented2?.checkedRadioButtonId == R.id.button_deliver_today) {
+//            getDeliveryTimes()
+//        }
 
         val rightNow = Calendar.getInstance();
         val currentHourIn24Format = rightNow.get(Calendar.HOUR_OF_DAY);
-        val radioBtn =  activity!!.findViewById<RadioButton>(R.id.button_deliver_today);
-        val radioBtn2 =  activity!!.findViewById<RadioButton>(R.id.button_deliver_tomorrow);
+//        val radioBtn =  activity!!.findViewById<RadioButton>(R.id.button_deliver_today);
+//        val radioBtn2 =  activity!!.findViewById<RadioButton>(R.id.button_deliver_tomorrow);
 
-        if(currentHourIn24Format > 20 ) {
-            radioBtn.isEnabled = false
-            radioBtn2.isChecked = true
-            populateRadioButtons(R.array.from_9am)
-
-        } else {
-            radioBtn.isEnabled = true
-            radioBtn.isChecked = true
-            getDeliveryTimes()
-
-        }
-        segmented2?.setOnCheckedChangeListener(object: RadioGroup.OnCheckedChangeListener {
-            override fun onCheckedChanged(group: RadioGroup?, checkedId: Int) {
-
-                if(checkedId == R.id.button_deliver_tomorrow) {
-                    populateRadioButtons(R.array.from_9am)
-                } else {
-                    getDeliveryTimes()
-                }
-            }
-        })
+//        if(currentHourIn24Format > 20 ) {
+//            radioBtn.isEnabled = false
+//            radioBtn2.isChecked = true
+//            populateRadioButtons(R.array.from_9am)
+//
+//        } else {
+//            radioBtn.isEnabled = true
+//            radioBtn.isChecked = true
+//            getDeliveryTimes()
+//
+//        }
+//        segmented2?.setOnCheckedChangeListener(object: RadioGroup.OnCheckedChangeListener {
+//            override fun onCheckedChanged(group: RadioGroup?, checkedId: Int) {
+//
+//                if(checkedId == R.id.button_deliver_tomorrow) {
+//                    populateRadioButtons(R.array.from_9am)
+//                } else {
+//                    getDeliveryTimes()
+//                }
+//            }
+//        })
 
         snapshotListeners()
 
@@ -345,6 +359,9 @@ class DeliveryDetailsFragment : Fragment() {
                     .show();
         }
     }
+
+
+
 
     fun totalWithoutDeliveryLoc() {
 
@@ -513,11 +530,19 @@ class DeliveryDetailsFragment : Fragment() {
         Log.d(TAG, "Year $currentYear")
 
         val phone = phone_number_edittext.text.toString()
-        if (segmented2?.checkedRadioButtonId == R.id.button_deliver_tomorrow) {
-            currentDayOfTheYear++
-        }
+//        if (segmented2?.checkedRadioButtonId == R.id.button_deliver_tomorrow) {
+//            currentDayOfTheYear++
+//        }
+
+        var timeOfDelivery = "later"
         val radioButton = activity!!.findViewById<RadioButton>(radioGrp.checkedRadioButtonId)
-        val timeOfDelivery = radioButton.text.toString()
+        if(radioGrp.checkedRadioButtonId == R.id.express) {
+            timeOfDelivery = "express"
+        } else if(radioGrp.checkedRadioButtonId == R.id.later){
+            timeOfDelivery = "later"
+        }
+//        val timeOfDelivery = radioButton.text.toString()
+
         val deliverDetails = DeliveryDetails(phone, currentYear, currentDayOfTheYear, timeOfDelivery, storeSubtotal!!, deliveryFee!!, serviceFee!!, totals!!)
         viewModel.setDeliveryDetails(deliverDetails)
         findNavController().navigate(R.id.action_deliveryDetailsFragment_to_loadingPlaceOrderFragment)
@@ -841,10 +866,10 @@ class DeliveryDetailsFragment : Fragment() {
             populateRadioButtons(R.array.from_8pm)
 
         } else {
-            button_deliver_tomorrow?.isChecked = true
-            button_deliver_today?.isChecked = false
-            segmented2?.getChildAt(0)?.setEnabled(false);
-            populateRadioButtons(R.array.from_9am)
+//            button_deliver_tomorrow?.isChecked = true
+//            button_deliver_today?.isChecked = false
+//            segmented2?.getChildAt(0)?.setEnabled(false);
+//            populateRadioButtons(R.array.from_9am)
         }
     }
 

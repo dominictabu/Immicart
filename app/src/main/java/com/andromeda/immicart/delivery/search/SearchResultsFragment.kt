@@ -12,6 +12,7 @@ import androidx.core.os.bundleOf
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
+import androidx.paging.PagedList
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -26,10 +27,8 @@ import com.algolia.instantsearch.helper.stats.connectView
 import com.andromeda.immicart.R
 import com.andromeda.immicart.delivery.*
 import com.andromeda.immicart.delivery.Utils.MyDatabaseUtil
-import com.andromeda.immicart.delivery.search.algolia.DeliveryCartSearch
-import com.andromeda.immicart.delivery.search.algolia.MyViewModel
-import com.andromeda.immicart.delivery.search.algolia.SearchProductAdapter
-import com.andromeda.immicart.delivery.search.algolia.SearchViewModelFactory
+import com.andromeda.immicart.delivery.search.algolia.*
+import com.andromeda.immicart.networking.ImmicartAPIService
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -38,6 +37,9 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.fragment_search_results.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -119,19 +121,19 @@ class SearchResultsFragment : Fragment() {
 //        })
 
 
-        _viewModel.allDeliveryItems().observe(activity!!, Observer { items ->
-
-            Log.d(TAG, "CartItems: $items")
-            items?.let {
-                cartItems = it
-                val cartIteemsNumber = it.size
-                badge?.text = cartIteemsNumber.toString()
-                Log.d(TAG, "CartItems Length: ${items.count()}")
-
-//                categoryRecyclerAdapter?.updateItems(it as ArrayList<DeliveryCart>)
-
-            }
-        })
+//        _viewModel.allDeliveryItems().observe(activity!!, Observer { items ->
+//
+//            Log.d(TAG, "CartItems: $items")
+//            items?.let {
+//                cartItems = it
+//                val cartIteemsNumber = it.size
+//                badge?.text = cartIteemsNumber.toString()
+//                Log.d(TAG, "CartItems Length: ${items.count()}")
+//
+////                categoryRecyclerAdapter?.updateItems(it as ArrayList<DeliveryCart>)
+//
+////            }
+//        })
 
 
         sort_txtview?.setOnClickListener {
@@ -149,11 +151,12 @@ class SearchResultsFragment : Fragment() {
             }
         }
 
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        _viewModel = ViewModelProviders.of(activity!!).get(ProductsViewModel::class.java)
+
         getCurrentStore()
 //         viewModel = ViewModelProviders.of(requireActivity())[MyViewModel::class.java]
 //        viewModel.products.observe(this, Observer { hits ->
@@ -253,7 +256,6 @@ class SearchResultsFragment : Fragment() {
 //                        productsArray.add(product)
 //                    }
 //                }
-
             }
             productsAdapter.updateList(productsArray, storeId)
         }
@@ -269,16 +271,29 @@ class SearchResultsFragment : Fragment() {
         //TODO Change Quantity
         Log.d(TAG, "newQuantity : $newQuantity , $cartItem ")
 
+        var contains = false
+        for(item in cartItems) {
+            if(cartItem.key == item.key) {
+                contains = true
+                break
+            }
+        }
 
-        if (cartItems.contains(cartItem)) {
+        if(contains) {
             Log.d(TAG, "CartItems contain the item")
             _viewModel?.updateQuantity(cartItem.key, newQuantity)
-
         } else {
             Log.d(TAG, "CartItems DO NOT  contain the item")
-
             _viewModel?.insert(cartItem)
         }
+
+//        if (cartItems.contains(cartItem)) {
+//            Log.d(TAG, "CartItems contain the item")
+//            _viewModel?.updateQuantity(cartItem.key, newQuantity)
+//        } else {
+//            Log.d(TAG, "CartItems DO NOT  contain the item")
+//            _viewModel?.insert(cartItem)
+//        }
 
     }
 
@@ -299,7 +314,97 @@ class SearchResultsFragment : Fragment() {
 
                     search_view_search_fragment?.queryHint = "Search ${store.storeName}"
                     Glide.with(activity!!).load(store.storeLogo).into(store_image)
-                    val factory = SearchViewModelFactory(storeId)
+//                    getAlgoliaCredentails()
+
+                    val algoliaCredentails = AlgoliaCredentails("TV1YRRL3K4", "61548cf148fe8e4a22e19b50cb7a2e85")
+                    val factory = SearchViewModelFactory(algoliaCredentails,storeId)
+                    viewModel = ViewModelProviders.of(requireActivity(), factory)[MyViewModel::class.java]
+
+                    viewModel.products.observe(this@SearchResultsFragment, Observer { hits ->
+                        Log.d(TAG, "Hits Loaded Count: " + hits.loadedCount)
+                        Log.d(TAG, "Hits Snapshot: " + hits.snapshot())
+
+                        stats?.text = "${hits.size} results"
+                        search_view_search_fragment?.query?.length?.let {
+                            if(it > 0) {
+                                stats.text = "${hits.size} results for '${search_view_search_fragment?.query}'"
+                            } else {
+                                stats.text = "${hits.size} results"
+                            }
+                        }
+
+                        _viewModel.allDeliveryItems().observe(activity!!, Observer { items ->
+
+                            Log.d(TAG, "CartItems: $items")
+                            items?.let {
+                                cartItems = it
+                                val cartIteemsNumber = it.size
+                                badge?.text = cartIteemsNumber.toString()
+                                Log.d(TAG, "CartItems Length: ${items.count()}")
+
+//                categoryRecyclerAdapter?.updateItems(it as ArrayList<DeliveryCart>)
+
+                                hits.forEach {
+                                    val product = it
+                                    val index = hits.indexOf(product)
+                                    cartItems.forEach {
+                                        if(product.key == it.key) {
+                                            hits.get(index)?.isInCart = true
+                                            hits.get(index)?.quantity = it.quantity
+
+//                                    val deliveryCart =
+//                                        DeliveryCartSearch(it.key, it.barcode, it.name,it.category, it.offerPrice, it.normalPrice, it.quantity, it.image_url, true, product._highlightResult)
+//
+//                                    hits.set(index, deliveryCart)
+                                        }
+                                    }
+
+                                }
+                                val adapterProduct = SearchProductAdapter(storeId,requireContext(), { cartItem: DeliveryCart, newQuantity: Int -> cartItemClicked(cartItem, newQuantity) } )
+                                adapterProduct.submitList(hits)
+                                products_items_recycler.let {
+                                    it.itemAnimator = null
+                                    it.adapter = adapterProduct
+                                    it.layoutManager = GridLayoutManager(requireContext(), 2)
+                                    it.autoScrollToStart(adapterProduct)
+                                }
+
+                            }
+                        })
+
+
+                    })
+
+                    viewModel.setStoreID(storeId)
+
+                    val searchBoxView = SearchBoxViewAppCompat(search_view_search_fragment)
+
+                    connection += viewModel.searchBox.connectView(searchBoxView)
+                    val statsView = StatsTextView(stats)
+                    connection += viewModel.stats.connectView(statsView, StatsPresenterImpl())
+                }
+            }
+
+        })
+
+    }
+
+
+    private val _baseURL = "https://us-central1-immicart-2ca69.cloudfunctions.net/"
+
+
+    fun getAlgoliaCredentails() {
+        ImmicartAPIService.create(_baseURL).algoliaCredentails.enqueue(object : Callback<AlgoliaCredentails> {
+            override fun onResponse(call: Call<AlgoliaCredentails>, response: Response<AlgoliaCredentails>) {
+
+                Log.d(TAG, "AlgoliaCredentails : " + response.body()!!)
+
+                val credentails = response.body()
+                Log.d(TAG, "AlgoliaCredentails : " + credentails)
+                credentails?.let {
+
+
+                    val factory = SearchViewModelFactory(it, storeId)
                     viewModel = ViewModelProviders.of(requireActivity(), factory)[MyViewModel::class.java]
 
                     viewModel.products.observe(this@SearchResultsFragment, Observer { hits ->
@@ -322,8 +427,6 @@ class SearchResultsFragment : Fragment() {
                             it.layoutManager = GridLayoutManager(requireContext(), 2)
                             it.autoScrollToStart(adapterProduct)
                         }
-
-
                     })
 
                     viewModel.setStoreID(storeId)
@@ -333,14 +436,14 @@ class SearchResultsFragment : Fragment() {
                     connection += viewModel.searchBox.connectView(searchBoxView)
                     val statsView = StatsTextView(stats)
                     connection += viewModel.stats.connectView(statsView, StatsPresenterImpl())
-
-
-
                 }
+
             }
 
-        })
+            override fun onFailure(call: Call<AlgoliaCredentails>, t: Throwable) {
 
+            }
+        })
     }
 
 

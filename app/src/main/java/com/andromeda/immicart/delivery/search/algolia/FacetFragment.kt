@@ -2,6 +2,7 @@ package com.andromeda.immicart.delivery.search.algolia
 
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +11,11 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.algolia.instantsearch.helper.android.list.autoScrollToStart
 import com.andromeda.immicart.R
+import com.andromeda.immicart.networking.ImmicartAPIService
 import kotlinx.android.synthetic.main.fragment_facet.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -48,7 +53,11 @@ class FacetFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val factory = SearchViewModelFactory(storeID)
+//        getAlgoliaCredentails()
+        val algoliaCredentails = AlgoliaCredentails("TV1YRRL3K4", "6de0552fc52736f7f2891edbf087b2f9")
+
+
+        val factory = SearchViewModelFactory(algoliaCredentails,storeID)
         val viewModel = ViewModelProviders.of(requireActivity(), factory)[MyViewModel::class.java]
 
 //        val viewModel = ViewModelProviders.of(requireActivity())[MyViewModel::class.java]
@@ -74,7 +83,45 @@ class FacetFragment : Fragment() {
     }
 
 
-    companion object {
+    private val _baseURL = "https://us-central1-immicart-2ca69.cloudfunctions.net/"
+
+    fun getAlgoliaCredentails() {
+        ImmicartAPIService.create(_baseURL).algoliaCredentails.enqueue(object : Callback<AlgoliaCredentails> {
+            override fun onResponse(call: Call<AlgoliaCredentails>, response: Response<AlgoliaCredentails>) {
+
+                Log.d(TAG, "AlgoliaCredentails : " + response.body()!!)
+
+                val credentails = response.body()
+                Log.d(TAG, "AlgoliaCredentails : " + credentails)
+                credentails?.let {
+                    val factory = SearchViewModelFactory(it, storeID)
+                    val viewModel = ViewModelProviders.of(requireActivity(), factory)[MyViewModel::class.java]
+
+//        val viewModel = ViewModelProviders.of(requireActivity())[MyViewModel::class.java]
+
+                    facetList.let {
+                        it.adapter = viewModel.adapterFacet
+                        it.layoutManager = LinearLayoutManager(requireContext())
+                        it.autoScrollToStart(viewModel.adapterFacet)
+                    }
+
+                    type_facetList.let {
+                        it.adapter = viewModel.typeAdapterFacet
+                        it.layoutManager = LinearLayoutManager(requireContext())
+                        it.autoScrollToStart(viewModel.typeAdapterFacet)
+                    }
+
+                }
+            }
+
+            override fun onFailure(call: Call<AlgoliaCredentails>, t: Throwable) {
+            }
+        })
+    }
+
+
+
+                companion object {
         /**
          * Use this factory method to create a new instance of
          * this fragment using the provided parameters.

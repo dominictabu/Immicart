@@ -26,6 +26,7 @@ class ProductsViewModel(application: Application) : AndroidViewModel(application
     val allDeliveryLocations: LiveData<List<CurrentLocation>>
 
     private val repository_: StoreRepository
+    val currentStore = MutableLiveData<Store>()
     // LiveData gives us updated words when they change.
     val allStores: LiveData<List<Store>>
 
@@ -67,6 +68,9 @@ class ProductsViewModel(application: Application) : AndroidViewModel(application
     }
     fun setSearchWord(word: String) {
         searchWord.value = word
+    }
+    fun setCurrentStore(word: Store) {
+        currentStore.value = word
     }
 
     fun setCategoryParent(category: __Category__) {

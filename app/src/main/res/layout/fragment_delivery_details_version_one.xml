@@ -1,0 +1,967 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+		xmlns:android="http://schemas.android.com/apk/res/android"
+		xmlns:app="http://schemas.android.com/apk/res-auto"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		xmlns:tools="http://schemas.android.com/tools"
+		tools:context=".delivery.checkout.PlaceOrderFragment"
+		xmlns:segmentedgroup="http://schemas.android.com/tools">
+	
+	<androidx.appcompat.widget.Toolbar
+			android:layout_alignParentTop="true"
+			android:id="@+id/toolbar"
+			android:background="@android:color/white"
+			app:popupTheme="@style/AppTheme.PopupOverlay"
+			android:layout_width="match_parent"
+			android:layout_height="?attr/actionBarSize">
+		<ImageButton
+				android:id="@+id/go_back_button"
+				android:layout_margin="8dp"
+				android:background="@android:color/white"
+				android:src="@drawable/ic_keyboard_arrow_left_green_24dp"
+				android:layout_width="48dp"
+				android:layout_height="48dp"/>
+		
+		<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="Tuskys Supermarket (T Mall)"
+				android:textSize="16sp"
+				android:textStyle="bold"
+				android:layout_gravity="center"
+				android:id="@+id/toolbar_title" />
+	
+	</androidx.appcompat.widget.Toolbar>
+	
+	<TextView
+			android:visibility="gone"
+			android:textColor="@color/red"
+			android:layout_below="@+id/toolbar"
+			android:gravity="center"
+			android:text="Oops. Incomplete information"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:id="@+id/error_title"
+			android:layout_marginTop="16dp"
+			android:textSize="20sp"
+			android:fontFamily="@font/roboto_medium"
+	/>
+	<TextView
+			android:visibility="gone"
+			android:textSize="16sp"
+			android:textColor="@color/red"
+			android:layout_margin="16dp"
+			android:id="@+id/error_textview"
+			android:layout_below="@+id/error_title"
+			android:text="Oops. Enter the delivery location, your contact mobile number and top up your credit to continue"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"/>
+	<androidx.core.widget.NestedScrollView
+			android:id="@+id/nested_scrolling_view"
+			android:layout_below="@+id/error_textview"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent">
+		
+		<RelativeLayout
+				android:layout_width="match_parent"
+				android:layout_height="match_parent">
+			
+			
+			<androidx.cardview.widget.CardView
+					android:layout_below="@+id/segmented1"
+					app:cardElevation="0dp"
+					android:id="@+id/layoutLocation"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content">
+				
+				
+				<LinearLayout
+						android:layout_marginTop="10dp"
+						android:layout_marginBottom="10dp"
+						android:gravity="center_vertical"
+						android:clickable="true"
+						android:orientation="horizontal"
+						android:layout_width="match_parent"
+						android:layout_height="match_parent"
+						android:focusable="true">
+					
+					<ImageView
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							app:srcCompat="@drawable/ic_location_on_black_24dp"
+							android:id="@+id/imageViewLocation"
+							android:layout_marginStart="@dimen/standard_margin"
+							segmentedgroup:ignore="ContentDescription"/>
+					
+					<LinearLayout
+							android:layout_marginStart="16dp"
+							android:layout_weight="1"
+							android:layout_width="0dp"
+							android:orientation="vertical"
+							android:layout_height="wrap_content">
+						
+						<TextView
+								android:layout_width="wrap_content"
+								android:gravity="center_vertical"
+								android:text="Delivery address"
+								android:layout_height="match_parent"
+								android:id="@+id/textViewAddLocation"
+								android:textSize="20sp"
+								android:fontFamily="@font/roboto_medium"/>
+						<TextView
+								android:visibility="gone"
+								android:id="@+id/delivery_address_error"
+								android:textColor="@color/colorAccent"
+								android:textSize="16sp"
+								android:text="Please select a delivery address"
+								android:layout_width="wrap_content"
+								android:layout_height="wrap_content"/>
+					
+					</LinearLayout>
+					
+					<!--<TextView-->
+					<!--android:layout_margin="8dp"-->
+					<!--android:id="@+id/time_created"-->
+					<!--android:textColor="@android:color/white"-->
+					<!--android:padding="8dp"-->
+					<!--android:background="@drawable/pay_design"-->
+					<!--android:textSize="12dp"-->
+					<!--android:text=" Change "-->
+					<!--android:layout_width="wrap_content"-->
+					<!--android:layout_height="wrap_content" />-->
+				</LinearLayout>
+			</androidx.cardview.widget.CardView>
+			
+			<LinearLayout
+					android:visibility="gone"
+					android:orientation="horizontal"
+					android:gravity="center_vertical"
+					android:layout_below="@+id/layoutLocation"
+					android:id="@+id/address_ll"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content">
+				
+				<RadioButton
+						
+						android:buttonTint="@color/colorGreen"
+						android:clickable="false"
+						android:checked="true"
+						android:layout_marginStart="16dp"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"/>
+				<!--<ImageView-->
+				<!--android:layout_width="wrap_content"-->
+				<!--android:layout_height="wrap_content"-->
+				<!--app:srcCompat="@drawable/ic_location_on_black_24dp"-->
+				<!--android:id="@+id/imageViewLocation"-->
+				<!--android:layout_marginStart="@dimen/standard_margin"-->
+				<!--segmentedgroup:ignore="ContentDescription"/>-->
+				<LinearLayout
+						android:layout_marginStart="16dp"
+						android:layout_weight="1"
+						android:orientation="vertical"
+						android:layout_width="0dp"
+						android:layout_height="wrap_content">
+					
+					<TextView
+							android:layout_marginTop="16dp"
+							android:id="@+id/address_one"
+							android:textStyle="bold"
+							android:text="Munret Mens Hostel"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"/>
+					<TextView
+							android:layout_marginBottom="16dp"
+							android:textColor="@color/lightGrey_"
+							android:id="@+id/address_two"
+							android:text="Sumba Road, Nairobi City, Kenya"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"/>
+				</LinearLayout>
+				<TextView
+						android:textAllCaps="true"
+						android:id="@+id/change_delivery_location"
+						android:clickable="true"
+						android:textColor="@color/colorGreen"
+						android:textStyle="bold"
+						android:layout_marginStart="10dp"
+						android:layout_marginEnd="10dp"
+						android:padding="8dp"
+						android:background="@drawable/log_out_bg"
+						android:text="Change"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:focusable="true"/>
+			</LinearLayout>
+			
+			<LinearLayout
+					android:gravity="center"
+					android:visibility="visible"
+					android:weightSum="1"
+					android:id="@+id/add_delivery_address_ll"
+					android:background="@android:color/white"
+					android:layout_below="@+id/address_ll"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content">
+				<Button
+						android:id="@+id/add_delivery_address_btn"
+						android:textSize="12sp"
+						android:fontFamily="@font/roboto_medium"
+						android:background="@drawable/pay_button_design"
+						android:textColor="@android:color/white"
+						android:text="Add delivery address"
+						android:textAllCaps="false"
+						android:layout_marginTop="8dp"
+						android:layout_marginBottom="8dp"
+						android:layout_width="0dp"
+						android:layout_weight="0.5"
+						android:layout_height="wrap_content"/>
+			</LinearLayout>
+			
+			
+			<androidx.cardview.widget.CardView
+					app:cardElevation="0dp"
+					android:layout_marginTop="10dp"
+					android:layout_below="@+id/add_delivery_address_ll"
+					android:id="@+id/wallet_cardview"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content">
+				
+				<LinearLayout
+						android:layout_marginTop="10dp"
+						android:layout_marginBottom="10dp"
+						android:gravity="center"
+						android:clickable="true"
+						android:id="@+id/layoutWallet"
+						android:orientation="horizontal"
+						android:layout_width="match_parent"
+						android:layout_height="match_parent"
+						android:focusable="true">
+					
+					<ImageView
+							android:layout_marginEnd="8dp"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							app:srcCompat="@drawable/wallet"
+							android:id="@+id/imageViewWallet"
+							app:layout_constraintStart_toStartOf="parent"
+							android:layout_marginStart="@dimen/standard_margin"/>
+					<LinearLayout
+							android:layout_height="wrap_content"
+							android:layout_marginStart="16dp"
+							android:layout_weight="1"
+							android:layout_width="0dp"
+							android:orientation="vertical">
+						
+						<TextView
+								android:text="Wallet"
+								android:layout_width="wrap_content"
+								android:layout_height="wrap_content"
+								android:id="@+id/textViewWallet"
+								android:fontFamily="@font/roboto_medium"
+								app:layout_constraintStart_toEndOf="@+id/imageViewPhone"
+								android:textSize="20sp"/>
+						<TextView
+								android:visibility="gone"
+								android:id="@+id/wallet_error"
+								android:textColor="@color/colorAccent"
+								android:textSize="16sp"
+								android:text="Please top up your wallet"
+								android:layout_width="wrap_content"
+								android:layout_height="wrap_content"/>
+					</LinearLayout>
+				
+				</LinearLayout>
+			</androidx.cardview.widget.CardView>
+			
+			<TextView
+					android:layout_marginStart="40dp"
+					android:layout_marginEnd="40dp"
+					android:layout_marginTop="16dp"
+					android:layout_below="@+id/wallet_cardview"
+					android:textSize="20sp"
+					android:textStyle="bold"
+					android:text="KES 0"
+					android:id="@+id/wallet_credit"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"/>
+			<!--<Button-->
+			<!--android:visibility="gone"-->
+			<!--android:layout_marginStart="40dp"-->
+			<!--android:layout_marginEnd="40dp"-->
+			<!--android:textSize="16sp"-->
+			<!--android:layout_marginTop="16dp"-->
+			<!--android:layout_marginBottom="16dp"-->
+			<!--android:layout_below="@+id/wallet_credit"-->
+			<!--android:textAllCaps="false"-->
+			<!--android:id="@+id/top_up_button"-->
+			<!--android:layout_width="match_parent"-->
+			<!--android:layout_height="wrap_content"-->
+			<!--android:background="@drawable/small_corners_blue"-->
+			<!--android:text="Top Up"-->
+			<!--android:textColor="@android:color/white"-->
+			<!--android:textStyle="bold" />-->
+			<LinearLayout
+					android:gravity="center"
+					android:visibility="visible"
+					android:weightSum="1"
+					android:id="@+id/top_up_wallet_button"
+					android:background="@android:color/white"
+					android:layout_below="@+id/wallet_credit"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content">
+				<Button
+						android:id="@+id/top_up_button"
+						android:textSize="12sp"
+						android:fontFamily="@font/roboto_medium"
+						android:background="@drawable/pay_button_design"
+						android:textColor="@android:color/white"
+						android:text="Top Up Wallet"
+						android:textAllCaps="false"
+						android:layout_marginTop="8dp"
+						android:layout_marginBottom="8dp"
+						android:layout_width="0dp"
+						android:layout_weight="0.5"
+						android:layout_height="wrap_content"/>
+			</LinearLayout>
+			
+			<!--<include layout="@layout/location_selection"-->
+			<!--android:id="@+id/layoutLocationSelection"-->
+			<!--android:layout_below="@+id/layoutLocation"-->
+			<!--android:layout_height="wrap_content"-->
+			<!--android:layout_width="match_parent"-->
+			<!--android:visibility="gone"/>-->
+			
+			<!--<include layout="@layout/delivery_schedule"-->
+			<!--android:visibility="visible"-->
+			<!--android:id="@+id/layoutDeliverySchedule"-->
+			<!--android:layout_below="@+id/layoutTimeline"-->
+			<!--android:layout_height="wrap_content"-->
+			<!--android:layout_width="match_parent"/>-->
+			<androidx.cardview.widget.CardView
+					app:cardElevation="0dp"
+					android:layout_marginTop="10dp"
+					android:layout_below="@+id/top_up_wallet_button"
+					android:id="@+id/phone_cardview"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content">
+				
+				<LinearLayout
+						android:layout_marginTop="10dp"
+						android:layout_marginBottom="10dp"
+						android:gravity="center"
+						android:clickable="true"
+						android:id="@+id/layoutPhone"
+						android:orientation="horizontal"
+						android:layout_width="match_parent"
+						android:layout_height="match_parent"
+						android:focusable="true">
+					
+					<ImageView
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							app:srcCompat="@drawable/ic_local_phone_black_24dp"
+							android:id="@+id/imageViewPhone"
+							app:layout_constraintStart_toStartOf="parent"
+							android:layout_marginStart="@dimen/standard_margin"/>
+					<LinearLayout
+							android:layout_height="wrap_content"
+							android:layout_marginStart="16dp"
+							android:layout_weight="1"
+							android:layout_width="0dp"
+							android:orientation="vertical">
+						<TextView
+								android:text="Cell Phone Number"
+								android:layout_width="wrap_content"
+								android:layout_height="wrap_content"
+								android:id="@+id/textViewPhoneNumber"
+								android:fontFamily="@font/roboto_medium"
+								app:layout_constraintStart_toEndOf="@+id/imageViewPhone"
+								android:textSize="20sp"
+								android:layout_weight="1"/>
+						<TextView
+								android:visibility="gone"
+								android:id="@+id/phone_error"
+								android:textColor="@color/colorAccent"
+								android:textSize="16sp"
+								android:text="Please enter your mobile number"
+								android:layout_width="wrap_content"
+								android:layout_height="wrap_content"/>
+					</LinearLayout>
+				
+				</LinearLayout>
+			</androidx.cardview.widget.CardView>
+			
+			<LinearLayout
+					android:gravity="center_vertical"
+					android:id="@+id/phone_ll"
+					android:layout_below="@+id/phone_cardview"
+					android:orientation="vertical"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content">
+				<TextView
+						android:layout_marginStart="16dp"
+						android:text="We use your number to text or call you about your order"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"/>
+				
+				<com.google.android.material.textfield.TextInputLayout
+						app:hintAnimationEnabled="true"
+						android:padding="4dp"
+						app:hintEnabled="true"
+						android:background="@drawable/log_out_bg"
+						android:id="@+id/textInputLayoutPhone"
+						android:layout_marginBottom="8dp"
+						android:layout_marginTop="10dp"
+						android:layout_marginStart="20dp"
+						android:layout_marginEnd="20dp"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content">
+					<EditText
+							android:padding="4dp"
+							android:layout_margin="4dp"
+							android:textSize="16sp"
+							android:background="@null"
+							android:id="@+id/phone_number_edittext"
+							android:backgroundTint="@android:color/white"
+							android:hint="Mobile number(10 digits)"
+							android:layout_width="match_parent"
+							android:inputType="phone"
+							android:layout_height="wrap_content" />
+				</com.google.android.material.textfield.TextInputLayout>
+				<Button
+						android:visibility="gone"
+						android:textSize="16sp"
+						android:layout_margin="16dp"
+						android:layout_below="@+id/wallet_credit"
+						android:textAllCaps="false"
+						android:id="@+id/confirm_number_button"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:background="@drawable/small_corners_blue"
+						android:text="Continue"
+						android:textColor="@android:color/white"
+						android:textStyle="bold" />
+				<Button
+						android:fontFamily="@font/roboto_medium"
+						android:visibility="gone"
+						android:textSize="16sp"
+						android:layout_margin="16dp"
+						android:textAllCaps="false"
+						android:id="@+id/confirm_phone_disabled"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:background="@drawable/disabled_btn"
+						android:text="Continue"
+						android:textColor="@android:color/white"
+						android:textStyle="bold" />
+			</LinearLayout>
+			
+			<!--<info.hoang8f.android.segmented.SegmentedGroup-->
+			<!--app:sc_tint_color="@color/colorGreen"-->
+			<!--android:layout_centerHorizontal="true"-->
+			<!--android:layout_below="@+id/phone_ll"-->
+			<!--android:id="@+id/segmented1"-->
+			<!--android:layout_width="wrap_content"-->
+			<!--android:layout_height="wrap_content"-->
+			<!--android:layout_margin="10dp"-->
+			<!--android:orientation="horizontal"-->
+			<!--segmentedgroup:sc_border_width="2dp"-->
+			<!--segmentedgroup:sc_corner_radius="10dp">-->
+			<!---->
+			<!--<RadioButton-->
+			<!--android:textStyle="bold"-->
+			<!--android:checked="true"-->
+			<!--android:background="@color/colorGreen"-->
+			<!--android:id="@+id/button_delivery"-->
+			<!--android:layout_width="120dp"-->
+			<!--android:layout_height="40dp"-->
+			<!--android:text="DELIVERY"-->
+			<!--style="@style/RadioButton" />-->
+			<!---->
+			<!--<RadioButton-->
+			<!--android:textStyle="bold"-->
+			<!--android:id="@+id/button_pick_up"-->
+			<!--android:layout_width="120dp"-->
+			<!--android:layout_height="40dp"-->
+			<!--android:text="PICK UP"-->
+			<!--style="@style/RadioButton" />-->
+			<!--</info.hoang8f.android.segmented.SegmentedGroup>-->
+			
+			<androidx.cardview.widget.CardView
+					app:cardElevation="0dp"
+					android:layout_marginTop="10dp"
+					android:layout_below="@+id/phone_ll"
+					android:id="@+id/delivery_time_cardview"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content">
+				
+				<LinearLayout
+						android:layout_marginTop="10dp"
+						android:layout_marginBottom="10dp"
+						android:gravity="center"
+						android:clickable="true"
+						android:id="@+id/delivery_time_layoutPhone"
+						android:orientation="horizontal"
+						android:layout_width="match_parent"
+						android:layout_height="match_parent"
+						android:focusable="true">
+					
+					<ImageView
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							app:srcCompat="@drawable/ic_access_time_black_24dp"
+							android:id="@+id/delivery_time_imageView"
+							app:layout_constraintStart_toStartOf="parent"
+							android:layout_marginStart="@dimen/standard_margin"/>
+					<LinearLayout
+							android:layout_height="wrap_content"
+							android:layout_marginStart="16dp"
+							android:layout_weight="1"
+							android:layout_width="0dp"
+							android:orientation="vertical">
+						<TextView
+								android:text="Choose delivery option"
+								android:layout_width="wrap_content"
+								android:layout_height="wrap_content"
+								android:id="@+id/delivery_time_textView"
+								android:fontFamily="@font/roboto_medium"
+								app:layout_constraintStart_toEndOf="@+id/imageViewPhone"
+								android:textSize="20sp"
+								android:layout_weight="1"/>
+						<TextView
+								android:visibility="gone"
+								android:id="@+id/delivery_time_error"
+								android:textColor="@color/colorAccent"
+								android:textSize="16sp"
+								android:text="Please select a delivery time"
+								android:layout_width="wrap_content"
+								android:layout_height="wrap_content"/>
+					</LinearLayout>
+				
+				</LinearLayout>
+			</androidx.cardview.widget.CardView>
+			
+			<TextView
+					android:textSize="16sp"
+					android:gravity="center"
+					android:id="@+id/discloser"
+					android:layout_below="@+id/delivery_time_cardview"
+					android:text="Kindly note that we only deliver from 9am to 6pm"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"/>
+			
+			
+			<!--<info.hoang8f.android.segmented.SegmentedGroup-->
+					<!--app:sc_tint_color="@color/colorGreen"-->
+					<!--android:layout_centerHorizontal="true"-->
+					<!--android:layout_below="@+id/discloser"-->
+					<!--android:id="@+id/segmented2"-->
+					<!--android:layout_width="wrap_content"-->
+					<!--android:layout_height="wrap_content"-->
+					<!--android:layout_margin="10dp"-->
+					<!--android:orientation="horizontal"-->
+					<!--segmentedgroup:sc_border_width="2dp"-->
+					<!--segmentedgroup:sc_corner_radius="10dp">-->
+				<!---->
+				<!--<RadioButton-->
+						<!--android:background="@color/colorGreen"-->
+						<!--android:id="@+id/button_deliver_today"-->
+						<!--android:layout_width="100dp"-->
+						<!--android:layout_height="40dp"-->
+						<!--android:text="Today"-->
+						<!--style="@style/RadioButton" />-->
+				<!---->
+				<!--<RadioButton-->
+						<!--android:id="@+id/button_deliver_tomorrow"-->
+						<!--android:layout_width="100dp"-->
+						<!--android:layout_height="40dp"-->
+						<!--android:text="Tomorrow"-->
+						<!--style="@style/RadioButton" />-->
+			<!--</info.hoang8f.android.segmented.SegmentedGroup>-->
+			
+			
+			<RadioGroup
+					android:backgroundTint="@color/colorGreen"
+					android:id="@+id/delivery_time_radio_group"
+					android:layout_margin="16dp"
+					android:orientation="vertical"
+					android:layout_below="@+id/discloser"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content">
+				<LinearLayout android:layout_width="match_parent"
+				              android:layout_height="wrap_content">
+					<RadioButton
+							android:layout_weight="1"
+							android:textStyle="bold"
+							android:textSize="16sp"
+							android:text="Express (within 2 hours)"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"/>
+					<TextView
+							android:textSize="16sp"
+							android:textStyle="bold"
+							android:textColor="@color/colorGreen"
+							android:text="KES 300"
+							android:layout_width="wrap_content"
+					          android:layout_height="wrap_content"/>
+				</LinearLayout>
+				
+				<LinearLayout android:layout_width="match_parent"
+				              android:layout_height="wrap_content">
+					<RadioButton
+							android:layout_weight="1"
+							android:textStyle="bold"
+							android:textSize="16sp"
+							android:text="Later (more than 2 hours)"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"/>
+					<TextView
+							android:textSize="16sp"
+							android:textStyle="bold"
+							android:textColor="@color/colorGreen"
+							android:text="KES 200"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"/>
+				</LinearLayout>
+				
+				
+			
+			</RadioGroup>
+			
+			
+			
+			<RelativeLayout
+					android:layout_below="@+id/delivery_time_radio_group"
+					android:visibility="visible"
+					android:layout_marginTop="16dp"
+					android:gravity="center"
+					android:orientation="horizontal"
+					android:id="@+id/recycler_ll"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content">
+				
+				<TextView
+						android:layout_marginTop="0dp"
+						android:id="@+id/nuberOfItemsTitle"
+						android:layout_marginStart="16dp"
+						android:textSize="20sp"
+						android:textStyle="bold"
+						android:text="8 items"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"/>
+				<RelativeLayout
+						android:layout_below="@+id/nuberOfItemsTitle"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content">
+					
+					<ImageButton
+							android:layout_centerVertical="true"
+							android:id="@+id/check"
+							android:layout_alignParentStart="true"
+							android:padding="4dp"
+							android:layout_marginStart="12dp"
+							android:layout_marginEnd="12dp"
+							android:background="@android:color/white"
+							android:src="@drawable/ic_check_circle_primary_color_24dp"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"/>
+					
+					<androidx.recyclerview.widget.RecyclerView
+							android:layout_toStartOf="@+id/expand_button"
+							android:layout_toEndOf="@+id/check"
+							android:layout_gravity="center"
+							android:id="@+id/cart_recycler_view"
+							android:orientation="horizontal"
+							app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+							tools:listitem="@layout/item_product_image"
+							android:layout_width="wrap_content"
+							android:layout_weight="1"
+							android:layout_height="wrap_content"/>
+					<ImageButton
+							android:layout_centerVertical="true"
+							android:id="@+id/expand_button"
+							android:layout_alignParentEnd="true"
+							android:layout_gravity="end|center"
+							android:padding="4dp"
+							android:layout_marginStart="12dp"
+							android:layout_marginEnd="12dp"
+							android:background="@android:color/white"
+							android:src="@drawable/ic_keyboard_arrow_down_black_24dp"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"/>
+				</RelativeLayout>
+			
+			
+			</RelativeLayout>
+			
+			<LinearLayout
+					android:visibility="gone"
+					android:layout_marginTop="40dp"
+					android:id="@+id/cart_items_ll"
+					android:layout_below="@+id/recycler_ll"
+					android:orientation="vertical"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content">
+				<LinearLayout
+						android:gravity="center_vertical"
+						android:orientation="horizontal"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content">
+					<ImageButton
+							android:id="@+id/check_"
+							android:padding="4dp"
+							android:layout_marginStart="12dp"
+							android:layout_marginEnd="12dp"
+							android:background="@android:color/white"
+							android:src="@drawable/ic_check_circle_primary_color_24dp"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"/>
+					<TextView
+							android:id="@+id/number_of_items_vertical_rv"
+							android:layout_marginStart="8dp"
+							android:textSize="20sp"
+							android:textStyle="bold"
+							android:text="8 items"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"/>
+					<Space
+							android:layout_weight="1"
+							android:layout_width="0dp"
+							android:layout_height="wrap_content"/>
+					<ImageButton
+							android:id="@+id/collapse_button"
+							android:layout_gravity="end|center"
+							android:padding="4dp"
+							android:layout_marginEnd="12dp"
+							android:background="@null"
+							android:src="@drawable/ic_cancel_black_24dp"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"/>
+				</LinearLayout>
+				<androidx.recyclerview.widget.RecyclerView
+						tools:listitem="@layout/item_checkout_cart_item"
+						app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+						android:id="@+id/cart_items_recycler"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:orientation="horizontal"/>
+			</LinearLayout>
+			
+			<androidx.cardview.widget.CardView
+					android:layout_marginTop="20dp"
+					android:layout_marginBottom="80dp"
+					app:cardElevation="0dp"
+					android:id="@+id/order_charges"
+					android:layout_below="@+id/cart_items_ll"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content">
+				
+				<LinearLayout
+						android:padding="8dp"
+						android:orientation="vertical"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content">
+					
+					<RelativeLayout
+							android:layout_margin="8dp"
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content">
+						
+						<TextView
+								android:layout_marginTop="4dp"
+								android:id="@+id/tip_title"
+								android:textSize="18sp"
+								android:textStyle="bold"
+								android:text="Shopper Tip"
+								android:layout_width="wrap_content"
+								android:layout_height="wrap_content"/>
+						<TextView
+								android:textSize="12sp"
+								android:layout_toEndOf="@+id/tip_title"
+								android:textAllCaps="true"
+								android:id="@+id/change_driver_tip"
+								android:clickable="true"
+								android:textColor="@color/colorGreen"
+								android:textStyle="bold"
+								android:layout_marginStart="10dp"
+								android:padding="6dp"
+								android:background="@drawable/log_out_bg"
+								android:text="Change"
+								android:layout_width="wrap_content"
+								android:layout_height="wrap_content"
+								android:focusable="true"/>
+						
+						<TextView
+								android:textColor="@color/lightGrey_"
+								android:layout_below="@+id/change_driver_tip"
+								android:text="100% of the tip goes to your shopper"
+								android:layout_width="wrap_content"
+								android:layout_height="wrap_content"/>
+						
+						<TextView
+								android:layout_marginTop="4dp"
+								android:layout_alignParentEnd="true"
+								android:id="@+id/tip_amount"
+								android:textSize="18sp"
+								android:textStyle="bold"
+								android:text="KES 100"
+								android:layout_width="wrap_content"
+								android:layout_height="wrap_content"/>
+					
+					</RelativeLayout>
+					<View
+							android:layout_margin="8dp"
+							android:id="@+id/view_delivery_to"
+							android:background="@color/lightGrey"
+							android:layout_width="wrap_content"
+							android:layout_height="1dp"/>
+					
+					<LinearLayout
+							android:layout_margin="8dp"
+							android:orientation="horizontal"
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content">
+						
+						<TextView
+								android:id="@+id/store_subtotal_title"
+								android:textSize="16sp"
+								android:text="Tuskys Subtotal"
+								android:layout_width="0dp"
+								android:layout_weight="1"
+								android:layout_height="wrap_content"/>
+						<TextView
+								android:id="@+id/store_subtotal"
+								android:textSize="16sp"
+								android:text="KES 600"
+								android:layout_width="wrap_content"
+								android:layout_height="wrap_content"/>
+					
+					</LinearLayout>
+					<LinearLayout
+							android:layout_margin="8dp"
+							android:orientation="horizontal"
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content">
+						
+						<TextView
+								android:textSize="16sp"
+								android:text="Delivery fee"
+								android:layout_width="0dp"
+								android:layout_weight="1"
+								android:layout_height="wrap_content"/>
+						<FrameLayout android:layout_width="wrap_content"
+						             android:layout_height="wrap_content">
+							<TextView
+									android:visibility="gone"
+									android:id="@+id/delivery_fee"
+									android:textSize="16sp"
+									android:text="KES 100"
+									android:layout_width="wrap_content"
+									android:layout_height="wrap_content"/>
+							<com.wang.avi.AVLoadingIndicatorView
+									android:id="@+id/delivery_fee_charges"
+									app:indicatorColor="@color/lightGrey_"
+									android:layout_width="24dp"
+									android:layout_height="24dp"
+									app:indicatorName="LineSpinFadeLoaderIndicator"/>
+						</FrameLayout>
+					
+					
+					</LinearLayout>
+					<RelativeLayout
+							android:gravity="center_vertical"
+							android:layout_margin="8dp"
+							android:orientation="horizontal"
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content">
+						
+						<TextView
+								android:id="@+id/service_fee_title"
+								android:layout_alignParentStart="true"
+								android:textSize="16sp"
+								android:text="Service fee"
+								android:layout_width="wrap_content"
+								android:layout_height="wrap_content"/>
+						<ImageButton
+								android:id="@+id/info_button"
+								android:layout_marginStart="8dp"
+								android:background="@android:color/white"
+								android:src="@drawable/ic_info_outline_black_24dp"
+								android:layout_toEndOf="@+id/service_fee_title"
+								android:layout_width="wrap_content"
+								android:layout_height="wrap_content"/>
+						<TextView
+								android:layout_alignParentEnd="true"
+								android:id="@+id/service_fee_amount"
+								android:textSize="16sp"
+								android:text="KES 60"
+								android:layout_width="wrap_content"
+								android:layout_height="wrap_content"/>
+					
+					</RelativeLayout>
+					<LinearLayout
+							android:layout_margin="8dp"
+							android:orientation="horizontal"
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content">
+						
+						<TextView
+								android:textStyle="bold"
+								android:textSize="18sp"
+								android:text="Total"
+								android:layout_width="0dp"
+								android:layout_weight="1"
+								android:layout_height="wrap_content"/>
+						<TextView
+								android:id="@+id/total_text_view"
+								android:textStyle="bold"
+								android:textSize="18sp"
+								android:text="KES 760"
+								android:layout_width="wrap_content"
+								android:layout_height="wrap_content"/>
+					
+					</LinearLayout>
+				</LinearLayout>
+			
+			</androidx.cardview.widget.CardView>
+		
+		</RelativeLayout>
+	
+	</androidx.core.widget.NestedScrollView>
+	<LinearLayout
+			android:orientation="vertical"
+			android:background="@android:color/white"
+			android:layout_alignParentBottom="true"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content">
+		<Button
+				android:visibility="visible"
+				android:id="@+id/place_order_button"
+				android:layout_marginBottom="@dimen/standard_margin"
+				android:textSize="20sp"
+				android:fontFamily="@font/roboto_medium"
+				android:background="@drawable/pay_button_design"
+				android:textColor="@android:color/white"
+				android:text="@string/place_order"
+				android:textAllCaps="false"
+				android:layout_margin="@dimen/standard_margin"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"/>
+		<Button
+				android:fontFamily="@font/roboto_medium"
+				android:visibility="gone"
+				android:textSize="20sp"
+				android:layout_margin="@dimen/standard_margin"
+				android:textAllCaps="false"
+				android:id="@+id/place_order_button_disabled"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:background="@drawable/disabled_btn"
+				android:text="@string/place_order"
+				android:textColor="@android:color/white"
+				android:textStyle="bold" />
+	</LinearLayout>
+</RelativeLayout>
