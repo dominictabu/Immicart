@@ -8,7 +8,6 @@
 		android:orientation="vertical"
 		tools:context=".delivery.trackingorder.TrackOrderFragment">
 	
-	
 <LinearLayout
 		android:layout_marginBottom="40dp"
               android:layout_width="match_parent"
@@ -39,9 +38,160 @@
 				android:id="@+id/toolbar_title" />
 	
 	</androidx.appcompat.widget.Toolbar>
-	
+	<LinearLayout
+			android:visibility="visible"
+			android:id="@+id/llorder_not_assigned"
+			android:layout_marginTop="8dp"
+			android:orientation="vertical"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content">
 		
 		<LinearLayout
+				android:gravity="center"
+				android:orientation="horizontal"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content">
+			
+			<ImageButton
+					android:id="@+id/check_order_not_assigned"
+					android:padding="4dp"
+					android:layout_marginStart="12dp"
+					android:layout_marginEnd="12dp"
+					android:background="@android:color/white"
+					android:src="@drawable/ic_access_time_black_24dp"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"/>
+			<LinearLayout
+					android:orientation="vertical"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content">
+			
+				<TextView
+						android:layout_marginTop="4dp"
+						android:textStyle="bold"
+						android:textSize="16sp"
+						android:text="Waiting to assign your order to Shopper"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"/>
+			
+			</LinearLayout>
+			
+		
+		
+		</LinearLayout>
+		<View
+				android:layout_marginStart="28dp"
+				android:background="@color/lightGrey_"
+				android:layout_width="2dp"
+				android:layout_height="40dp"/>
+		
+		<LinearLayout
+				android:gravity="center"
+				android:orientation="horizontal"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content">
+			
+			<ImageButton
+					android:background="@android:color/white"
+					android:id="@+id/store_drawable_not_assigned"
+					android:padding="4dp"
+					android:layout_marginStart="12dp"
+					android:layout_marginEnd="12dp"
+					android:src="@drawable/ic_shopping_basket_black_24dp"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"/>
+			<LinearLayout
+					android:orientation="vertical"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content">
+				<TextView
+						android:layout_marginTop="4dp"
+						android:textStyle="bold"
+						android:textSize="16sp"
+						android:text="Shopping"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"/>
+			
+			</LinearLayout>
+		
+		</LinearLayout>
+		<View
+				android:layout_marginStart="28dp"
+				android:background="@color/lightGrey_"
+				android:layout_width="2dp"
+				android:layout_height="40dp"/>
+		
+		<LinearLayout
+				android:gravity="center"
+				android:orientation="horizontal"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content">
+			
+			<ImageButton
+					android:background="@android:color/white"
+					android:id="@+id/_store_drawable__not_assigned"
+					android:padding="4dp"
+					android:layout_marginStart="12dp"
+					android:layout_marginEnd="12dp"
+					android:src="@drawable/ic_directions_bike_black_24dp"
+					android:layout_width="24dp"
+					android:layout_height="24dp"/>
+			<LinearLayout
+					android:orientation="vertical"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content">
+				<TextView
+						android:textSize="16sp"
+						android:text="Delivering"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"/>
+			
+			
+			</LinearLayout>
+		
+		</LinearLayout>
+		
+		<View
+				android:background="@drawable/dotted_bg"
+				android:layout_width="32dp"
+				android:layout_height="40dp"/>
+		<LinearLayout
+				android:gravity="center"
+				android:orientation="horizontal"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content">
+			
+			<ImageButton
+					android:id="@+id/_home_"
+					android:padding="4dp"
+					android:layout_marginStart="12dp"
+					android:layout_marginEnd="12dp"
+					android:background="@android:color/white"
+					android:src="@drawable/ic_home_black_24dp"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"/>
+			<LinearLayout
+					android:orientation="vertical"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content">
+				
+				<TextView
+						android:textColor="@color/lightGrey_"
+						android:layout_marginTop="4dp"
+						android:textStyle="bold"
+						android:textSize="16sp"
+						android:text="Completed"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"/>
+			
+			</LinearLayout>
+		
+		</LinearLayout>
+	
+	</LinearLayout>
+	
+	
+	<LinearLayout
 				android:visibility="gone"
 				android:id="@+id/llorderassigned"
 				android:layout_marginTop="8dp"
@@ -431,7 +581,7 @@
 		</LinearLayout>
 		
 		<LinearLayout
-				android:visibility="visible"
+				android:visibility="gone"
 				android:id="@+id/llorderdelivering"
 				android:layout_marginTop="8dp"
 				android:orientation="vertical"
@@ -471,16 +621,16 @@
 							android:layout_height="wrap_content"/>
 				
 				</LinearLayout>
-				<TextView
-						android:id="@+id/call_shopper_llorderdelivering"
-						android:textColor="@android:color/white"
-						android:textStyle="bold"
-						android:layout_marginStart="10dp"
-						android:padding="8dp"
-						android:background="@drawable/pay_design"
-						android:text="Call Shopper"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"/>
+				<!--<TextView-->
+						<!--android:id="@+id/call_shopper_llorderdelivering"-->
+						<!--android:textColor="@android:color/white"-->
+						<!--android:textStyle="bold"-->
+						<!--android:layout_marginStart="10dp"-->
+						<!--android:padding="8dp"-->
+						<!--android:background="@drawable/pay_design"-->
+						<!--android:text="Call Shopper"-->
+						<!--android:layout_width="wrap_content"-->
+						<!--android:layout_height="wrap_content"/>-->
 				
 			
 			</LinearLayout>
@@ -561,6 +711,7 @@
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content">
 						<de.hdodenhof.circleimageview.CircleImageView
+								android:id="@+id/driver_img"
 								android:src="@drawable/mansmiling"
 								android:layout_width="48dp"
 								android:layout_height="48dp"/>
@@ -568,28 +719,45 @@
 								android:orientation="vertical"
 								android:layout_width="wrap_content"
 								android:layout_height="wrap_content">
+							<!--<TextView-->
+									<!--android:layout_gravity="end"-->
+									<!--android:textColor="@color/colorGreen"-->
+									<!--android:textStyle="bold"-->
+									<!--android:layout_marginStart="10dp"-->
+									<!--android:padding="8dp"-->
+									<!--android:background="@drawable/log_out_bg"-->
+									<!--android:text="View Map"-->
+									<!--android:layout_width="wrap_content"-->
+									<!--android:layout_height="wrap_content"/>-->
 							<TextView
-									android:layout_gravity="end"
-									android:textColor="@color/colorGreen"
+									android:id="@+id/rider_name"
 									android:textStyle="bold"
-									android:layout_marginStart="10dp"
-									android:padding="8dp"
-									android:background="@drawable/log_out_bg"
-									android:text="View Map"
-									android:layout_width="wrap_content"
-									android:layout_height="wrap_content"/>
-							
-							<TextView
 									android:layout_marginStart="8dp"
-									android:textStyle="bold"
-									android:textSize="16sp"
-									android:text="Your shopper Joseph, is on the way"
+									android:text="Leornado Di Caprio"
 									android:layout_width="wrap_content"
 									android:layout_height="wrap_content"/>
+							<TextView
+									android:id="@+id/vehicle_details"
+									android:layout_marginStart="8dp"
+									android:text="DUCATI KMEL 001K"
+									android:layout_width="wrap_content"
+									android:layout_height="wrap_content"/>
+							<!--<TextView-->
+									<!--android:layout_marginStart="8dp"-->
+									<!--android:textSize="16sp"-->
+									<!--android:text="Your driver is on the way"-->
+									<!--android:layout_width="wrap_content"-->
+									<!--android:layout_height="wrap_content"/>-->
 						</LinearLayout>
+						<ImageButton
+								android:id="@+id/call_rider"
+								android:layout_marginStart="4dp"
+								android:background="@drawable/call_bg"
+								android:src="@drawable/fui_ic_phone_white_24dp"
+								android:layout_width="64dp"
+								android:layout_height="64dp"/>
 					</LinearLayout>
-				
-				
+					
 				</LinearLayout>
 			
 			</LinearLayout>
@@ -671,21 +839,19 @@
 							android:text="Order assigned to Shopper"
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"/>
-					
-					
 				
 				</LinearLayout>
 				
-				<TextView
-						android:id="@+id/call_shopper"
-						android:textColor="@android:color/white"
-						android:textStyle="bold"
-						android:layout_marginStart="10dp"
-						android:padding="8dp"
-						android:background="@drawable/pay_design"
-						android:text="Call Shopper"
-						android:layout_width="wrap_content"
-				          android:layout_height="wrap_content"/>
+				<!--<TextView-->
+						<!--android:id="@+id/call_shopper"-->
+						<!--android:textColor="@android:color/white"-->
+						<!--android:textStyle="bold"-->
+						<!--android:layout_marginStart="10dp"-->
+						<!--android:padding="8dp"-->
+						<!--android:background="@drawable/pay_design"-->
+						<!--android:text="Call Shopper"-->
+						<!--android:layout_width="wrap_content"-->
+				          <!--android:layout_height="wrap_content"/>-->
 				
 				<!--<ImageButton-->
 						<!--android:id="@+id/call_shopper"-->
@@ -773,6 +939,7 @@
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content">
 						<de.hdodenhof.circleimageview.CircleImageView
+								android:id="@+id/rider_image_completed"
 								android:src="@drawable/klaus"
 								android:layout_width="48dp"
 								android:layout_height="48dp"/>
@@ -792,12 +959,13 @@
 									<!--android:layout_height="wrap_content"/>-->
 							
 						<TextView
+								android:id="@+id/driver_text"
 								android:layout_marginEnd="20dp"
 								android:layout_marginStart="8dp"
 								android:layout_marginTop="4dp"
 								android:textStyle="bold"
 								android:textSize="16sp"
-								android:text="Your driver Joseph, delivered at 3:00pm on Wed"
+								android:text="Your driver Joseph, delivered your order"
 								android:layout_width="wrap_content"
 								android:layout_height="wrap_content"/>
 						</LinearLayout>
@@ -847,10 +1015,7 @@
 			</LinearLayout>
 		
 		</LinearLayout>
-		
-		
-		
-		
+	
 		<LinearLayout
 				android:layout_margin="10dp"
 				android:gravity="center_vertical"
@@ -1109,12 +1274,6 @@
 		</LinearLayout>
 	
 	</androidx.cardview.widget.CardView>
-
-
-
-
-
-
-
+	
 </LinearLayout>
 </androidx.core.widget.NestedScrollView>

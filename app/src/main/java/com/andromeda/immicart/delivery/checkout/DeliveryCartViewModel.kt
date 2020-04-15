@@ -30,7 +30,10 @@ class DeliveryCartViewModel(application: Application) : AndroidViewModel(applica
     val sendy_order_number = MutableLiveData<String>()
 
 
-
+    val currentStore = MutableLiveData<Store>()
+    fun setCurrentStore(word: Store) {
+        currentStore.value = word
+    }
     // LiveData gives us updated words when they change.
     val allDeliveryItems: LiveData<List<DeliveryCart>>
 

@@ -1,6 +1,7 @@
 package com.andromeda.immicart.delivery
 
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,6 +13,8 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.andromeda.immicart.R
+import com.andromeda.immicart.delivery.checkout.DeliveryCartActivity
+import com.andromeda.immicart.delivery.choose_store.Store
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -20,6 +23,11 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.fragment_last_category.*
+import kotlinx.android.synthetic.main.fragment_last_category.badge
+import kotlinx.android.synthetic.main.fragment_last_category.cartImageButton
+import kotlinx.android.synthetic.main.fragment_last_category.category_name
+import kotlinx.android.synthetic.main.fragment_last_category.products_items_recycler
+import kotlinx.android.synthetic.main.fragment_vision_search_results.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -92,42 +100,53 @@ class LastCategoryFragment : Fragment() {
 //            }
 //        })
 
+        var store : Store? = null
 
+        viewModel.categoryLastChild.observe(this, Observer { subcategory ->
+            subcategory?.let {
+                val category = it
+                category_name.text = subcategory.name
+//                getCurrentStore(it.name!!)
+
+                Log.d(TAG, "Category : $category")
+                viewModel.currentStore.observe(activity!!, Observer {
+                    Log.d(TAG, "currentStore : $it")
+
+                    store = it
+                    storeId = it.key
+                    getProducts(category.name!!)
+
+                })
+            }
+        })
+
+          val CURRENT_STORE = "CURRENT_STORE"
+
+        last_cart_frame_layout?.setOnClickListener {
+            val intent = Intent(activity!!, DeliveryCartActivity::class.java)
+            intent.putExtra(CURRENT_STORE, store)
+            startActivity(intent)
+        }
 
 
         viewModel?.allDeliveryItems()?.observe(this, Observer { items ->
-
             Log.d(TAG, "CartItems: $items")
             items?.let {
                 cartItems = it
                 val cartIteemsNumber = it.size
                 badge.text = cartIteemsNumber.toString()
                 Log.d(TAG, "CartItems Length: ${items.count()}")
-
 //                categoryRecyclerAdapter?.updateItems(it as ArrayList<DeliveryCart>)
-
             }
         })
 
-        viewModel.categoryLastChild.observe(this, Observer { subcategory ->
-            subcategory?.let {
-                category_name.text = subcategory.name
-                getCurrentStore(it.name!!)
-            }
-
-
-        })
 
 
 //        myBackIcon?.let{
 //            findNavController().popBackStack()
 //        }
 
-
-
-
     }
-
 
     fun initializeRecycler() {
         val gridLayoutManager = GridLayoutManager(activity!!,2 )
@@ -146,17 +165,36 @@ class LastCategoryFragment : Fragment() {
         Log.d(TAG, "newQuantity : $newQuantity , $cartItem ")
 
 
-        if (cartItems.contains(cartItem)) {
-            Log.d(TAG, "CartItems contain the item")
-            viewModel?.updateQuantity(cartItem.key, newQuantity)
+//        if (cartItems.contains(cartItem)) {
+//            Log.d(TAG, "CartItems contain the item")
+//            viewModel?.updateQuantity(cartItem.key, newQuantity)
+//
+//        } else {
+//            Log.d(TAG, "CartItems DO NOT  contain the item")
+//
+//            viewModel?.insert(cartItem)
+//        }
+//
 
-        } else {
-            Log.d(TAG, "CartItems DO NOT  contain the item")
+        var contains = false
+        cartItems.forEach {
+            if(it.key == cartItem.key) {
+                contains = true
+                Log.d(TAG, "CartItems contain the item")
+                viewModel.updateQuantity(cartItem.key, newQuantity)
+                return
+            }
+        }
 
-            viewModel?.insert(cartItem)
+        Log.d(TAG, "CartItems DO NOT  contain the item")
+
+        if(!contains) {
+            viewModel.insert(cartItem)
+
         }
 
     }
+    val deliveryCarts  = ArrayList<DeliveryCart>()
 
 
     fun getProducts(category : String) {
@@ -205,7 +243,38 @@ class LastCategoryFragment : Fragment() {
 //                }
 
             }
-            productsAdapter.updateList(productsArray, storeId)
+//            productsAdapter.updateList(productsArray, storeId)
+
+            viewModel.allDeliveryItems().observe(activity!!, Observer { items ->
+                Log.d(TAG, "CartItems: $items")
+                items?.let {
+                    cartItems = it
+                    val cartIteemsNumber = it.size
+                    badge?.text = cartIteemsNumber.toString()
+                    Log.d(TAG, "CartItems Length: ${items.count()}")
+                    if(productsArray.size != 0) {
+                        productsArray.forEach {
+                            val product = it
+                            val index = productsArray.indexOf(product)
+                            cartItems.forEach {
+                                if(product.key == it.key) {
+                                    product.isInCart = true
+                                    val deliveryCart =
+                                        DeliveryCart(it.key, it.barcode, it.name,it.category, it.offerPrice, it.normalPrice, it.quantity, it.image_url, true)
+                                    productsArray.set(index, deliveryCart)
+                                }
+                            }
+
+                        }
+                        productsAdapter.updateList(productsArray, storeId)
+
+//                                adapter.updateList(productsArray, storeId)
+
+                    }
+//                            categoryRecyclerAdapter?.updateItems(cartItems as ArrayList<DeliveryCart>)
+                }
+
+            })
         }
     }
 

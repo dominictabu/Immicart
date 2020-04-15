@@ -110,12 +110,11 @@
 					android:text="KES 50" />
 			
 			<RadioButton
-					android:checked="true"
 					android:buttonTint="@color/colorGreen"
 					android:layout_marginTop="20dp"
 					android:textSize="16sp"
 					android:padding="4dp"
-					android:id="@+id/radio2"
+					android:id="@+id/tip_100"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:text="KES 100" />

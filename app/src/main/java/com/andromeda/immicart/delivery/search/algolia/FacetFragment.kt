@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.algolia.instantsearch.helper.android.list.autoScrollToStart
 import com.andromeda.immicart.R
@@ -79,6 +80,11 @@ class FacetFragment : Fragment() {
 
         cancel_action?.setOnClickListener {
             activity?.finish()
+        }
+
+        apply_filter_btn?.setOnClickListener {
+            findNavController().popBackStack()
+
         }
     }
 

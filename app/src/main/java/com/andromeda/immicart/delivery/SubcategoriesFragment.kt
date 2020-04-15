@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.andromeda.immicart.R
 import com.andromeda.immicart.delivery.Utils.MyDatabaseUtil
 import com.andromeda.immicart.delivery.checkout.DeliveryCartActivity
+import com.andromeda.immicart.delivery.choose_store.Store
 import com.andromeda.immicart.networking.ImmicartAPIService
 import com.andromeda.immicart.networking.Model
 import com.bumptech.glide.Glide
@@ -111,6 +112,15 @@ class SubcategoriesFragment : Fragment() {
 //            }
 //        })
 
+        var store : Store? = null
+//        viewModel.currentStore.observe(activity!!, Observer {
+//            store = it
+//            storeId = it.key
+//            getCategoriesTwo(categoryId!!)
+//            getSubCategories(categoryId!!)
+//            getCategories()
+//        })
+
 
 
 
@@ -137,8 +147,13 @@ class SubcategoriesFragment : Fragment() {
 //            retrieveCategories(id)
             categoryId?.let {
 //                getSubCategories(categoryId!!)
-                getCurrentStore()
-
+                viewModel.currentStore.observe(activity!!, Observer {
+                    store = it
+                    storeId = it.key
+                    getCategoriesTwo(categoryId!!)
+                    getSubCategories(categoryId!!)
+//                    getCategories()
+                })
             }
 
         })
@@ -170,7 +185,11 @@ class SubcategoriesFragment : Fragment() {
 
         cart_frame_layout?.setOnClickListener {
 
-            startActivity(Intent(activity!!, DeliveryCartActivity::class.java))
+//            startActivity(Intent(activity!!, DeliveryCartActivity::class.java))
+
+            val intent = Intent(activity!!, DeliveryCartActivity::class.java)
+            intent.putExtra(CURRENT_STORE, store)
+            startActivity(intent)
         }
 
         myBackIcon?.setOnClickListener {
@@ -180,6 +199,7 @@ class SubcategoriesFragment : Fragment() {
 
 
     }
+    private  val CURRENT_STORE = "CURRENT_STORE"
 
 
     private fun getSubCategories(categoryKey: String) {

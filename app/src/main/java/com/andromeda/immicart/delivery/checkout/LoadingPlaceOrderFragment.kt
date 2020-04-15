@@ -266,8 +266,8 @@ class LoadingPlaceOrderFragment : Fragment() {
 
         nestedOrderStatus.put("assigned", false)
         nestedOrderStatus.put("shopping", false)
-        nestedOrderStatus.put("delivering", false)
-        nestedOrderStatus.put("completed", false)
+        nestedOrderStatus.put("delivering", false) //Sendy
+//        nestedOrderStatus.put("completed", false)
 
         val cal = Calendar.getInstance()
         cal.getTime()
@@ -319,7 +319,7 @@ class LoadingPlaceOrderFragment : Fragment() {
         deliveryDetails?.let {
 
             nestedChargesData.put("storeSubtotal", it.storeSubtotal)
-            nestedChargesData.put("serviceFee", it.serviceFee)
+            nestedChargesData.put("shoppersTip", it.shoppersTip)
             nestedChargesData.put("deliveryFee", it.deliveryFee)
             orderMap.put("mobileNumber", it.phone)
 
@@ -340,6 +340,7 @@ class LoadingPlaceOrderFragment : Fragment() {
 
         val shared = activity!!.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         val channel = (shared.getBoolean(keyChannel, false));
+
         if(channel) {
             nestedDeliveryMode.put("deliveryMode", 0)   // 0 represents Pick Up
             nestedDeliveryMode.put("isDelivery", false)
@@ -353,6 +354,7 @@ class LoadingPlaceOrderFragment : Fragment() {
         customerUID?.let {
             orderMap.put("customerUID", customerUID)
         }
+
         orderMap.put("orderID", key)
         orderMap.put("deviceToken", token)
         orderMap.put("items", items)

@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.graphics.*;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
@@ -41,9 +42,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
-import com.google.android.gms.maps.model.BitmapDescriptor;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.*;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -59,7 +58,6 @@ import com.airbnb.android.airmapview.listeners.OnMapInitializedListener;
 import com.airbnb.android.airmapview.listeners.OnMapMarkerClickListener;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
@@ -375,7 +373,24 @@ public class MapFragmentStoreFinder extends Fragment implements OnMapInitialized
     @Override
     public void onMapInitialized() {
 
+
+
         Log.d(TAG, "onMApInitialized Called");
+
+//        try {
+//            // Customise the styling of the base map using a JSON object defined
+//            // in a raw resource file.
+//
+//            boolean success = map.setMapStyle(
+//                    MapStyleOptions.loadRawResourceStyle(
+//                            requireActivity(), R.raw.uber_map_style));
+//
+//            if (!success) {
+//                Log.e(TAG, "Style parsing failed.");
+//            }
+//        } catch (Resources.NotFoundException e) {
+//            Log.e(TAG, "Can't find style. Error: ", e);
+//        }
 
         // check permission
         if (ActivityCompat.checkSelfPermission(Objects.requireNonNull(getActivity()), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
@@ -438,11 +453,12 @@ public class MapFragmentStoreFinder extends Fragment implements OnMapInitialized
 
     }
 
+    String CURRENT_STORE = "CURRENT_STORE";
     @Override
     public void onItemClick(Store  store) {
 //        mapFragmentStoreFinderViewModel.deleteAll();
 //        mapFragmentStoreFinderViewModel.insert(store);
-        setCurrentStore(store);
+//        setCurrentStore(store);
 //        if (mParam1 != null) {
 ////            startActivity(new Intent(getActivity(), BarcodeScannerActivity.class));
 ////            Intent intent = new Intent(getActivity(), BottomNavActivity.class);
@@ -454,6 +470,10 @@ public class MapFragmentStoreFinder extends Fragment implements OnMapInitialized
 //        }
 
 
+
+        Intent intent = new Intent(requireActivity(), ProductsPageActivity.class);
+        intent.putExtra(CURRENT_STORE, store);
+        startActivity(intent);
     }
 
 

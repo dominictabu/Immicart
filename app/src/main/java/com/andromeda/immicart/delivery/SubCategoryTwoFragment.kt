@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.andromeda.immicart.R
 import com.andromeda.immicart.delivery.checkout.DeliveryCartActivity
+import com.andromeda.immicart.delivery.choose_store.Store
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -75,7 +76,20 @@ class SubCategoryTwoFragment : Fragment() {
 
         viewModel = ViewModelProviders.of(activity!!).get(ProductsViewModel::class.java)
 
-        getCurrentStore()
+//        getCurrentStore()
+
+        var store : Store? = null
+//        viewModel.currentStore.observe(activity!!, Observer {
+//            store = it
+//            storeId = it.key
+//            parentCategoryKey?.let {
+//                childCategoryKey?.let {
+//                    getCategories(parentCategoryKey!!, childCategoryKey!!)
+//                    getSubCategories(parentCategoryKey!!, childCategoryKey!!)
+//
+//                }
+//            }
+//        })
 
 //        viewModel.currentStores().observe(activity!!, Observer {
 //            it?.let {
@@ -114,7 +128,6 @@ class SubCategoryTwoFragment : Fragment() {
 //        })
 
 
-
         viewModel.categoryParent.observe(this, Observer { category ->
              parentCategoryKey = category.key
             //            retrieveCategories(id)
@@ -123,12 +136,21 @@ class SubCategoryTwoFragment : Fragment() {
                  childCategoryKey = subcategory.key
                 category_name.text = subcategory.name
 
-
-
                 parentCategoryKey?.let {
                     childCategoryKey?.let {
-                        getCurrentStore()
+//                        getCurrentStore()
 
+                        viewModel.currentStore.observe(activity!!, Observer {
+                            store = it
+                            storeId = it.key
+                            parentCategoryKey?.let {
+                                childCategoryKey?.let {
+                                    getCategories(parentCategoryKey!!, childCategoryKey!!)
+                                    getSubCategories(parentCategoryKey!!, childCategoryKey!!)
+
+                                }
+                            }
+                        })
 
 //                        getSubCategories(parentCategoryKey, childCategoryKey)
 
@@ -153,7 +175,10 @@ class SubCategoryTwoFragment : Fragment() {
 
         cart_frame_layout?.setOnClickListener {
 
-            startActivity(Intent(activity!!, DeliveryCartActivity::class.java))
+//            startActivity(Intent(activity!!, DeliveryCartActivity::class.java))
+            val intent = Intent(activity!!, DeliveryCartActivity::class.java)
+            intent.putExtra(CURRENT_STORE, store)
+            startActivity(intent)
         }
 //
 //        myBackIcon?.setOnClickListener {
@@ -161,6 +186,7 @@ class SubCategoryTwoFragment : Fragment() {
 //        }
     }
 
+    private  val CURRENT_STORE = "CURRENT_STORE"
 
     private fun getCategories(categoryKey: String, subCategoryKey: String) {
         val collectionPath = "stores/$storeId/categories/$categoryKey/subcategories/$subCategoryKey/subcategories"
@@ -266,14 +292,30 @@ class SubCategoryTwoFragment : Fragment() {
         //TODO Change Quantity
         Log.d(TAG, "newQuantity : $newQuantity , $cartItem ")
 
-        if (cartItems.contains(cartItem)) {
-            Log.d(TAG, "CartItems contain the item")
-            viewModel?.updateQuantity(cartItem.key, newQuantity)
-
-        } else {
-            Log.d(TAG, "CartItems DO NOT  contain the item")
-            viewModel?.insert(cartItem)
+        var contains = false
+        cartItems.forEach {
+            if(it.key == cartItem.key) {
+                contains = true
+                Log.d(TAG, "CartItems contain the item")
+                viewModel.updateQuantity(cartItem.key, newQuantity)
+                return
+            }
         }
+
+        Log.d(TAG, "CartItems DO NOT  contain the item")
+
+        if(!contains) {
+            viewModel.insert(cartItem)
+
+        }
+//        if (cartItems.contains(cartItem)) {
+//            Log.d(TAG, "CartItems contain the item")
+//            viewModel?.updateQuantity(cartItem.key, newQuantity)
+//
+//        } else {
+//            Log.d(TAG, "CartItems DO NOT  contain the item")
+//            viewModel?.insert(cartItem)
+//        }
 
     }
 

@@ -40,25 +40,19 @@ class SuccessOrderPlacementFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         activity!!.window.statusBarColor = ContextCompat.getColor(activity!!, R.color.colorGreen)
-
         return inflater.inflate(R.layout.fragment_success_order_placement, container, false)
     }
 
-
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
         complete_order_button.setOnClickListener {
             activity!!.finish()
         }
-
     }
-
 
     override fun onStop() {
         activity!!.window.statusBarColor = ContextCompat.getColor(activity!!, R.color.colorPrimary)
         super.onStop()
-
     }
 
     companion object {

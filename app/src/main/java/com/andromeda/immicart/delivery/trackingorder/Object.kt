@@ -16,7 +16,9 @@ package com.andromeda.immicart.delivery.trackingorder
 data class OrderObject(val customerUID: String? = null, val orderID: String? = null, var mobileNumber:String? = null,
                        val items: List<DeliveryCart_>? = null, val datePosted: String? = null, var timeInMillisCreated:Long? = null,
                        val payments: Payments? = null, val deliveryAddress: DeliveryAddress? = null, var store:DeliveryStore? = null, var orderStatus : OrderStatus? = null,
-                        val deliveryMode : DeliveryMode? = null)
+                        val deliveryMode : DeliveryMode? = null, val sendyData: SendyData? = null)
+
+data class SendyData(val order_no : String? = null, val eta: String? = null, val etd : String? = null)
 
 
 data class Payments(val storeSubtotal : Float? = null, val serviceFee : Float? = null, val deliveryFee : Float? = null)

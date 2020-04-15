@@ -27,15 +27,14 @@ import com.andromeda.immicart.delivery.wallet.stkPush.model.STKPush;
 import com.andromeda.immicart.delivery.wallet.stkPush.util.Utils;
 import com.andromeda.immicart.networking.ImmicartAPIService;
 import com.andromeda.immicart.networking.Model;
-import com.google.android.gms.tasks.Continuation;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.*;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.*;
 import com.google.firebase.functions.FirebaseFunctions;
 import com.google.firebase.functions.HttpsCallableResult;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import org.jetbrains.annotations.NotNull;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -78,6 +77,8 @@ public class MPESAFragment extends Fragment {
     String accountReference = "001ABC";
     String transactionDescription = "Immicart Account Deposit";
 
+    private static final String MPESA_PAYBILL_CONFIG_KEY = "mpesa_paybill";
+
     EditText mobileNumberEdtxt;
     EditText amount_edittext;
     TextView error_txt_amount;
@@ -92,7 +93,7 @@ public class MPESAFragment extends Fragment {
     FirebaseFirestore db;
     FirebaseUser currentFirebaseUser;
 
-
+    FirebaseRemoteConfig mFirebaseRemoteConfig;
     public MPESAFragment() {
         // Required empty public constructor
     }
@@ -150,6 +151,14 @@ public class MPESAFragment extends Fragment {
         db = FirebaseFirestore.getInstance();
         currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
 
+        mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
+
+
+        FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
+                .setMinimumFetchIntervalInSeconds(360)
+                .build();
+        mFirebaseRemoteConfig.setConfigSettingsAsync(configSettings);
+        fetchPayBill();
 
         mApiClient = new ApiClient();
         mApiClient.setIsDebug(true); //Set True to enable logging, false to disable.
@@ -308,8 +317,34 @@ public class MPESAFragment extends Fragment {
         });
 
 
+        mFirebaseRemoteConfig.setDefaults(R.xml.remote_config_defaults);
+
+
+
+
+
     }
 
+    private void fetchPayBill() {
+        String payBill = mFirebaseRemoteConfig.getString(MPESA_PAYBILL_CONFIG_KEY);
+
+        // [START fetch_config_with_callback]
+        mFirebaseRemoteConfig.fetchAndActivate().addOnSuccessListener(new OnSuccessListener<Boolean>() {
+            @Override
+            public void onSuccess(Boolean aBoolean) {
+
+                if(aBoolean) {
+                    Toast.makeText(requireActivity(), "Fetch and activate succeeded",
+                            Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(requireActivity(), "Fetch failed",
+                            Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        // [END fetch_config_with_callback]
+    }
 
     private Task<String> mpesaStkPushOnCall(String phone, String amount) {
         Log.d(TAG, "mpesaStkPushOnCall called");
@@ -492,7 +527,7 @@ public class MPESAFragment extends Fragment {
                 TRANSACTION_TYPE,
                 amount,
                 phone_number,
-                PARTYB,
+                mFirebaseRemoteConfig.getString(MPESA_PAYBILL_CONFIG_KEY),
                 phone_number,
                 CALLBACKURL + uid + "&documentID=" + documentID,
                 "test", //The account reference

@@ -4,7 +4,7 @@ import com.google.firebase.database.Exclude
 import com.google.firebase.database.IgnoreExtraProperties
 
 data class DeliveryDetails(val phone: String, val year: Int, val dayOfDelivery: Int, val timeOfDelivery: String, val storeSubtotal: Int,
-                            val deliveryFee: Int, val serviceFee: Int, val total: Int)
+                            val deliveryFee: Int, val shoppersTip: Int, val total: Int)
 
 
 data class GeoCoderPoint(val orderID: String,val numberOfItems: Int,val dayOfDelivery: Int,val timeOfDeliveryInInt: Int, val timeOfDelivery: String,val deliveryLatLng: String,

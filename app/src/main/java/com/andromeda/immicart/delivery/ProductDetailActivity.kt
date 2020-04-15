@@ -61,7 +61,6 @@ class ProductDetailActivity : AppCompatActivity() {
 
         viewModel = ViewModelProviders.of(this).get(ProductDetailViewModel::class.java)
 
-
         supportActionBar!!.setDisplayShowTitleEnabled(false);
 
         supportActionBar!!.setHomeButtonEnabled(true);
@@ -78,7 +77,6 @@ class ProductDetailActivity : AppCompatActivity() {
                     shareContent(shareLink_.toString())
                 }
 
-
 //            getProduct(id)
                     viewModel.allDeliveryItems().observe(this, Observer { items ->
 
@@ -87,24 +85,20 @@ class ProductDetailActivity : AppCompatActivity() {
                             it.forEach {
                                 if (productID == it.key) {
                                     existsInCart = true
+                                    quantityTv.text = it.quantity.toString()
+
                                 }
                             }
-
                         }
 
                         if (existsInCart) {
                             addToCartButton.text = "Update Quantity"
                         } else {
                             addToCartButton.text = "Add to cart"
-
                         }
                     })
 
-
-
-
                     updateQty()
-
 
                     addToCartButton.setOnClickListener {
                         addToCartButton?.visibility = View.GONE
@@ -123,15 +117,11 @@ class ProductDetailActivity : AppCompatActivity() {
                         Handler().postDelayed({
                             loading_indicator?.visibility = View.GONE
                             addToCartButton?.visibility = View.VISIBLE
-                        }, 3000)
+                            finish()
+                        }, 1000)
 
 
                     }
-
-
-
-
-
 
         share_ll.setOnClickListener {
             productID?.let{
@@ -142,10 +132,6 @@ class ProductDetailActivity : AppCompatActivity() {
                 }
             }
         }
-
-
-
-
 //        val animation = AnimationUtils.loadAnimation(this, R.anim.rotate_circle)
 //        save_ll.startAnimation(animation)
 

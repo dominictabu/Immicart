@@ -59,6 +59,8 @@ class ProductsFragment : Fragment() {
 
 
     private var TAG = "ProductsFragment"
+    private  val STORE_ID = "STORE_ID"
+    private  val CURRENT_STORE = "CURRENT_STORE"
 
     var disposable: Disposable? = null
 
@@ -129,14 +131,17 @@ class ProductsFragment : Fragment() {
         })
 
         val shared = activity!!.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        val storeID = (shared.getString(keyChannel, null));
+//        val storeID = (shared.getString(keyChannel, null));
 
-        viewModel.currentStore.observe(activity!!, Observer {
-            storeId = it
-            store_name?.text = it.storeName
-            search_hint?.text = "Search ${it.storeName}"
+        var store : com.andromeda.immicart.delivery.choose_store.Store? = null
+        viewModel.currentStore.observe(activity!!, Observer { it ->
+            store = it
+            storeId = it.key
+            val url = it.logoUrl
+            store_name?.text = it.name
+            search_hint?.text = "Search ${it.name}"
             activity?.let {
-                Glide.with(it).load(it.storeLogo).into(profile_image)
+                Glide.with(it).load(url).into(profile_image)
             }
             getCategories()
         })
@@ -204,7 +209,9 @@ class ProductsFragment : Fragment() {
         // TODO: Use the ViewModel
 
         cart_frame_layout?.setOnClickListener {
-            startActivity(Intent(activity!!, DeliveryCartActivity::class.java))
+            val intent = Intent(activity!!, DeliveryCartActivity::class.java)
+            intent.putExtra(CURRENT_STORE, store)
+            startActivity(intent)
         }
 
         myAccountIcon?.setOnClickListener {
@@ -223,12 +230,21 @@ class ProductsFragment : Fragment() {
         }
 
         image_search?.setOnClickListener {
-            startActivity(Intent(activity!!, ImageLabelingActivity::class.java))
+            storeId?.let {
+                val intent = Intent(activity!!, ImageLabelingActivity::class.java)
+                intent.putExtra(STORE_ID, storeId)
+                startActivity(intent)
+            }
+//            startActivity(Intent(activity!!, ImageLabelingActivity::class.java))
         }
 
         navigatetosearch?.visibility = View.VISIBLE
         navigatetosearch?.setOnClickListener {
+//            val intent = Intent(requireActivity(), SearchResultsActivity::class.java)
+//            startActivity(intent)
+
             val intent = Intent(requireActivity(), SearchResultsActivity::class.java)
+            intent.putExtra(CURRENT_STORE, store)
             startActivity(intent)
 
 //            activity?.let {
@@ -288,6 +304,7 @@ class ProductsFragment : Fragment() {
                     }
 
                 } else {
+                    Toast.makeText(activity!!, "We are introducing Pick Up Soon", Toast.LENGTH_LONG).show()
 //                    val editor = activity?.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)?.edit()
 //                    editor?.putBoolean(keyChannel, true)
 //                    editor?.apply()

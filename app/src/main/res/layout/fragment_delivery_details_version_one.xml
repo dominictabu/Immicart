@@ -70,7 +70,6 @@
 			
 			
 			<androidx.cardview.widget.CardView
-					android:layout_below="@+id/segmented1"
 					app:cardElevation="0dp"
 					android:id="@+id/layoutLocation"
 					android:layout_width="match_parent"

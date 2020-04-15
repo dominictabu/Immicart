@@ -30,6 +30,9 @@ public interface ImmicartAPIService {
     @POST("requestNodeSendyDelivery")
     Call<Model.SendyRequestResponse> makeSendyDeliveryRequest(@Query("from_name") String from_name, @Query("from_lat") Double from_lat, @Query("from_long") Double from_long, @Query("to_name") String to_name, @Query("to_lat") Double to_lat, @Query("to_long") Double to_long);
 
+    @POST("trackSendyDelivery")
+    Call<Model.TrackDeliveryResponse> trackSendyDeliveryRequest(@Query("orderID") String orderID);
+
     @POST("mpesaAPI/token")
     Call<AccessToken> getToken();
     @POST("algoliaCredentails")

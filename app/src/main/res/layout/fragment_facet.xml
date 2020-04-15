@@ -98,6 +98,7 @@
 	</androidx.cardview.widget.CardView>
 	
 	<androidx.cardview.widget.CardView
+			android:visibility="gone"
 			app:cardElevation="0dp"
 			android:layout_below="@+id/category_cardview"
 			android:layout_marginTop="20dp"
@@ -148,7 +149,7 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content">
 		<Button
-				android:id="@+id/place_order_button"
+				android:id="@+id/apply_filter_btn"
 				android:layout_marginBottom="@dimen/standard_margin"
 				android:textSize="20sp"
 				android:fontFamily="@font/roboto_medium"

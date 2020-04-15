@@ -48,6 +48,13 @@
 				android:layout_height="wrap_content"
 				android:text="Congratulations - You have successfully placed your order!"
 		/>
+		
+		<TextView
+				android:textSize="16sp"
+				android:layout_margin="10dp"
+				android:text="You can track the order in Orders"
+				android:layout_width="wrap_content"
+		          android:layout_height="wrap_content"/>
 		<Button
 				android:layout_margin="20dp"
 				android:textAllCaps="true"

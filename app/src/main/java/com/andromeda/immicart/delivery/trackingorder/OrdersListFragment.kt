@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.andromeda.immicart.R
 import com.andromeda.immicart.delivery.PlaceOrder
+import com.google.firebase.FirebaseError
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.firestore.FirebaseFirestore
@@ -51,40 +52,49 @@ class OrdersListFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        retrieveOrders()
+        val uid = FirebaseAuth.getInstance().uid
+
+        if(uid != null) {
+            retrieveOrders(uid)
+
+        } else {
+
+        }
 //        getOrders()
 
     }
 
 
-    fun retrieveOrders() {
+    fun retrieveOrders(uid : String) {
+
         val ordersArray = arrayListOf<OrderObject>()
         val db = FirebaseFirestore.getInstance()
 
 
         val docRef = db.collection("orders")
-        docRef.addSnapshotListener { snapshot, e ->
-            if (e != null) {
-                Log.w(TAG, "Listen failed.", e)
-                return@addSnapshotListener
-            }
 
-            if (snapshot != null) {
-                Log.d(TAG, "Current data: ${snapshot.documents}")
-                for (postSnapshot in snapshot.documents) {
-                    // TODO: handle the post
-                    val order = postSnapshot.toObject(OrderObject::class.java)
-
-                    order?.let {
-
-                        ordersArray.add(it)
-                    }
+            docRef.whereEqualTo("customerUID", uid).addSnapshotListener { snapshot, e ->
+                if (e != null) {
+                    Log.w(TAG, "Listen failed.", e)
+                    return@addSnapshotListener
                 }
-                initializeRecyclerView(ordersArray)
 
-            } else {
-                Log.d(TAG, "Current data: null")
-            }
+                if (snapshot != null) {
+                    Log.d(TAG, "Current data: ${snapshot.documents}")
+                    for (postSnapshot in snapshot.documents) {
+                        // TODO: handle the post
+                        val order = postSnapshot.toObject(OrderObject::class.java)
+
+                        order?.let {
+
+                            ordersArray.add(it)
+                        }
+                    }
+                    initializeRecyclerView(ordersArray)
+
+                } else {
+                    Log.d(TAG, "Current data: null")
+                }
         }
 
 

@@ -27,6 +27,8 @@ import com.algolia.instantsearch.helper.stats.connectView
 import com.andromeda.immicart.R
 import com.andromeda.immicart.delivery.*
 import com.andromeda.immicart.delivery.Utils.MyDatabaseUtil
+import com.andromeda.immicart.delivery.checkout.DeliveryCartActivity
+import com.andromeda.immicart.delivery.choose_store.Store
 import com.andromeda.immicart.delivery.search.algolia.*
 import com.andromeda.immicart.networking.ImmicartAPIService
 import com.bumptech.glide.Glide
@@ -151,13 +153,98 @@ class SearchResultsFragment : Fragment() {
             }
         }
 
+        cart_frame_layout?.setOnClickListener {
+            val intent = Intent(activity!!, DeliveryCartActivity::class.java)
+            intent.putExtra(CURRENT_STORE, store)
+            startActivity(intent)
+        }
+
     }
 
+    var store: Store? = null
+    val CURRENT_STORE = "CURRENT_STORE"
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _viewModel = ViewModelProviders.of(activity!!).get(ProductsViewModel::class.java)
 
-        getCurrentStore()
+        _viewModel.currentStore.observe(activity!!, Observer {
+             store = it
+            store?.let {
+                storeId = it.key as String
+
+                search_view_search_fragment?.queryHint = "Search ${it.name}"
+                Glide.with(activity!!).load(it.logoUrl).into(store_image)
+//                    getAlgoliaCredentails()
+
+                val algoliaCredentails = AlgoliaCredentails("TV1YRRL3K4", "61548cf148fe8e4a22e19b50cb7a2e85")
+                val factory = SearchViewModelFactory(algoliaCredentails,storeId)
+                viewModel = ViewModelProviders.of(requireActivity(), factory)[MyViewModel::class.java]
+
+                viewModel.products.observe(this@SearchResultsFragment, Observer { hits ->
+                    Log.d(TAG, "Hits Loaded Count: " + hits.loadedCount)
+                    Log.d(TAG, "Hits Snapshot: " + hits.snapshot())
+
+                    stats?.text = "${hits.size} results"
+                    search_view_search_fragment?.query?.length?.let {
+                        if(it > 0) {
+                            stats.text = "${hits.size} results for '${search_view_search_fragment?.query}'"
+                        } else {
+                            stats.text = "${hits.size} results"
+                        }
+                    }
+
+                    _viewModel.allDeliveryItems().observe(activity!!, Observer { items ->
+
+                        Log.d(TAG, "CartItems: $items")
+                        items?.let {
+                            cartItems = it
+                            val cartIteemsNumber = it.size
+                            badge?.text = cartIteemsNumber.toString()
+                            Log.d(TAG, "CartItems Length: ${items.count()}")
+
+//                categoryRecyclerAdapter?.updateItems(it as ArrayList<DeliveryCart>)
+
+                            hits.forEach {
+                                val product = it
+                                val index = hits.indexOf(product)
+                                cartItems.forEach {
+                                    if(product.key == it.key) {
+                                        hits.get(index)?.isInCart = true
+                                        hits.get(index)?.quantity = it.quantity
+
+//                                    val deliveryCart =
+//                                        DeliveryCartSearch(it.key, it.barcode, it.name,it.category, it.offerPrice, it.normalPrice, it.quantity, it.image_url, true, product._highlightResult)
+//
+//                                    hits.set(index, deliveryCart)
+                                    }
+                                }
+
+                            }
+                            val adapterProduct = SearchProductAdapter(storeId,requireContext(), { cartItem: DeliveryCart, newQuantity: Int -> cartItemClicked(cartItem, newQuantity) } )
+                            adapterProduct.submitList(hits)
+                            products_items_recycler.let {
+                                it.itemAnimator = null
+                                it.adapter = adapterProduct
+                                it.layoutManager = GridLayoutManager(requireContext(), 2)
+                                it.autoScrollToStart(adapterProduct)
+                            }
+
+                        }
+                    })
+
+
+                })
+
+                viewModel.setStoreID(storeId)
+
+                val searchBoxView = SearchBoxViewAppCompat(search_view_search_fragment)
+
+                connection += viewModel.searchBox.connectView(searchBoxView)
+                val statsView = StatsTextView(stats)
+                connection += viewModel.stats.connectView(statsView, StatsPresenterImpl())
+            }
+        })
+//        getCurrentStore()
 //         viewModel = ViewModelProviders.of(requireActivity())[MyViewModel::class.java]
 //        viewModel.products.observe(this, Observer { hits ->
 //

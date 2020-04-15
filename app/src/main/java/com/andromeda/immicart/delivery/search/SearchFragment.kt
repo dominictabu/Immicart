@@ -25,6 +25,7 @@ import com.andromeda.immicart.R
 import com.andromeda.immicart.delivery.*
 import com.andromeda.immicart.delivery.Utils.MyDatabaseUtil
 import com.andromeda.immicart.delivery.checkout.DeliveryCartActivity
+import com.andromeda.immicart.delivery.choose_store.Store
 import com.andromeda.immicart.delivery.search.visionSearch.LiveBarcodeScanningActivity
 import com.andromeda.immicart.delivery.search.visionSearch.imagelabeling.*
 import com.bumptech.glide.Glide
@@ -124,6 +125,19 @@ class SearchFragment : Fragment() {
 //            }
 //        })
 
+
+        var store : Store? = null
+        viewModel.currentStore.observe(activity!!, androidx.lifecycle.Observer {
+
+            store = it
+            it?.let {
+                storeId = it.key as String
+                query_hint?.text = "Search ${it.name}"
+                getCategories(storeId!!)
+            }
+
+        })
+
         viewModel.allDeliveryItems().observe(activity!!, Observer { items ->
 
             Log.d(TAG, "CartItems: $items")
@@ -140,7 +154,11 @@ class SearchFragment : Fragment() {
 
         cart_frame_layout?.setOnClickListener {
 
-            startActivity(Intent(activity!!, DeliveryCartActivity::class.java))
+//            startActivity(Intent(activity!!, DeliveryCartActivity::class.java))
+
+            val intent = Intent(activity!!, DeliveryCartActivity::class.java)
+            intent.putExtra(CURRENT_STORE, store)
+            startActivity(intent)
         }
 
 
@@ -159,16 +177,21 @@ class SearchFragment : Fragment() {
             }
 
         }
+         val CURRENT_STORE = "CURRENT_STORE"
+
         search_ll?.setOnClickListener {
+
             val intent = Intent(requireActivity(), SearchResultsActivity::class.java)
+            intent.putExtra(CURRENT_STORE, store)
             startActivity(intent)
         }
 
-        getCurrentStore()
+//        getCurrentStore()
 
 //        retrieveCategories()
     }
 
+    private  val CURRENT_STORE = "CURRENT_STORE"
 
     fun retrieveCategories() {
         val retrofitResponse = immicartAPIService.categories

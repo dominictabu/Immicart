@@ -7,6 +7,7 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +20,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.andromeda.immicart.R
 import com.andromeda.immicart.checkout.CartImagesAdapter
 import com.andromeda.immicart.checkout.DeliveryCartItemsAdapter
+import com.andromeda.immicart.delivery.checkout.immicartAPIService
+import com.andromeda.immicart.networking.Model
+import com.bumptech.glide.Glide
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
@@ -29,6 +33,9 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.fragment_track_order.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.text.DecimalFormat
 import java.util.regex.Pattern
 
@@ -49,6 +56,7 @@ class TrackOrderFragment : Fragment() , OnMapReadyCallback {
 
     // TODO: Rename and change types of parameters
     private var orderID: String? = null
+    private var TAG: String = "TrackOrderFragment"
     private lateinit var ordersViewModel: OrdersViewModel
 
     private lateinit var map : GoogleMap
@@ -87,9 +95,9 @@ class TrackOrderFragment : Fragment() , OnMapReadyCallback {
         })
 
 
-        call_shopper.setOnClickListener {
-            makeCall("0796026997")
-        }
+//        call_shopper.setOnClickListener {
+//            makeCall("0796026997")
+//        }
 
         recycler_ll.visibility = View.VISIBLE
         cart_items_ll.visibility = View.GONE
@@ -158,7 +166,6 @@ class TrackOrderFragment : Fragment() , OnMapReadyCallback {
         db.collection("orders").document(orderID!!)
             .addSnapshotListener { snapshot, e ->
 
-
                 snapshot?.let {
                     val order = snapshot.toObject(OrderObject::class.java)
 
@@ -187,7 +194,6 @@ class TrackOrderFragment : Fragment() , OnMapReadyCallback {
                             )
                         }
 
-
                         val items = it.items
                         val images: ArrayList<String> = ArrayList()
 
@@ -214,11 +220,11 @@ class TrackOrderFragment : Fragment() , OnMapReadyCallback {
                                 }
 
                             }
+
                             val formatter = DecimalFormat("#,###,###");
                             val totalFormattedString = formatter.format(total);
 
                             store_subtotal.setText("KES " + totalFormattedString)
-
 
                         }
 
@@ -226,16 +232,13 @@ class TrackOrderFragment : Fragment() , OnMapReadyCallback {
                             supermarket_name?.text = "${it.name} subtotal"
                         }
 
-
-
                         order.deliveryAddress?.let {
                             address_tv.text = it.PlaceFullText
                         }
 
                         order.orderStatus?.let {
-                            showOrderProgress(it)
+                            showOrderProgress(it, order.sendyData)
                         }
-
 
                     }
                 }
@@ -246,44 +249,56 @@ class TrackOrderFragment : Fragment() , OnMapReadyCallback {
     }
 
 
-    fun showOrderProgress(orderStatus: OrderStatus) {
+    fun showOrderProgress(orderStatus: OrderStatus, sendyData: SendyData?) {
 
-        if (orderStatus.assigned!! && orderStatus.shopping!! && orderStatus.delivering!! && orderStatus.completed!!) {
+        if (orderStatus.assigned!! && orderStatus.shopping!! && orderStatus.delivering!!) {
 
+
+            sendyData?.let {
+                makeSendyDeliveryRequest(it.order_no!!)
+            }
+
+            //Handed over to Sendy
             //Completed
-            llorderassigned.visibility = View.GONE
-            llordershopping.visibility = View.GONE
-            llorderdelivering.visibility = View.GONE
-            llordercompleted.visibility = View.VISIBLE
+//            llorderassigned.visibility = View.GONE
+//            llordershopping.visibility = View.GONE
+//            llorderdelivering.visibility = View.VISIBLE
+//            llordercompleted.visibility = View.GONE
 
-        } else if (orderStatus.assigned && orderStatus.shopping!! && orderStatus.delivering!! && !orderStatus.completed!!) {
+        } else if (orderStatus.assigned && orderStatus.shopping!! && !orderStatus.delivering!!) {
+
+            //Waiting to handover to Sendy
 
             //Delivering
-            llorderassigned.visibility = View.GONE
-            llordershopping.visibility = View.GONE
-            llorderdelivering.visibility = View.VISIBLE
-            llordercompleted.visibility = View.GONE
-
-        } else if (orderStatus.assigned && orderStatus.shopping!! && !orderStatus.delivering!! && !orderStatus.completed!!) {
-            //Shopping
+            llorder_not_assigned.visibility = View.GONE
             llorderassigned.visibility = View.GONE
             llordershopping.visibility = View.VISIBLE
             llorderdelivering.visibility = View.GONE
             llordercompleted.visibility = View.GONE
 
-        } else if (orderStatus.assigned && !orderStatus.shopping!! && !orderStatus.delivering!! && !orderStatus.completed!!) {
-            //Assigned
+        } else if (orderStatus.assigned && !orderStatus.shopping!! && !orderStatus.delivering!!) {
+            //Waiting for Shopping to begin
+            //Shopping
+            llorder_not_assigned.visibility = View.GONE
             llorderassigned.visibility = View.VISIBLE
             llordershopping.visibility = View.GONE
             llorderdelivering.visibility = View.GONE
             llordercompleted.visibility = View.GONE
 
-        } else if (!orderStatus.assigned && !orderStatus.shopping!! && !orderStatus.delivering!! && !orderStatus.completed!!) {
+//        } else if (!orderStatus.assigned && !orderStatus.shopping!! && !orderStatus.delivering!!) {
+//            //Assigned
+//            llorderassigned.visibility = View.VISIBLE
+//            llordershopping.visibility = View.GONE
+//            llorderdelivering.visibility = View.GONE
+//            llordercompleted.visibility = View.GONE
+
+        } else if (!orderStatus.assigned && !orderStatus.shopping!! && !orderStatus.delivering!!) {
+            //Order Placed
+            llorder_not_assigned.visibility = View.VISIBLE
             llorderassigned.visibility = View.GONE
             llordershopping.visibility = View.GONE
-            llorderdelivering.visibility = View.VISIBLE
+            llorderdelivering.visibility = View.GONE
             llordercompleted.visibility = View.GONE
-
         }
 
         }
@@ -333,6 +348,100 @@ class TrackOrderFragment : Fragment() , OnMapReadyCallback {
         mapView.onLowMemory()
     }
 
+
+
+    fun makeSendyDeliveryRequest(orderID : String) {
+        val retrofitResponse = immicartAPIService.trackSendyDeliveryRequest(orderID )
+
+        retrofitResponse.enqueue(object : Callback<Model.TrackDeliveryResponse> {
+            override fun onFailure(call: Call<Model.TrackDeliveryResponse>, t: Throwable) {
+                Log.d(TAG, "trackSendyDeliveryRequest onFailure")
+            }
+
+            override fun onResponse(
+                call: Call<Model.TrackDeliveryResponse>,
+                response: Response<Model.TrackDeliveryResponse>
+            ) {
+
+                Log.d(TAG, "trackSendyDeliveryRequest onResponse : ${response.body()}")
+                val orderStatus = response.body()?.data?.order_status
+
+                if(orderStatus != null) {
+
+                    when(orderStatus) {
+                        PENDING -> {
+                            //TODO Show the exact progress to the user
+                            llorder_not_assigned.visibility = View.GONE
+                            llorderassigned.visibility = View.GONE
+                            llordershopping.visibility = View.VISIBLE
+                            llorderdelivering.visibility = View.GONE
+                            llordercompleted.visibility = View.GONE
+                        }
+                        CONFIRMED -> {
+                            llorder_not_assigned.visibility = View.GONE
+                            llorderassigned.visibility = View.GONE
+                            llordershopping.visibility = View.VISIBLE
+                            llorderdelivering.visibility = View.GONE
+                            llordercompleted.visibility = View.GONE
+                        }
+                        IN_TRANSIT -> {
+                            llorder_not_assigned.visibility = View.GONE
+                            llorderassigned.visibility = View.GONE
+                            llordershopping.visibility = View.GONE
+                            llorderdelivering.visibility = View.VISIBLE
+                            llordercompleted.visibility = View.GONE
+
+                            val riderDetails = response.body()?.data?.rider_details
+                            val riderImg = riderDetails?.rider_pic
+                            val riderName = riderDetails?.rider_name
+                            val vehicle_make = riderDetails?.vehicle_make
+                            val number_plate = riderDetails?.number_plate
+                            val rider_phone_number = riderDetails?.rider_phone
+                            Glide.with(requireContext()).load(riderImg).into(driver_img)
+                            rider_name?.text = riderName
+                            vehicle_details?.text = "$vehicle_make $number_plate"
+
+                            call_rider?.setOnClickListener {
+                                rider_phone_number?.let {
+                                    makeCall(rider_phone_number)
+                                }
+                            }
+                        }
+                        DELIVERED -> {
+                            llorder_not_assigned.visibility = View.GONE
+                            llorderassigned.visibility = View.GONE
+                            llordershopping.visibility = View.GONE
+                            llorderdelivering.visibility = View.GONE
+                            llordercompleted.visibility = View.VISIBLE
+
+                            val riderDetails = response.body()?.data?.rider_details
+                            val riderImg = riderDetails?.rider_pic
+                            val riderName = riderDetails?.rider_name
+//                            val vehicle_make = riderDetails?.vehicle_make
+//                            val number_plate = riderDetails?.number_plate
+//                            val rider_phone_number = riderDetails?.rider_phone
+                            Glide.with(requireContext()).load(riderImg).into(rider_image_completed)
+                            driver_text?.text = "Your driver  $riderName delivered your order"
+                        }
+
+
+
+                    }
+
+
+
+                }
+
+
+            }
+        })
+    }
+
+
+    val PENDING = "pending"
+    val CONFIRMED = "confirmed" // A rider has been assigned to service your order
+    val IN_TRANSIT = "in transit" // The rider has picked your order and is en route to delivery
+    val DELIVERED = "delivered" //
 
     companion object {
         /**

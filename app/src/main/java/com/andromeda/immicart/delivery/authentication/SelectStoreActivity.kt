@@ -102,13 +102,18 @@ class SelectStoreActivity : AppCompatActivity() {
     fun selectStore(store: Store) {
         Log.d(TAG, "Selected Store: "  + store)
 
-        val editor = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).edit()
-        editor.putString(keyChannel, store.key)
-        editor.apply()
+//        val editor = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).edit()
+//        editor.putString(keyChannel, store.key)
+//        editor.apply()
+//
+//        val intent = Intent(this@SelectStoreActivity, ProductsPageActivity::class.java)
+//        intent.putExtra(CURRENT_STORE, store)
+//
+//        startActivity(intent)
+
 
         val intent = Intent(this@SelectStoreActivity, ProductsPageActivity::class.java)
         intent.putExtra(CURRENT_STORE, store)
-
         startActivity(intent)
 
 

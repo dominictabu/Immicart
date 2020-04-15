@@ -79,10 +79,10 @@ class DeliveryDetailsFragment : Fragment() {
     private lateinit var viewModel: DeliveryCartViewModel
     private lateinit var auth: FirebaseAuth
     private  var deliveryLocation: DeliveryLocation? = null
-    private  var currentStore: CurrentStore? = null
+    private  var currentStore: Store? = null
     private var storeSubtotal: Int? = 0
-    private var serviceFee: Int? = null
-    private var deliveryFee: Int? = 100
+//    private var serviceFee: Int? = null
+    private var deliveryFee: Int? = 200
     private var totals: Int? = null
     private var credits: Int = 0
     private var phoneNumber: String? = null
@@ -91,7 +91,6 @@ class DeliveryDetailsFragment : Fragment() {
     var cartItems: List<DeliveryCart> = ArrayList<DeliveryCart>()
 
     var creditsEnough : Boolean = false
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -115,13 +114,12 @@ class DeliveryDetailsFragment : Fragment() {
             override fun onDataChange(p0: DataSnapshot) {
                 val store = p0.getValue(CurrentStore::class.java)
                 Log.d(TAG, "Store $store")
-                currentStore = store
+//                currentStore = store
 
                 store?.let {
                     toolbar_title?.text = "${store?.storeName}'s order"
                     store_subtotal_title?.text = "${store.storeName}'s subtotal"
                     getDeliveryCharges()
-
                 }
             }
         })
@@ -137,7 +135,17 @@ class DeliveryDetailsFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(activity!!).get(DeliveryCartViewModel::class.java)
 
-        getCurrentStore()
+//        getCurrentStore()
+
+        viewModel.currentStore.observe(activity!!, androidx.lifecycle.Observer {
+            currentStore = it
+
+            currentStore?.let {
+                toolbar_title?.text = "${it?.name}'s order"
+                store_subtotal_title?.text = "${it.name}'s subtotal"
+                getCurrentDeliveryLocation(it)
+            }
+        })
 
 //        viewModel.currentStores().observe(activity!!, androidx.lifecycle.Observer {
 //            it?.let {
@@ -177,7 +185,7 @@ class DeliveryDetailsFragment : Fragment() {
                 loadImages(images)
 
                 storeSubtotal= total
-                if(storeSubtotal!! <= 500) {
+                if(storeSubtotal!! <= 1000) {
                     tipAmount = 50
                 } else {
                     tipAmount = 100
@@ -210,7 +218,7 @@ class DeliveryDetailsFragment : Fragment() {
             }
         })
 
-        getCurrentDeliveryLocation()
+//        getCurrentDeliveryLocation()
 //        viewModel.allDeliveryLocations().observe(activity!!, androidx.lifecycle.Observer {
 //
 //            it?.let {
@@ -245,24 +253,24 @@ class DeliveryDetailsFragment : Fragment() {
 //            discloser?.visibility = View.VISIBLE
 //        }
 
-        segmented1?.setOnCheckedChangeListener(object: RadioGroup.OnCheckedChangeListener {
-            override fun onCheckedChanged(group: RadioGroup?, checkedId: Int) {
-
-                if(checkedId == R.id.button_delivery) {
-                    delivery_time_textView?.text = "Choose your delivery time"
-                    radioBtnDelivery?.isChecked = true
-                    discloser?.visibility = View.VISIBLE
-//                    tip_title?.text = "Shopper Tip"
-
-                } else {
-//                    delivery_time_textView?.text = "Choose your Pick up time"
-//                    radioBtnPickUp?.isChecked = true
-//                    discloser?.visibility = View.GONE
-//                    tip_title?.text = "Shopper Tip"
-
-                }
-            }
-        })
+//        segmented1?.setOnCheckedChangeListener(object: RadioGroup.OnCheckedChangeListener {
+//            override fun onCheckedChanged(group: RadioGroup?, checkedId: Int) {
+//
+//                if(checkedId == R.id.button_delivery) {
+//                    delivery_time_textView?.text = "Choose your delivery time"
+//                    radioBtnDelivery?.isChecked = true
+//                    discloser?.visibility = View.VISIBLE
+////                    tip_title?.text = "Shopper Tip"
+//
+//                } else {
+////                    delivery_time_textView?.text = "Choose your Pick up time"
+////                    radioBtnPickUp?.isChecked = true
+////                    discloser?.visibility = View.GONE
+////                    tip_title?.text = "Shopper Tip"
+//
+//                }
+//            }
+//        })
 
         // Initialize Firebase Auth
 
@@ -296,8 +304,13 @@ class DeliveryDetailsFragment : Fragment() {
             startActivity(Intent(activity!!, MPESAActivity::class.java))
         }
 
+         val CURRENT_TIP_AMOUNT = "CURRENT_TIP_AMOUNT"
+
+
         change_driver_tip?.setOnClickListener {
-            startActivityForResult(Intent(activity!!, DriversTipActivity::class.java), TIP_REQUEST_CODE)
+            val intent = Intent(activity!!, DriversTipActivity::class.java)
+            intent.putExtra(CURRENT_TIP_AMOUNT, tipAmount)
+            startActivityForResult(intent, TIP_REQUEST_CODE)
 
         }
 
@@ -335,29 +348,35 @@ class DeliveryDetailsFragment : Fragment() {
 //            getDeliveryTimes()
 //
 //        }
-//        segmented2?.setOnCheckedChangeListener(object: RadioGroup.OnCheckedChangeListener {
-//            override fun onCheckedChanged(group: RadioGroup?, checkedId: Int) {
-//
-//                if(checkedId == R.id.button_deliver_tomorrow) {
-//                    populateRadioButtons(R.array.from_9am)
-//                } else {
-//                    getDeliveryTimes()
-//                }
-//            }
-//        })
+        delivery_time_radio_group?.setOnCheckedChangeListener(object: RadioGroup.OnCheckedChangeListener {
+            override fun onCheckedChanged(group: RadioGroup?, checkedId: Int) {
 
+                if(checkedId == R.id.express) {
+//                    populateRadioButtons(R.array.from_9am)
+                    delivery_fee?.text = "KES 300"
+                    deliveryFee = 300
+                    calculateDeliveryCharges()
+
+                } else {
+                    delivery_fee?.text = "KES 200"
+//                    getDeliveryTimes()
+                    deliveryFee = 200
+                    calculateDeliveryCharges()
+                }
+            }
+        })
         snapshotListeners()
 
-        info_button?.setOnClickListener {
-              SimpleTooltip.Builder(activity)
-                    .anchorView(it)
-                    .text("This fee helps support the Immicart platform and covers a broad range of operating costs including background checks, and customer support")
-                    .gravity(Gravity.TOP)
-                    .animated(false)
-                    .transparentOverlay(true)
-                    .build()
-                    .show();
-        }
+//        info_button?.setOnClickListener {
+//              SimpleTooltip.Builder(activity)
+//                    .anchorView(it)
+//                    .text("This fee helps support the Immicart platform and covers a broad range of operating costs including background checks, and customer support")
+//                    .gravity(Gravity.TOP)
+//                    .animated(false)
+//                    .transparentOverlay(true)
+//                    .build()
+//                    .show();
+//        }
     }
 
 
@@ -369,16 +388,74 @@ class DeliveryDetailsFragment : Fragment() {
         tip_amount?.text = "KES $tipAmount"
 
 
-        val serviceCharge = 0.05* storeSubtotal!!
-        serviceFee = serviceCharge.toInt()
-        service_fee_amount.text = "KES "+ serviceCharge.toInt()
+//        val serviceCharge = 0.05* storeSubtotal!!
+//        serviceFee = serviceCharge.toInt()
+//        service_fee_amount.text = "KES "+ serviceCharge.toInt()
         val formatter = DecimalFormat("#,###,###");
 
-        val totalCost = storeSubtotal!! + serviceFee!! + deliveryFee!! + tipAmount
+        val totalCost = storeSubtotal!!  + deliveryFee!! + tipAmount
         Log.d(TAG, "totalCost : $totalCost")
         val totalCostFormattedString = formatter.format(totalCost);
         total_text_view?.text = "KES $totalCostFormattedString"
         totals = totalCost
+    }
+
+    fun calculateDeliveryCharges() {
+
+        deliveryLocation?.let {
+            val location = it
+
+            currentStore?.let {
+                val from_name = it.name!!
+                val storeLatLng = convertLatLng(it.latlng!!)
+                val from_lat = storeLatLng.latitude
+                val from_lon = storeLatLng.longitude
+
+                val locationLatLng = convertLatLng(location.latLng!!)
+                val to_lat = locationLatLng.latitude
+                val to_lon = locationLatLng.longitude
+
+                val distance = (SphericalUtil.computeDistanceBetween(storeLatLng, locationLatLng)) / 1000
+
+                Log.d(TAG, "Distance : $distance")
+
+                if (distance <= 5.0 && delivery_time_radio_group?.checkedRadioButtonId == R.id.later) {
+
+                    deliveryFee = 200
+                } else if (distance <= 5.0 && delivery_time_radio_group?.checkedRadioButtonId == R.id.express) {
+                    deliveryFee = 300
+
+                } else if (distance >= 5.0 && delivery_time_radio_group?.checkedRadioButtonId == R.id.express) {
+
+                    val extras = distance - 5.0
+                    val price = extras * 30
+                    Log.d(TAG, "Distance price >= 5.0 : $price")
+
+                    deliveryFee = 300 + price.toInt()
+
+
+                } else if (distance >= 5.0 && delivery_time_radio_group?.checkedRadioButtonId == R.id.later) {
+
+                    val extras = distance - 5.0
+                    val price = extras * 30
+                    Log.d(TAG, "Distance price >= 5.0 : $price")
+
+                    deliveryFee = 200 + price.toInt()
+                }
+
+//                        val serviceCharge = 0.05* storeSubtotal!!
+//                        serviceFee = serviceCharge.toInt()
+//                        service_fee_amount.text = "KES "+ serviceCharge.toInt()
+                val formatter = DecimalFormat("#,###,###");
+                delivery_fee?.text = "KES $deliveryFee"
+
+                val totalCost = storeSubtotal!! + deliveryFee!! + tipAmount
+                Log.d(TAG, "totalCost : $totalCost")
+                val totalCostFormattedString = formatter.format(totalCost);
+                total_text_view?.text = "KES $totalCostFormattedString"
+                totals = totalCost.toInt()
+            }
+        }
     }
 
     fun getDeliveryCharges() {
@@ -386,7 +463,7 @@ class DeliveryDetailsFragment : Fragment() {
         deliveryLocation?.let {
             currentStore?.let {
 
-                val storeLatLng = convertLatLng(currentStore!!.storeLatLng!!)
+                val storeLatLng = convertLatLng(currentStore!!.latlng!!)
                 Log.d(TAG, "Delivery storeLatLng $storeLatLng")
 
                 val deliveryLatLng = convertLatLng(deliveryLocation!!.latLng!!)
@@ -438,12 +515,12 @@ class DeliveryDetailsFragment : Fragment() {
 
                 delivery_fee?.text = "KES $deliveryFee"
 
-                val serviceCharge = 0.05* storeSubtotal!!
-                serviceFee = serviceCharge.toInt()
-                service_fee_amount.text = "KES "+ serviceCharge.toInt()
+//                val serviceCharge = 0.05* storeSubtotal!!
+//                serviceFee = serviceCharge.toInt()
+//                service_fee_amount.text = "KES "+ serviceCharge.toInt()
                 val formatter = DecimalFormat("#,###,###");
 
-                val totalCost = storeSubtotal!! + serviceFee!! + deliveryFee!! + tipAmount
+                val totalCost = storeSubtotal!! + deliveryFee!! + tipAmount
                 Log.d(TAG, "totalCost : $totalCost")
                 val totalCostFormattedString = formatter.format(totalCost);
                 total_text_view?.text = "KES $totalCostFormattedString"
@@ -477,7 +554,6 @@ class DeliveryDetailsFragment : Fragment() {
                     nested_scrolling_view?.scrollTo(0, phone_cardview.top)
                     phone_error?.visibility = View.VISIBLE
                     delivery_address_error?.visibility = View.GONE
-
                 }
             })
 
@@ -492,14 +568,14 @@ class DeliveryDetailsFragment : Fragment() {
                 }
             })
         }
-        else if (deliveryTime == null) {
+
+        else if (delivery_time_radio_group?.checkedRadioButtonId == null) {
             nested_scrolling_view?.post ( object : Runnable {
                 override fun run() {
                     Log.d(TAG, "Runnable called : delivery time not set")
                     nested_scrolling_view?.scrollTo(0, delivery_time_cardview.top)
                     delivery_time_error?.visibility = View.VISIBLE
                     phone_error?.visibility = View.GONE
-
                 }
             })
 
@@ -512,14 +588,11 @@ class DeliveryDetailsFragment : Fragment() {
             }
         })
 
-
     } else {
             getDeliveryDetails()
-
         }
 
     }
-
 
     fun getDeliveryDetails() {
         val radioGrp =  activity!!.findViewById<RadioGroup>(R.id.delivery_time_radio_group);
@@ -543,13 +616,12 @@ class DeliveryDetailsFragment : Fragment() {
         }
 //        val timeOfDelivery = radioButton.text.toString()
 
-        val deliverDetails = DeliveryDetails(phone, currentYear, currentDayOfTheYear, timeOfDelivery, storeSubtotal!!, deliveryFee!!, serviceFee!!, totals!!)
+        val deliverDetails = DeliveryDetails(phone, currentYear, currentDayOfTheYear, timeOfDelivery, storeSubtotal!!, deliveryFee!!, tipAmount!!, totals!!)
         viewModel.setDeliveryDetails(deliverDetails)
         findNavController().navigate(R.id.action_deliveryDetailsFragment_to_loadingPlaceOrderFragment)
     }
 
     fun amountEnough() : Int {
-
 
         var deliveryFee : Int
 
@@ -578,7 +650,6 @@ class DeliveryDetailsFragment : Fragment() {
 
     fun loadItems() {
         val linearLayoutManager = LinearLayoutManager(activity!!, RecyclerView.VERTICAL, false)
-
         cart_items_recycler.layoutManager = linearLayoutManager
         val deliveryCartItemsAdapter  = DeliveryCartItemsAdapter_(cartItems,activity!!)
         cart_items_recycler.adapter = deliveryCartItemsAdapter
@@ -594,9 +665,7 @@ class DeliveryDetailsFragment : Fragment() {
             5 -> return "Friday"
             6 -> return "Saturday"
             0 -> return "Sunday"
-
         }
-
         return null
 
     }
@@ -717,7 +786,7 @@ class DeliveryDetailsFragment : Fragment() {
             currentStore?.let {
                 val ref = FirebaseDatabase.getInstance().getReference("current_store_order_locations")
                 val geoFire =  GeoFire(ref);
-                val latLng = convertLatLng(it.storeLatLng!!)
+                val latLng = convertLatLng(it.latlng!!)
                 val lat = latLng.latitude
                 val lon = latLng.longitude
 
@@ -725,7 +794,6 @@ class DeliveryDetailsFragment : Fragment() {
                     override fun onComplete(key: String?, error: DatabaseError?) {
 
                     }
-
                 })
             }
 
@@ -748,7 +816,6 @@ class DeliveryDetailsFragment : Fragment() {
         }).addOnFailureListener {
             Log.d(TAG, "Exception: ${it.toString()}")
         }
-
     }
 
     fun convertLatLng(latlng : String) : LatLng {
@@ -901,7 +968,7 @@ class DeliveryDetailsFragment : Fragment() {
     }
     private val TIP_AMOUNT = "TIP_AMOUNT"
     private val TIP_REQUEST_CODE = 100
-    private var tipAmount = 100
+    private var tipAmount = 50
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -913,18 +980,18 @@ class DeliveryDetailsFragment : Fragment() {
 
              tipAmount = data.getIntExtra(TIP_AMOUNT, 100)
             tip_amount?.text = "KES $tipAmount"
-            getDeliveryCharges()
+            calculateDeliveryCharges()
 
 
         }
     }
 
-    fun getCurrentDeliveryLocation() {
+    fun getCurrentDeliveryLocation(currentStore: Store) {
         val userUID = FirebaseAuth.getInstance().uid
         val ref =  MyDatabaseUtil.getDatabase().reference.child("customers/$userUID").child("delivery_locations/current_location")
 
-        delivery_fee?.visibility = View.GONE
-        delivery_fee_charges?.visibility = View.VISIBLE
+        delivery_fee?.visibility = View.VISIBLE
+//        delivery_fee_charges?.visibility = View.VISIBLE
 
         ref.addValueEventListener(object: ValueEventListener {
 
@@ -933,8 +1000,8 @@ class DeliveryDetailsFragment : Fragment() {
             }
 
             override fun onDataChange(p0: DataSnapshot) {
-                delivery_fee?.visibility = View.GONE
-                delivery_fee_charges?.visibility = View.VISIBLE
+                delivery_fee?.visibility = View.VISIBLE
+//                delivery_fee_charges?.visibility = View.VISIBLE
                 val location = p0.getValue(DeliveryLocation::class.java)
 
                 if(location != null) {
@@ -948,8 +1015,8 @@ class DeliveryDetailsFragment : Fragment() {
 //                    getDeliveryCharges()
 
                     currentStore?.let {
-                        val from_name = it.storeName!!
-                        val storeLatLng = convertLatLng(it.storeLatLng!!)
+                        val from_name = it.name!!
+                        val storeLatLng = convertLatLng(it.latlng!!)
                         val from_lat = storeLatLng.latitude
                         val from_lon = storeLatLng.longitude
 
@@ -957,7 +1024,49 @@ class DeliveryDetailsFragment : Fragment() {
                         val to_lat = locationLatLng.latitude
                         val to_lon = locationLatLng.longitude
 
-                        makeSendyDeliveryRequest(from_name, from_lat, from_lon, location.name!!, to_lat, to_lon)
+                        val distance = (SphericalUtil.computeDistanceBetween(storeLatLng, locationLatLng))/1000
+
+                        Log.d(TAG, "Distance : $distance")
+
+                        if(distance <= 5.0 && delivery_time_radio_group?.checkedRadioButtonId == R.id.later) {
+
+                            deliveryFee = 200
+                        } else if (distance <= 5.0 && delivery_time_radio_group?.checkedRadioButtonId == R.id.express) {
+                            deliveryFee = 300
+
+                        } else if (distance >= 5.0 && delivery_time_radio_group?.checkedRadioButtonId == R.id.express) {
+
+                            val extras = distance - 5.0
+                            val price = extras * 30
+                            Log.d(TAG, "Distance price >= 5.0 : $price")
+
+                            deliveryFee = 300 + price.toInt()
+
+
+                        } else if (distance >= 5.0 && delivery_time_radio_group?.checkedRadioButtonId == R.id.later) {
+
+                            val extras = distance - 5.0
+                            val price = extras * 30
+                            Log.d(TAG, "Distance price >= 5.0 : $price")
+
+                            deliveryFee = 200 + price.toInt()
+                        }
+
+//                        val serviceCharge = 0.05* storeSubtotal!!
+//                        serviceFee = serviceCharge.toInt()
+//                        service_fee_amount.text = "KES "+ serviceCharge.toInt()
+                        val formatter = DecimalFormat("#,###,###");
+                        delivery_fee?.text = "KES $deliveryFee"
+
+                        val totalCost = storeSubtotal!! + deliveryFee!! + tipAmount
+                        Log.d(TAG, "totalCost : $totalCost")
+                        val totalCostFormattedString = formatter.format(totalCost);
+                        total_text_view?.text = "KES $totalCostFormattedString"
+                        totals = totalCost.toInt()
+
+
+
+//                        makeSendyDeliveryRequest(from_name, from_lat, from_lon, location.name!!, to_lat, to_lon)
 
                     }
                 } else {
@@ -990,7 +1099,7 @@ class DeliveryDetailsFragment : Fragment() {
                 deliveryFee = deliveryFee_?.toInt()
                 val currency = response.body()?.data?.currency
                 delivery_fee?.visibility = View.VISIBLE
-                delivery_fee_charges?.visibility = View.GONE
+//                delivery_fee_charges?.visibility = View.GONE
                 delivery_fee?.text = "$currency $deliveryFee_"
 
                 val trackingLink = response.body()?.data?.tracking_link
@@ -1004,12 +1113,12 @@ class DeliveryDetailsFragment : Fragment() {
                     viewModel.setOrderNumber(it)
                 }
 
-                val serviceCharge = 0.05* storeSubtotal!!
-                serviceFee = serviceCharge.toInt()
-                service_fee_amount.text = "KES "+ serviceCharge.toInt()
+//                val serviceCharge = 0.05* storeSubtotal!!
+//                serviceFee = serviceCharge.toInt()
+//                service_fee_amount.text = "KES "+ serviceCharge.toInt()
                 val formatter = DecimalFormat("#,###,###");
 
-                val totalCost = storeSubtotal!! + serviceFee!! + deliveryFee!! + tipAmount
+                val totalCost = storeSubtotal!!  + deliveryFee!! + tipAmount
                 Log.d(TAG, "totalCost : $totalCost")
                 val totalCostFormattedString = formatter.format(totalCost);
                 total_text_view?.text = "KES $totalCostFormattedString"

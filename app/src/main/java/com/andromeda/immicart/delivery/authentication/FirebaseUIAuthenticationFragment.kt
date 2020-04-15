@@ -12,12 +12,16 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
+import androidx.viewpager.widget.ViewPager
 import com.andromeda.immicart.BuildConfig
 
 import com.andromeda.immicart.R
 import com.andromeda.immicart.delivery.CurrentStore
 import com.andromeda.immicart.delivery.ProductsPageActivity
 import com.andromeda.immicart.delivery.Utils.MyDatabaseUtil
+import com.andromeda.immicart.delivery.furniture.FurnitureImage
+import com.andromeda.immicart.delivery.furniture.SliderImage
+import com.andromeda.immicart.delivery.furniture.TestFragmentAdapter
 import com.firebase.ui.auth.AuthUI
 import kotlinx.android.synthetic.main.fragment_firebase_uiauthentication.*
 import com.firebase.ui.auth.AuthUI.IdpConfig
@@ -30,8 +34,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.auth.FirebaseUserMetadata
-
-
+import com.pixelcan.inkpageindicator.InkPageIndicator
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -91,18 +94,68 @@ class FirebaseUIAuthenticationFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        var imagesList = ArrayList<SliderImage>()
+
+
+        val images = SliderImage(R.mipmap.shop_1)
+        val images1 = SliderImage(R.mipmap.shop_2)
+        val images2 = SliderImage(R.mipmap.shop_3)
+//        val images3 = FurnitureImage(4,R.drawable.sofa_3, false)
+//        val images4 = FurnitureImage(6,R.drawable.sofa_4, false)
+//        val images5 = FurnitureImage(7,R.drawable.sofa_5, false)
+//        val images6 = FurnitureImage(8,R.drawable.sofa_6, false)
+//        val images7 = FurnitureImage(9,R.drawable.sofa_7, false)
+
+        imagesList.add(images)
+        imagesList.add(images1)
+        imagesList.add(images2)
+//        imagesList.add(images3)
+//        imagesList.add(images4)
+//        imagesList.add(images5)
+//        imagesList.add(images6)
+//        imagesList.add(images7)
+
+        val mAdapter = SliderImageFragmentAdapter(activity!!.supportFragmentManager, imagesList)
+
+        pager?.setAdapter(mAdapter)
+
+//        val mIndicator = findViewById<InkPageIndicator>(R.id.indicator)
+        mIndicator.setViewPager(pager)
+
+        pager?.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+            override fun onPageScrollStateChanged(state: Int) {
+
+            }
+
+            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+                Log.d(TAG, "Position: $position")
+                val banner = imagesList.get(position)
+                Log.d(TAG, " $banner")
+
+            }
+
+            override fun onPageSelected(position: Int) {
+                // Check if this is the page you want.
+            }
+        })
+
 
         signup?.setOnClickListener {
             startSignIn()
         }
     }
 
+    private lateinit var mIndicator : InkPageIndicator
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_firebase_uiauthentication, container, false)
+        val view = inflater.inflate(R.layout.fragment_firebase_uiauthentication, container, false)
+
+        mIndicator = view.findViewById<InkPageIndicator>(R.id.indicator)
+
+        return view
     }
 
     fun createProfile() {

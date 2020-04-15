@@ -37,7 +37,10 @@ public class SplashActivity extends AppCompatActivity {
 
         if(auth != null) {
 //            getCurrentStore(auth.getUid());
-            startActivity(new Intent(this, SelectStoreActivity.class));
+//            startActivity(new Intent(this, SelectStoreActivity.class));
+
+            startActivity(new Intent(SplashActivity.this, AuthenticationActivity.class));
+
 
 
         } else {

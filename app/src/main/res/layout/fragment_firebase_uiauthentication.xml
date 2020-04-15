@@ -1,21 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             tools:context=".delivery.authentication.FirebaseUIAuthenticationFragment">
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/white"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                tools:context=".delivery.authentication.FirebaseUIAuthenticationFragment">
 	
-	<!-- TODO: Update blank fragment layout -->
-	<ImageView
-			android:src="@drawable/immicart_test_jamison_philippi_5"
+	<androidx.viewpager.widget.ViewPager
+			android:layout_above="@+id/indicator"
+			android:layout_centerHorizontal="true"
+			android:layout_marginTop="20dp"
+			android:id="@+id/pager"
 			android:layout_width="match_parent"
-			android:layout_height="match_parent"/>
+			android:layout_height="match_parent"
+	/>
+	<com.pixelcan.inkpageindicator.InkPageIndicator
+			android:layout_above="@+id/bottom_view"
+			android:layout_marginTop="10dp"
+			android:layout_marginBottom="10dp"
+			android:id="@+id/indicator"
+			android:padding="10dp"
+			android:layout_height="wrap_content"
+			android:layout_width="match_parent"
+			app:ipi_dotDiameter="8dp"
+			app:ipi_dotGap="8dp"
+			app:ipi_animationDuration="320"
+			app:ipi_pageIndicatorColor="@android:color/darker_gray"
+			app:ipi_currentPageIndicatorColor="@android:color/black"/>
 	
 	<LinearLayout
+			
 			android:orientation="vertical"
 			android:layout_alignParentBottom="true"
 			android:id="@+id/bottom_view"
-			android:background="@drawable/rounded_bottomsheet"
+			android:background="@drawable/rounded_bottomsheet_stroke"
 			android:layout_width="match_parent"
 	              android:layout_height="wrap_content">
 		<TextView
@@ -26,40 +45,40 @@
 				android:layout_marginTop="24dp"
 				android:layout_marginEnd="20dp"
 				android:layout_below="@+id/immicart_logo"
-				android:text="Save time, starting now"
+				android:text="Stay safe. Immicart delivers"
 				android:gravity="center"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"/>
 		<TextView
+				android:gravity="center"
 				android:layout_marginStart="20dp"
 				android:layout_marginEnd="20dp"
-				android:textSize="18sp"
 				android:id="@+id/subtagline"
 				android:layout_below="@+id/starting_now"
-				android:text="Get the things you love from the stores you trust"
-				android:layout_width="wrap_content"
+				android:text="Get your everyday essentials from stores you trust"
+				android:layout_width="match_parent"
 				android:layout_height="wrap_content"/>
 		<LinearLayout
 				android:layout_marginBottom="28dp"
 				android:layout_marginTop="10dp"
 				android:layout_width="match_parent"
 		              android:layout_height="wrap_content">
-			<Button
-					android:id="@+id/login"
-					android:padding="8dp"
-					android:textSize="16sp"
-					android:layout_marginTop="4dp"
-					android:layout_marginStart="16dp"
-					android:layout_marginEnd="8dp"
-					android:textColor="@color/colorGreen"
-					android:background="@drawable/log_out_bg"
-					android:elevation="24dp"
-					android:textAllCaps="false"
-					android:layout_weight="1"
-					android:textStyle="bold"
-					android:text="Log in"
-					android:layout_width="0dp"
-					android:layout_height="48dp"/>
+			<!--<Button-->
+					<!--android:id="@+id/login"-->
+					<!--android:padding="8dp"-->
+					<!--android:textSize="16sp"-->
+					<!--android:layout_marginTop="4dp"-->
+					<!--android:layout_marginStart="16dp"-->
+					<!--android:layout_marginEnd="8dp"-->
+					<!--android:textColor="@color/colorGreen"-->
+					<!--android:background="@drawable/log_out_bg"-->
+					<!--android:elevation="24dp"-->
+					<!--android:textAllCaps="false"-->
+					<!--android:layout_weight="1"-->
+					<!--android:textStyle="bold"-->
+					<!--android:text="Log in"-->
+					<!--android:layout_width="0dp"-->
+					<!--android:layout_height="48dp"/>-->
 		<Button
 				android:id="@+id/signup"
 				android:padding="8dp"
@@ -73,7 +92,7 @@
 				android:textAllCaps="false"
 				android:layout_weight="1"
 				android:textStyle="bold"
-				android:text="Sign up"
+				android:text="Get Started"
 				android:layout_width="0dp"
 				android:layout_height="48dp"/>
 		</LinearLayout>

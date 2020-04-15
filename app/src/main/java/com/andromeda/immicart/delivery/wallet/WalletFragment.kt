@@ -55,7 +55,7 @@ class WalletFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
 
         currentFirebaseUser = FirebaseAuth.getInstance().currentUser
-        snapshotListeners()
+//        snapshotListeners()
 
         top_up_button?.setOnClickListener {
 //            findNavController().navigate(R.id.action_walletFragment_to_MPESAFragment)

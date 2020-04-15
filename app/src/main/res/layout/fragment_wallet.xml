@@ -16,7 +16,7 @@
 		<TextView
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:text="Wallet"
+				android:text="Immicart Wallet"
 				android:textSize="18sp"
 				android:textStyle="bold"
 				android:layout_gravity="center"
@@ -39,7 +39,7 @@
 			android:layout_below="@+id/your_credit"
 			android:textSize="24sp"
 			android:textStyle="bold"
-			android:text="KES 0"
+			android:text="KES 1000"
 			android:id="@+id/wallet_credit"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"/>

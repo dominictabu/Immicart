@@ -39,7 +39,7 @@
 					android:clickable="true"
 					android:focusable="true"
 					android:visibility="visible"
-					android:id="@+id/cart_frame_layout"
+					android:id="@+id/last_cart_frame_layout"
 					android:layout_margin="10dp"
 					android:layout_gravity="top|end"
 					android:layout_width="48dp"
