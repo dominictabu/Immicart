@@ -27,7 +27,7 @@ class TestFragmentAdapter(fm: FragmentManager, protected var banners: ArrayList<
 
     companion object {
         protected val CONTENT =
-            intArrayOf(R.drawable.breadimage, R.drawable.aerial_soap, R.drawable.sofa)
+            intArrayOf(R.mipmap.ic_immicart_logo, R.mipmap.ic_immicart_logo, R.mipmap.ic_immicart_logo)
         protected val Titles = arrayOf("one", "2", "3", "4")
         private val TAG = "TestFragmentAdapter"
     }

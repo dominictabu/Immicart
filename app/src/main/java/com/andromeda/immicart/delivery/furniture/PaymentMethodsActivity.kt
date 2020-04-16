@@ -25,8 +25,8 @@ class PaymentMethodsActivity : AppCompatActivity() {
         val items = ArrayList<PaymentMethod>()
 
         val item = PaymentMethod(R.drawable.mpesa, "MPESA")
-        val item1 = PaymentMethod(R.drawable.paypal_image, "PayPal")
-        val item2 = PaymentMethod(R.drawable.pesapal, "PesaPal")
+        val item1 = PaymentMethod(R.drawable.mpesa, "PayPal")
+        val item2 = PaymentMethod(R.drawable.mpesa, "PesaPal")
 
         items.add(item)
         items.add(item1)

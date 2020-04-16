@@ -322,7 +322,6 @@
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content">
 						<de.hdodenhof.circleimageview.CircleImageView
-								android:src="@drawable/klaus"
 								android:layout_width="48dp"
 								android:layout_height="48dp"/>
 						<LinearLayout
@@ -524,7 +523,6 @@
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content">
 						<de.hdodenhof.circleimageview.CircleImageView
-								android:src="@drawable/klaus"
 								android:layout_width="48dp"
 								android:layout_height="48dp"/>
 						<TextView
@@ -712,7 +710,6 @@
 							android:layout_height="wrap_content">
 						<de.hdodenhof.circleimageview.CircleImageView
 								android:id="@+id/driver_img"
-								android:src="@drawable/mansmiling"
 								android:layout_width="48dp"
 								android:layout_height="48dp"/>
 						<LinearLayout
@@ -940,7 +937,6 @@
 							android:layout_height="wrap_content">
 						<de.hdodenhof.circleimageview.CircleImageView
 								android:id="@+id/rider_image_completed"
-								android:src="@drawable/klaus"
 								android:layout_width="48dp"
 								android:layout_height="48dp"/>
 						<LinearLayout

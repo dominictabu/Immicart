@@ -37,7 +37,6 @@
 			android:id="@+id/profile_image"
 			android:layout_marginTop="20dp"
 			android:layout_centerHorizontal="true"
-			android:src="@drawable/mansmiling"
 			android:layout_width="96dp"
            android:layout_height="96dp"/>
 	<TextView

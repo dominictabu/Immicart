@@ -16,8 +16,8 @@ android {
         applicationId "com.andromeda.immicart"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 3
-        versionName "1.0.0.20200413"
+        versionCode 4
+        versionName "1.0.0.20200416"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
         resConfigs "en" // And any other languages you support

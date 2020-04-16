@@ -13,7 +13,6 @@
 		<ImageView
 				android:layout_gravity="start|top"
 				android:scaleType="centerInside"
-				android:src="@drawable/aerial_soap"
 				android:id="@+id/product_picture"
 				android:layout_width="172dp"
 				android:layout_height="172dp"/>

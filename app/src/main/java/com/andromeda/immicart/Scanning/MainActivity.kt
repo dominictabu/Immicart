@@ -228,7 +228,7 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
 
 
     fun initializeRecyclerView() {
-        val scannedProduct = ScannedProduct(R.drawable.breadimage, "Bread", 100f, 1 )
+        val scannedProduct = ScannedProduct(R.mipmap.ic_immicart_logo, "Bread", 100f, 1 )
 
         val cartItem = Cart(_id = 1,barcode = "222222", name = "sdgede", price = 4444f, quantity = 12, image_url = "dveydeyde")
         var arrayList: ArrayList<Cart> = ArrayList()

@@ -16,7 +16,6 @@
 		<de.hdodenhof.circleimageview.CircleImageView
 				android:layout_margin="4dp"
 				android:layout_gravity="center_vertical"
-				android:src="@drawable/breadimage"
 				android:id="@+id/store_image"
 				android:layout_width="84dp"
 				android:layout_height="84dp" />
